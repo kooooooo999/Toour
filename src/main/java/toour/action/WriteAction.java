@@ -1,8 +1,9 @@
 package toour.action;
 
-import dao.PostDAO;
+
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
+import toour.dao.PostDAO;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
