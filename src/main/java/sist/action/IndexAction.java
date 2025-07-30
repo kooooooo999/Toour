@@ -73,9 +73,6 @@ public class IndexAction implements Action {
         sb.append("&_type=xml&numOfRows=10&pageNo=");
         sb.append(cPage);
 
-
-
-
         try {
             //브라우저창에서 경로(url)를 입력하고 요청하듯이 프로그램 상에서 요청할 때는 url객체를 만들어야한다
             URL url = new URL(sb.toString());
