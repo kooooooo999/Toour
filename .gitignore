@@ -1,0 +1,96 @@
+<<<<<<< HEAD
+# 운영체제 관련 파일 무시
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.Spotlight-V100
+.Trashes
+
+# IDE/에디터 관련 파일 무시
+.idea/             # IntelliJ IDEA
+.vscode/           # VS Code
+*.iml              # IntelliJ IDEA 모듈 파일
+.project           # Eclipse
+.classpath         # Eclipse
+.settings/         # Eclipse
+*.sublime-project  # Sublime Text
+*.sublime-workspace # Sublime Text
+*.swp              # Vim 스왑 파일
+
+# 빌드 및 컴파일 결과물 무시
+/build/
+/dist/
+/out/
+/target/           # Java (Maven/Gradle)
+*.class            # Java 클래스 파일
+*.jar
+*.war
+*.exe
+*.dll
+*.o
+*.so
+
+# 패키지 매니저 관련 디렉토리 무시
+node_modules/      # Node.js
+vendor/            # PHP Composer
+venv/              # Python 가상 환경
+.bundle/           # Ruby Bundler
+
+# 로그 파일 무시
+*.log
+logs/
+tmp/
+
+# 환경 설정 파일 (민감 정보 포함 가능성) 무시
+.env
+*.env.local
+config.local.json
+credentials.json
+
+# 압축 파일 무시 (선택적)
+*.zip
+*.tar.gz
+
+# 기타 임시 파일
+*~                 # 백업 파일 (Emacs 등)
+.#* # 백업 파일
+=======
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### IntelliJ IDEA ###
+.idea/modules.xml
+.idea/jarRepositories.xml
+.idea/compiler.xml
+.idea/libraries/
+*.iws
+*.iml
+*.ipr
+
+### Eclipse ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Mac OS ###
+.DS_Store
+>>>>>>> d9e9208 (list test)
