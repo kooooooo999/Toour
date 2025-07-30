@@ -1,7 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html lang="ko">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -142,8 +144,26 @@
         footer p.contact-info { text-align: center; margin-top: 10px; }
         footer .copyright { text-align: center; margin-top: 20px; font-size: 13px; color: #aaa; }
     </style>
+    <title>JSP - Hello World</title>
+    <style>
+        #table{
+            border-collapse: collapse;
+        }
+        #table caption{
+            text-indent: -9999px;
+            height: 0;
+        }
+        #table td{
+            border: 1px solid #000;
+        }
+    </style>
 </head>
 <body>
+ <button onclick="location.href='Controller?type=signup'">회원가입</button>
+ <button onclick="location.href='Controller?type=login'">로그인</button>
+
+
+
 <header>
     <div class="container header-top">
         <div class="text-right">

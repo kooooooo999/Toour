@@ -1,14 +1,31 @@
 package mybatis.vo;
 
 public class MemberVO {
-    private String member_idx, member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_last_login_at, member_status, member_type, member_salt, member_id, member_warning;
+    private  String   member_idx, member_name, member_nickname, member_password,
+            member_email, member_created_at, member_updated_at,
+            member_last_login_at, member_status, member_type, member_salt,
+            member_id, member_warning;
+    // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt
+
 
     public String getMember_idx() {
-        return member_idx;
+        return member_idx;}
+    public String getMember_id() {
+        return member_id;
     }
 
     public void setMember_idx(String member_idx) {
-        this.member_idx = member_idx;
+        this.member_idx = member_idx;}
+    public void setMember_id(String member_id) {
+        this.member_id = member_id;
+    }
+
+    public String getMember_warning() {
+        return member_warning;
+    }
+
+    public void setMember_warning(String member_warning) {
+        this.member_warning = member_warning;
     }
 
     public String getMember_name() {
@@ -89,21 +106,5 @@ public class MemberVO {
 
     public void setMember_salt(String member_salt) {
         this.member_salt = member_salt;
-    }
-
-    public String getMember_id() {
-        return member_id;
-    }
-
-    public void setMember_id(String member_id) {
-        this.member_id = member_id;
-    }
-
-    public String getMember_warning() {
-        return member_warning;
-    }
-
-    public void setMember_warning(String member_warning) {
-        this.member_warning = member_warning;
     }
 }
