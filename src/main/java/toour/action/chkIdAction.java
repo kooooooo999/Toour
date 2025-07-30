@@ -55,6 +55,6 @@ public class chkIdAction implements Action{
         }
         request.setAttribute("usable",usable);
         request.setAttribute("alertText",alertText);
-        return "chkId.jsp";
+        return "inspection.jsp";
     }
 }

@@ -53,6 +53,6 @@ public class chkPwAction implements Action{
         }
         request.setAttribute("usable",usable);
         request.setAttribute("alertText",alertText);
-        return "chkPw.jsp";
+        return "inspection.jsp";
     }
 }

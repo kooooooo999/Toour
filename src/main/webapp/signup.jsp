@@ -44,7 +44,16 @@
     </tr>
     <tr>
       <td>이메일:</td>
-      <td><input type="text" id="u_email" name="u_email"/></td>
+      <td>
+        <input type="text" id="u_email" name="u_email"/>
+        <select id="emailAddr" name="emailAddr">
+          <option >:::직접 입력:::</option>
+          <option  value="@naver.com">@naver.com</option>
+          <option  value="@gmail.com">@gmail.com</option>
+          <option  value="@daum.net">@daum.net</option>
+          <option  value="@nate.net">@nate.net</option>
+        </select>
+        <div id="email_usable"></div></td>
     </tr>
     <tr>
       <td colspan="2"><button type="button" onclick="sendForm(this.form)">가입하기</button></td>
@@ -71,7 +80,7 @@
       }else
         $("#id_usable").html("");
     });
-
+    //비밀번호 창에 타이핑 했을 때
     $("#u_pw").keyup(function (){
       let u_pw = document.getElementById("u_pw");
       let u_pw_t = u_pw.value.trim();
@@ -85,6 +94,23 @@
         });
       }else
         $("#pw_usable").html("");
+    });
+
+    //이메일 입력 창에서 focus가 빠질 때
+    $("#u_email").blur(function (){
+      let u_email = document.getElementById("u_email");
+      let u_email_t = u_email.value.trim();
+      let emailAddr = document.getElementById("emailAddr").value;
+      if (u_email_t.length>0) {
+        $.ajax({
+          url: "Controller?type=chkemail",
+          type: "post",
+          data:{u_email:u_email_t,emailAddr:emailAddr}
+        }).done(function (res) {
+          $("#email_usable").html(res);
+        });
+      }else
+        $("#email_usable").html("");
     });
 
     // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때
