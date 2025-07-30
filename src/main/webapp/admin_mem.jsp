@@ -1,10 +1,9 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
   <title>Title</title>
   <!-- 외부CSS 연결하기 -->
 
@@ -74,25 +73,17 @@
 
         </ol>
       </td>
-      <td>
-        <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
-      </td>
     </tr>
     <c:set var="ar" value="${requestScope.ar}"/>
-    <c:set var="i" value="0"/>
     <c:forEach items="${ar}" var="vo" varStatus="vs">
       <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
       <tr>
-        <td>${num}</td>
         <td style="text-align: left">
-          <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-              ${vo.post_title}
-            <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-              (<c:out value="${fn:length(vo.c_list)}"/>)
-            </c:if>
+          <a href="Controller?type=view&post_idx=${vo.member_idx}&cPage=${p.nowPage}">
+            ${num}
           </a>
         </td>
-        <td>${vo.member_idx}</td>
+        <td>${vs.index}</td>
         <td>${vo.member_name}</td>
         <td>${vo.member_id}</td>
         <td>${vo.member_nickname}</td>
