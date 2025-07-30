@@ -14,5 +14,9 @@
         INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id)
         VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id})
     </insert>
-
+    <!--목록에 작성자 뜨게하기 위한 sql문-->
+    <select id="getmember_idx" parameterType="String" resultType="mybatis.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_idx = #{member_idx}
+    </select>
 </mapper>

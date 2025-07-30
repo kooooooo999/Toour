@@ -6,6 +6,16 @@ import java.util.List;
 public class PostVO {
     private String post_idx, member_idx, category_idx, post_title, post_content, post_views, post_likes, post_comments_count,  post_status, post_created_at, post_updated_at, post_star;
 
+    private String member_name;
+
+    public String getMember_name() {
+        return member_name;
+    }
+
+    public void setMember_name(String member_name) {
+        this.member_name = member_name;
+    }
+
     private List<CommentVO> c_list;
 
     public List<CommentVO> getC_list() {

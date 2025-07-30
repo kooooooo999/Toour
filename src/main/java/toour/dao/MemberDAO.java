@@ -23,4 +23,11 @@ public class MemberDAO {
         ss.close();
         return mvo;
     }
+
+    public static MemberVO getMemIdx(String member_idx) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO mvo = ss.selectOne("post.list", member_idx);
+        ss.close();
+        return mvo;
+    }
 }

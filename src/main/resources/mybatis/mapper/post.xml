@@ -27,7 +27,8 @@
         and category_idx=#{category_idx}
         order by post_idx desc
         ) a, (select @RN:=0)b
-        ) c where c.rnum Between #{begin} and #{end}
+        ) c inner join member m on c.member_idx=m.member_idx
+        where c.rnum Between #{begin} and #{end}
     </select>
 
         <!--글쓰기-->

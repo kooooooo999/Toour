@@ -36,4 +36,38 @@ public class PostDAO {
 
         return ar;
     }
+
+
+
+    // 저장 +++
+    public static int add(String post_title, String post_content, String member_idx,
+                          String category_idx){
+        int cnt = 0;
+
+        Map<String, String> map = new HashMap<>();
+        map.put("post_title", post_title);
+        map.put("post_content", post_content);
+        map.put("member_idx", member_idx);
+        map.put("category_idx", category_idx);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        cnt = ss.insert("post.add", map);
+        if(cnt > 0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+
+        return cnt;
+    }
+
+    // 기본키(고유번호)를 인자로 하여 게시물 가져오기
+    public static PostVO getPost(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        PostVO vo = ss.selectOne("post.getpost", post_idx);
+        ss.close();
+        return vo;
+    }
+
+
 }

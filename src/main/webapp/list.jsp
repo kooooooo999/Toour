@@ -12,10 +12,155 @@
 <head>
     <title>Title</title>
     <style>
-        .disable{display: none;}
-        table th{
-            border: 1px solid #000;
+            /* 전체 페이지 배경 및 기본 폰트 설정 */
+        body {
+            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 40px;
         }
+
+        /* 게시판 컨테이너 */
+        #post {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
+        }
+
+        /* 테이블 공통 스타일 */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            min-width: 800px; /* 테이블이 너무 작아지는 것 방지 */
+        }
+
+        caption {
+            caption-side: top;
+            text-align: left;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 20px 20px 10px;
+            color: #495057;
+        }
+
+        /* 테이블 헤더 (thead) 스타일 */
+        thead {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #adb5bd;
+        }
+
+        .title th {
+            padding: 15px 10px;
+            font-weight: bold;
+            color: #495057;
+            border: none; /* 기존 border를 제거하고 깔끔하게 */
+        }
+
+        /* 테이블 바디 (tbody) 스타일 */
+        tbody tr {
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f8f9fa; /* 짝수 행 배경색 */
+        }
+
+        tbody tr:hover {
+            background-color: #e2e6ea; /* 마우스 오버 시 색상 변경 */
+        }
+
+        tbody td {
+            padding: 15px 10px;
+        }
+
+        td a {
+            color: #337ab7;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+
+        td a:hover {
+            color: #23527c;
+            text-decoration: underline;
+        }
+
+        /* 페이징 및 글쓰기 버튼이 있는 행 스타일 */
+        tbody tr:last-child {
+            background-color: #fff;
+            border-bottom: none;
+        }
+
+        /* 페이징 영역 스타일 */
+        .paging {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .paging li {
+            margin: 0 4px;
+            font-size: 14px;
+        }
+
+        .paging li a, .paging li.now {
+            display: block;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background-color 0.2s ease, color 0.2s ease;
+            text-decoration: none;
+            color: #495057;
+            border: 1px solid #dee2e6;
+        }
+
+        .paging li a:hover {
+            background-color: #e9ecef;
+        }
+
+        .paging li.now {
+            background-color: #007bff;
+            color: #fff;
+            font-weight: bold;
+            border-color: #007bff;
+            pointer-events: none; /* 현재 페이지는 클릭 비활성화 */
+        }
+
+        /* 비활성화된 페이징 버튼 (disable 클래스) */
+        .paging li.disable {
+            pointer-events: none; /* 클릭 이벤트 제거 */
+            opacity: 0.5; /* 흐리게 처리 */
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+            padding: 8px 12px;
+            border-radius: 4px;
+        }
+
+        /* 글쓰기 버튼 스타일 */
+        input[type="button"] {
+            padding: 10px 20px;
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            background-color: #28a745; /* 녹색 버튼 */
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        input[type="button"]:hover {
+            background-color: #218838;
+        }
+
+    </style>
     </style>
 </head>
 <body>
@@ -66,6 +211,7 @@
                     </td>
                 </tr>
                 <c:set var="ar" value="${requestScope.ar}"/>
+                <c:set var="mvo" value="${requestScope.mvo}"/>
                 <c:set var="i" value="0"/>
                 <c:forEach items="${ar}" var="vo" varStatus="vs">
                     <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
@@ -79,9 +225,11 @@
                                 </c:if>
                             </a>
                         </td>
-                        <td>${vo.member_idx}</td>
-                        <td>${vo.post_created_at}</td>
+                        <td>${vo.post_idx}</td>
+                        <td>${vo.member_name}</td>
+                        <td>${vo.post_star}</td>
                         <td>${vo.post_views}</td>
+                        <td>${vo.post_created_at}</td>
                     </tr>
                 </c:forEach>
             </tbody>
