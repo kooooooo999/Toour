@@ -122,6 +122,6 @@ public class IndexAction implements Action {
             e.printStackTrace();
         }
 
-        return "index.jsp";
+        return "main.jsp";
     }
 }
