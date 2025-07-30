@@ -28,6 +28,7 @@ public class SignUpAction implements Action{
         String u_nickname =request.getParameter("u_nickname");
         //사용자가 입력한 이메일
         String u_email =request.getParameter("u_email");
+        String u_emailAddr = request.getParameter("emailAddr");
         //모든 값이 존재하고 비밀번호오 확인번호가 같을 때
         if(u_id!=null && u_pw!=null&& u_name!=null&& u_nickname!=null&& u_email!=null&&u_repw.equals(u_pw)){
             // 비밀번호와 같이 암호화할 salt 얻어내기
@@ -43,7 +44,11 @@ public class SignUpAction implements Action{
             mvo.setMember_password(hash_pw);
             mvo.setMember_name(u_name);
             mvo.setMember_nickname(u_nickname);
-            mvo.setMember_email(u_email);
+            if(u_emailAddr.length()>0)
+                mvo.setMember_email(u_email+"@"+u_emailAddr);
+            else
+                mvo.setMember_email(u_email+"@");
+
             mvo.setMember_salt(salt);
 
             

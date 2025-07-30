@@ -46,12 +46,14 @@
       <td>이메일:</td>
       <td>
         <input type="text" id="u_email" name="u_email"/>
+        @
+        <input type="text" id="u_email2" name="u_email2"/>
         <select id="emailAddr" name="emailAddr">
-          <option >:::직접 입력:::</option>
-          <option  value="@naver.com">@naver.com</option>
-          <option  value="@gmail.com">@gmail.com</option>
-          <option  value="@daum.net">@daum.net</option>
-          <option  value="@nate.net">@nate.net</option>
+          <option id="no" value="">:::직접 입력:::</option>
+          <option id="naver" value="naver.com">naver.com</option>
+          <option id="gmail" value="gmail.com">gmail.com</option>
+          <option id="daum" value="daum.net">daum.net</option>
+          <option id="nate" value="nate.net">nate.net</option>
         </select>
         <div id="email_usable"></div></td>
     </tr>
@@ -63,6 +65,7 @@
   <hr/>
 </form>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+</body>
 <script>
   $(function (){
     //아이디 창에 타이핑을 쳤을 때
@@ -71,9 +74,9 @@
       let u_id_t = u_id.value.trim();
       if(u_id_t.length>0){
         $.ajax({
-            url:"Controller?type=chkid",
-            type:"post",
-            data:"u_id="+u_id_t
+          url:"Controller?type=chkid",
+          type:"post",
+          data:"u_id="+u_id_t
         }).done(function (res) {
           $("#id_usable").html(res);
         });
@@ -130,11 +133,23 @@
 
     });
 
+    //이메일에서 주소를 선택했을 때
+    $("#emailAddr").blur(function (){
+      //비밀번호
+      let emailAddr = document.getElementById("emailAddr");
+      let emailAddr_v = emailAddr.value.trim();
+      if(emailAddr_v.length>0) {
+        document.getElementById("u_email2").value = "";
+        document.getElementById("u_email2").disabled = true;
+      }
+    else
+      document.getElementById("u_email2").disabled = false;
+    });
+
   });
 
   function sendForm(frm) {
     document.SignUp_form.submit();
   }
 </script>
-</body>
 </html>
