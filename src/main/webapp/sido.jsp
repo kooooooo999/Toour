@@ -1,15 +1,15 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <html>
-<head>
+<head id="head">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="sido.css">
-    <style>
+    <style id="style">
         #clickSido{
             display: inline-block;
             width: 500px;
             height: 600px;
-            border: 1px solid #000;
+            /*border: 1px solid #000;*/
             <c:if test="${param.imageChange==null}">
                 background-image: url("images/total.png");
             </c:if>
@@ -19,11 +19,10 @@
             background-repeat: no-repeat;
             position: relative;
         }
-
     </style>
 </head>
 <body>
-    <form action="sido.jsp">
+    <form action="index.jsp">
         <input type="hidden" id="imageChange" name="imageChange"/>
         <div id="clickSido">
             <p class="common gyeonggi">경기</p>
@@ -62,11 +61,19 @@
     </form>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
+
     function clickSido(city) {
-        console.log(city);
-        document.getElementById("imageChange").value = city;
-        document.forms[0].submit();
+
+        $.ajax({
+            url: "return.jsp",
+            type: "post",
+            data: {imageChange: city}
+        }).done(function (result){
+            console.log(result)
+            $("#style").html(result);
+        });
     }
+
 </script>
 </body>
 </html>

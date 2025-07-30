@@ -1,6 +1,5 @@
 package toour.action;
 
-import toour.action.Action;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;

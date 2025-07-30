@@ -29,7 +29,7 @@ public class ListAction implements Action {
             page.setNowPage(nowPage);
         }
 
-        PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
+        PostVO[] ar = PostDAO.getgetList(category_idx,page.getBegin(),page.getEnd());
 
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);
