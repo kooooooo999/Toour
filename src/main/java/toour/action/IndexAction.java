@@ -1,9 +1,10 @@
-package mybatis.action;
+package toour.action;
 
+import toour.action.Action;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import sist.vo.DataVO;
+import mybatis.vo.DataVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
