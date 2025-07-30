@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="post">
+
+    <resultMap id="map1" type="mybatis.vo.PostVO">
+        <id property="post_idx" column="post_idx"/>
+        <collection property="c_list" ofType="mybatis.vo.CommentVO" select="comment.list" column="post_idx"/>
+    </resultMap>
+
+    <select id="totalCount" resultType="int" parameterType="String">
+        select count(*) from post
+        where post_status = 0 and category_idx = #{category_idx}
+
+    </select>
+    <select id="list" resultMap="map1" parameterType="map">
+        select * from(
+        select @RN:=@RN+1 AS rnum, a.*
+        from(
+        select * from post
+        where post_status = 0
+        and category_idx=#{category_idx}
+        order by post_idx desc
+        ) a, (select @RN:=0)b
+        ) c where c.rnum Between #{begin} and #{end}
+    </select>
+        <!--글쓰기-->
+    <insert id="add" parameterType="Map">
+        insert into post( category_idx, post_title, post_content, post_views, post_likes,
+        post_comments_count, post_status, post_created_at,  post_star)
+        values ( #{category_idx}, #{post_title}, #{post_content}, #{post_views}, #{post_likes},
+        #{post_comments_count}, #{post_status}, now(),  #{post_star})
+    </insert>
+
+</mapper>
