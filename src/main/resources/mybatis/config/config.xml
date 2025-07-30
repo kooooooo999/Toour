@@ -17,5 +17,8 @@
     <mappers>
         <mapper resource="mybatis/mapper/post.xml"/>
         <mapper resource="mybatis/mapper/comment.xml"/>
+        <mapper resource="mybatis/mapper/file.xml"/>
+        <mapper resource="mybatis/mapper/mem.xml"/>
+        <mapper resource="mybatis/mapper/member.xml"/>
     </mappers>
 </configuration>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+    <!--아이디와 비밀번호를 인자로 받아서 로그인을 수행하는 select-->
+    <select id="get" parameterType="String" resultType="mybatis.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_id = #{member_id}
+    </select>
+
+    <!--회원가입-->
+    <insert id="add" parameterType="mybatis.vo.MemberVO">
+        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id)
+        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id})
+    </insert>
+
+</mapper>

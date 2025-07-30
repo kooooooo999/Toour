@@ -2,6 +2,7 @@ package mybatis.vo;
 
 import java.util.List;
 
+
 public class PostVO {
     private String post_idx, member_idx, category_idx, post_title, post_content, post_views, post_likes, post_comments_count,  post_status, post_created_at, post_updated_at, post_star;
 
