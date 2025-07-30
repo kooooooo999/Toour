@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mem">
+
+    <!--총 사용자 수를 반환하는 기능 -->
+    <select id="totalMemCount" resultType="int">
+        SELECT COUNT(*) FROM member_t
+        WHERE member_status = 0
+    </select>
+
+    <!-- 회원정보 삭제 -->
+    <update id="mem_del" parameterType="String">
+        UPDATE member
+        SET member_status = 1
+        WHERE member_idx = #{member_idx}
+    </update>
+
+    <!-- 여러 회원정보글 목록: 인자 3개(bname, begin, end)-->
+    <select id="mem_list" parameterType="Map" resultType="mybatis.vo.MemberVO">
+        SELECT * FROM(
+        SELECT @RN:=@RN+1 AS rnum, a.* FROM(
+        SELECT * FROM member
+        WHERE member_status = 0 <!--삭제되지않은 글-->
+        ORDER BY member_idx DESC
+        ) a, (SELECT @RN:=0) b
+        ) c WHERE c.rnum BETWEEN #{begin} AND #{end}
+    </select>
+
+    <!-- 한 명의 회원정보 가지고 오기 -->
+    <select id="mem_view" parameterType="String" resultType="mybatis.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_idx = #{member_idx}
+    </select>
+
+
+    <!-- 회원정보 수정 -->
+    <update id="mem_edit" parameterType="mybatis.vo.MemberVO">
+        UPDATE member
+        <trim prefix="SET" suffixOverrides=",">
+            member_name = #{member_name},
+            member_nickname = #{member_nickname},
+            member_password = #{member_password},
+            member_email = #{member_email},
+            member_id = #{member_id}
+        </trim>
+        WHERE member_idx = #{member_idx}
+    </update>
+</mapper>
