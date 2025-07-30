@@ -29,7 +29,7 @@
     </select>
 
     <!-- 한 명의 회원정보 가지고 오기 -->
-    <select id="mem_view" parameterType="String" resultMap="mybatis.vo.MemberVO">
+    <select id="mem_view" parameterType="String" resultType="mybatis.vo.MemberVO">
         SELECT * FROM member
         WHERE member_idx = #{member_idx}
     </select>

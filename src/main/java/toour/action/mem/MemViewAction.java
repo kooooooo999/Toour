@@ -34,6 +34,6 @@ public class MemViewAction implements Action {
         request.setAttribute("vo", vo);
 
 
-        return ".jsp";
+        return "admin_mem.jsp";
     }
 }
