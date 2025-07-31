@@ -50,8 +50,6 @@ public class PostVO {
 
     public void setPost_idx(String post_idx) {this.post_idx = post_idx;}
 
-
-
     public String getPost_likes() {return post_likes;}
 
     public void setPost_likes(String post_likes) {this.post_likes = post_likes;}
