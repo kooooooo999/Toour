@@ -13,9 +13,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class sidoAction implements Action {
+public class tripSuggestionAction implements Action {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response){
 
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
@@ -26,7 +26,8 @@ public class sidoAction implements Action {
         String code = request.getParameter("areaCode");
         if (code == null) {
             areaCode = "6";
-        } else {
+        }
+        else {
             areaCode = code;
         }
         String cPage = request.getParameter("cPage");
@@ -47,13 +48,13 @@ public class sidoAction implements Action {
         String cat_1 = request.getParameter("cat1");
         String cat_2 = request.getParameter("cat2");
         String cat_3 = request.getParameter("cat3");
-        if (cat_1 == null) {
+        if(cat_1 == null){
             cat_1 = "A01";
         }
-        if (cat_2 == null) {
+        if(cat_2 == null){
             cat_2 = "A0101";
         }
-        if (cat_3 == null) {
+        if(cat_3 == null){
             cat_3 = "A01010500";
         }
 
@@ -86,7 +87,7 @@ public class sidoAction implements Action {
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
-            DataVO[] ar = new DataVO[item_list.size()];
+            DataVO[] ar =  new DataVO[item_list.size()];
             int i = 0;
             for (Element item : item_list) {
                 String title = item.getChildText("title"); //자식 태그 안의 문자열
@@ -131,7 +132,6 @@ public class sidoAction implements Action {
             e.printStackTrace();
         }
 
-        return "sidoInfo.jsp";
+        return "tripSuggestion.jsp";
     }
-
 }

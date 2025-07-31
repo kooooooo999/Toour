@@ -39,7 +39,15 @@
 </form>
 <script>
   function sendForm(frm) {
-    document.login_form.submit();
+    let u_id = document.getElementById("u_id");
+    let u_id_t = u_id.value.trim();
+    let u_pw = document.getElementById("u_pw");
+    let u_pw_t = u_pw.value.trim();
+
+    if(u_id_t.length>0&&u_pw_t.length)
+      document.login_form.submit();
+    else
+      alert("모든 입력란에 입력을 완수해주세요")
   }
 </script>
 </body>

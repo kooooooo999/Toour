@@ -6,6 +6,25 @@ import java.util.List;
 public class PostVO {
     private String post_idx, member_idx, category_idx, post_title, post_content, post_views, post_likes, post_comments_count,  post_status, post_created_at, post_updated_at, post_star;
 
+    private String member_name;
+    private String member_nickname;
+
+    public String getMember_nickname() {
+        return member_nickname;
+    }
+
+    public void setMember_nickname(String member_nickname) {
+        this.member_nickname = member_nickname;
+    }
+
+    public String getMember_name() {
+        return member_name;
+    }
+
+    public void setMember_name(String member_name) {
+        this.member_name = member_name;
+    }
+
     private List<CommentVO> c_list;
 
     public List<CommentVO> getC_list() {
@@ -49,8 +68,6 @@ public class PostVO {
     public String getPost_idx() {return post_idx;}
 
     public void setPost_idx(String post_idx) {this.post_idx = post_idx;}
-
-
 
     public String getPost_likes() {return post_likes;}
 

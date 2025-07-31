@@ -117,7 +117,7 @@ public class Controller extends HttpServlet {
         else{
             // forward로 이동~~~~~~~~~!
             RequestDispatcher disp =
-                request.getRequestDispatcher(viewPath);
+                    request.getRequestDispatcher(viewPath);
             disp.forward(request,response);
         }
     }

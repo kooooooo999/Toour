@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+w<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html>
@@ -7,7 +7,7 @@
   <title>Insert title here</title>
   <link rel="stylesheet" href="./css/summernote-lite.css"/>
   <style type="text/css">
-    #bbs table {
+    #post table {
       width:580px;
       margin-left:10px;
       border:1px solid black;
@@ -16,19 +16,19 @@
 
     }
 
-    #bbs table caption {
+    #post table caption {
       font-size:20px;
       font-weight:bold;
       margin-bottom:10px;
     }
 
-    #bbs table th {
+    #post table th {
       text-align:center;
       border:1px solid black;
       padding:4px 10px;
     }
 
-    #bbs table td {
+    #post table td {
       text-align:left;
       border:1px solid black;
       padding:4px 10px;
@@ -58,27 +58,27 @@
 
 //		document.forms[0].action = "test.jsp";
 
-      let title = $("#title").val();
+      let title = $("#post_title").val();
       if(title.trim().length < 1){
         alert("제목을 입력하세요");
-        $("#title").val("");
-        $("#title").focus();
+        $("#post_title").val("");
+        $("#post_title").focus();
         return;
       }
 
-      let writer = $("#writer").val();
+      let writer = $("#member_idx").val();
       if(writer.trim().length < 1){
         alert("글쓴이를 입력하세요");
-        $("#writer").val("");
-        $("#writer").focus();
+        $("#member_idx").val("");
+        $("#member_idx").focus();
         return;
       }
 
-      let content= $("#content").val();
+      let content= $("#post_content").val();
       if(content.trim().length < 1){
         alert("내용을 입력하세요");
-        $("#content").val("");
-        $("#content").focus();
+        $("#post_content").val("");
+        $("#post_content").focus();
         return;
       }
 
@@ -87,25 +87,26 @@
   </script>
 </head>
 <body>
-<div id="bbs">
+
+<div id="post">
   <form action="Controller?type=write" method="post"
         encType="multipart/form-data">
-    <input type="hidden" name="bname" value="BBS"/>
+    <input type="hidden" name="category_idx" value="2"/>
     <table summary="게시판 글쓰기">
       <caption>게시판 글쓰기</caption>
       <tbody>
       <tr>
         <th>제목:</th>
-        <td><input type="text" name="title" id="title" size="45"/></td>
+        <td><input type="text" name="post_title" id="post_title" size="45"/></td>
       </tr>
       <tr>
         <th>이름:</th>
-        <td><input type="text" name="writer" id="writer" size="12"/></td>
+        <td><input type="text" name="member_idx" id="member_idx" size="12"/></td>
       </tr>
       <tr>
         <th>내용:</th>
-        <td><textarea name="content" cols="50"
-               id="content" rows="8"></textarea></td>
+        <td><textarea name="post_content" cols="50"
+               id="post_content" rows="8"></textarea></td>
       </tr>
       <tr>
         <th>첨부파일:</th>
@@ -119,8 +120,7 @@
       -->
       <tr>
         <td colspan="2">
-          <input type="button" value="보내기"
-                 onclick="sendData()"/>
+          <input type="button" value="보내기" onclick="sendData()"/>
           <input type="button" value="다시"/>
           <input type="button" value="목록"/>
         </td>
@@ -136,7 +136,7 @@
 <script>
   $(function (){
 
-    $("#content").summernote({
+    $("#post_content").summernote({
       lang: "ko-KR",
       height: 300,
       callbacks: {
@@ -173,7 +173,7 @@
       // res로 들어온다. 그 json에 img_url이라는 이름으로
       // 이미지의 경로를 보내도록 되어 있다. 그것을 받아
       // editor에 img태그를 넣어주면 된다.
-      $("#content").summernote("editor.insertImage", res.img_url);
+      $("#post_content").summernote("editor.insertImage", res.img_url);
     });
   }
 </script>

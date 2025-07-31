@@ -6,7 +6,7 @@
 
     <!--총 사용자 수를 반환하는 기능 -->
     <select id="totalMemCount" resultType="int">
-        SELECT COUNT(*) FROM member_t
+        SELECT COUNT(*) FROM member
         WHERE member_status = 0
     </select>
 

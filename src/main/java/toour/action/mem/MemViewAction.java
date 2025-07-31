@@ -1,8 +1,8 @@
 package toour.action.mem;
 
-import toour.dao.memDAO;
 import mybatis.vo.MemberVO;
 import toour.action.Action;
+import toour.dao.memDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -10,9 +10,9 @@ import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 
 public class MemViewAction implements Action {
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
         String b_idx = request.getParameter("b_idx");//기본키
         String cPage = request.getParameter("cPage");//목록보기에 사용할 페이지 값
 
@@ -32,8 +32,6 @@ public class MemViewAction implements Action {
         MemberVO vo = memDAO.view(b_idx); //사용자가 선택한 게시물 검색
 
         request.setAttribute("vo", vo);
-
-
-        return "admin_mem.jsp";
+        return "admin_view.jsp";
     }
 }
