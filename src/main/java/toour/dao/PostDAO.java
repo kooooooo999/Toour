@@ -80,10 +80,17 @@ public class PostDAO {
         map.put("end",end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.search");
+        List<PostVO> list = ss.selectList("post.search",map);
         if(list!=null&&list.size()>0){
             ar= new PostVO[list.size()];
             list.toArray(ar);
+        }
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new PostVO[0];
         }
         ss.close();
         return ar;
