@@ -13,11 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-<<<<<<<< HEAD:src/main/java/toour/action/sidoAction.java
-public class sidoAction implements Action {
-========
 public class tripSuggestionAction implements Action {
->>>>>>>> origin/feature_wanhee:src/main/java/toour/action/tripSuggestionAction.java
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response){
 
@@ -136,10 +132,6 @@ public class tripSuggestionAction implements Action {
             e.printStackTrace();
         }
 
-<<<<<<<< HEAD:src/main/java/toour/action/sidoAction.java
-        return "sidoInfo.jsp";
-========
         return "tripSuggestion.jsp";
->>>>>>>> origin/feature_wanhee:src/main/java/toour/action/tripSuggestionAction.java
     }
 }

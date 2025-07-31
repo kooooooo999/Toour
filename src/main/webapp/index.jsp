@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -274,8 +275,10 @@
             display: flex;
         }
     </style>
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+
 <header>
     <div class="container header-top">
         <div class="text-right">
@@ -291,7 +294,7 @@
         </div>
     </div>
     <div class="container header-main flex-between">
-        <a href="#" class="logo">대한민국 구석구석</a>
+        <a href="#" class="logo">👋🏻 toour</a>
         <div class="search-area">
             <input type="text" placeholder="어디로 떠나고 싶으신가요?" />
             <i class="fas fa-search"></i>
