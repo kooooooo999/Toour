@@ -23,4 +23,10 @@ public class MemberDAO {
         ss.close();
         return mvo;
     }
+    public static MemberVO getMemN(String nickname){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO mvo = ss.selectOne("member.getN",nickname);
+        ss.close();
+        return mvo;
+    }
 }

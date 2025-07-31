@@ -36,7 +36,7 @@
     </tr>
     <tr>
       <td>별명:</td>
-      <td><input type="text" id="u_nickname" name="u_nickname"/></td>
+      <td><input type="text" id="u_nickname" name="u_nickname"/><div id="nickname_usable"></div></td>
     </tr>
     <tr>
       <td>이름:</td>
@@ -99,6 +99,21 @@
         $("#pw_usable").html("");
     });
 
+    $("#u_nickname").keyup(function (){
+      let u_nickname = document.getElementById("u_nickname");
+      let u_nickname_t = u_nickname.value.trim();
+      if (u_nickname_t.length>0) {
+        $.ajax({
+          url: "Controller?type=chknickname",
+          type: "post",
+          data: "u_nickname=" + u_nickname_t
+        }).done(function (res) {
+          $("#nickname_usable").html(res);
+        });
+      }else
+        $("#nickname_usable").html("");
+    });
+
    /* //이메일 입력 창에서 focus가 빠질 때
     $("#u_email").blur(function (){
       let u_email = document.getElementById("u_email");
@@ -131,7 +146,6 @@
       }else{
         $("#repw_usable").text("");
       }
-
     });
 
     //이메일에서 주소를 선택했을 때

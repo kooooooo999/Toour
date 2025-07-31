@@ -24,7 +24,7 @@ public class chkIdAction implements Action{
             for(char c : ar){
                 if((c>=33&&c<=64) || (c>=91&&c<=126)){
                     //아이디 입력 규정을 만족했을 때 이 영역
-
+            
                     //for문이 끝나고 하단 if문을 실행할지 판단
                     usable =true;
                 }else{
@@ -42,10 +42,10 @@ public class chkIdAction implements Action{
                 MemberVO mvo = MemberDAO.getMem(u_id);
                 if(mvo!=null){
                     // 중복 id가 있으으로 사용 불가능
-                    alertText = "사용할 수 없는 아이디 입니다.";
+                    alertText = "사용 중인 아이디입니다.";
                 }else{
                     if(u_id.length()>=id_len) {
-                        alertText = "";
+                        alertText = "사용 가능한 아이디입니다";
                         usable= true;
                     }else{
                         alertText = id_len+"자 이상 기입해주세요";
