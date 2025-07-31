@@ -5,4 +5,6 @@
 
 
     <p>${requestScope.alertText}</p>
-
+    <c:if test="${requestScope.usable eq 'false'}" >
+    <input type="hidden" id="disable">
+    </c:if>

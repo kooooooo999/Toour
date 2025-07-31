@@ -45,7 +45,7 @@ public class chkIdAction implements Action{
                     alertText = "사용할 수 없는 아이디 입니다.";
                 }else{
                     if(u_id.length()>=id_len) {
-                        alertText = "사용 가능한 아이디입니다.";
+                        alertText = "";
                         usable= true;
                     }else{
                         alertText = id_len+"자 이상 기입해주세요";

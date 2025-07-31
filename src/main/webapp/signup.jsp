@@ -47,7 +47,7 @@
       <td>
         <input type="text" id="u_email" name="u_email"/>
         @
-        <input type="text" id="u_email2" name="u_email2"/>
+        <input type="email" id="u_email2" name="u_email2"/>
         <select id="emailAddr" name="emailAddr">
           <option id="no" value="">:::직접 입력:::</option>
           <option id="naver" value="naver.com">naver.com</option>
@@ -99,7 +99,7 @@
         $("#pw_usable").html("");
     });
 
-    //이메일 입력 창에서 focus가 빠질 때
+   /* //이메일 입력 창에서 focus가 빠질 때
     $("#u_email").blur(function (){
       let u_email = document.getElementById("u_email");
       let u_email_t = u_email.value.trim();
@@ -114,7 +114,8 @@
         });
       }else
         $("#email_usable").html("");
-    });
+
+    });*/
 
     // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때
     $("#u_repw").keyup(function (){
@@ -126,7 +127,7 @@
       let u_repw_v = u_repw.value.trim();
 
       if (u_pw_v!=u_repw_v){
-        $("#repw_usable").text("비밀번호와 동일하게 입력해주세요.");
+        $("#repw_usable").html("비밀번호와 동일하게 입력해주세요.<input type='hidden' id='disable'>");
       }else{
         $("#repw_usable").text("");
       }
@@ -149,7 +150,37 @@
   });
 
   function sendForm(frm) {
-    document.SignUp_form.submit();
-  }
+    //값 모두 받아오기
+    let id = document.getElementById("u_id").value;
+    let pw = document.getElementById("u_pw").value;
+    let repw = document.getElementById("u_repw").value;
+    let nickname = document.getElementById("u_nickname").value;
+    let name = document.getElementById("u_name").value;
+    let email1 = document.getElementById("u_email").value;
+    let email2 = document.getElementById("u_email2").value;
+    let email3 = document.getElementById("emailAddr").value;
+    //유효성 검사
+    if(id.length>0&&pw.length>0&&repw.length>0&&nickname.length>0&&name.length>0&&email1.length>0){
+      let cmd =0;
+      if(email3.length>0){
+          cmd=1;
+      }else {
+        if(email2.length>0){
+          cmd=1;
+        }
+      }
+
+      if(cmd==1){
+        if (document.getElementById("disable") == null) {
+          document.SignUp_form.submit();
+        } else {
+          alert("입력 조건을 모두 확인해주세요")
+        }
+      }else
+        alert("이메일을 확인해주세요")
+    }else
+      alert("모든 입력란에 입력을 확인해주세요")
+
+    }
 </script>
 </html>

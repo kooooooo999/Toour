@@ -44,11 +44,10 @@ public class SignUpAction implements Action{
             mvo.setMember_password(hash_pw);
             mvo.setMember_name(u_name);
             mvo.setMember_nickname(u_nickname);
-            if(u_emailAddr.length()>0)
-                mvo.setMember_email(u_email+"@"+u_emailAddr);
-            else
-                mvo.setMember_email(u_email+"@");
-
+            if(u_emailAddr.length()==0) {
+                u_emailAddr = request.getParameter("u_email2");
+            }
+            mvo.setMember_email(u_email + "@"+ u_emailAddr);
             mvo.setMember_salt(salt);
 
             
