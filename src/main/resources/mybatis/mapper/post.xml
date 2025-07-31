@@ -31,16 +31,45 @@
         where c.rnum Between #{begin} and #{end}
     </select>
 
-        <!--글쓰기-->
+    <!--게시글 작성 -->
     <insert id="add" parameterType="Map">
-        insert into post( category_idx, post_title, post_content, post_views, post_likes,
-        post_comments_count, post_status, post_created_at,  post_star)
-        values ( #{category_idx}, #{post_title}, #{post_content}, #{post_views}, #{post_likes},
-        #{post_comments_count}, #{post_status}, now(),  #{post_star})
+        insert into post( category_idx, post_title, post_content, post_views, post_likes, post_comments_count, post_status, post_created_at,  post_star)
+        values ( #{category_idx}, #{post_title}, #{post_content}, #{post_views}, #{post_likes}, #{post_comments_count}, #{post_status}, now(),  #{post_star})
     </insert>
 
+    <!-- 게시글 보기 -->
+    <select id="getPost" parameterType="String" resultMap="map1">
+        SELECT * FROM post
+        WHERE post_idx = #{post_idx}
+    </select>
+
+    <!-- 게시글 삭제 -->
+    <update id="del" parameterType="String">
+        UPDATE post
+        SET status = 1
+        WHERE post_idx = #{post_idx}
+    </update>
     <!--게시판 검색기능-->
 
+    <!--조회수 증가-->
+    <update id="post_views" parameterType="String">
+        UPDATE post
+        SET post_views = post_views + 1
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 게시글 수정 -->
+    <update id="edit" parameterType="Map">
+        UPDATE post
+        <trim prefix="SET" suffixOverrides=",">
+            post_title = #{post_title},
+            post_content = #{post_content},
+
+
+        </trim>
+        WHERE post_idx = #{post_idx}
+
+    </update>
 
     <select id="search" parameterType="map" resultMap="map1">
         SELECT

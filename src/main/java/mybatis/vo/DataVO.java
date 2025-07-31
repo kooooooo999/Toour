@@ -2,7 +2,7 @@ package mybatis.vo;
 
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
-    cat1, cat2, cat3, contentTypeId;
+            cat1, cat2, cat3, contentTypeId;
 
     public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String tel, String eventstartdate, String eventenddate, String cat1, String cat2, String cat3, String contentTypeId) {
         this.title = title;

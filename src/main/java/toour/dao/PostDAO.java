@@ -110,9 +110,72 @@ public class PostDAO {
         ss.close();
         return ar;
     }
+    // 저장 +++
+    public static int add(String post_title, String post_content, String member_idx,
+                          String category_idx, String post_views, String post_likes, String post_comments_count,
+                          String post_status, String post_created_at, String post_star){
+        int cnt = 0;
+
+        Map<String, String> map = new HashMap<>();
+        map.put("post_title", post_title);
+        map.put("post_content", post_content);
+        map.put("member_idx", member_idx);
+        map.put("category_idx", category_idx);
+        map.put("post_views", post_views);
+        map.put("post_likes", post_likes);
+        map.put("post_comments_count", post_comments_count);
+        map.put("post_status", post_status);
+        map.put("post_created_at", post_created_at)   ;
+        map.put("post_star", post_star);
+
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        cnt = ss.insert("post.add", map);
+        if(cnt > 0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+
+        return cnt;
+    }
 
 
 
+    // 수정
+    public static int edit(String post_idx, String post_title, String post_content,
+                           String file_name_stored, String file_name_original, String ip){
+        Map<String, String> map = new HashMap<>();
+        map.put("post_idx", post_idx);
+        map.put("post_title", post_title);
+        map.put("post_content", post_content);
+        /*
+        if(file_name_stored != null){
+            map.put("file_name_stored", file_name_stored);
+            map.put("file_name_original", file_name_original);
+        }
+        map.put("ip",ip);
+*/
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("post.edit", map);
+        if(cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+
+        return cnt;
+    }
+
+    // 조회수 증가
+    public static int post_views(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("post.post_views", post_idx);
+        if(cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+        return cnt;
+    }
 
 
 }
