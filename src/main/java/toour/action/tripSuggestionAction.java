@@ -1,6 +1,5 @@
 package toour.action;
 
-import toour.action.Action;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
@@ -14,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class IndexAction implements Action {
+public class tripSuggestionAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response){
 
@@ -38,9 +37,9 @@ public class IndexAction implements Action {
             Calendar now = Calendar.getInstance();
             startDate = sdf.format(now.getTime());
         }
-        String typeId = request.getParameter("typeId");
-        if (typeId == null) {
-            typeId = "12";
+        String contentType = request.getParameter("contentTypeId");
+        if (contentType == null) {
+            contentType = "12";
         }
 
         String cat_1 = request.getParameter("cat1");
@@ -62,7 +61,7 @@ public class IndexAction implements Action {
         //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=C&contentTypeId=");
-        sb.append(typeId);
+        sb.append(contentType);
         sb.append("&areaCode=");
         sb.append(areaCode);
         sb.append("&cat1=");
@@ -75,27 +74,16 @@ public class IndexAction implements Action {
         sb.append(cPage);
 
         try {
-            //브라우저창에서 경로(url)를 입력하고 요청하듯이 프로그램 상에서 요청할 때는 url객체를 만들어야한다
-            URL url = new URL(sb.toString());
-            //경로를 연결하는 객체
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            //응답 받을 데이터의 형식을 지정
-            conn.setRequestProperty("Content-Type", "application/xml");
-            //연결 -> 이제 요청
-            conn.connect();
-            //JDOM 라이브러리에 있는 SAXBuilder 를 통해 응답메세지를 XML 문서화 시키기 위해 준비
+            URL url1 = new URL(sb.toString());
+            HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
+            conn1.setRequestProperty("Content-Type", "application/xml");
+            conn1.connect();
             SAXBuilder builder = new SAXBuilder();
-            //응답되는 내용을 하나의 XML 의 문서(Document)로 인식해야한다
-            Document doc = builder.build(conn.getInputStream());
+            Document doc = builder.build(conn1.getInputStream());
             Element root = doc.getRootElement();
-            System.out.println(root.getName());
-            //루트안에 있는 body만 얻어낸다
             Element body = root.getChild("body");
-            //body 안에 있는 items
             Element items = body.getChild("items");
-            //items 안에 존재하는 모든 item만 가져온다
             List<Element> item_list = items.getChildren("item");
-            //item 들을 JSP 에서 표현하기 위해 배열로 변환하여 request에 저장
             DataVO[] ar =  new DataVO[item_list.size()];
             int i = 0;
             for (Element item : item_list) {
@@ -112,9 +100,28 @@ public class IndexAction implements Action {
                 String cat1 = item.getChildText("cat1");
                 String cat2 = item.getChildText("cat2");
                 String cat3 = item.getChildText("cat3");
-                String contentTypeId = item.getChildText("contentTypeId");
+                String contentTypeId = item.getChildText("contenttypeid");
+                String contentId = item.getChildText("contentid");
 
-                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate, cat1, cat2, cat3, contentTypeId);
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=");
+                sb2.append(cPage);
+                sb2.append("&numOfRows=10&_type=xml&contentId=");
+                sb2.append(contentId);
+                URL url2 = new URL(sb2.toString());
+                HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
+                conn2.setRequestProperty("Content-Type", "application/xml");
+                conn2.connect();
+                SAXBuilder builder2 = new SAXBuilder();
+                Document doc2 = builder2.build(conn2.getInputStream());
+                Element root2 = doc2.getRootElement();
+                Element body2 = root2.getChild("body");
+                Element items2 = body2.getChild("items");
+                List<Element> item_list2 = items2.getChildren("item");
+                String overview = null;
+                for (Element item2 : item_list2) {
+                    overview = item2.getChildText("overview");
+                }
+                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, cat1, cat2, cat3, contentTypeId, contentId, overview);
                 ar[i++] = vo;
             }
             request.setAttribute("ar", ar);
@@ -122,6 +129,6 @@ public class IndexAction implements Action {
             e.printStackTrace();
         }
 
-        return "main.jsp";
+        return "tripSuggestion.jsp";
     }
 }
