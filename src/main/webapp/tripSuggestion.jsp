@@ -66,7 +66,7 @@
       <c:if test="${count.index < 5}">
       <div class="item">
     <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-        <div class="text">
+        <div class="text ellipsis">
        <p class="title"><a href="#">${Dvo.title}</a></p>
         <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
         <p class="overview"><a href="#">${Dvo.overview}</a></p>

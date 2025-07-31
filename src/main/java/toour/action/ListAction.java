@@ -1,47 +1,47 @@
-package toour.action;
-
-import mybatis.vo.MemberVO;
-import mybatis.vo.PostVO;
-import toour.dao.MemberDAO;
-import toour.dao.PostDAO;
-import toour.util.Paging;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-public class ListAction implements Action {
-    @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String category_idx = request.getParameter("category_idx");
-        if (category_idx == null)
-            category_idx = "2";//
-        String member_idx = request.getParameter("member_idx");
-        int totalCount = PostDAO.getTotalCount(category_idx);
-
-        Paging page = new Paging(5,3);
-
-        page.setTotalCount(totalCount);
-
-        String cPage = request.getParameter("cPage");
-
-        if (cPage == null) {
-            page.setNowPage(1);
-        }
-        else{
-            int nowPage= Integer.parseInt(cPage);
-            page.setNowPage(nowPage);
-        }
-
-        PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
-        MemberVO mvo = MemberDAO.getMemIdx(request.getParameter("member_idx"));
-
-
-        request.setAttribute("mvo",mvo);
-        request.setAttribute("page",page);
-        request.setAttribute("ar",ar);
-        request.setAttribute("totalCount",totalCount);
-        request.setAttribute("cPage",cPage);
-        request.setAttribute("nowPage",page.getNowPage());
-        return "list.jsp";
-    }
-}
+//package toour.action;
+//
+//import mybatis.vo.MemberVO;
+//import mybatis.vo.PostVO;
+//import toour.dao.MemberDAO;
+//import toour.dao.PostDAO;
+//import toour.util.Paging;
+//
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpServletResponse;
+//
+//public class ListAction implements Action {
+//    @Override
+//    public String execute(HttpServletRequest request, HttpServletResponse response) {
+//        String category_idx = request.getParameter("category_idx");
+//        if (category_idx == null)
+//            category_idx = "2";//
+//        String member_idx = request.getParameter("member_idx");
+//        int totalCount = PostDAO.getTotalCount(category_idx);
+//
+//        Paging page = new Paging(5,3);
+//
+//        page.setTotalCount(totalCount);
+//
+//        String cPage = request.getParameter("cPage");
+//
+//        if (cPage == null) {
+//            page.setNowPage(1);
+//        }
+//        else{
+//            int nowPage= Integer.parseInt(cPage);
+//            page.setNowPage(nowPage);
+//        }
+//
+//        PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
+////        MemberVO mvo = MemberDAO.getMemIdx(request.getParameter("member_idx"));
+//
+//
+//        request.setAttribute("mvo",mvo);
+//        request.setAttribute("page",page);
+//        request.setAttribute("ar",ar);
+//        request.setAttribute("totalCount",totalCount);
+//        request.setAttribute("cPage",cPage);
+//        request.setAttribute("nowPage",page.getNowPage());
+//        return "list.jsp";
+//    }
+//}

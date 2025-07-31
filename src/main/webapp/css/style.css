@@ -212,3 +212,128 @@ footer .copyright { text-align: center; margin-top: 20px; font-size: 13px; color
     padding: 0 9px;
 
 }
+
+.ellipsis {
+    display: -webkit-box;            /* Flexbox처럼 동작하게 설정 */
+    -webkit-line-clamp: 11;           /* 3줄까지만 표시 */
+    -webkit-box-orient: vertical;    /* 세로 방향으로 텍스트 배치 */
+    overflow: hidden;                /* 넘치는 텍스트 숨김 */
+    text-overflow: ellipsis;         /* 넘칠 경우 '...' 표시 */
+    line-height: 1.5;                /* 줄 간격 설정 (선택사항) */
+    max-height: 15em;               /* 3줄에 맞는 최대 높이 설정 (line-height * 3) */
+}
+
+#table{
+    border-collapse: collapse;
+}
+#table caption{
+    text-indent: -9999px;
+    height: 0;
+}
+#table td{
+    border: 1px solid #000;
+}
+
+body{
+    margin: 0;
+    font-family: Arial,sans-serif;
+}
+
+.bar{
+    background-color: #fff;
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+    position: relative;
+}
+
+.menu{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    font-weight: 700;
+    gap: 70px;
+    position: relative;
+}
+
+.menu li{
+    position: relative;
+}
+
+.menu a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 22px;
+    padding: 10px 5px;
+    display: inline-block;
+    position: relative;
+}
+
+
+.menu a.act::after  {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: #007BFF;
+    transition: width 0.3s ease;
+}
+
+.menu a.act:hover::after{
+    width: 100%;
+}
+
+
+.submenu{
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    display: none;
+    padding: 10px 0;
+    min-width: 150px;
+    z-index: 10;
+    gap: 10px;
+    white-space: nowrap;
+}
+
+
+.submenu li {
+    padding: 0;
+}
+
+.submenu a {
+    font-size: 18px;
+    font-weight: 600;
+    padding: 8px 20px;
+    color: #666666;
+    text-decoration: none;
+    position: relative;
+}
+
+.submenu a:hover{
+    color: #007BFF ;
+}
+
+.submenu a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 0;
+    height: 2px;
+    background-color: #007bff;
+}
+
+.submenu a:hover::after{
+    width: 100%;
+}
+
+.dropdown:hover .submenu{
+    display: flex;
+}
