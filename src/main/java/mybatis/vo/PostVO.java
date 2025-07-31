@@ -7,6 +7,15 @@ public class PostVO {
     private String post_idx, member_idx, category_idx, post_title, post_content, post_views, post_likes, post_comments_count,  post_status, post_created_at, post_updated_at, post_star;
 
     private String member_name;
+    private String member_nickname;
+
+    public String getMember_nickname() {
+        return member_nickname;
+    }
+
+    public void setMember_nickname(String member_nickname) {
+        this.member_nickname = member_nickname;
+    }
 
     public String getMember_name() {
         return member_name;

@@ -69,5 +69,26 @@ public class PostDAO {
         return vo;
     }
 
+    public static PostVO[] search(String searchType,String searchValue,int begin,int end){
+        PostVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+        map.put("searchType", searchType);
+        if(searchValue!=null)
+        map.put("searchValue", searchValue);
+        map.put("begin",begin);
+        map.put("end",end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.search");
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        }
+        ss.close();
+        return ar;
+    }
+
+
 
 }

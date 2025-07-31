@@ -172,7 +172,7 @@
                     <th class="no">번호</th>
                     <th class="no">제목</th>
                     <th class="no">별점</th>
-                    <th class="no">작성자</th>
+                    <th class="no">글쓴이</th>
                     <th class="no">조회수</th>
                     <th class="no">작성일</th>
                 </tr>
@@ -226,14 +226,39 @@
                             </a>
                         </td>
                         <td>${vo.post_idx}</td>
-                        <td>${vo.member_name}</td>
+                        <td>${vo.member_nickname}</td>
                         <td>${vo.post_star}</td>
                         <td>${vo.post_views}</td>
-                        <td>${vo.post_created_at}</td>
+                        <td>${vo.post_created_at.substring(0,10)}</td>
                     </tr>
                 </c:forEach>
+
+                <div class="search-area">
+                    <form method="post" action="Controller?type=postSearch">
+                        <input type="hidden" name="category_idx" value="2">
+                        <select id="searchType" name="searchType">
+                            <option value="post_title">제목</option>
+                            <option value="post_content">내용</option>
+                            <option value="member_nickname">글쓴이</option>
+                        </select>
+                        <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="SearchValue"/>
+                        <i class="fas fa-search"><input type="button" onclick="javascript:location.href='Controller?type=search'" value="검색"></i>
+                    </form>
+                </div>
             </tbody>
+            <!--검색창-->
+            <tfoot>
+
+            </tfoot>
         </table>
     </div>
 </body>
+
+<script>
+    <%--
+    검색 내용 유효성 검사
+    --%>
+
+
+</script>
 </html>
