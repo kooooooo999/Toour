@@ -14,4 +14,5 @@ height: 600px;
 </c:if>
 background-repeat: no-repeat;
 position: relative;
+left: 250px;
 }

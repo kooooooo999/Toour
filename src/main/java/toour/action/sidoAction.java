@@ -13,7 +13,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class IndexAction implements Action {
+public class sidoAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response){
 
@@ -21,11 +21,14 @@ public class IndexAction implements Action {
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
-        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
+        String key = "serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D";
         String areaCode = null;
         String code = request.getParameter("areaCode");
         if (code == null) {
             areaCode = "6";
+        }
+        else {
+            areaCode = code;
         }
         String cPage = request.getParameter("cPage");
         if (cPage == null) {
@@ -121,6 +124,6 @@ public class IndexAction implements Action {
             e.printStackTrace();
         }
 
-        return "index.jsp";
+        return "sidoInfo.jsp";
     }
 }

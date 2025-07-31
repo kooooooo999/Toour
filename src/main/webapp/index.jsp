@@ -173,39 +173,6 @@
 </head>
 <body>
 <header>
-    <h1>행사목록</h1>
-</header>
-<article>
-    <table>
-        <caption>연습</caption>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>이미지</th>
-            <th>제목</th>
-            <th>전화번호</th>
-            <th>주소</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="vo" items="${requestScope.ar}" varStatus="vs">
-            <tr>
-                <td>${vs.index+1}</td>
-                <td><img src = "${vo.firstimage2}"/></td>
-                <td>${vo.title}</td>
-                <td>${vo.tel}</td>
-                <td>${vo.addr1} &nbsp; ${vo.addr2}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</article>
- <button onclick="location.href='Controller?type=signup'">회원가입</button>
- <button onclick="location.href='Controller?type=login'">로그인</button>
-
-
-
-<header>
     <div class="container header-top">
         <div class="text-right">
             <a href="#">로그인</a>
@@ -254,7 +221,9 @@
 <%--            <img src="https://via.placeholder.com/600x400/d7e5f0/4e6e8e?text=Gyeongju+Travel+Image" alt="경북 영주 여행 이미지">--%>
         </div>
     </section>
+    <div id="sidoDiv">
     <jsp:include page="sido.jsp"/>
+    </div>
     <section class="travel-cockcock">
         <div class="container">
             <div class="section-header">
