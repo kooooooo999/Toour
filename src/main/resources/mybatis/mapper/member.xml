@@ -15,6 +15,12 @@
         WHERE member_nickname = #{nickname}
     </select>
 
+    <!-- 이메일로 회원 정보 받기 -->
+    <select id="getN" parameterType="String" resultType="mybatis.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_email = #{email}
+    </select>
+
     <!--회원가입-->
     <insert id="add" parameterType="mybatis.vo.MemberVO">
         INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id)

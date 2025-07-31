@@ -173,39 +173,15 @@
 </head>
 <body>
 <header>
-    <h1>행사목록</h1>
-</header>
-<article>
-    <table>
-        <caption>연습</caption>
-        <thead>
-        <tr>
-            <th>번호</th>
-            <th>이미지</th>
-            <th>제목</th>
-            <th>전화번호</th>
-            <th>주소</th>
-        </tr>
-        </thead>
-        <tbody>
-        <c:forEach var="vo" items="${requestScope.ar}" varStatus="vs">
-            <tr>
-                <td>${vs.index+1}</td>
-                <td><img src = "${vo.firstimage2}"/></td>
-                <td>${vo.title}</td>
-                <td>${vo.tel}</td>
-                <td>${vo.addr1} &nbsp; ${vo.addr2}</td>
-            </tr>
-        </c:forEach>
-        </tbody>
-    </table>
-</article>
-
-<header>
     <div class="container header-top">
         <div class="text-right">
+            <c:if test="${sessionScope.user eq null}">
             <a href="Controller?type=login">로그인</a>
             <a href="Controller?type=signup">회원가입</a>
+            </c:if>
+            <c:if test="${sessionScope.user ne null}">
+            <a href="Controller?type=login">로그아웃</a>
+            </c:if>
             <a href="#">마이 페이지</a>
             <a href="#">고객센터</a>
         </div>

@@ -114,11 +114,14 @@
         $("#nickname_usable").html("");
     });
 
-   /* //이메일 입력 창에서 focus가 빠질 때
+    //이메일 입력 창에서 focus가 빠질 때
     $("#u_email").blur(function (){
       let u_email = document.getElementById("u_email");
       let u_email_t = u_email.value.trim();
       let emailAddr = document.getElementById("emailAddr").value;
+      if(emailAddr == null){
+        emailAddr = document.getElementById("u_email2").value;
+      }
       if (u_email_t.length>0) {
         $.ajax({
           url: "Controller?type=chkemail",
@@ -130,7 +133,7 @@
       }else
         $("#email_usable").html("");
 
-    });*/
+    });
 
     // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때
     $("#u_repw").keyup(function (){
