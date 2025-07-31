@@ -7,7 +7,7 @@ import toour.dao.MemberDAO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class chkIdAction implements Action{
+public class    chkIdAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String u_id =request.getParameter("u_id");

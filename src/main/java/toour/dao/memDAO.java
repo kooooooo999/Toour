@@ -17,10 +17,9 @@ public class memDAO {
         return cnt;
     }
 
-    public static MemberVO[] getmemList(String member_idx, int begin, int end) {
+    public static MemberVO[] getmemList(int begin, int end) {
         MemberVO[] ar = null;
         Map<String,Object> map = new HashMap<String,Object>();
-        map.put("member_idx",member_idx);
         map.put("begin",begin);
         map.put("end",end);
 
@@ -72,13 +71,5 @@ public class memDAO {
         ss.close();
         return cnt;
     }
-
-
-
-
-
-
-
-
 
 }
