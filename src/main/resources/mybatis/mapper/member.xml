@@ -16,7 +16,7 @@
     </select>
 
     <!-- 이메일로 회원 정보 받기 -->
-    <select id="getN" parameterType="String" resultType="mybatis.vo.MemberVO">
+    <select id="getE" parameterType="String" resultType="mybatis.vo.MemberVO">
         SELECT * FROM member
         WHERE member_email = #{email}
     </select>
