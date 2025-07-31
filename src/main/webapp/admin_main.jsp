@@ -1,39 +1,63 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- 외부CSS 연결하기 -->
+    <title>관리자 페이지</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: 220px;
+            background-color: #2c3e50;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+        }
 
 
+        .sidebar a {
+            text-decoration: none;
+            color: white;
+            padding: 12px 10px;
+            border-bottom: 1px solid #34495e;
+            transition: background-color 0.3s;
+        }
+
+        .sidebar a:hover {
+            background-color: #34495e;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
-<div id="wrap">
-    <!--========= 상단영역 =======-->
-    <header id="header"><hr width="600" border="1" noshade color="navy">
-        <div id="title" class="txt_c">
-            <strong>toour</strong>
-        </div>
-        <hr width="600" border="1" noshade color="navy">
-        <div id="header" class="txt_c">
-            <a href="admin_main.jsp">HOME</a> |
-            <a href="admin_mem.jsp">회원정보 관리</a> |
-            <a href="product_list.jsp?category=sp003">공지사항 관리</a>   |
-            <a href="product_list.jsp?category=sp003">게시물 관리</a>    |
-            <a href="product_list.jsp?category=sp003">관광코스 관리</a>   |
-            <a href="product_list.jsp?category=sp003">관광지/맛집 관리</a> |
-        </div>
-        <hr width="600" border="1" noshade color="navy">
-    </header>
-    <!--============ 상단영역 끝======-->
-    <!--========= 콘텐츠영역 =======-->
-    <div id = contents">
 
-    </div>
-    <!--============ 콘텐츠영역 끝======-->
+<div class="sidebar">
+
+    <!-- 메뉴 -->
+    <a href="admin_main.jsp">🏠 HOME</a>
+    <a href="Controller?type=adminmemlist">📢 공지사항 관리</a>
+    <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+    <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
+    <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
+    <a href="admin_mem.jsp">👥 회원정보 관리</a>
 </div>
+
+<div class="main-content">
+    <h1>관리자 페이지</h1>
+    <p>대시보드.</p>
+</div>
+
 </body>
 </html>

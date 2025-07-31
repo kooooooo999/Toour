@@ -137,72 +137,7 @@
 
 <div class="main-content">
   <h1>회원정보관리</h1>
-  <table>
-    <thead>
-    <tr>
-      <th class="no">번호</th>
-      <th>이름</th>
-      <th>아이디</th>
-      <th>별명</th>
-      <th>경고횟수</th>
-    </tr>
-    </thead>
-    <tbody>
-    <c:forEach var="vo" items="${requestScope.ar}" varStatus="vs">
-      <c:set var="p" value="${requestScope.page}" scope="page"/>
-      <c:set var="num" value="${p.totalCount - ((p.nowPage - 1) * p.numPerPage + vs.index)}" />
-      <tr>
-        <td class="no">
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-            <tr>
-            <td>${num}</td>
-          </a>
-        </td>
-        <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-              ${vo.member_name}
-          </a>
-        </td>
-        <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-              ${vo.member_id}
-          </a>
-        </td>
-        <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-              ${vo.member_nickname}
-          </a>
-        </td>
-        <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-              ${vo.member_warning}
-          </a>
-        </td>
-      </tr>
-    </c:forEach>
-    </tbody>
-  </table>
 
-  <div class="pagination">
-    <c:if test="${p.startPage > 1}">
-      <a href="Controller?type=list&cPage=${p.startPage - 1}">&lt;</a>
-    </c:if>
-    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-      <c:choose>
-        <c:when test="${p.nowPage == vs.index}">
-          <span class="current">${vs.index}</span>
-        </c:when>
-        <c:otherwise>
-          <a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-    <c:if test="${p.endPage < p.totalPage}">
-      <a href="Controller?type=list&cPage=${p.endPage + 1}">&gt;</a>
-    </c:if>
-  </div>
-
-</div> <!-- /main-content -->
-
+</div>
 </body>
 </html>
