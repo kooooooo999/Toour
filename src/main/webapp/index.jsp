@@ -279,8 +279,13 @@
 <header>
     <div class="container header-top">
         <div class="text-right">
-            <a href="#">로그인</a>
-            <a href="#">회원가입</a>
+            <c:if test="${sessionScope.user eq null}">
+            <a href="Controller?type=login">로그인</a>
+            <a href="Controller?type=signup">회원가입</a>
+            </c:if>
+            <c:if test="${sessionScope.user ne null}">
+            <a href="Controller?type=login">로그아웃</a>
+            </c:if>
             <a href="#">마이 페이지</a>
             <a href="#">고객센터</a>
         </div>

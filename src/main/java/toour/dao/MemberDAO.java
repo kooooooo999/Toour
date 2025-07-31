@@ -23,10 +23,16 @@ public class MemberDAO {
         ss.close();
         return mvo;
     }
-
-    public static MemberVO getMemIdx(String member_idx) {
+    public static MemberVO getMemN(String nickname){
         SqlSession ss = FactoryService.getFactory().openSession();
-        MemberVO mvo = ss.selectOne("post.list", member_idx);
+        MemberVO mvo = ss.selectOne("member.getN",nickname);
+        ss.close();
+        return mvo;
+    }
+
+    public static MemberVO getMemE(String email){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO mvo = ss.selectOne("member.getE",email);
         ss.close();
         return mvo;
     }

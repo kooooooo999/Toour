@@ -88,7 +88,6 @@ public class IndexAction implements Action {
             //응답되는 내용을 하나의 XML 의 문서(Document)로 인식해야한다
             Document doc = builder.build(conn.getInputStream());
             Element root = doc.getRootElement();
-            System.out.println(root.getName());
             //루트안에 있는 body만 얻어낸다
             Element body = root.getChild("body");
             //body 안에 있는 items
