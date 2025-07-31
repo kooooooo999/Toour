@@ -1,0 +1,116 @@
+.common{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    font-size: 15px;
+    font-weight: bold;
+    text-decoration: black;
+}
+
+#clickSido a{
+    text-indent: -9999px;
+}
+
+#clickSido p{
+    margin: 0;
+}
+
+.smallText{
+    font-size: 12.5px;
+}
+
+.gyeonggi{
+    position: absolute;
+    left: 145px;
+    top: 123px;
+}
+
+.incheon{
+    position: absolute;
+    left: 83.5px;
+    top: 98.5px;
+}
+
+.seoul{
+    position: absolute;
+    left: 115px;
+    top: 93px;
+}
+
+.gangwon{
+    position: absolute;
+    left: 230px;
+    top: 80px;
+}
+
+.gyeongbuk{
+    position: absolute;
+    left: 270px;
+    top: 215px;
+}
+
+.gyeongnam{
+    position: absolute;
+    left: 230px;
+    top: 325px;
+}
+
+.daegu{
+    position: absolute;
+    left: 258px;
+    top: 273px;
+}
+
+.ulsan{
+    position: absolute;
+    left: 313px;
+    top: 300px;
+}
+
+.busan{
+    position: absolute;
+    left: 307px;
+    top: 340px;
+}
+
+.chungbuk{
+    position: absolute;
+    left: 188px;
+    top: 165px;
+}
+
+.chungnam{
+    position: absolute;
+    left: 108px;
+    top: 205px;
+}
+
+.daejeon{
+    position: absolute;
+    left: 152px;
+    top: 223px;
+}
+
+.jeonbuk{
+    position: absolute;
+    left: 140px;
+    top: 285px;
+}
+
+.jeonnam{
+    position: absolute;
+    left: 105px;
+    top: 380px;
+}
+
+.gwangju{
+    position: absolute;
+    left: 108px;
+    top: 344px;
+}
+
+.jeju{
+    position: absolute;
+    left: 83px;
+    top: 524px;
+}
