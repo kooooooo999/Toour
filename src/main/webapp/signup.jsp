@@ -45,7 +45,7 @@
     <tr>
       <td>이메일:</td>
       <td>
-        <input type="text" id="u_email" name="u_email"/>
+        <input type="email" id="u_email" name="u_email"/>
         @
         <input type="email" id="u_email2" name="u_email2"/>
         <select id="emailAddr" name="emailAddr">
@@ -115,13 +115,12 @@
         $("#nickname_usable").html("");
     });
 
-    //이메일 입력 창에서 focus가 빠질 때
+    //이메일 중복 검사 버튼을 눌렀을 때
     $("#chkEmail").click(function (){
       let u_email = document.getElementById("u_email");
       let u_email_t = u_email.value.trim();
       let emailAddr = document.getElementById("emailAddr").value;
       if(emailAddr.length==0){
-        console.log("요기!")
         emailAddr = document.getElementById("u_email2").value;
       }
 
@@ -135,7 +134,19 @@
         });
       }else
         $("#email_usable").html("");
+    });
 
+    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비1
+    $("#u_email").keyup(function (){
+      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
+    });
+    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비2
+    $("#u_email2").keyup(function (){
+      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
+    });
+    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비3
+    $("#emailAddr").blur(function (){
+      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
     });
 
     // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때

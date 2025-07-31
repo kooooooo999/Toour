@@ -13,7 +13,6 @@ public class chkEmailAction implements Action{
         String u_emailAddr = request.getParameter("emailAddr");
         String email_total =u_email+"@"+u_emailAddr;
 
-        System.out.println(email_total);
         boolean usable = false;
         String alertText = null;
 
