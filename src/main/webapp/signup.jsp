@@ -55,6 +55,7 @@
           <option id="daum" value="daum.net">daum.net</option>
           <option id="nate" value="nate.net">nate.net</option>
         </select>
+        <button type="button" id="chkEmail">중복 검사</button>
         <div id="email_usable"></div></td>
     </tr>
     <tr>
@@ -115,14 +116,16 @@
     });
 
     //이메일 입력 창에서 focus가 빠질 때
-    $("#u_email").blur(function (){
+    $("#chkEmail").click(function (){
       let u_email = document.getElementById("u_email");
       let u_email_t = u_email.value.trim();
       let emailAddr = document.getElementById("emailAddr").value;
-      if(emailAddr == null){
+      if(emailAddr.length==0){
+        console.log("요기!")
         emailAddr = document.getElementById("u_email2").value;
       }
-      if (u_email_t.length>0) {
+
+      if (u_email_t.length>0&&emailAddr.length>0) {
         $.ajax({
           url: "Controller?type=chkemail",
           type: "post",

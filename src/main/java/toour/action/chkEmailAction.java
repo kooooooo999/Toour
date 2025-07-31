@@ -11,11 +11,9 @@ public class chkEmailAction implements Action{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String u_email =request.getParameter("u_email");
         String u_emailAddr = request.getParameter("emailAddr");
-        if(u_emailAddr==null){
-            u_emailAddr = request.getParameter("u_email2");
-        }
-        String email_total =u_email+u_emailAddr;
+        String email_total =u_email+"@"+u_emailAddr;
 
+        System.out.println(email_total);
         boolean usable = false;
         String alertText = null;
 
