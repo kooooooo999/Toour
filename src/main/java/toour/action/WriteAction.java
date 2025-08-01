@@ -18,7 +18,7 @@ public class WriteAction implements Action{
         //현재 객체를 수행한다. 이때 요청시 contentType을 얻어낸다. 분명
         // get방식 null값을 받게된다.
         String enc_type = request.getContentType();
-        //System.out.println(enc_type);
+        //System.out.println(enc_type); 
 
         if(enc_type == null)
             viewPath = "write.jsp";
