@@ -33,8 +33,8 @@
 
     <!--게시글 작성 -->
     <insert id="add" parameterType="Map">
-        insert into post( category_idx, post_title, post_content, post_views, post_likes, post_comments_count, post_status, post_created_at,  post_star)
-        values ( #{category_idx}, #{post_title}, #{post_content}, #{post_views}, #{post_likes}, #{post_comments_count}, #{post_status}, now(),  #{post_star})
+        insert into post(  member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
+        values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), #{post_updated_at})
     </insert>
 
     <!-- 게시글 보기 -->
@@ -60,42 +60,37 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post
+        UPDATE post p
+        INNER JOIN file f ON p.member_idx = f.member_idx
         <trim prefix="SET" suffixOverrides=",">
-            post_title = #{post_title},
-            post_content = #{post_content},
-
-
+            p.post_title = #{post_title},
+            p.post_content = #{post_content}
         </trim>
-        WHERE post_idx = #{post_idx}
-
+        WHERE p.post_idx = #{post_idx}
     </update>
 
     <select id="search" parameterType="map" resultMap="map1">
-        SELECT
-        a.*
+        SELECT a.*
         FROM (
-        SELECT
-        ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum,
-        post.*
-        FROM
-        post
-        <where>
-            <choose>
-                <when test="searchType != null and searchType == post_title">
-                    c.rnum Between #{begin} and #{end},
-                    c.post_title LIKE CONCAT ('%', #{searchValue}, '%')
-                </when>
-                <when test="searchType != null and searchType == post_content">
-                    c.post_content LIKE CONCAT('%', #{searchValue}, '%')
-                </when>
-                <when test="searchType != null and searchType == member_nickname">
-                    m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
-                </when>
-            </choose>
-        </where>
-        a.rnum BETWEEN #{begin} AND #{end};
-
+            SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
+            FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
+            <where>
+                <if test="searchValue != null and searchValue != ''">
+                    <choose>
+                        <when test="searchType != null and searchType == 'post_title'">
+                            p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                        </when>
+                        <when test="searchType != null and searchType == 'post_content'">
+                            p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                        </when>
+                        <when test="searchType != null and searchType == 'member_nickname'">
+                            m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                        </when>
+                    </choose>
+                </if>
+            </where>
+        )a
+         where a.rnum BETWEEN #{begin} AND #{end};
     </select>
 
 </mapper>

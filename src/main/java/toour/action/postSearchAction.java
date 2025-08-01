@@ -32,7 +32,13 @@ public class postSearchAction implements Action {
         }
 
         PostVO[] ar = PostDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
+
+        if(ar!=null &&ar.length>0)
+            System.out.println("검색 결과 첫 번째 항목: " + ar[0]);
+        else
+            System.out.println("검색결과가 없습니다.");
         System.out.println(ar[0]);
+
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);
         request.setAttribute("category_idx",category_idx);
