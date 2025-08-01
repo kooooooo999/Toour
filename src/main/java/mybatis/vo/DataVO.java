@@ -4,7 +4,7 @@ public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
     cat1, cat2, cat3, contentTypeId,contentId, overview;
 
-    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String tel, String eventstartdate, String eventenddate, String cat1, String cat2, String cat3, String contentTypeId, String contentId, String overview) {
+    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String tel, String eventstartdate, String eventenddate, String contentTypeId, String contentId, String overview) {
         this.title = title;
         this.mapx = mapx;
         this.mapy = mapy;
@@ -15,9 +15,6 @@ public class DataVO {
         this.tel = tel;
         this.eventstartdate = eventstartdate;
         this.eventenddate = eventenddate;
-        this.cat1 = cat1;
-        this.cat2 = cat2;
-        this.cat3 = cat3;
         this.contentTypeId = contentTypeId;
         this.contentId = contentId;
         this.overview = overview;

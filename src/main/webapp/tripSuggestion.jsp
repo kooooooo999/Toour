@@ -5,7 +5,17 @@
   <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
   <!DOCTYPE html>
-
+<style>
+  .overview {
+    width: 650px;
+    height: 120px;
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
+    -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+  }
+</style>
 
   <html>
   <head>
@@ -13,67 +23,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 구석구석 - 한국관광공사</title>
     <link rel="stylesheet" href="./css/style.css">
-    <link rel="stylesheet" href="./css/header.css">
+<%--    <link rel="stylesheet" href="./css/header.css">--%>
     <link rel="stylesheet" href="./css/footer.css">
 
   </head>
   <body>
 
-  <header>
-    <div class="container header-top">
-      <div class="text-right">
-        <a href="#">로그인</a>
-        <a href="#">회원가입</a>
-        <a href="#">마이 페이지</a>
-        <a href="#">고객센터</a>
-      </div>
-    </div>
-    <div class="container header-main flex-between">
-      <a href="#" class="logo">👋🏻 toour</a>
-      <div class="search-area">
-        <input type="text" placeholder="어디로 떠나고 싶으신가요?" />
-        <i class="fas fa-search"></i>
-      </div>
+  <%@ include file="header.jsp" %>
 
-    </div>
-  </header>
 
-  <nav class="main-nav">
-    <div class="container">
-      <ul>
-        <li><a href="#">홈</a></li>
-        <li><a href="#">공지사항</a></li>
-        <li><a href="#">지역</a></li>
-        <li><a href="#">여행코스</a></li>
-        <li><a href="Controller?type=tripSuggestion">여행정보</a></li>
-        <li><a href="#">게시판</a></li>
-      </ul>
-    </div>
-  </nav>
   <%--바디 영역--%>
+
   <h2 class="tag">#테마를 선택</h2>
 
   <div id="content_check">
-      <a href="Controller?type=tripSuggestion&contentTypeId=}" id="contentType" data-vale="12">관광지</a>
-      <a href="#" id="contentType" data-vale="14">문화시설</a>
-      <a href="#" id="contentType" data-vale="15">축제공연/행사</a>
-      <a href="#" id="contentType" data-vale="25">여행코스</a>
-      <a href="#" id="contentType" data-vale="28">레포츠</a>
-      <a href="#" id="contentType" data-vale="32">숙박</a>
-      <a href="#" id="contentType" data-vale="38">쇼핑</a>
-      <a href="#" id="contentType" data-vale="39">음식점</a>
+      <a href="#" class="contentTypeId" data-value="12">관광지</a>
+      <a href="#" class="contentTypeId" data-value="14">문화시설</a>
+      <a href="#" class="contentTypeId" data-value="15">축제공연/행사</a>
+      <a href="#" class="contentTypeId" data-value="25">여행코스</a>
+      <a href="#" class="contentTypeId" data-value="28">레포츠</a>
+      <a href="#" class="contentTypeId" data-value="32">숙박</a>
+      <a href="#" class="contentTypeId" data-value="38">쇼핑</a>
+      <a href="#" class="contentTypeId" data-value="39">음식점</a>
   </div>
 
   <div id="main">
     <c:forEach var="Dvo" items="${requestScope.ar}" varStatus="count">
       <c:if test="${count.index < 5}">
       <div class="item">
-    <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-        <div class="text ellipsis">
+        <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
+            <div class="text ellipsis">
        <p class="title"><a href="#">${Dvo.title}</a></p>
         <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
         <p class="overview"><a href="#">${Dvo.overview}</a></p>
-      </div>
+            </div>
       </div>
       </c:if>
     </c:forEach>
@@ -141,8 +124,27 @@
       </p>
     </div>
   </footer>
-
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+          integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
+      $(function (){
+      //contentTypeId = 12 관광지 로 기본선택 되어있기
+      });
+
+      $(".contentTypeId").on("click",function (value){
+          value.preventDefault();
+          var contentTypeId = $(this).data("value");
+
+          $.ajax({
+              url: "Controller?type=tripSuggestion",
+              method: "POST",
+              data: {contentTypeId: contentTypeId}
+          }).done(function (res){
+                $("#main").html(res);
+          });
+      });
+
+
     function selectImage(selectedImg) {
       let images = document.querySelectorAll('.images img');
       images.forEach(function(img) {
@@ -153,6 +155,7 @@
       selectedImg.classList.remove('deselected');
       selectedImg.classList.add('selected');
     }
+
   </script>
 
   </body>
