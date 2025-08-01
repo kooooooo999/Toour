@@ -28,7 +28,7 @@ public class MemListAction implements Action {
 
         //현재 페이지 값을 파라미터로 받는다.
         String cPage = request.getParameter("cPage");
-        if(cPage == null){
+        if(cPage == null || cPage.equals("") || cPage.equals("null")){
             page.setNowPage(1);
         }else{
             int nowPage = Integer.parseInt(cPage); //"2" -> 2
@@ -41,8 +41,8 @@ public class MemListAction implements Action {
         MemberVO[] ar = memDAO.getmemList(page.getBegin(), page.getEnd());
 
         // JSP에서 표현하기 위해서 request에 저장!
-        System.out.println(ar.length);
-        System.out.println(ar[1].getMember_password());
+//        System.out.println(ar.length);
+//        System.out.println(ar[1].getMember_password());
         request.setAttribute("ar", ar);
         request.setAttribute("page", page);
         request.setAttribute("nowPage", page.getNowPage());

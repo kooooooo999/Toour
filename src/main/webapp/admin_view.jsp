@@ -100,17 +100,52 @@
     input[type="button"]:hover {
       background-color: #2563eb;
     }
+
+
+    #del_dialog{
+      background-color: #f9fbfe;
+      padding: 20px;
+      font-size: 14px;
+    }
+
+    #del_dialog form input[type="text"] {
+      display: block;
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+    }
+
+    #del_dialog form button {
+      margin-right: 10px; /* 버튼 간격 */
+      padding: 8px 14px;
+      background-color: #1e40af;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    #del_dialog form .button-group {
+      text-align: right;
+    }
+
+
+
+
   </style>
 </head>
 <body>
 
 <div class="sidebar">
   <a href="admin_main.jsp">🏠 HOME</a>
-  <a href="Controller?type=adminmemlist">📢 공지사항 관리</a>
+  <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
-  <a href="admin_mem.jsp">👥 회원정보 관리</a>
+  <a href="Controller?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
@@ -118,7 +153,6 @@
   <h1>회원정보 관리</h1>
   <div class="form-container">
     <form action="Controller" method="post">
-      <input type="hidden" name="type" value="memberUpdate"/>
 
       <div class="form-group">
         <label for="name">이름</label>
@@ -132,7 +166,7 @@
 
       <div class="form-group">
         <label for="pw">비밀번호</label>
-        <input type="text" id="pw" name="member_password" value="${vo.member_password}">
+        <input type="password" id="pw" name="member_password" value="${vo.member_password}" readonly>
       </div>
 
       <div class="form-group">
@@ -151,22 +185,50 @@
       </div>
 
       <div class="form-actions">
-        <input type="submit" value="수정" onclick="goRe()"/>
-        <input type="button" value="탈퇴" onclick="goDel()"/>
+        <input type="button" value="수정" onclick="openEdit()"/>
+        <input type="button" value="탈퇴" onclick="openDel()"/>
         <input type="button" value="목록" onclick="location.href='Controller?type=adminmemlist'">
       </div>
     </form>
 
-    <div id = "del_dialog" title="정말 삭제하시겠습니까?">
+<%--    <c:forEach var = "type" items="${adminlist}">--%>
+
+<%--    </c:forEach>--%>
+
+    <form name="ff" method="post">
+      <input type="hidden" name="type"/>
+      <input type="hidden" name="member_idx" value="${vo.member_idx}"/>
+      <input type="hidden" name="cPage" value="${param.cPage}"/>
+    </form>
+
+
+    <!-- 수정 다이얼로그 -->
+    <div id = "edit_dialog" title = "수정하시겠습니까?">
+      <form id = "editform" action="Controller" method="post">
+        <input type="hidden" name="type" value="adminmemedit">
+        <input type="hidden" name="member_idx" value="${vo.member_idx}">
+        <input type="hidden" name="cPage" value="${param.cPage}">
+
+        <div class="button-group">
+        <button type="button" onclick="goEdit(this.form)">수정</button>
+        <button type="button" id = "member_edit_cancel">취소</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- 삭제  다이얼로그 -->
+    <div id = "del_dialog" title="삭제하시겠습니까?">
       <form action="Controller" method="post">
         <p>관리자 이름 확인</p>
-        <input type="text" name="confirm"/>
+        <input type="text" name="confirm" id="confirm"/>
         <input type="hidden" name="type" value="adminmemdel"/>
         <input type="hidden" name="member_idx" value="${vo.member_idx}"/>
         <input type="hidden" name="cPage" value="${param.cPage}"/>
-        <button type="button" onclick="del(this.form)">삭제</button>
-        <button type="button" id="member_cancel">취소</button>
 
+        <div class="button-group">
+        <button type="button" onclick="goDel(this.form)">삭제</button>
+        <button type="button" id="member_del_cancel">취소</button>
+        </div>
       </form>
 
     </div>
@@ -186,19 +248,44 @@
       resizable: false,
     };
     $("#del_dialog").dialog(option);
+    $("#edit_dialog").dialog(option);
   })
 
-    function goDel(){
+    function openDel(){
       $("#del_dialog").dialog("open");
     }
 
-    $("#member_cancel").click(function (){
-      $("#del_dialog").dialog("close");
+    function openEdit(){
+      $("#edit_dialog").dialog("open");
+    }
+
+    $("#member_edit_cancel").click(function (){
+      $("#edit_dialog").dialog("close");
     })
 
+    $("#member_del_cancel").click(function () {
+      $("#del_dialog").dialog("close");
 
-  function del(frm){
+
+    })
+  function goDel(frm){
+  let confirm = $("#confirm").val().trim();
+  let member_type = ${vo.member_type}
+  if(confirm.trim() != "") {
+    alert("이름을 확인해주세요.");
+    $("#title").val("");
+    $("#title").focus();
+    return
+  }
+  else{
     frm.submit();
+  }
+  }
+
+  function goEdit(){
+    document.getElementById("editForm").action = "Controller";
+    document.getElementById("editForm").type.value = "adminmemedit";
+    document.getElementById("editForm").submit();
   }
 
 </script>

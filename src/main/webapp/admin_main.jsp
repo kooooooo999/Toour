@@ -47,11 +47,11 @@
 
     <!-- 메뉴 -->
     <a href="admin_main.jsp">🏠 HOME</a>
-    <a href="Controller?type=adminmemlist">📢 공지사항 관리</a>
+    <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
     <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
     <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
     <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
-    <a href="admin_mem.jsp">👥 회원정보 관리</a>
+    <a href="Controller?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
 <div class="main-content">
