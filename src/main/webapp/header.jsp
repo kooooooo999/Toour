@@ -39,7 +39,7 @@
                 <a href="#" class = "act">홈</a>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">관광지</a>
+                <a href="Controller?type=tripSuggestion" class="act">관광지</a>
                 <ul class="submenu">
                     <li><a href="#">검색</a> </li>
                     <li><a href="#">관광</a> </li>
@@ -71,7 +71,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">게시판</a>
+                <a href="Controller?type=list" class="act">게시판</a>
                 <ul class="submenu">
                     <li><a href="#">공지사항</a></li>
                     <li><a href="#">건의/문의</a></li>
