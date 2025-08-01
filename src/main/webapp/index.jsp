@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.Date" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 
 
@@ -10,81 +11,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 구석구석 - 한국관광공사</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/header.css">
+    <link rel="stylesheet" href="./css/footer.css">
 </head>
 <body>
-
-<header>
-    <div class="container header-top">
-        <div class="text-right">
-            <c:if test="${sessionScope.user eq null}">
-            <a href="Controller?type=login">로그인</a>
-            <a href="Controller?type=signup">회원가입</a>
-            </c:if>
-            <c:if test="${sessionScope.user ne null}">
-            <a href="Controller?type=login">로그아웃</a>
-            </c:if>
-            <a href="#">마이 페이지</a>
-            <a href="#">고객센터</a>
-        </div>
-    </div>
-    <div class="container header-main flex-between">
-        <a href="#" class="logo">👋🏻 toour</a>
-        <div class="search-area">
-            <input type="text" placeholder="어디로 떠나고 싶으신가요?" />
-            <i class="fas fa-search"></i>
-        </div>
-
-    </div>
-    <nav class = "bar">
-
-        <ul class = "menu">
-            <li class="dropdown">
-                <a href="#" class = "act">홈</a>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="act">관광지</a>
-                <ul class="submenu">
-                    <li><a href="#">검색</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="act">맛집</a>
-                <ul class="submenu">
-                    <li><a href="#">검색</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="act">추천코스</a>
-                <ul class="submenu">
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                </ul>
-            </li>
-            <li class="dropdown">
-                <a href="#" class="act">게시판</a>
-                <ul class="submenu">
-                    <li><a href="#">공지사항</a></li>
-                    <li><a href="#">건의/문의</a></li>
-                    <li><a href="#">여행후기</a></li>
-                </ul>
-            </li>
-
-        </ul>
-    </nav>
-</header>
+<%@ include file="header.jsp" %>
 
 
 
