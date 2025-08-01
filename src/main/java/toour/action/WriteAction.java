@@ -1,6 +1,6 @@
 package toour.action;
 
-import dao.PostDAO;
+import toour.dao.PostDAO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 
@@ -12,9 +12,9 @@ import java.io.File;
 public class WriteAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        //세션에서 user 받고 그걸 MemberVO로 형변환한뒤 member_idx 받아오기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         String viewPath = null;
-
         // list.jsp에 있는 [글쓰기]버튼을 클릭하면 get방식으로
         //현재 객체를 수행한다. 이때 요청시 contentType을 얻어낸다. 분명
         // get방식 null값을 받게된다.
@@ -39,28 +39,38 @@ public class WriteAction implements Action{
 
                 //나머지 파라미터들 얻기(post_title, member_idx, post_content)
                 String post_title = mr.getParameter("post_title");
-                String member_idx = mr.getParameter("member_idx");
+                //박준형 시작
+//                String member_idx= mr.getParameter("member_idx");
+                String member_idx= "3";
+                //박준형 끝
                 String post_content = mr.getParameter("post_content");
                 String category_idx = mr.getParameter("category_idx");
+                String post_likes = mr.getParameter("post_likes");
+                String post_comments_count = mr.getParameter("post_comments_count");
+                String post_status = mr.getParameter("post_status");
+                String post_created_at = mr.getParameter("post_created_at");
+                String post_star = mr.getParameter("post_star");
+                String post_views = mr.getParameter("post_views");
 
-                //첨부파일이 있다면 fname과 oname을 얻어내야 한다.
+                //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
                 File f = mr.getFile("file");
-                String fname = null;
-                String oname = null;
+                String file_name_stored = null;
+                String file_name_original = null;
                 if( f != null ){
-                    fname = f.getName();// 현재 저장된 파일명
-                    oname = mr.getOriginalFileName("file");// 원래 파일명
+                    file_name_stored = f.getName();// 현재 저장된 파일명
+                    file_name_original = mr.getOriginalFileName("file");// 원래 파일명
                 }
                 String ip = request.getRemoteAddr();// 요청자의 IP
 
-                //DB에 저장
-                PostDAO.add(post_title, member_idx, post_content, category_idx);
+                //DB에 저장 ++
+                PostDAO.add(post_title, post_content, member_idx,
+                        category_idx, post_views, post_likes, post_comments_count,
+                        post_status, post_created_at, post_star);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-
-        return viewPath;
+        return "write.jsp";
     }
 }
