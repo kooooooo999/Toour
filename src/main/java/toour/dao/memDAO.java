@@ -72,4 +72,18 @@ public class memDAO {
         return cnt;
     }
 
+    //회원정보 삭제/탈퇴
+    public static int delMem(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("mem.mem_del", member_idx);
+        if(cnt > 0){
+            ss.commit();
+        }
+        else {
+            ss.rollback();
+        }
+        ss.close();
+        return cnt;
+    }
+
 }

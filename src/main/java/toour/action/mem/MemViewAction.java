@@ -13,7 +13,7 @@ public class MemViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        String b_idx = request.getParameter("b_idx");//기본키
+        String member_idx = request.getParameter("member_idx");//기본키
         String cPage = request.getParameter("cPage");//목록보기에 사용할 페이지 값
 
         //한번이라도 읽은 게시물들은 list에 담아서 HttpSession에 저장
@@ -29,7 +29,7 @@ public class MemViewAction implements Action {
         }else
             list = (ArrayList<MemberVO>) obj;
 
-        MemberVO vo = memDAO.view(b_idx); //사용자가 선택한 게시물 검색
+        MemberVO vo = memDAO.view(member_idx); //사용자가 선택한 게시물 검색
 
         request.setAttribute("vo", vo);
         return "admin_view.jsp";

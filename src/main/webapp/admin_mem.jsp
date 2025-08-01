@@ -136,7 +136,7 @@
 </div>
 
 <div class="main-content">
-  <h1>회원정보관리</h1>
+  <h1>회원정보 관리</h1>
   <table>
     <thead>
     <tr>
@@ -153,28 +153,28 @@
       <c:set var="num" value="${p.totalCount - ((p.nowPage - 1) * p.numPerPage + vs.index)}" />
       <tr>
         <td class="no">
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
             <tr>
             <td>${num}</td>
           </a>
         </td>
         <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_name}
           </a>
         </td>
         <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_id}
           </a>
         </td>
         <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_nickname}
           </a>
         </td>
         <td>
-          <a href="adminmemview?member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_warning}
           </a>
         </td>
