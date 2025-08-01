@@ -20,7 +20,7 @@
             <c:if test="${sessionScope.user ne null}">
                 <a href="Controller?type=login">로그아웃</a>
             </c:if>
-            <a href="#">마이 페이지</a>
+            <a href="myPage.jsp">마이 페이지</a>
             <a href="#">고객센터</a>
         </div>
     </div>

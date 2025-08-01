@@ -17,8 +17,6 @@
 <body>
 <%@ include file="header.jsp" %>
 
-
-
 <main>
     <section class="hero-travel-guide container">
         <div class="hero-content-left">
