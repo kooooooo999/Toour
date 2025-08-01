@@ -2,7 +2,25 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
 <mapper namespace="file">
 
+
+    <insert id="insert" parameterType="mybatis.vo.FileVO">
+        INSERT INTO file ( file_idx, post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
+        VALUES ( #{file_idx}, #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type], NOW())
+    </insert>
+
+
+    <select id="getByPost" parameterType="String" resultType="mybatis.vo.FileVO">
+        SELECT * FROM file
+        WHERE post_idx = #{post_idx}
+    </select>
+
+
+    <delete id="delete" parameterType="String">
+        DELETE FROM file
+        WHERE file_idx = #{file_idx}
+    </delete>
 
 </mapper>
