@@ -12,13 +12,14 @@ import java.io.File;
 public class WriteAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        //세션에서 user 받고 그걸 MemberVO로 형변환한뒤 member_idx 받아오기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         String viewPath = null;
         // list.jsp에 있는 [글쓰기]버튼을 클릭하면 get방식으로
         //현재 객체를 수행한다. 이때 요청시 contentType을 얻어낸다. 분명
         // get방식 null값을 받게된다.
         String enc_type = request.getContentType();
-        //System.out.println(enc_type); 
+        //System.out.println(enc_type);
 
         if(enc_type == null)
             viewPath = "write.jsp";
@@ -38,7 +39,10 @@ public class WriteAction implements Action{
 
                 //나머지 파라미터들 얻기(post_title, member_idx, post_content)
                 String post_title = mr.getParameter("post_title");
-                String member_idx = mr.getParameter("member_idx");
+                //박준형 시작
+//                String member_idx= mr.getParameter("member_idx");
+                String member_idx= "3";
+                //박준형 끝
                 String post_content = mr.getParameter("post_content");
                 String category_idx = mr.getParameter("category_idx");
                 String post_likes = mr.getParameter("post_likes");
@@ -48,7 +52,7 @@ public class WriteAction implements Action{
                 String post_star = mr.getParameter("post_star");
                 String post_views = mr.getParameter("post_views");
 
-                //첨부파일이 있다면 fname과 oname을 얻어내야 한다.
+                //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
                 File f = mr.getFile("file");
                 String file_name_stored = null;
                 String file_name_original = null;
@@ -59,14 +63,14 @@ public class WriteAction implements Action{
                 String ip = request.getRemoteAddr();// 요청자의 IP
 
                 //DB에 저장 ++
-                PostDAO.add(category_idx, member_idx, post_title, post_content, post_views,
-                        post_likes, post_comments_count, post_status, post_created_at,
-                        post_star);
+                PostDAO.add(post_title, post_content, member_idx,
+                        category_idx, post_views, post_likes, post_comments_count,
+                        post_status, post_created_at, post_star);
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return viewPath;
+        return "write.jsp";
     }
 }

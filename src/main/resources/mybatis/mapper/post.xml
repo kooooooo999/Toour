@@ -33,8 +33,8 @@
 
     <!--게시글 작성 -->
     <insert id="add" parameterType="Map">
-        insert into post( category_idx, post_title, post_content, post_views, post_likes, post_comments_count, post_status, post_created_at,  post_star)
-        values ( #{category_idx}, #{post_title}, #{post_content}, #{post_views}, #{post_likes}, #{post_comments_count}, #{post_status}, now(),  #{post_star})
+        insert into post(  member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
+        values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), #{post_updated_at})
     </insert>
 
     <!-- 게시글 보기 -->
@@ -60,15 +60,13 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post
+        UPDATE post p
+        INNER JOIN file f ON p.member_idx = f.member_idx
         <trim prefix="SET" suffixOverrides=",">
-            post_title = #{post_title},
-            post_content = #{post_content},
-
-
+            p.post_title = #{post_title},
+            p.post_content = #{post_content}
         </trim>
-        WHERE post_idx = #{post_idx}
-
+        WHERE p.post_idx = #{post_idx}
     </update>
 
     <select id="search" parameterType="map" resultMap="map1">
