@@ -11,16 +11,16 @@ import java.net.URL;
 import java.util.List;
 
 public class GetAPIData {
-    public static DataVO[] getSigungu(HttpServletRequest request, DataVO dvo) {
+    public static DataVO[] getSigungu(HttpServletRequest request, String areaCode) {
         DataVO[] ar = null;
         // 전달 받은 DataVO안에 Areacode가 있다면
-        if(dvo.getAreacode()!=null &&dvo.getAreacode().length()>0) {
+        if(areaCode!=null &&areaCode.length()>0) {
             //주소 만들기
             StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/areaCode2?serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("areaCode=");
-            sb.append(dvo.getAreacode());
+            sb.append(areaCode);
             //확인용 주소 출력
             System.out.println(sb.toString());
             try {
@@ -93,15 +93,15 @@ public class GetAPIData {
         return ar;
     }
 
-    public static DataVO[] getCat2(HttpServletRequest request, DataVO dvo){
+    public static DataVO[] getCat2(HttpServletRequest request, String cat1){
         DataVO[] ar = null;
-        if(dvo.getCat1()!=null&&dvo.getCat1().length()>0) {
+        if(cat1!=null&&cat1.length()>0) {
             //주소 만들기
             StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("cat1=");
-            sb.append(dvo.getCat1());
+            sb.append(cat1);
             //확인용 주소 출력
             System.out.println(sb.toString());
             try {
@@ -136,18 +136,18 @@ public class GetAPIData {
     }
 
 
-    public static DataVO[] getCat3(HttpServletRequest request, DataVO dvo){
+    public static DataVO[] getCat3(HttpServletRequest request,String cat1, String cat2){
         DataVO[] ar = null;
-        if(dvo.getCat1()!=null&&dvo.getCat1().length()>0&&dvo.getCat2()!=null&&dvo.getCat2().length()>0) {
+        if(cat1!=null&&cat1.length()>0&&cat2!=null&&cat2.length()>0) {
             //주소 만들기
             StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("cat1=");
-            sb.append(dvo.getCat1());
+            sb.append(cat1);
             sb.append("&");
             sb.append("cat2=");
-            sb.append(dvo.getCat2());
+            sb.append(cat2);
             //확인용 주소 출력
             System.out.println(sb.toString());
             try {
