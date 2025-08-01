@@ -49,6 +49,8 @@
 
 </head>
 <body>
+<%@ include file="header.jsp" %>
+
 <%
   Object obj = request.getAttribute("vo");
   if(obj != null){

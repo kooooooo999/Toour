@@ -33,10 +33,8 @@ public class ListAction implements Action {
         }
 
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
-        MemberVO mvo = MemberDAO.getMemIdx(request.getParameter("member_idx"));
 
 
-        request.setAttribute("mvo",mvo);
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);
         request.setAttribute("totalCount",totalCount);

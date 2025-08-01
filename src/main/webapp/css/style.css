@@ -1,3 +1,4 @@
+
 /* CSS Reset & Global Styles */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'Malgun Gothic', '맑은 고딕', sans-serif; line-height: 1.6; color: #333; background-color: #f8f9fa; font-size: 15px;}
@@ -11,27 +12,9 @@ img { max-width: 100%; height: auto; display: block; }
 .text-right { text-align: right; }
 .section-title { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 30px; }
 
-/* Header */
-header { background-color: #fff; border-bottom: 1px solid #eee; box-shadow: 0 4px 20px rgba(0,0,0,0.05); position: sticky;
-    top: 0;
-    z-index: 1000; }
-.header-top { font-size: 13px; color: #666; padding: 5px 0; border-bottom: 1px solid #f0f0f0; }
-.header-top a { margin-left: 15px; }
-.header-main { padding: 15px 0; }
-.header-main .logo { font-size: 35px;font-weight: 900;color: white;text-shadow: 0 2px 4px rgba(0,0,0,0.3); color: #0056b3}
-.header-main .search-area { position: relative; width: 350px; }
-.header-main .search-area input { width: 100%; padding: 10px 45px 10px 18px; border: 1px solid #ddd; border-radius: 25px; font-size: 15px; outline: none; }
-.header-main .search-area .fa-search { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); color: #888; font-size: 18px; cursor: pointer; }
-.header-main .util-menu a { margin-left: 25px; font-size: 16px; color: #555; }
-.header-main .util-menu i { font-size: 20px; vertical-align: middle; margin-right: 5px;}
-.header-top a:hover {
-    color: white;
-    text-decoration: underline;
-}
-
 
 /* Main Navigation */
-nav.main-nav { background-color: #0056b3; padding: 22px 0; }
+nav.main-nav { background-color: #0056b3; padding: 15px 0; }
 nav.main-nav ul { display: flex; justify-content: space-around; }
 nav.main-nav a { color: #fff; font-weight: bold; font-size: 16px; padding: 5px 0; transition: color 0.3s ease; }
 nav.main-nav a:hover { text-decoration: underline; }
@@ -112,103 +95,3 @@ nav.main-nav a:hover { text-decoration: underline; }
 .healing-navigation { position: absolute; top: 50%; right: 0; transform: translateY(-50%); background-color: rgba(255,255,255,0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 .healing-pagination-dots { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
 
-
-/* Footer */
-footer { background-color: #343a40; color: #ddd; padding: 40px 0; font-size: 14px; }
-.footer-news-ticker { background-color: #4a545e; color: #fff; padding: 10px 0; font-size: 13px; margin-bottom: 20px; }
-.footer-news-ticker .ticker-content { display: flex; align-items: center; width: 100%; /* For actual ticker logic */ }
-.footer-news-ticker .ticker-content span { margin-left: 20px; }
-.footer-news-ticker .ticker-controls { display: flex; margin-left: auto; padding-right: 20px; }
-.footer-news-ticker .ticker-controls i { margin-left: 10px; cursor: pointer; }
-
-.footer-sns-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
-.footer-sns-links a { display: flex; flex-direction: column; align-items: center; color: #ddd; font-size: 13px; }
-.footer-sns-links .sns-icon { background-color: #666; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; margin-bottom: 8px; transition: background-color 0.3s ease; }
-.footer-sns-links a:hover .sns-icon { background-color: #007bff; }
-
-.footer-banners { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
-.footer-banners .banner-item { background-color: #f0f0f0; border-radius: 5px; overflow: hidden; text-align: center; }
-.footer-banners .banner-item img { width: 100%; height: 80px; object-fit: cover; }
-.footer-banners .banner-item p { font-size: 13px; padding: 8px 5px; color: #555; } /* If text overlay */
-
-footer .footer-nav ul { display: flex; justify-content: center; margin-bottom: 20px; }
-footer .footer-nav li { margin: 0 15px; }
-footer .footer-nav a { color: #ccc; transition: color 0.3s ease; }
-footer .footer-nav a:hover { color: #fff; }
-footer address { text-align: center; margin-bottom: 10px; }
-footer p.contact-info { text-align: center; margin-top: 10px; }
-footer .copyright { text-align: center; margin-top: 20px; font-size: 13px; color: #aaa; }
-
-#page{
-    display: flex;
-    justify-content: center;
-}
-#main {
-    display: flex;
-    flex-direction: column; /* 항목들을 세로로 쌓기 */
-    justify-content: center; /* 수직 중앙 정렬 */
-    align-items: center; /* 수평 중앙 정렬 */
-    padding-top: 100px;
-    width: 600px;
-    height: auto;
-    margin-left: 555px;
-}
-
-.item {
-    display: flex; /* 가로로 배치 */
-    align-items: center;
-    margin-bottom: 40px;
-    border-bottom: 1px solid #343a40;
-    padding-bottom: 30px;
-    width: 1000px;
-}
-
-.image {
-    width: 300px;   /* 이미지 크기 설정 */
-    height: auto;   /* 비율에 맞춰 크기 유지 */
-    margin-right: 20px; /* 이미지와 텍스트 사이 간격 */
-}
-
-.text {
-    display: flex;
-    flex-direction: column; /* 텍스트를 세로로 배치 */
-    width: 800px;
-}
-.title{
-    font-weight: bold;
-}
-.title, .addr1 {
-    font-size: 20px;
-    white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 설정 */
-    margin: 0; /* 기본 여백 제거 */
-}
-
-
-#content_check {
-    position: relative;
-    width: 1000px;
-    padding: 15px 0 13px;
-    font-weight: 700;
-    border-top: 1px solid #343a40;
-    border-bottom: 1px solid#343a40;
-    display: flex;
-    align-items: center;
-    margin: auto;
-}
-.tag{
-    font-size: 30px;
-    font-weight: bold;
-    margin: 50px auto 20px;
-    text-align: center;
-}
-#content_check>a{
-    font-weight: bold;
-    margin: auto;
-}
-
-#page>a {
-    border: 1px solid #333;
-    margin: 0 2px 35px;
-    padding: 0 9px;
-
-}
