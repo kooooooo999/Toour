@@ -33,7 +33,7 @@
 
     <!--게시글 작성 -->
     <insert id="add" parameterType="Map">
-        insert into post(  member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
+        insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
         values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), #{post_updated_at})
     </insert>
 

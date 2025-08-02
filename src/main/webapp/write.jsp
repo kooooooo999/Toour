@@ -1,10 +1,12 @@
-w<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Insert title here</title>
+  <!-- 외부 CSS연결 -->
+  <link rel="stylesheet" type="text/css" href="../css/post">
   <link rel="stylesheet" href="./css/summernote-lite.css"/>
   <style type="text/css">
     #post table {

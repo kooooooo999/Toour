@@ -37,7 +37,6 @@ public class PostDAO {
     }
 
 
-
     // 저장 +++
     public static int add(String post_title, String post_content, String member_idx,
                           String category_idx){
