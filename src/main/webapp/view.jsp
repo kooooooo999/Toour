@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="mybatis.vo.PostVO" %>
 <%@ page import="mybatis.vo.CommentVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -49,13 +50,9 @@
 
 </head>
 <body>
-<%@ include file="header.jsp" %>
+<%--<%@ include file="header.jsp" %>--%>
+<c:set var="vo" value="${requestScope.vo}"/>
 
-<%
-  Object obj = request.getAttribute("vo");
-  if(obj != null){
-    PostVO vo = (PostVO) obj;
-%>
 <div id="post">
   <form method="post" >
     <table summary="게시판 글쓰기">
@@ -69,7 +66,7 @@
       <tr>
         <th>첨부파일:</th>
         <td><a href="#">
-          ${vo.file_name}
+          ${vo.file_name_original}
         </a></td>
       </tr>
 
@@ -99,7 +96,7 @@
     비밀번호:<input type="password" name="pwd"/><br/>
 
 
-    <input type="hidden" name="post_idx" value="<%=vo.getPost_idx()%>">
+    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
     <input type="hidden" name="cPage" value="${param.cPage}"/>
     <input type="hidden" name="type" value="command"/>
     <input type="submit" value="저장하기"/>
@@ -107,7 +104,7 @@
 
   <form name="ff" method="post">
     <input type="hidden" name="type"/>
-    <input type="hidden" name="post_idx" value="<%=vo.getPost_idx()%>"/>
+    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
   </form>
 
@@ -117,7 +114,7 @@
       <%--비밀번호 표현등 할 수 있음 --%>
       <p>정말로 삭제 하시겠습니까?</p>
       <input type="hidden" name="type" value="del"/>
-      <input type="hidden" name="post" value="<%=vo.getPost_idx()%>"/>
+      <input type="hidden" name="post" value="${vo.getPost_idx()}"/>
       <input type="hidden" name="cPage" value="${param.cPage}"/>
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
@@ -125,23 +122,19 @@
 
 </br>
   댓글들<hr/>
-<%
-  for(CommentVO cvo : vo.getC_list()){
-%>
-  <div>
-    이름:<%=cvo.getMember_idx()%> &nbsp;&nbsp;
-    최종수정:<%=cvo.getComment_updated_at()%><br/>
-    내용:<%=cvo.getComment_content()%>
-  </div>
-  <hr/>
-<%
-  }//for의 끝
-%>
+  <c:forEach var="cvo" items="${requestScope.vo.c_list}" varStatus="vs">
+    <div>
+      이름:${cvo.getMember_idx()} &nbsp;&nbsp;
+      최종수정:${cvo.getComment_updated_at()}<br/>
+      내용:${cvo.getComment_content()}
+    </div>
+    <hr/>
+  </c:forEach>
+
+
 
 </div>
-<%
-  }// if문의 끝
-%>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script>

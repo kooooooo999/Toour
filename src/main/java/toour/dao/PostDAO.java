@@ -63,7 +63,7 @@ public class PostDAO {
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        PostVO vo = ss.selectOne("post.getpost", post_idx);
+        PostVO vo = ss.selectOne("post.getPost", post_idx);
         ss.close();
         return vo;
     }

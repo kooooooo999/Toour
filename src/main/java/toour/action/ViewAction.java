@@ -27,7 +27,7 @@ public class ViewAction implements Action{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
         HttpSession session = request.getSession();
-
+        System.out.println("post_idx:"+post_idx);
         Object obj = session.getAttribute("read_list");
         ArrayList<PostVO> list = null;
         if(obj == null){
@@ -37,7 +37,7 @@ public class ViewAction implements Action{
             list = (ArrayList<PostVO>) obj; // 형변환
 
         PostVO vo = PostDAO.getPost(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
-
+        System.out.println(vo.getPost_idx());
         // 검색된 vo가 처음으로 읽은 게시물인지 판단
         if(checkPost(list, vo)){
             PostDAO.post_views(post_idx);

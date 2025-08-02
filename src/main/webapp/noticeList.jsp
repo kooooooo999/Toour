@@ -1,3 +1,19 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: kke33
+  Date: 25. 8. 1.
+  Time: 오후 4:37
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
+<head>
+    <title>Title</title>
+</head>
+<body>
+
+</body>
+</html>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -5,7 +21,7 @@
 <head>
     <title>Title</title>
     <style>
-            /* 전체 페이지 배경 및 기본 폰트 설정 */
+        /* 전체 페이지 배경 및 기본 폰트 설정 */
         body {
             font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
             background-color: #f8f9fa;
@@ -168,74 +184,72 @@
     </style>
 </head>
 <body>
-    <div id="post">
-        <div class="search-area">
-            <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
-                <input type="hidden" name="category_idx" value="2">
-                <select id="searchType" name="searchType">
-                    <option value="post_title">제목</option>
-                    <option value="post_content">내용</option>
-                    <option value="member_nickname">글쓴이</option>
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
-            </form>
-        </div>
-        <table summary="검색결과 목록">
-            <caption>검색결과 목록</caption>
-            <tbody>
-            <c:if test="${not empty ar}">
-                <c:set var="p" value="${requestScope.page}" />
-                <c:forEach items="${ar}" var="vo" varStatus="vs">
-                    <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-                    <tr>
-                        <td>${num}</td>
-                        <td style="text-align: left">
-                            <a href="Controller?type=list&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                    ${vo.post_title}
-                                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                    (<c:out value="${fn:length(vo.c_list)}"/>)
-                                </c:if>
-                            </a>
-                        </td>
-                        <td>${fn:length(vo.c_list)}</td>
-                        <td>${vo.member_nickname}</td>
-                        <td>${vo.post_star}</td>
-                        <td>${vo.post_views}</td>
-                        <td>${vo.post_created_at.substring(0,10)}</td>
-                    </tr>
-                </c:forEach>
-            </c:if>
-            </tbody>
-        </table>
+<div id="post">
+    <div class="search-area">
+        <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
+            <input type="hidden" name="category_idx" value="2">
+            <select id="searchType" name="searchType">
+                <option value="post_title">제목</option>
+                <option value="post_content">내용</option>
+            </select>
+            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+            <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
+        </form>
     </div>
-
-    <div class="paging-area">
-        <ol class="paging">
+    <table summary="검색결과 목록">
+        <caption>검색결과 목록</caption>
+        <tbody>
+        <c:if test="${not empty ar}">
             <c:set var="p" value="${requestScope.page}" />
-            <c:if test="${p.startPage < p.pagePerBlock}">
-                <li class="disable">&lt;</li>
-            </c:if>
-            <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
-            </c:if>
-            <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                <c:if test="${p.nowPage == vs.index}">
-                    <li class="now">${vs.index}</li>
-                </c:if>
-                <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
-                </c:if>
+            <c:forEach items="${ar}" var="vo" varStatus="vs">
+                <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
+                <tr>
+                    <td>${num}</td>
+                    <td style="text-align: left">
+                        <a href="Controller?type=list&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                                ${vo.post_title}
+                            <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
+                                (<c:out value="${fn:length(vo.c_list)}"/>)
+                            </c:if>
+                        </a>
+                    </td>
+                    <td>${fn:length(vo.c_list)}</td>
+                    <td>${vo.member_nickname}</td>
+                    <td>${vo.post_star}</td>
+                    <td>${vo.post_views}</td>
+                    <td>${vo.post_created_at.substring(0,10)}</td>
+                </tr>
             </c:forEach>
-            <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
+        </c:if>
+        </tbody>
+    </table>
+</div>
+
+<div class="paging-area">
+    <ol class="paging">
+        <c:set var="p" value="${requestScope.page}" />
+        <c:if test="${p.startPage < p.pagePerBlock}">
+            <li class="disable">&lt;</li>
+        </c:if>
+        <c:if test="${p.startPage >= p.pagePerBlock}">
+            <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+        </c:if>
+        <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+            <c:if test="${p.nowPage == vs.index}">
+                <li class="now">${vs.index}</li>
             </c:if>
-            <c:if test="${p.endPage >= p.totalPage}">
-                <li class="disable">&gt;</li>
+            <c:if test="${p.nowPage != vs.index}">
+                <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
             </c:if>
-        </ol>
-        <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
-    </div>
+        </c:forEach>
+        <c:if test="${p.endPage < p.totalPage}">
+            <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
+        </c:if>
+        <c:if test="${p.endPage >= p.totalPage}">
+            <li class="disable">&gt;</li>
+        </c:if>
+    </ol>
+</div>
 </body>
 
 <script>

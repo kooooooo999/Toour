@@ -8,6 +8,23 @@ public class PostVO {
 
     private String member_name;
     private String member_nickname;
+    private String file_name_original, file_name_stored;
+
+    public String getFile_name_original() {
+        return file_name_original;
+    }
+
+    public void setFile_name_original(String file_name_original) {
+        this.file_name_original = file_name_original;
+    }
+
+    public String getFile_name_stored() {
+        return file_name_stored;
+    }
+
+    public void setFile_name_stored(String file_name_stored) {
+        this.file_name_stored = file_name_stored;
+    }
 
     public String getMember_nickname() {
         return member_nickname;
