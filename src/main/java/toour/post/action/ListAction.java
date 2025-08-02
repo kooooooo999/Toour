@@ -39,6 +39,6 @@ public class ListAction implements Action {
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);
         request.setAttribute("nowPage",page.getNowPage());
-        return "list.jsp";
+        return "post/list.jsp";
     }
 }

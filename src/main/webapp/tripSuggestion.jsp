@@ -5,31 +5,31 @@
   <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
   <!DOCTYPE html>
-<style>
-  .overview {
-    width: 650px;
-    height: 120px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
-    -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
-    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
-  }
-</style>
 
   <html>
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 구석구석 - 한국관광공사</title>
-    <link rel="stylesheet" href="./css/style.css">
-<%--    <link rel="stylesheet" href="./css/header.css">--%>
-    <link rel="stylesheet" href="./css/footer.css">
+      <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+      <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+
+      <style>
+          .overview {
+              width: 650px;
+              height: 120px;
+              overflow: hidden;
+              display: -webkit-box;
+              -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
+              -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
+              text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+          }
+      </style>
 
   </head>
   <body>
 
-  <%@ include file="common/header.jsp" %>
+  <c:import url="/common/header.jsp" />
 
 
   <%--바디 영역--%>

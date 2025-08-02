@@ -46,6 +46,6 @@ public class MemListAction implements Action {
         request.setAttribute("page", page);
         request.setAttribute("nowPage", page.getNowPage());
 
-        return "admin_mem.jsp";
+        return "admin/admin_mem.jsp";
     }
 }

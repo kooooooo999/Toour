@@ -36,6 +36,6 @@ public class SaveImgAction implements Action {
             e.printStackTrace();
         }
 
-        return "saveImg.jsp";
+        return "post/saveImg.jsp";
     }
 }

@@ -32,6 +32,6 @@ public class MemViewAction implements Action {
         MemberVO vo = AdminMemberDAO.view(member_idx); //사용자가 선택한 게시물 검색
 
         request.setAttribute("vo", vo);
-        return "admin_view.jsp";
+        return "admin/admin_view.jsp";
     }
 }

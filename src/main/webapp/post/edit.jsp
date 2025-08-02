@@ -7,6 +7,10 @@
     <meta charset="UTF-8">
     <title>Insert title here</title>
     <link rel="stylesheet" href="../css/summernote-lite.css"/>
+    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+
     <style type="text/css">
         #post table {
             width:580px;
@@ -87,6 +91,8 @@
     </script>
 </head>
 <body>
+<c:import url="/common/header.jsp" />
+
 <%
     Object obj = request.getAttribute("vo");
     if(obj != null){

@@ -145,7 +145,7 @@
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
-  <a href="Controller?type=adminmemlist">👥 회원정보 관리</a>
+  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
@@ -218,7 +218,7 @@
 
     <!-- 삭제  다이얼로그 -->
     <div id = "del_dialog" title="삭제하시겠습니까?">
-      <form action="Controller" method="post">
+      <form action="AdminController" method="post">
         <p>관리자 이름 확인</p>
         <input type="text" name="confirm" id="confirm"/>
         <input type="hidden" name="type" value="adminmemdel"/>
@@ -283,7 +283,7 @@
   }
 
   function goEdit(){
-    document.getElementById("editForm").action = "Controller";
+    document.getElementById("editForm").action = "AdminController";
     document.getElementById("editForm").type.value = "adminmemedit";
     document.getElementById("editForm").submit();
   }

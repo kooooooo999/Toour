@@ -47,6 +47,6 @@ public class postSearchAction implements Action {
         request.setAttribute("searchType",searchType);
         request.setAttribute("searchValue",searchValue);
         request.setAttribute("nowPage",page.getNowPage());
-        return "list.jsp";
+        return "post/list.jsp";
     }
 }

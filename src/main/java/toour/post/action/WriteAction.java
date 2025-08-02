@@ -72,6 +72,6 @@ public class WriteAction implements Action {
                 e.printStackTrace();
             }
         }
-        return "write.jsp";
+        return "post/write.jsp";
     }
 }

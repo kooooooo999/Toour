@@ -25,7 +25,7 @@ public class EditAction implements Action {
             PostVO vo = PostDAO.getPost(post_idx);
 
             request.setAttribute("vo", vo);
-            viewpath = "edit.jsp"; // 여기서 forward되므로 여기로 넘어오는 파라미터들은 그대로 유지되어 edit.jsp로 간다.
+            viewpath = "post/edit.jsp"; // 여기서 forward되므로 여기로 넘어오는 파라미터들은 그대로 유지되어 edit.jsp로 간다.
 
         }else if(enc_type.startsWith("multpart")){
             //edit.jsp에서 값을 수정한 후 DB에 UPDATE를 수행하길 원하는 경우

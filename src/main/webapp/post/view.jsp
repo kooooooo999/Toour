@@ -9,6 +9,10 @@
   <meta charset="UTF-8">
   <title>Insert title here</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+
   <style type="text/css">
     #post table {
       width:580px;
@@ -50,7 +54,7 @@
 
 </head>
 <body>
-<%--<%@ include file="header.jsp" %>--%>
+<c:import url="/common/header.jsp" />
 <c:set var="vo" value="${requestScope.vo}"/>
 
 <div id="post">

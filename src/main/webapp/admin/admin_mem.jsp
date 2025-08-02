@@ -132,7 +132,7 @@
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
-  <a href="Controller?type=adminmemlist">👥 회원정보 관리</a>
+  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
 <div class="main-content">
@@ -153,28 +153,28 @@
       <c:set var="num" value="${p.totalCount - ((p.nowPage - 1) * p.numPerPage + vs.index)}" />
       <tr>
         <td class="no">
-          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
             <tr>
             <td>${num}</td>
           </a>
         </td>
         <td>
-          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_name}
           </a>
         </td>
         <td>
-          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_id}
           </a>
         </td>
         <td>
-          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_nickname}
           </a>
         </td>
         <td>
-          <a href="Controller?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+          <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
               ${vo.member_warning}
           </a>
         </td>

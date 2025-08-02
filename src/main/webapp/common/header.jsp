@@ -6,11 +6,11 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<link rel="stylesheet" href="./css/header.css">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<link rel="stylesheet" href="<c:url value="/css/style.css" />">
 
 <header>
-
     <div class="container header-top">
         <div class="text-right">
             <c:if test="${sessionScope.user eq null}">
@@ -72,11 +72,11 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="Controller?type=list" class="act">게시판</a>
+                <a href="<c:url value="/Controller?type=list" />" class="act">게시판</a>
                 <ul class="submenu">
-                    <li><a href="#">공지사항</a></li>
+                    <li><a href="<c:url value="/Controller?type=notice" />" class="act">공지사항</a></li>
                     <li><a href="#">건의/문의</a></li>
-                    <li><a href="#">여행후기</a></li>
+                    <li><a href="<c:url value="/Controller?type=list" />" class="act">여행후기</a></li>
                 </ul>
             </li>
 

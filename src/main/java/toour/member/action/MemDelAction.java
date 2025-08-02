@@ -15,7 +15,7 @@ public class MemDelAction implements Action {
         String cPage = request.getParameter("cPage");
 
         int cnt = AdminMemberDAO.delMem(member_idx);
-        viewPath = "Controller?type=adminmemlist&cPage="+cPage;
+        viewPath = "AdminController?type=adminmemlist&cPage="+cPage;
 
         return viewPath;
     }

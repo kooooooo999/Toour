@@ -181,9 +181,13 @@
         }
 
     </style>
-    </style>
+    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/post.css" />">
 </head>
 <body>
+<c:import url="/common/header.jsp" />
+
 <div id="post">
     <div class="search-area">
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
@@ -198,6 +202,13 @@
     </div>
     <table summary="검색결과 목록">
         <caption>검색결과 목록</caption>
+        <thead>
+            <th>번호</th>
+            <th>제목</th>
+            <th>작성자</th>
+            <th>조회수</th>
+            <th>작성일</th>
+        </thead>
         <tbody>
         <c:if test="${not empty ar}">
             <c:set var="p" value="${requestScope.page}" />
@@ -213,9 +224,7 @@
                             </c:if>
                         </a>
                     </td>
-                    <td>${fn:length(vo.c_list)}</td>
                     <td>${vo.member_nickname}</td>
-                    <td>${vo.post_star}</td>
                     <td>${vo.post_views}</td>
                     <td>${vo.post_created_at.substring(0,10)}</td>
                 </tr>

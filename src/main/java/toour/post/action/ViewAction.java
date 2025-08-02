@@ -47,6 +47,6 @@ public class ViewAction implements Action {
 
         request.setAttribute("vo", vo);
 
-        return "view.jsp";
+        return "post/view.jsp";
     }
 }

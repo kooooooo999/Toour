@@ -10,13 +10,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>대한민국 구석구석 - 한국관광공사</title>
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/header.css">
-    <link rel="stylesheet" href="../css/footer.css">
+    <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
 </head>
 <body>
-<%@ include file="../common/header.jsp" %>
-
+<c:import url="/common/header.jsp" />
 <main>
     <section class="hero-travel-guide container">
         <div class="hero-content-left">
@@ -35,7 +35,7 @@
         </div>
     </section>
     <div id="sidoDiv">
-    <jsp:include page="sido.jsp"/>
+    <jsp:include page="./sido.jsp"/>
     </div>
     <section class="travel-cockcock">
         <div class="container">

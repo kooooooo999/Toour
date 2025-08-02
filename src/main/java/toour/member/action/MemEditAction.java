@@ -22,7 +22,7 @@ public class MemEditAction implements Action {
         //DB에 저장
         int cnt = AdminMemberDAO.Re(member_idx, member_name, member_nickname, member_password, member_email, member_id);
 
-        viewPath = "Controller?type=adminmemlist&b_idx=" + member_idx + "&cPage=" + cPage;
+        viewPath = "AdminController?type=adminmemlist&b_idx=" + member_idx + "&cPage=" + cPage;
 
         return viewPath;
     }

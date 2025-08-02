@@ -36,6 +36,6 @@ public class NoticeListAction implements Action {
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);
         request.setAttribute("nowPage",page.getNowPage());
-        return "noticeList.jsp";
+        return "notice/noticeList.jsp";
     }
 }
