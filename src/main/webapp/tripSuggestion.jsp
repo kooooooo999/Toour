@@ -1,6 +1,6 @@
   <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
   <%@ page import="java.util.Date" %>
-  <%@ page import="mybatis.vo.DataVO" %>
+  <%@ page import="toour.tripsuggestion.vo.DataVO" %>
   <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
   <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -29,7 +29,7 @@
   </head>
   <body>
 
-  <%@ include file="header.jsp" %>
+  <%@ include file="common/header.jsp" %>
 
 
   <%--바디 영역--%>

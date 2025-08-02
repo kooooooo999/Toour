@@ -18,7 +18,7 @@
     </update>
 
     <!-- 여러 회원정보글 목록: 인자 3개(bname, begin, end)-->
-    <select id="mem_list" parameterType="Map" resultType="mybatis.vo.MemberVO">
+    <select id="mem_list" parameterType="Map" resultType="toour.member.vo.MemberVO">
         SELECT * FROM(
         SELECT @RN:=@RN+1 AS rnum, a.* FROM(
         SELECT * FROM member
@@ -29,14 +29,14 @@
     </select>
 
     <!-- 한 명의 회원정보 가지고 오기 -->
-    <select id="mem_view" parameterType="String" resultType="mybatis.vo.MemberVO">
+    <select id="mem_view" parameterType="String" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member
         WHERE member_idx = #{member_idx}
     </select>
 
 
     <!-- 회원정보 수정 -->
-    <update id="mem_edit" parameterType="mybatis.vo.MemberVO">
+    <update id="mem_edit" parameterType="toour.member.vo.MemberVO">
         UPDATE member
         <trim prefix="SET" suffixOverrides=",">
             member_name = #{member_name},

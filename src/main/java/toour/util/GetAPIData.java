@@ -1,6 +1,6 @@
 package toour.util;
 
-import mybatis.vo.DataVO;
+import toour.tripsuggestion.vo.DataVO;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;

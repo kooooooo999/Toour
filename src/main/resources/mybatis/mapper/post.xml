@@ -5,9 +5,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
 
-    <resultMap id="map1" type="mybatis.vo.PostVO">
+    <resultMap id="map1" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
-        <collection property="c_list" ofType="mybatis.vo.CommentVO" select="comment.list" column="post_idx"/>
+        <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
 
     <!-- 총 게시물 수를 반환하는 기능 -->

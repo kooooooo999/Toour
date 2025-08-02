@@ -1,7 +1,7 @@
 //함수가 잘 되는지 확인하기 위한 Action입니다 나중에 삭제하겠습니다(박준형)
 package toour.action;
 
-import mybatis.vo.DataVO;
+import toour.tripsuggestion.vo.DataVO;
 import toour.util.GetAPIData;
 
 import javax.servlet.http.HttpServletRequest;

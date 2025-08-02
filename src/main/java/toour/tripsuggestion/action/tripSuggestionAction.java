@@ -1,9 +1,10 @@
-package toour.action;
+package toour.tripsuggestion.action;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.tripsuggestion.vo.DataVO;
+import toour.action.Action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,20 +14,31 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-public class sidoAction implements Action {
+public class tripSuggestionAction implements Action {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) {
+    public String execute(HttpServletRequest request, HttpServletResponse response){
+
+        String viewPath = null;
+        String contentTypeid = request.getParameter("contentTypeId");
+
+        if (contentTypeid == null) {
+            System.out.println("확인");
+            viewPath = "tripSuggestion.jsp";
+        }else {
+            viewPath = "tripSuggestion_update.jsp";
+        }
 
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
-        String key = "serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D";
+        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
         String areaCode = null;
         String code = request.getParameter("areaCode");
         if (code == null) {
             areaCode = "6";
-        } else {
+        }
+        else {
             areaCode = code;
         }
         String cPage = request.getParameter("cPage");
@@ -39,21 +51,25 @@ public class sidoAction implements Action {
             Calendar now = Calendar.getInstance();
             startDate = sdf.format(now.getTime());
         }
-        String contentType = request.getParameter("contentTypeId");
-        if (contentType == null) {
+        String contentType = null;
+        String type = request.getParameter("contentTypeId");
+        if (type == null) {
             contentType = "12";
+        }else {
+            contentType = type;
         }
+        System.out.println(contentType);
 
         String cat_1 = request.getParameter("cat1");
         String cat_2 = request.getParameter("cat2");
         String cat_3 = request.getParameter("cat3");
-        if (cat_1 == null) {
+        if(cat_1 == null){
             cat_1 = "A01";
         }
-        if (cat_2 == null) {
+        if(cat_2 == null){
             cat_2 = "A0101";
         }
-        if (cat_3 == null) {
+        if(cat_3 == null){
             cat_3 = "A01010500";
         }
 
@@ -66,14 +82,15 @@ public class sidoAction implements Action {
         sb.append(contentType);
         sb.append("&areaCode=");
         sb.append(areaCode);
-        sb.append("&cat1=");
-        sb.append(cat_1);
-        sb.append("&cat2=");
-        sb.append(cat_2);
-        sb.append("&cat3=");
-        sb.append(cat_3);
-        sb.append("&_type=xml&numOfRows=10&pageNo=");
+//        sb.append("&cat1=");
+//        sb.append(cat_1);
+//        sb.append("&cat2=");
+//        sb.append(cat_2);
+//        sb.append("&cat3=");
+//        sb.append(cat_3);
+        sb.append("&_type=xml&numOfRows=5&pageNo=");
         sb.append(cPage);
+        System.out.println(sb.toString());
 
         try {
             URL url1 = new URL(sb.toString());
@@ -86,7 +103,7 @@ public class sidoAction implements Action {
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
-            DataVO[] ar = new DataVO[item_list.size()];
+            DataVO[] ar =  new DataVO[item_list.size()];
             int i = 0;
             for (Element item : item_list) {
                 String title = item.getChildText("title"); //자식 태그 안의 문자열
@@ -99,9 +116,9 @@ public class sidoAction implements Action {
                 String tel = item.getChildText("tel");
                 String eventstartdate = item.getChildText("eventstartdate");
                 String eventenddate = item.getChildText("eventenddate");
-                String cat1 = item.getChildText("cat1");
-                String cat2 = item.getChildText("cat2");
-                String cat3 = item.getChildText("cat3");
+//                String cat1 = item.getChildText("cat1");
+//                String cat2 = item.getChildText("cat2");
+//                String cat3 = item.getChildText("cat3");
                 String contentTypeId = item.getChildText("contenttypeid");
                 String contentId = item.getChildText("contentid");
 
@@ -123,15 +140,14 @@ public class sidoAction implements Action {
                 for (Element item2 : item_list2) {
                     overview = item2.getChildText("overview");
                 }
-                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, contentTypeId, contentId, overview);
+                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel,contentTypeId, contentId, overview);
                 ar[i++] = vo;
             }
             request.setAttribute("ar", ar);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        return "sidoInfo.jsp";
+        System.out.println(viewPath);
+        return viewPath;
     }
-
 }
