@@ -27,7 +27,8 @@
     <div class="container header-main flex-between">
         <a href="#" class="logo">👋🏻 toour</a>
         <div class="search-area">
-            <input type="text" placeholder="어디로 떠나고 싶으신가요?" />
+            <input id="search_header" type="text" placeholder="어디로 떠나고 싶으신가요?"
+                  />
             <i class="fas fa-search"></i>
         </div>
 
@@ -82,3 +83,25 @@
         </ul>
     </nav>
 </header>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+    function goSearch(str) {
+        location.href = "Controller?type=headSearch";
+    }
+
+    $("#search_header").on('keypress',function (e) {//keydown은 안됨 한박자 늦게 인식
+        //사용자가 입력한 아이디가 u_id에 입력되므로 그곳에 있는 값(value)을 가져온다
+        let str = $(this).val();//this는 #u_id
+        //console.log(str);
+        //str의 값에서 공백이 있는지 없는지 판단하고 유효성 검사 해야함-pass(정규표현식 쓰자)
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            if (str.trim().length > 0 && e.keyCode === 'Enter') {
+                goSearch(str);
+            }
+        }
+
+    });
+
+</script>

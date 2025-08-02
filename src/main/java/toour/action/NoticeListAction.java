@@ -1,25 +1,20 @@
 package toour.action;
 
-import mybatis.vo.MemberVO;
 import mybatis.vo.PostVO;
-import toour.dao.MemberDAO;
 import toour.dao.PostDAO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class ListAction implements Action {
+public class NoticeListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String category_idx = request.getParameter("category_idx");
-        if (category_idx == null)
-            category_idx = "2";//
-        String member_idx = request.getParameter("member_idx");
-        int totalCount = PostDAO.getTotalCount(category_idx);
-
+        String category_idx=request.getParameter("category_idx");
+        if(category_idx==null)
+            category_idx="1";
+        int totalCount= PostDAO.getTotalCount(category_idx);
         Paging page = new Paging(10,5);
-
         page.setTotalCount(totalCount);
 
         String cPage = request.getParameter("cPage");
@@ -34,12 +29,12 @@ public class ListAction implements Action {
 
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
 
-
+        
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);
         request.setAttribute("nowPage",page.getNowPage());
-        return "list.jsp";
+        return "noticeList.jsp";
     }
 }

@@ -39,8 +39,9 @@
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT * FROM post
-        WHERE post_idx = #{post_idx}
+        SELECT  * FROM post p inner join file f
+        WHERE p.post_idx = #{post_idx}
+        group by p.post_idx
     </select>
 
     <!-- 게시글 삭제 -->
