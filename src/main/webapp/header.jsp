@@ -43,7 +43,7 @@
                 <a href="Controller?type=tripSuggestion" class="act">관광지</a>
                 <ul class="submenu">
                     <li><a href="#">검색</a> </li>
-                    <li><a href="#">관광</a> </li>
+                    <li><a href="Controller?type=tripSuggestion">테마</a> </li>
                     <li><a href="#">관광</a> </li>
                     <li><a href="#">관광</a> </li>
                     <li><a href="#">관광</a> </li>

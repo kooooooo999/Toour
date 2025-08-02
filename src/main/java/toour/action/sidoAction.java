@@ -123,7 +123,7 @@ public class sidoAction implements Action {
                 for (Element item2 : item_list2) {
                     overview = item2.getChildText("overview");
                 }
-                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, cat1, cat2, cat3, contentTypeId, contentId, overview);
+                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, contentTypeId, contentId, overview);
                 ar[i++] = vo;
             }
             request.setAttribute("ar", ar);
