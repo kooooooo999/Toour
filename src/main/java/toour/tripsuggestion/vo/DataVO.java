@@ -1,8 +1,10 @@
 package toour.tripsuggestion.vo;
 
 public class DataVO {
-    private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
-    cat1, cat2, cat3, cat1name,cat2name,cat3name, contentTypeId,contentId, overview, areacode,sigungucode,sigunguname;
+    private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2,
+            tel, eventstartdate, eventenddate, cat1, cat2, cat3, cat1name,
+            cat2name,cat3name, contentTypeId,contentId, overview, areacode,
+            sigungucode,sigunguname;
 
     public  DataVO(){
 
