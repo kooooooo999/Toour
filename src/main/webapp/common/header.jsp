@@ -14,8 +14,8 @@
     <div class="container header-top">
         <div class="text-right">
             <c:if test="${sessionScope.user eq null}">
-                <a href="Controller?type=movelogin">로그인</a>
-                <a href="Controller?type=signup">회원가입</a>
+                <a href="Controller?type=moveLogin">로그인</a>
+                <a href="Controller?type=moveSignup">회원가입</a>
             </c:if>
             <c:if test="${sessionScope.user ne null}">
                 <a href="Controller?type=login">로그아웃</a>
@@ -25,7 +25,7 @@
         </div>
     </div>
     <div class="container header-main flex-between">
-        <a href="#" class="logo">👋🏻 toour</a>
+        <a href="Controller" class="logo">👋🏻 toour</a>
         <div class="search-area">
             <input id="search_header" type="text" placeholder="어디로 떠나고 싶으신가요?"
                   />
@@ -37,7 +37,7 @@
 
         <ul class = "menu">
             <li class="dropdown">
-                <a href="#" class = "act">홈</a>
+                <a href="Controller" class="act">홈</a>
             </li>
             <li class="dropdown">
                 <a href="Controller?type=tripSuggestion" class="act">관광지</a>

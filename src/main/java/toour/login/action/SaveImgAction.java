@@ -1,4 +1,4 @@
-package toour.post.action;
+package toour.login.action;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -28,12 +28,19 @@ public class SaveImgAction implements Action {
             // 정확한 이름을 알아내야 한다.
             File f = mr.getFile("upload");
             String file_name_stored = null;
+
             if( f != null ) {
                 file_name_stored = f.getName();//저장된 파일명!!!!!
                 request.setAttribute("f_name", file_name_stored);
             }
         } catch (Exception e) {
             e.printStackTrace();
+            try {
+                response.setContentType("text/plain;charset=utf-8");
+                response.getWriter().print("에러 발생: " + e.getMessage());
+            } catch(Exception ex) {
+                ex.printStackTrace();
+            }
         }
 
         return "post/saveImg.jsp";
