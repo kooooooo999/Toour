@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <!DOCTYPE html>
 <html>
@@ -7,9 +8,14 @@
   <title>Insert title here</title>
   <!-- 외부 CSS연결 -->
   <link rel="stylesheet" href="<c:url value="/css/post.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">  <link rel="stylesheet" href="../css/summernote-lite.css"/>
+  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+
+  <link rel="stylesheet" href="../css/summernote-lite.css"/>
+
   <link rel="stylesheet" href="<c:url value="/css/header.css" />">
   <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+
   <style type="text/css">
     #post table {
       width:580px;
@@ -50,44 +56,7 @@
 
   </style>
   <script type="text/javascript">
-    function sendData(){
-      /*for(var i=0 ; i<document.forms[0].elements.length ; i++){
-        if(document.forms[0].elements[i].value == ""){
-          alert(document.forms[0].elements[i].name+
-                  "를 입력하세요");
-          document.forms[0].elements[i].focus();
-          return;//수행 중단
-        }
-      }*/
 
-//		document.forms[0].action = "test.jsp";
-
-      let title = $("#post_title").val();
-      if(title.trim().length < 1){
-        alert("제목을 입력하세요");
-        $("#post_title").val("");
-        $("#post_title").focus();
-        return;
-      }
-
-      let writer = $("#member_idx").val();
-      if(writer.trim().length < 1){
-        alert("글쓴이를 입력하세요");
-        $("#member_idx").val("");
-        $("#member_idx").focus();
-        return;
-      }
-
-      let content= $("#post_content").val();
-      if(content.trim().length < 1){
-        alert("내용을 입력하세요");
-        $("#post_content").val("");
-        $("#post_content").focus();
-        return;
-      }
-
-      document.forms[0].submit();
-    }
   </script>
 </head>
 <body>
@@ -125,9 +94,9 @@
       -->
       <tr>
         <td colspan="2">
-          <input type="button" value="보내기" onclick="sendData()"/>
-          <input type="button" value="다시"/>
-          <input type="button" value="목록"/>
+          <input type="button" value="등록" onclick="sendData()"/>
+          <input type="reset" value="다시" onclick="resetForm()"/>
+          <input type="button" value="목록" onclick="location.href='Controller?type=list'"/>
         </td>
       </tr>
       </tbody>
@@ -135,7 +104,7 @@
   </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
 <script>
@@ -150,11 +119,19 @@
           // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
           for(let i=0; i<files.length; i++)
             sendImg(files[i], editor);
+          console.log(files.length);
         }
       }
     });
 
   });
+
+  function resetForm() {
+    // form 필드 초기화
+    document.forms[0].reset();
+    // summernote 에디터 내용 초기화
+    $('#post_content').summernote('reset');
+  }
 
   function sendImg(file, editor) {
     //서버로 비동기식 통신을 수행하기 위해 준비한다.
@@ -172,14 +149,37 @@
       contentType: false,
       processData: false,
       dataType: "json"
-    }).done(function (res){
-      // 요청 성공시 수행
-      // 분명 서버의 saveImg.jsp에서 응답하는 json이
-      // res로 들어온다. 그 json에 img_url이라는 이름으로
-      // 이미지의 경로를 보내도록 되어 있다. 그것을 받아
-      // editor에 img태그를 넣어주면 된다.
+    }).done(function(res) {
       $("#post_content").summernote("editor.insertImage", res.img_url);
     });
+  }
+  function sendData(){
+
+    let title = $("#post_title").val();
+    if(title.trim().length < 1){
+      alert("제목을 입력하세요");
+      $("#post_title").val("");
+      $("#post_title").focus();
+      return;
+    }
+
+    let writer = $("#member_idx").val();
+    if(writer.trim().length < 1){
+      alert("글쓴이를 입력하세요");
+      $("#member_idx").val("");
+      $("#member_idx").focus();
+      return;
+    }
+
+    let content= $("#post_content").val();
+    if(content.trim().length < 1){
+      alert("내용을 입력하세요");
+      $("#post_content").val("");
+      $("#post_content").focus();
+      return;
+    }
+
+    document.forms[0].submit();
   }
 </script>
 </body>
