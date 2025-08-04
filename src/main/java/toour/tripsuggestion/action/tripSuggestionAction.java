@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.tripsuggestion.vo.DataVO;
 import toour.action.Action;
+import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -34,6 +35,9 @@ public class tripSuggestionAction implements Action {
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
         String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
         String areaCode = null;
+
+        Paging page = new Paging(5,5);
+
         String code = request.getParameter("areaCode");
         if (code == null) {
             areaCode = "6";
@@ -90,7 +94,6 @@ public class tripSuggestionAction implements Action {
 //        sb.append(cat_3);
         sb.append("&_type=xml&numOfRows=5&pageNo=");
         sb.append(cPage);
-        System.out.println(sb.toString());
 
         try {
             URL url1 = new URL(sb.toString());
@@ -101,6 +104,7 @@ public class tripSuggestionAction implements Action {
             Document doc = builder.build(conn1.getInputStream());
             Element root = doc.getRootElement();
             Element body = root.getChild("body");
+
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
             DataVO[] ar =  new DataVO[item_list.size()];
@@ -140,14 +144,30 @@ public class tripSuggestionAction implements Action {
                 for (Element item2 : item_list2) {
                     overview = item2.getChildText("overview");
                 }
+
+                if (cPage == null) {
+                    page.setNowPage(1);
+                }else {
+                    int nowPage = Integer.parseInt(cPage);
+                    page.setNowPage(nowPage);
+                }
+
+                String totalCount = body.getChildText("totalCount");
+                System.out.println(totalCount);
+
+                page.setTotalCount(Integer.parseInt(totalCount));
+//                page.setTotalPage(Integer.parseInt(totalCount));
+
                 DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel,contentTypeId, contentId, overview);
                 ar[i++] = vo;
             }
             request.setAttribute("ar", ar);
+            request.setAttribute("page", page); //page에 필요한 데이터들이 다 저장되어 있다
+            request.setAttribute("nowPage", page.getNowPage());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(viewPath);
+
         return viewPath;
     }
 }

@@ -9,7 +9,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>대한민국 구석구석 - 한국관광공사</title>
+    <title>👋🏻toour</title>
     <link rel="stylesheet" href="<c:url value="/css/style.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
