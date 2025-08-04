@@ -127,7 +127,7 @@
 <body>
 
 <div class="sidebar">
-  <a href="admin_main.jsp">🏠 HOME</a>
+  <a href="AdminController">🏠 HOME</a>
   <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
@@ -185,7 +185,7 @@
 
   <div class="pagination">
     <c:if test="${p.startPage > 1}">
-      <a href="Controller?type=list&cPage=${p.startPage - 1}">&lt;</a>
+      <a href="AdminController?type=list&cPage=${p.startPage - 1}">&lt;</a>
     </c:if>
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
       <c:choose>
@@ -193,12 +193,12 @@
           <span class="current">${vs.index}</span>
         </c:when>
         <c:otherwise>
-          <a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a>
+          <a href="AdminController?type=list&cPage=${vs.index}">${vs.index}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
     <c:if test="${p.endPage < p.totalPage}">
-      <a href="Controller?type=list&cPage=${p.endPage + 1}">&gt;</a>
+      <a href="AdminController?type=list&cPage=${p.endPage + 1}">&gt;</a>
     </c:if>
   </div>
 

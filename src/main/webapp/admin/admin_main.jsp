@@ -46,7 +46,7 @@
 <div class="sidebar">
 
     <!-- 메뉴 -->
-    <a href="admin_main.jsp">🏠 HOME</a>
+    <a href="AdminController">🏠 HOME</a>
     <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
     <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
     <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>

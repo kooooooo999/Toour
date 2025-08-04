@@ -14,7 +14,7 @@
     <div class="container header-top">
         <div class="text-right">
             <c:if test="${sessionScope.user eq null}">
-                <a href="Controller?type=login">로그인</a>
+                <a href="Controller?type=movelogin">로그인</a>
                 <a href="Controller?type=signup">회원가입</a>
             </c:if>
             <c:if test="${sessionScope.user ne null}">

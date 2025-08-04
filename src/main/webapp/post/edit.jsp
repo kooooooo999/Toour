@@ -1,4 +1,4 @@
-<%@ page import="toour.post.vo.PostVO" %>
+1 <%@ page import="toour.post.vo.PostVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>

@@ -19,6 +19,8 @@ public class MemEditAction implements Action {
         String member_email = request.getParameter("member_email");
         String member_id = request.getParameter("member_id");
 
+        System.out.println(member_name);
+
         //DB에 저장
         int cnt = AdminMemberDAO.Re(member_idx, member_name, member_nickname, member_password, member_email, member_id);
 
