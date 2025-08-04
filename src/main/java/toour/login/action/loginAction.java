@@ -27,16 +27,16 @@ public class loginAction implements Action {
                     String hash_pw =Hash.getHash(salt+u_pw);
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
-                        viewPath = "index.jsp";
+                        viewPath = "MainIndex/index.jsp";
                         request.getSession().setAttribute("user",mvo);
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
-                        viewPath ="login.jsp";
+                        viewPath ="member/login.jsp";
                 }else
                     //입력한 id가 db에 없을 때
-                    viewPath ="login.jsp";
+                    viewPath ="MainIndex/index.jsp";
             }else {
-                viewPath="login.jsp";
+                viewPath="MainIndex/index.jsp";
             }
         }else {
             //로그아웃 눌렀을 때
