@@ -4,6 +4,7 @@
   <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
   <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
   <!DOCTYPE html>
 
   <html>
@@ -13,6 +14,8 @@
     <title>👋🏻toour</title>
       <link rel="stylesheet" href="<c:url value="/css/header.css" />">
       <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+      <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
       <style>
           .overview {
@@ -98,22 +101,25 @@
 
   <%--바디 영역--%>
 
-  <h2 class="tag">#테마를 선택</h2>
+  <h2 class="tag">#선택</h2>
 
-  <div id="content_check">
-      <a href="#" class="contentTypeId" data-value="12">관광지</a>
-      <a href="#" class="contentTypeId" data-value="14">문화시설</a>
-      <a href="#" class="contentTypeId" data-value="15">축제공연/행사</a>
-      <a href="#" class="contentTypeId" data-value="25">여행코스</a>
-      <a href="#" class="contentTypeId" data-value="28">레포츠</a>
-      <a href="#" class="contentTypeId" data-value="32">숙박</a>
-      <a href="#" class="contentTypeId" data-value="38">쇼핑</a>
-      <a href="#" class="contentTypeId" data-value="39">음식점</a>
-  </div>
+  <div id="selectareaCode">
   <ol>
       <li>
+      <select id="contentTypeId">
+          <option value="12" class="contentTypeId">관광지</option>
+          <option value="14" class="contentTypeId">문화시설</option>
+          <option value="15" class="contentTypeId">축제공연/행사</option>
+          <option value="25" class="contentTypeId">여행코스</option>
+          <option value="28" class="contentTypeId">레포츠</option>
+          <option value="32" class="contentTypeId">숙박</option>
+          <option value="38" class="contentTypeId">쇼핑</option>
+          <option value="39" class="contentTypeId">음식점</option>
+      </select>
+      </li>
+      <li>
           <select id="areaCode" name="areaCode">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 도/시 ::</option>
               <option value="1">서울</option>
               <option value="2">인천</option>
               <option value="3">대전</option>
@@ -134,93 +140,81 @@
       </li>
       <li>
           <select id="sigunguCode" name="sigunguCode">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 구 ::</option>
           </select>
       </li>
       <li>
           <select id="cat1" name="cat1">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 선택 ::</option>
               <option value="A01">자연</option>
               <option value="A02">인문(문화/예술/역사)</option>
           </select>
       </li>
       <li>
           <select id="cat2" name="cat2">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 선택 ::</option>
           </select>
       </li>
       <li>
           <select id="cat3" name="cat3">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 선택 ::</option>
           </select>
       </li>
       <li>
-          <button type="button">검색</button>
+          <div class="searchBtn">
+          <button type="button" id="searchBt">검색</button>
+          </div>
       </li>
   </ol>
-
+  </div>
 
   <div id="main">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
       <c:if test="${count.index < 5}">
-      <div class="item">
-          <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid != 25}">
-        <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-            <div class="text ellipsis">
-       <p class="title"><a href="#">${Dvo.title}</a></p>
-        <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
-        <p class="overview"><a href="#">${Dvo.overview}</a></p>
+        <img src="${Dvo.firstimage}" class="image">
+          <i class="fa-solid fa-heart"></i>
+            <div class="text ellipsis item">
+       <p class="title"><a href="Controller?type=tripDetails">${Dvo.title}</a></p>
+        <p class="addr1"><a href="Controller?type=tripDetails">[${Dvo.addr1}]</a></p>
+        <p class="overview"><a href="Controller?type=tripDetails">${Dvo.overview}</a></p>
             </div>
-          </c:if>
-
-          <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid == 25}">
-              <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-              <div class="text ellipsis">
-                  <p class="title"><a href="#">${Dvo.title}</a></p>
-                  <p class="overview"><a href="#">${Dvo.overview}</a></p>
-              </div>
-          </c:if>
-
-      </div>
       </c:if>
     </c:forEach>
   </div>
 
   <div id="page">
 
-              <ol class="paging">
-                  <c:set var="p" value="${requestScope.page}" scope="page"/>
+      <ol class="paging">
+          <c:set var="p" value="${requestScope.page}" scope="page"/>
 
-                  <c:if test="${p.startPage < p.pagePerBlock}">
+          <c:if test="${p.startPage < p.pagePerBlock}">
 
-                      <li class="disable">&lt;</li>
-                  </c:if>
+              <li class="disable">&lt;</li>
+          </c:if>
 
-                  <c:if test="${p.startPage >= p.pagePerBlock}">
+          <c:if test="${p.startPage >= p.pagePerBlock}">
 
-                      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
-                  </c:if>
+              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
+          </c:if>
 
-                  <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                      <c:if test="${p.nowPage == vs.index}">
-                          <li class="current">${vs.index}</li>
-                      </c:if>
-                      <c:if test="${p.nowPage != vs.index}">
-                          <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
-                      </c:if>
-                  </c:forEach>
+          <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+              <c:if test="${p.nowPage == vs.index}">
+                  <li class="current">${vs.index}</li>
+              </c:if>
+              <c:if test="${p.nowPage != vs.index}">
+                  <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
+              </c:if>
+          </c:forEach>
 
-                  <c:if test="${p.endPage < p.totalPage}">
+          <c:if test="${p.endPage < p.totalPage}">
 
-                      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
-                  </c:if>
-                  <c:if test="${p.endPage >= p.totalPage}">
-                      <li class="disable">&gt;</li>
-                  </c:if>
+              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
+          </c:if>
+          <c:if test="${p.endPage >= p.totalPage}">
+              <li class="disable">&gt;</li>
+          </c:if>
 
-              </ol>
+      </ol>
   </div>
 
   <footer>
@@ -281,7 +275,6 @@
           integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
       $(function (){
-      //contentTypeId = 12 관광지 로 기본선택 되어있기
           $("#areaCode").blur(function () {
 
               let areaCode = $("#areaCode").val();
@@ -305,7 +298,7 @@
                       data: {cat1: cat1}
                   }).done(function (res) {
                       $("#cat2").html(res);
-                      $("#cat3").html("<option value='0'>::선택하시오::</option>");
+                      $("#cat3").html("<option value='0'>:: 선택 ::</option>");
 
                   });
               }
@@ -326,9 +319,9 @@
           });
       });
 
-      $(".contentTypeId").on("click",function (value){
-          value.preventDefault();
-          let contentTypeId = $(this).data("value");
+      $("#searchBt").on("click",function (){
+
+          let contentTypeId = $("#contentTypeId").val();
           let areaCode = $("#areaCode").val();
           let sigunguCode = $("#sigunguCode").val();
           let cat1 = $("#cat1").val();

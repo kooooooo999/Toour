@@ -30,8 +30,7 @@ public class tripSuggestionAction implements Action {
         String cPage = request.getParameter("cPage");
 
         if (contentTypeid == null) {
-            System.out.println("확인");
-
+            contentTypeid = "12";
             viewPath = "tripSuggestion.jsp";
         } else {
             viewPath = "tripSuggestion_update.jsp";
@@ -42,19 +41,15 @@ public class tripSuggestionAction implements Action {
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
         String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
 
-
         Paging page = new Paging(5, 5);
 
-        String code = request.getParameter("areaCode");
-        if (code == null) {
-            areaCode = "6";
-            if (areaCode == null) {
+       if (areaCode == null) {
                 areaCode = "1";
             }
 
-            if (cPage == null) {
+            if (cPage == null)
                 cPage = "1";
-            }
+
 //        String startDate = request.getParameter("startDate");
 //        if (startDate == null) {
 //            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
@@ -102,7 +97,8 @@ public class tripSuggestionAction implements Action {
                 Document doc = builder.build(conn1.getInputStream());
                 Element root = doc.getRootElement();
                 Element body = root.getChild("body");
-
+                Element totalCount = body.getChild("totalCount");
+                String totalCountStr = totalCount.getText();
                 Element items = body.getChild("items");
                 List<Element> item_list = items.getChildren("item");
                 DataVO[] ar = new DataVO[item_list.size()];
@@ -123,7 +119,7 @@ public class tripSuggestionAction implements Action {
                     String voCat3 = item.getChildText("cat3");
                     String voContentTypeid = item.getChildText("contenttypeid");
                     String voContentid = item.getChildText("contentid");
-
+                    System.out.println(sb.toString());
                     StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
                     sb2.append("&_type=xml&contentId=");
                     sb2.append(voContentid);
@@ -134,23 +130,28 @@ public class tripSuggestionAction implements Action {
                     SAXBuilder builder2 = new SAXBuilder();
                     Document doc2 = builder2.build(conn2.getInputStream());
                     Element root2 = doc2.getRootElement();
+                    System.out.println("root2 : " + root2.getName());
                     Element body2 = root2.getChild("body");
+                    System.out.println("body2 : " + body2.getName());
                     Element items2 = body2.getChild("items");
+                    System.out.println("items2 : " + items2.getName());
                     List<Element> item_list2 = items2.getChildren("item");
                     String overview = null;
                     for (Element item2 : item_list2) {
                         overview = item2.getChildText("overview");
                     }
                     DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, voContentTypeid, voContentid, overview);
+                    page.setTotalCount(Integer.parseInt(totalCountStr));
+                    page.setNowPage(Integer.parseInt(cPage));
 
                     ar[i++] = vo;
                 }
                 request.setAttribute("dataAr", ar);
+                request.setAttribute("page", page);
             } catch (Exception e) {
                 e.printStackTrace();
             }
 
-        }
         return viewPath;
     }
 

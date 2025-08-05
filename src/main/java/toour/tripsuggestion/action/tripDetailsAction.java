@@ -1,12 +1,14 @@
-package toour.action;
+package toour.tripsuggestion.action;
+
+import toour.action.Action;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class contentTypeAction implements Action{
-
+public class tripDetailsAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        return "";
+        request.getAttribute("dataAr");
+        return "tripDetails.jsp";
     }
 }
