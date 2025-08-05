@@ -3,9 +3,15 @@
 <html>
 <head id="head">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../css/sido.css">
+    <link rel="stylesheet" type="text/css" href="./css/sido.css">
     <style id="style">
-        #clickSido{
+        #wrap{
+            /*border: 1px solid #000;*/
+            display: flex;
+            position: relative;
+            height: 600px;
+        }
+        #city{
             display: inline-block;
             width: 500px;
             height: 600px;
@@ -17,17 +23,23 @@
                 background-image: url("images/${param.imageChange}.png");
             </c:if>
             background-repeat: no-repeat;
-            position: relative;
-            left: 250px;
+            position: absolute;
+            left: 300px;
         }
         #sidoInfo{
             display: inline-block;
+            /*border: 1px solid #000;*/
+            width: 500px;
+            height: 600px;
+            position: absolute;
+            left: 880px;
         }
     </style>
 </head>
 <body>
-<article>
-        <div id="clickSido">
+<article style="height: 600px">
+    <div id="wrap">
+        <div id="city">
             <!-- 서울 : 1, 인천 : 2, 대전 : 3, 대구 : 4, 광주 : 5, 부산 : 6, 울산 : 7, 경기 : 31,
             강원 : 32, 충북 : 33, 충남 : 34, 경북 : 35, 경남 : 36, 전북 : 37, 전남 : 38, 제주 : 39 -->
             <p class="common gyeonggi">경기</p>
@@ -63,7 +75,8 @@
             <p class="common jeju">제주</p>
             <a href="javascript:clickSido('39')" class="common jeju">제주</a>
         </div>
-    <div id="sidoInfo"></div>
+        <div id="sidoInfo"></div>
+    </div>
 </article>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>

@@ -34,7 +34,7 @@ public class loginAction implements Action {
                         viewPath ="member/login.jsp";
                 }else
                     //입력한 id가 db에 없을 때
-                    viewPath ="MainIndex/index.jsp";
+                    viewPath ="member/login.jsp";
             }else {
                 viewPath="MainIndex/index.jsp";
             }

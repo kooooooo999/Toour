@@ -131,16 +131,12 @@
     #del_dialog form .button-group {
       text-align: right;
     }
-
-
-
-
   </style>
 </head>
 <body>
 
 <div class="sidebar">
-  <a href="admin_main.jsp">🏠 HOME</a>
+  <a href="AdminController">🏠 HOME</a>
   <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
@@ -150,9 +146,13 @@
 
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
 <div class="main-content">
+
   <h1>회원정보 관리</h1>
   <div class="form-container">
-    <form action="Controller" method="post">
+      <form id = "editform" name="editform" action="AdminController" method="post">
+        <input type="hidden" name="type" value="adminmemedit">
+        <input type="hidden" name="member_idx" value="${vo.member_idx}">
+        <input type="hidden" name="cPage" value="${param.cPage}">
 
       <div class="form-group">
         <label for="name">이름</label>
@@ -187,7 +187,7 @@
       <div class="form-actions">
         <input type="button" value="수정" onclick="openEdit()"/>
         <input type="button" value="탈퇴" onclick="openDel()"/>
-        <input type="button" value="목록" onclick="location.href='Controller?type=adminmemlist'">
+        <input type="button" value="목록" onclick="location.href='AdminController?type=adminmemlist'">
       </div>
     </form>
 
@@ -204,21 +204,15 @@
 
     <!-- 수정 다이얼로그 -->
     <div id = "edit_dialog" title = "수정하시겠습니까?">
-      <form id = "editform" action="Controller" method="post">
-        <input type="hidden" name="type" value="adminmemedit">
-        <input type="hidden" name="member_idx" value="${vo.member_idx}">
-        <input type="hidden" name="cPage" value="${param.cPage}">
-
         <div class="button-group">
         <button type="button" onclick="goEdit(this.form)">수정</button>
         <button type="button" id = "member_edit_cancel">취소</button>
         </div>
-      </form>
     </div>
 
     <!-- 삭제  다이얼로그 -->
     <div id = "del_dialog" title="삭제하시겠습니까?">
-      <form action="AdminController" method="post">
+      <form id = "Delform" action="AdminController" method="post">
         <p>관리자 이름 확인</p>
         <input type="text" name="confirm" id="confirm"/>
         <input type="hidden" name="type" value="adminmemdel"/>
@@ -226,11 +220,10 @@
         <input type="hidden" name="cPage" value="${param.cPage}"/>
 
         <div class="button-group">
-        <button type="button" onclick="goDel(this.form)">삭제</button>
+        <button type="button" onclick="goDel()">삭제</button>
         <button type="button" id="member_del_cancel">취소</button>
         </div>
       </form>
-
     </div>
   </div>
 </div>
@@ -268,13 +261,23 @@
 
 
     })
-  function goDel(frm){
+
+  function goDel(){
+
+    let frm = document.getElementById("Delform");
   let confirm = $("#confirm").val().trim();
-  let member_type = ${vo.member_type}
-  if(confirm.trim() != "") {
-    alert("이름을 확인해주세요.");
-    $("#title").val("");
-    $("#title").focus();
+  let member_type = "${vo.member_type}";
+  let member_id = "${vo.member_id}";
+
+
+    console.log("member_type:", member_type);
+    console.log("member_id:", member_id);
+    console.log("confirm 입력값:", confirm);
+
+    if(parseInt(member_type,10) !== 0 || confirm !== member_id) {
+    alert("아이디를 확인해주세요.");
+    $("#confirm").val("");
+    $("#confirm").focus();
     return
   }
   else{
@@ -283,9 +286,17 @@
   }
 
   function goEdit(){
-    document.getElementById("editForm").action = "AdminController";
-    document.getElementById("editForm").type.value = "adminmemedit";
-    document.getElementById("editForm").submit();
+    if($("#name").val().trim().length<1){
+      alert("제목을 입력하세요");
+      $("#name").val("")
+      $("#name").focus()
+      return
+    }
+    else {
+      document.editform.action = "AdminController";
+      document.editform.type.value = "adminmemedit";
+      document.editform.submit();
+    }
   }
 
 </script>

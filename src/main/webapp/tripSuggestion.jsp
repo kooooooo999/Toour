@@ -110,9 +110,58 @@
       <a href="#" class="contentTypeId" data-value="38">쇼핑</a>
       <a href="#" class="contentTypeId" data-value="39">음식점</a>
   </div>
+  <ol>
+      <li>
+          <select id="areaCode" name="areaCode">
+              <option value="0">::선택하시오::</option>
+              <option value="1">서울</option>
+              <option value="2">인천</option>
+              <option value="3">대전</option>
+              <option value="4">대구</option>
+              <option value="5">광주</option>
+              <option value="6">부산</option>
+              <option value="7">울산</option>
+              <option value="31">경기도</option>
+              <option value="32">강원도</option>
+              <option value="33">충청북도</option>
+              <option value="34">충청남도</option>
+              <option value="35">경상북도</option>
+              <option value="36">경상남도</option>
+              <option value="37">전라북도</option>
+              <option value="38">전라남도</option>
+              <option value="39">제주도</option>
+          </select>
+      </li>
+      <li>
+          <select id="sigunguCode" name="sigunguCode">
+              <option value="0">::선택하시오::</option>
+          </select>
+      </li>
+      <li>
+          <select id="cat1" name="cat1">
+              <option value="0">::선택하시오::</option>
+              <option value="A01">자연</option>
+              <option value="A02">인문(문화/예술/역사)</option>
+          </select>
+      </li>
+      <li>
+          <select id="cat2" name="cat2">
+              <option value="0">::선택하시오::</option>
+          </select>
+      </li>
+      <li>
+          <select id="cat3" name="cat3">
+              <option value="0">::선택하시오::</option>
+          </select>
+      </li>
+      <li>
+          <button type="button">검색</button>
+      </li>
+  </ol>
+
 
   <div id="main">
-    <c:forEach var="Dvo" items="${requestScope.ar}" varStatus="count">
+    <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
       <c:if test="${count.index < 5}">
       <div class="item">
           <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
@@ -233,19 +282,78 @@
   <script>
       $(function (){
       //contentTypeId = 12 관광지 로 기본선택 되어있기
+          $("#areaCode").blur(function () {
+
+              let areaCode = $("#areaCode").val();
+              if(areaCode!=0) {
+                  $.ajax({
+                      url: "Controller?type=area",
+                      method: "POST",
+                      data: {areaCode: areaCode}
+                  }).done(function (res) {
+                      $("#sigunguCode").html(res);
+                  });
+              }
+          });
+
+          $("#cat1").blur(function (){
+              let cat1 = $("#cat1").val();
+              if(cat1!= 0) {
+                  $.ajax({
+                      url: "Controller?type=area",
+                      method: "POST",
+                      data: {cat1: cat1}
+                  }).done(function (res) {
+                      $("#cat2").html(res);
+                      $("#cat3").html("<option value='0'>::선택하시오::</option>");
+
+                  });
+              }
+          });
+
+          $("#cat2").blur(function (){
+              let cat1 = $("#cat1").val();
+              let cat2 = $("#cat2").val();
+              if(cat2!=0 && cat3!=0) {
+                  $.ajax({
+                      url: "Controller?type=area",
+                      method: "POST",
+                      data: {cat1: cat1,cat2: cat2}
+                  }).done(function (res) {
+                      $("#cat3").html(res);
+                  });
+              }
+          });
       });
 
       $(".contentTypeId").on("click",function (value){
           value.preventDefault();
-          var contentTypeId = $(this).data("value");
+          let contentTypeId = $(this).data("value");
+          let areaCode = $("#areaCode").val();
+          let sigunguCode = $("#sigunguCode").val();
+          let cat1 = $("#cat1").val();
+          let cat2 = $("#cat2").val();
+          let cat3 = $("#cat3").val();
 
           $.ajax({
               url: "Controller?type=tripSuggestion",
               method: "POST",
-              data: {contentTypeId: contentTypeId}
+              data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
+                  cat1:cat1, cat2:cat2, cat3:cat3 /*, cPage:cPage */}
           }).done(function (res){
                 $("#main").html(res);
           });
+
+          $.ajax({
+              url: "Controller?type=area",
+              method: "POST",
+              data: {contentTypeId: contentTypeId}
+          }).done(function (res){
+              $("#cat1").html(res);
+              $("#cat2").html("<option value='0'>::선택하시오::</option>");
+              $("#cat3").html("<option value='0'>::선택하시오::</option>");
+          });
+
       });
 
   </script>

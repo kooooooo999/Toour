@@ -62,6 +62,7 @@ public class AdminMemberDAO {
         map.put("member_id", member_id);
 
 
+
         SqlSession ss = FactoryService.getFactory().openSession();
         cnt = ss.update("mem.mem_edit", map);
         if(cnt > 0)

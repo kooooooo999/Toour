@@ -8,33 +8,50 @@
 <html>
 <head>
   <style>
-    #column{
+    #wrap{
+        /*border: 1px solid #000;*/
+        display: flex;
+        position: relative;
+        height: 600px;
+    }
+    #box{
       display: grid;
-      grid-template-columns: 220px 220px;
-      grid-template-rows: 120px 120px;
-      /*width: 220px;
-      height: 120px;*/
-      border: 1px solid #4a545e;
-      border-collapse: collapse;
+      grid-template-columns: 280px 280px;
+      gap: 20px;
+      width: 600px;
+      margin: auto;
+      /*border: 1px solid #4a545e;
+      border-collapse: collapse;*/
+      position: absolute;
+      left: 880px;
+      top: 50px;
+    }
+    #column{
+        width: 250px;
     }
     #image{
-      width: 200px;
-      height: 100px;
+      width: 250px;
+      height: 150px;
     }
   </style>
 </head>
 <body>
 <%--바디 영역--%>
-<div id="column">
-    <c:forEach var="vo" items="${requestScope.ar}" varStatus="vs">
-      <c:if test="${fn:length(vo.firstimage2) > 0}">
-          <img id="image" src="${vo.firstimage2}"/>
-          <a href="#">${vo.title}</a>
-    </c:if>
-
-  </c:forEach>
+<div id="wrap">
+    <div id="box">
+      <c:forEach var="vo" items="${requestScope.ar2}" varStatus="vs">
+          <c:if test="${vs.index < 4}">
+            <c:if test="${fn:length(vo.firstimage) > 0}">
+            <div id="column">
+                    <img id="image" src="${vo.firstimage}"/>
+                    <p>${vo.addr1}</p>
+                    <a href="#">${vo.title}</a>
+            </div>
+            </c:if>
+          </c:if>
+      </c:forEach>
+    </div>
 </div>
-
 
 </body>
 </html>
