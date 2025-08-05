@@ -131,7 +131,7 @@ public class sidoAction implements Action {
             e.printStackTrace();
         }
 
-        return "sidoInfo.jsp";
+        return "MainIndex/sidoInfo.jsp";
     }
 
 }
