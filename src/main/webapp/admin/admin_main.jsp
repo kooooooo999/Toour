@@ -8,9 +8,9 @@
     <style>
         body {
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Noto Sans KR', sans-serif;
             display: flex;
-            min-height: 100vh;
+            background-color: #f4f6f8;
         }
 
         .sidebar {
@@ -20,8 +20,8 @@
             flex-direction: column;
             padding: 20px;
             color: white;
+            height: 100vh;
         }
-
 
         .sidebar a {
             text-decoration: none;
@@ -37,8 +37,17 @@
 
         .main-content {
             flex: 1;
-            padding: 20px;
+            padding: 40px;
         }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #fff;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
     </style>
 </head>
 <body>
@@ -47,7 +56,7 @@
 
     <!-- 메뉴 -->
     <a href="AdminController">🏠 HOME</a>
-    <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
+    <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
     <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
     <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
     <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>

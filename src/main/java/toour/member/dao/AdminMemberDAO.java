@@ -3,6 +3,7 @@ package toour.member.dao;
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.PostVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -74,9 +75,9 @@ public class AdminMemberDAO {
     }
 
     //회원정보 삭제/탈퇴
-    public static int delMem(String member_idx){
+    public static int delMem(List<String> memberIdxlist){
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("mem.mem_del", member_idx);
+        int cnt = ss.update("mem.mem_del", memberIdxlist);
         if(cnt > 0){
             ss.commit();
         }
@@ -85,6 +86,40 @@ public class AdminMemberDAO {
         }
         ss.close();
         return cnt;
+    }
+
+    //회원정보 검색
+    public static MemberVO[] search(String searchType, String searchValue, int begin, int end){
+        MemberVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+        map.put("begin",1);
+        map.put("end",5);
+
+//        System.out.println(searchType);
+//        System.out.println(searchValue);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<MemberVO> list = ss.selectList("mem.mem_search",map);
+        if(list!=null&&list.size()>0){
+            ar= new MemberVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new MemberVO[0];
+        }
+//        System.out.println("검색타입: " + searchType);
+//        System.out.println("검색값: " + searchValue);
+//        System.out.println("검색결과 수: " + (list != null ? list.size() : "null"));
+
+//        System.out.println(" searchType = [" + searchType + "]");
+//        System.out.println(" searchValue = [" + searchValue + "]");
+
+        ss.close();
+        return ar;
     }
 
 }
