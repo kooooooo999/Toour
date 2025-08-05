@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-#clickSido{
+#city{
 display: inline-block;
 width: 500px;
 height: 600px;
@@ -13,6 +13,6 @@ height: 600px;
   background-image: url("images/${param.imageChange}.png");
 </c:if>
 background-repeat: no-repeat;
-position: relative;
-left: 250px;
+position: absolute;
+left: 300px;
 }
