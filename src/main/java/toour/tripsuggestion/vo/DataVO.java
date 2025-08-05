@@ -4,6 +4,7 @@ public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
     cat1, cat2, cat3, contentTypeId,contentId, overview;
 
+    
     public  DataVO(){
 
     }
