@@ -164,24 +164,16 @@
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
       <c:if test="${count.index < 5}">
       <div class="item">
-          <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid != 25}">
+
         <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
             <div class="text ellipsis">
        <p class="title"><a href="#">${Dvo.title}</a></p>
         <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
         <p class="overview"><a href="#">${Dvo.overview}</a></p>
             </div>
-          </c:if>
 
-          <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid == 25}">
-              <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-              <div class="text ellipsis">
-                  <p class="title"><a href="#">${Dvo.title}</a></p>
-                  <p class="overview"><a href="#">${Dvo.overview}</a></p>
-              </div>
-          </c:if>
+
+
 
       </div>
       </c:if>
