@@ -4,7 +4,6 @@ import mybatis.vo.CityInfoVO;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import mybatis.vo.DataVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -48,8 +47,8 @@ public class sidoAction implements Action {
         //System.out.println(sb.toString());
 
         try {
-            URL url1 = new URL(sb.toString());
-            HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
+            URL url = new URL(sb.toString());
+            HttpURLConnection conn1 = (HttpURLConnection) url.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();
             SAXBuilder builder = new SAXBuilder();
@@ -73,7 +72,7 @@ public class sidoAction implements Action {
             e.printStackTrace();
         }
 
-        return "sidoInfo.jsp";
+        return "MainIndex/sidoInfo.jsp";
     }
 
 }
