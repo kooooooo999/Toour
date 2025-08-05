@@ -137,12 +137,13 @@
 
 <div class="sidebar">
   <a href="AdminController">🏠 HOME</a>
-  <a href="product_list.jsp?category=sp003">📢 공지사항 관리</a>
+  <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
   <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
+
 
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
 <div class="main-content">
@@ -186,14 +187,9 @@
 
       <div class="form-actions">
         <input type="button" value="수정" onclick="openEdit()"/>
-        <input type="button" value="탈퇴" onclick="openDel()"/>
         <input type="button" value="목록" onclick="location.href='AdminController?type=adminmemlist'">
       </div>
     </form>
-
-<%--    <c:forEach var = "type" items="${adminlist}">--%>
-
-<%--    </c:forEach>--%>
 
     <form name="ff" method="post">
       <input type="hidden" name="type"/>
@@ -208,22 +204,6 @@
         <button type="button" onclick="goEdit(this.form)">수정</button>
         <button type="button" id = "member_edit_cancel">취소</button>
         </div>
-    </div>
-
-    <!-- 삭제  다이얼로그 -->
-    <div id = "del_dialog" title="삭제하시겠습니까?">
-      <form id = "Delform" action="AdminController" method="post">
-        <p>관리자 이름 확인</p>
-        <input type="text" name="confirm" id="confirm"/>
-        <input type="hidden" name="type" value="adminmemdel"/>
-        <input type="hidden" name="member_idx" value="${vo.member_idx}"/>
-        <input type="hidden" name="cPage" value="${param.cPage}"/>
-
-        <div class="button-group">
-        <button type="button" onclick="goDel()">삭제</button>
-        <button type="button" id="member_del_cancel">취소</button>
-        </div>
-      </form>
     </div>
   </div>
 </div>
@@ -240,13 +220,8 @@
       autoOpen: false,
       resizable: false,
     };
-    $("#del_dialog").dialog(option);
     $("#edit_dialog").dialog(option);
   })
-
-    function openDel(){
-      $("#del_dialog").dialog("open");
-    }
 
     function openEdit(){
       $("#edit_dialog").dialog("open");
@@ -256,34 +231,6 @@
       $("#edit_dialog").dialog("close");
     })
 
-    $("#member_del_cancel").click(function () {
-      $("#del_dialog").dialog("close");
-
-
-    })
-
-  function goDel(){
-
-    let frm = document.getElementById("Delform");
-  let confirm = $("#confirm").val().trim();
-  let member_type = "${vo.member_type}";
-  let member_id = "${vo.member_id}";
-
-
-    console.log("member_type:", member_type);
-    console.log("member_id:", member_id);
-    console.log("confirm 입력값:", confirm);
-
-    if(parseInt(member_type,10) !== 0 || confirm !== member_id) {
-    alert("아이디를 확인해주세요.");
-    $("#confirm").val("");
-    $("#confirm").focus();
-    return
-  }
-  else{
-    frm.submit();
-  }
-  }
 
   function goEdit(){
     if($("#name").val().trim().length<1){
