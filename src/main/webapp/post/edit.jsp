@@ -153,6 +153,8 @@
         </table>
     </form>
 </div>
+<c:import url="/common/footer.jsp" />
+
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="../js/summernote-lite.js"></script>

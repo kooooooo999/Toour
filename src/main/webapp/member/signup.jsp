@@ -4,6 +4,8 @@
 <html>
 <head>
   <title>JSP - Hello World</title>
+  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
   <style>
     #table{
       border-collapse: collapse;
@@ -18,6 +20,8 @@
   </style>
 </head>
 <body>
+<c:import url="/common/header.jsp" />
+
 <form action="Controller?type=signup" method="post" name="SignUp_form">
   <table id="table">
     <caption>회원가입 테이블</caption>

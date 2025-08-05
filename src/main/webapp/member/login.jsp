@@ -4,6 +4,8 @@
 <html>
 <head>
   <title>JSP - Hello World</title>
+  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
   <style>
     #table{
       border-collapse: collapse;
@@ -18,6 +20,8 @@
   </style>
 </head>
 <body>
+<c:import url="/common/header.jsp" />
+
 <form action="Controller?type=login" method="post" name="login_form">
   <table id="table">
     <caption>회원가입 테이블</caption>
@@ -50,5 +54,7 @@
       alert("모든 입력란에 입력을 완수해주세요")
   }
 </script>
+<c:import url="/common/footer.jsp" />
+
 </body>
 </html>
