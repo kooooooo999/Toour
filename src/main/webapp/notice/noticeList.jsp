@@ -9,6 +9,7 @@
 <html>
 <head>
     <title>Title</title>
+
 </head>
 <body>
 
@@ -259,7 +260,8 @@
         </c:if>
     </ol>
 </div>
-</body>
+
+<c:import url="/common/footer.jsp"/>
 
 <script>
     <%--
@@ -276,4 +278,5 @@
 
 
 </script>
+</body>
 </html>

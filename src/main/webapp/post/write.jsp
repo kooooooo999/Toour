@@ -182,6 +182,8 @@
     document.forms[0].submit();
   }
 </script>
+<c:import url="/common/footer.jsp" />
+
 </body>
 </html>
 

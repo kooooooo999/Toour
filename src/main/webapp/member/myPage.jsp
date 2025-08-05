@@ -3,8 +3,12 @@
 <html>
 <head>
     <title>Title</title>
+  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
 </head>
 <body>
+<c:import url="/common/header.jsp" />
+
   <table>
     <div>
       <%--내 정보--%>
@@ -21,6 +25,7 @@
     </tr>
     </tbody>
   </table>
+<c:import url="/common/footer.jsp" />
 
 </body>
 </html>
