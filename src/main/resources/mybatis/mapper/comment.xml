@@ -5,7 +5,7 @@
 <mapper namespace="comment">
 
 
-    <select id="list" resultType="mybatis.vo.CommentVO" parameterType="String">
+    <select id="list" resultType="toour.post.vo.CommentVO" parameterType="String">
         select * from comment
         where post_idx = #{post_idx}
     </select>

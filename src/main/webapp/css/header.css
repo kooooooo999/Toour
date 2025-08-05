@@ -1,6 +1,5 @@
 
 table{width: 600px;border-collapse: collapse;}
-table th, table td{border: 1px solid black;padding: 5px;}
 table caption {text-indent: -9999px;height: 0;}
 /* Header */
 header { background-color: #fff; border-bottom: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
@@ -14,16 +13,6 @@ header { background-color: #fff; border-bottom: 1px solid #eee; box-shadow: 0 2p
 .header-main .util-menu a { margin-left: 25px; font-size: 16px; color: #555; }
 .header-main .util-menu i { font-size: 20px; vertical-align: middle; margin-right: 5px;}
 
-#table{
-    border-collapse: collapse;
-}
-#table caption{
-    text-indent: -9999px;
-    height: 0;
-}
-#table td{
-    border: 1px solid #000;
-}
 
 body{
     margin: 0;

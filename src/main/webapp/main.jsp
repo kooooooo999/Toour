@@ -125,7 +125,7 @@
 
     <ul class = "menu">
       <li class="dropdown">
-        <a href="#" class = "act">홈</a>
+        <a href="" class = "act">홈</a>
       </li>
     <li class="dropdown">
       <a href="#" class="act">관광지</a>

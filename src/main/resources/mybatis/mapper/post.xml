@@ -5,9 +5,9 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="post">
 
-    <resultMap id="map1" type="mybatis.vo.PostVO">
+    <resultMap id="map1" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
-        <collection property="c_list" ofType="mybatis.vo.CommentVO" select="comment.list" column="post_idx"/>
+        <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
 
     <!-- 총 게시물 수를 반환하는 기능 -->
@@ -33,14 +33,15 @@
 
     <!--게시글 작성 -->
     <insert id="add" parameterType="Map">
-        insert into post(  member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
+        insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
         values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), #{post_updated_at})
     </insert>
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT * FROM post
-        WHERE post_idx = #{post_idx}
+        SELECT  * FROM post p inner join file f
+        WHERE p.post_idx = #{post_idx}
+        group by p.post_idx
     </select>
 
     <!-- 게시글 삭제 -->
