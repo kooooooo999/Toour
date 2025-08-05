@@ -59,7 +59,7 @@ public class SignUpAction implements Action {
         }
 
         if(cmd==0){
-            viewPath ="signup.jsp";
+            viewPath ="member/signup.jsp";
         }
         return viewPath;
     }
