@@ -126,9 +126,9 @@ body{
     flex-direction: column; /* 항목들을 세로로 쌓기 */
     justify-content: center; /* 수직 중앙 정렬 */
     align-items: center; /* 수평 중앙 정렬 */
-    width: 600px;
+    width: 800px;
     height: auto;
-    margin-left: 555px;
+    margin-left: 480px;
 }
 
 #main_2{
@@ -160,20 +160,12 @@ body{
     padding-top: 20px;
     padding-bottom: 10px;
 }
+
 .title, .addr1 {
     white-space: nowrap;  /* 텍스트가 한 줄로 표시되도록 설정 */
     margin: 0; /* 기본 여백 제거 */
 }
 
-
-/*#content_check {*/
-/*    position: relative;*/
-/*    width: 1000px;*/
-/*    font-weight: 700;*/
-/*    display: flex;*/
-/*    align-items: center;*/
-/*    margin: auto;*/
-/*}*/
 .tag{
     font-size: 30px;
     font-weight: bold;
@@ -267,4 +259,29 @@ select:focus {
     justify-content: center;
     width: 70px;
     margin-top: 20px;
+}
+
+.heartIcon{
+    border-radius: 8px;
+    width: 25px;
+    height: 25px;
+    border: 1px solid #003d80;
+    text-align: center;
+    margin-bottom: 5px;
+
+}
+
+#heartImage{
+    text-align: right;
+    padding-left: 455px;
+}
+
+.imageDetails{
+    width: 800px;
+    height: 500px;
+}
+
+#heartImagedetails{
+    padding-left: 780px;
+    padding-top: 60px;
 }

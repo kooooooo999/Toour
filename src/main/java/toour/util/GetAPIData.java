@@ -23,7 +23,6 @@ public class GetAPIData {
             sb.append("areaCode=");
             sb.append(areaCode);
             //확인용 주소 출력
-            System.out.println(sb.toString());
             try {
                 URL url1 = new URL(sb.toString());
                 HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();

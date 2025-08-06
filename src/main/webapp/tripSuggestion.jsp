@@ -20,10 +20,10 @@
       <style>
           .overview {
               width: 650px;
-              height: 120px;
+              height: 80px;
               overflow: hidden;
               display: -webkit-box;
-              -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
+              -webkit-line-clamp: 2; /* 최대 5줄까지 표시 */
               -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
               text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
           }
@@ -104,60 +104,77 @@
   <h2 class="tag">#선택</h2>
 
   <div id="selectareaCode">
+      <form name="frm" method="post" action="Controller?type=tripSuggestion">
   <ol>
       <li>
-      <select id="contentTypeId">
-          <option value="12" class="contentTypeId">관광지</option>
-          <option value="14" class="contentTypeId">문화시설</option>
-          <option value="15" class="contentTypeId">축제공연/행사</option>
-          <option value="25" class="contentTypeId">여행코스</option>
-          <option value="28" class="contentTypeId">레포츠</option>
-          <option value="32" class="contentTypeId">숙박</option>
-          <option value="38" class="contentTypeId">쇼핑</option>
-          <option value="39" class="contentTypeId">음식점</option>
+          <c:set var="requestcontentTypeId" value="${param.contentTypeId}"/>
+          <c:set var="requestareaCode" value="${param.areaCode}"/>
+          <c:set var="requestsigunguCode" value="${param.sigunguCode}"/>
+          <c:set var="requestcat1" value="${param.cat1}"/>
+          <c:set var="requestcat2" value="${param.cat2}"/>
+          <c:set var="requestcat3" value="${param.cat3}"/>
+
+      <select id="contentTypeId" name="contentTypeId">
+          <option value="12" class="contentTypeId" <c:if test="${requestcontentTypeId =='12'}">selected</c:if>>관광지</option>
+          <option value="14" class="contentTypeId" <c:if test="${requestcontentTypeId =='14'}">selected</c:if>>문화시설</option>
+          <option value="15" class="contentTypeId" <c:if test="${requestcontentTypeId =='15'}">selected</c:if>>축제공연/행사</option>
+          <option value="25" class="contentTypeId" <c:if test="${requestcontentTypeId =='25'}">selected</c:if>>여행코스</option>
+          <option value="28" class="contentTypeId" <c:if test="${requestcontentTypeId =='28'}">selected</c:if>>레포츠</option>
+          <option value="32" class="contentTypeId" <c:if test="${requestcontentTypeId =='32'}">selected</c:if>>숙박</option>
+          <option value="38" class="contentTypeId" <c:if test="${requestcontentTypeId =='38'}">selected</c:if>>쇼핑</option>
+          <option value="39" class="contentTypeId" <c:if test="${requestcontentTypeId =='39'}">selected</c:if>>음식점</option>
       </select>
       </li>
       <li>
           <select id="areaCode" name="areaCode">
-              <option value="0">:: 도/시 ::</option>
-              <option value="1">서울</option>
-              <option value="2">인천</option>
-              <option value="3">대전</option>
-              <option value="4">대구</option>
-              <option value="5">광주</option>
-              <option value="6">부산</option>
-              <option value="7">울산</option>
-              <option value="31">경기도</option>
-              <option value="32">강원도</option>
-              <option value="33">충청북도</option>
-              <option value="34">충청남도</option>
-              <option value="35">경상북도</option>
-              <option value="36">경상남도</option>
-              <option value="37">전라북도</option>
-              <option value="38">전라남도</option>
-              <option value="39">제주도</option>
+              <option value="1" <c:if test="${requestareaCode =='1'}">selected</c:if>>서울</option>
+              <option value="2" <c:if test="${requestareaCode =='2'}">selected</c:if>>인천</option>
+              <option value="3" <c:if test="${requestareaCode =='3'}">selected</c:if>>대전</option>
+              <option value="4" <c:if test="${requestareaCode =='4'}">selected</c:if>>대구</option>
+              <option value="5" <c:if test="${requestareaCode =='5'}">selected</c:if>>광주</option>
+              <option value="6" <c:if test="${requestareaCode =='6'}">selected</c:if>>부산</option>
+              <option value="7" <c:if test="${requestareaCode =='7'}">selected</c:if>>울산</option>
+              <option value="31" <c:if test="${requestareaCode =='31'}">selected</c:if>>경기도</option>
+              <option value="32" <c:if test="${requestareaCode =='32'}">selected</c:if>>강원도</option>
+              <option value="33" <c:if test="${requestareaCode =='33'}">selected</c:if>>충청북도</option>
+              <option value="34" <c:if test="${requestareaCode =='34'}">selected</c:if>>충청남도</option>
+              <option value="35" <c:if test="${requestareaCode =='35'}">selected</c:if>>경상북도</option>
+              <option value="36" <c:if test="${requestareaCode =='36'}">selected</c:if>>경상남도</option>
+              <option value="37" <c:if test="${requestareaCode =='37'}">selected</c:if>>전라북도</option>
+              <option value="38" <c:if test="${requestareaCode =='38'}">selected</c:if>>전라남도</option>
+              <option value="39" <c:if test="${requestareaCode =='39'}">selected</c:if>>제주도</option>
           </select>
       </li>
       <li>
           <select id="sigunguCode" name="sigunguCode">
               <option value="0">:: 구 ::</option>
+              <c:forEach var="sigunguCode" items="${requestScope.sigunguCode_list}">
+                  <option value="${sigunguCode.code}" <c:if test="${sigunguCode.code ==requestsigunguCode}">selected</c:if> >${sigunguCode.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat1" name="cat1">
               <option value="0">:: 선택 ::</option>
-              <option value="A01">자연</option>
-              <option value="A02">인문(문화/예술/역사)</option>
+              <c:forEach var="cat1" items="${requestScope.cat1_list}">
+                  <option value="${cat1.code}" <c:if test="${cat1.code ==requestcat1}">selected</c:if>>${cat1.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat2" name="cat2">
               <option value="0">:: 선택 ::</option>
+              <c:forEach var="cat2" items="${requestScope.cat2_list}">
+                  <option value="${cat2.code}" <c:if test="${cat2.code ==requestcat2}">selected</c:if>>${cat2.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat3" name="cat3">
               <option value="0">:: 선택 ::</option>
+              <c:forEach var="cat3" items="${requestScope.cat3_list}">
+                  <option value="${cat3.code}" <c:if test="${cat3.code ==requestcat3}">selected</c:if>>${cat3.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
@@ -166,20 +183,31 @@
           </div>
       </li>
   </ol>
+      </form>
   </div>
 
   <div id="main">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
       <c:if test="${count.index < 5}">
+        <div id="heartImage">
+          <p class="heartIcon">
+              <i class="fa-solid fa-heart"></i>
+          </p>
+        </div>
         <img src="${Dvo.firstimage}" class="image">
-          <i class="fa-solid fa-heart"></i>
             <div class="text ellipsis item">
-       <p class="title"><a href="Controller?type=tripDetails">${Dvo.title}</a></p>
-        <p class="addr1"><a href="Controller?type=tripDetails">[${Dvo.addr1}]</a></p>
-        <p class="overview"><a href="Controller?type=tripDetails">${Dvo.overview}</a></p>
+        <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
+        <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+        <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
             </div>
       </c:if>
     </c:forEach>
+  </div>
+
+  <div id="nullData">
+      <c:if test="${fn:length(Dvo.title) < 0}">
+          <p>등록된 게시글이 없습니다</p>
+      </c:if>
   </div>
 
   <div id="page">
@@ -275,16 +303,36 @@
           integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
       $(function (){
+
+
+
+
+
           $("#areaCode").blur(function () {
 
               let areaCode = $("#areaCode").val();
-              if(areaCode!=0) {
                   $.ajax({
                       url: "Controller?type=area",
                       method: "POST",
                       data: {areaCode: areaCode}
                   }).done(function (res) {
                       $("#sigunguCode").html(res);
+                  });
+
+          });
+
+          $("#contentTypeId").blur(function () {
+
+              let contentTypeId = $("#contentTypeId").val();
+              if(contentTypeId!=0) {
+                  $.ajax({
+                      url: "Controller?type=area",
+                      method: "POST",
+                      data: {contentTypeId: contentTypeId}
+                  }).done(function (res){
+                      $("#cat1").html(res);
+                      $("#cat2").html("<option value='0'>:: 선택 ::</option>");
+                      $("#cat3").html("<option value='0'>:: 선택 ::</option>");
                   });
               }
           });
@@ -327,27 +375,52 @@
           let cat1 = $("#cat1").val();
           let cat2 = $("#cat2").val();
           let cat3 = $("#cat3").val();
-
+          document.frm.submit();
+/*
           $.ajax({
               url: "Controller?type=tripSuggestion",
               method: "POST",
               data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
-                  cat1:cat1, cat2:cat2, cat3:cat3 /*, cPage:cPage */}
+                  cat1:cat1, cat2:cat2, cat3:cat3, cPage:1}
           }).done(function (res){
                 $("#main").html(res);
-          });
-
-          $.ajax({
-              url: "Controller?type=area",
-              method: "POST",
-              data: {contentTypeId: contentTypeId}
-          }).done(function (res){
-              $("#cat1").html(res);
-              $("#cat2").html("<option value='0'>::선택하시오::</option>");
-              $("#cat3").html("<option value='0'>::선택하시오::</option>");
-          });
+          });*/
 
       });
+
+      function submitData(title, addr1, overview, firstimage){
+          let form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'Controller?type=tripDetails';
+
+          let titleInput = document.createElement('input');
+          titleInput.type = 'hidden';
+          titleInput.name = 'title';
+          titleInput.value = title;
+
+          let addr1Input = document.createElement('input');
+          addr1Input.type = 'hidden';
+          addr1Input.name = 'addr1';
+          addr1Input.value = addr1;
+
+          let overviewInput = document.createElement('input');
+          overviewInput.type = 'hidden';
+          overviewInput.name = 'overview';
+          overviewInput.value = overview;
+
+          let firstimageInput = document.createElement('input');
+          firstimageInput.type = 'hidden';
+          firstimageInput.name = 'firstimage';
+          firstimageInput.value = firstimage;
+
+          form.appendChild(titleInput);
+          form.appendChild(addr1Input);
+          form.appendChild(overviewInput);
+          form.appendChild(firstimageInput);
+
+          document.body.appendChild(form);
+          form.submit();
+      }
 
   </script>
 

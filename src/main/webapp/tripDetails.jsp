@@ -36,13 +36,24 @@
 
 
 <div id="main">
-  <c:set var="Dvo" value="${requestScope.}"
-      <img src="${Dvo.firstimage}" class="imageDetail">
+    <c:set var="Dvo" value="${requestScope.detailsAr}"/>
+
+  <p class="titleDetails">${Dvo.title}</p>
+
+  <div id="heartImagedetails">
+    <p class="heartIcon">
       <i class="fa-solid fa-heart"></i>
-      <div class="text ellipsis item">
-        <p class="title"><a href="Controller?type=tripDetails">${Dvo.title}</a></p>
-        <p class="addr1"><a href="Controller?type=tripDetails">[${Dvo.addr1}]</a></p>
-        <p class="overview"><a href="Controller?type=tripDetails">${Dvo.overview}</a></p>
+    </p>
+  </div>
+
+  <div class="text ellipsis item">
+      <img src="${Dvo.firstimage}" class="imageDetails">
+
+      <p class="infoText">상세정보</p>
+
+
+        <p class="addr1">[${Dvo.addr1}]</p>
+        <p class="overview">${Dvo.overview}</p>
       </div>
 </div>
 

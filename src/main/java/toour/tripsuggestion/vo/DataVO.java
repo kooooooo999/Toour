@@ -9,6 +9,13 @@ public class DataVO {
 
     }
 
+    public DataVO(String title, String addr1, String overview, String firstimage) {
+        this.title = title;
+        this.addr1 = addr1;
+        this.overview = overview;
+        this.firstimage = firstimage;
+    }
+
     public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String tel, String eventstartdate, String eventenddate, String contentTypeId, String contentId, String overview) {
         this.title = title;
         this.mapx = mapx;
