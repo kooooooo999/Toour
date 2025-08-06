@@ -21,34 +21,6 @@ public class KakaoMobilAction implements Action{
         try {
             request.setCharacterEncoding("utf-8");
 
-//
-//        StringBuffer sb = new StringBuffer("https://apis-navi.kakaomobility.com/v1/waypoints/directions?");
-//        String APIkey = "41924af6fe5d95bebf4d8ddf6fca8d8c";
-//
-//        sb.append("origin:");
-//        sb.append("127.033162");
-//        sb.append(",");
-//        sb.append("37.499334");
-//        sb.append("&destination:");
-//        sb.append("127.0296267");
-//        sb.append(",");
-//        sb.append("37.5025459");
-//
-//        try{
-//            URL url = new URL(sb.toString());
-//
-//            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-//
-//            conn.setRequestMethod("POST");
-//            conn.setRequestProperty("Content_Type", "application/json");
-//            conn.setRequestProperty("Authorization", "KakaoAK" + APIkey);
-//
-//            conn.connect();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         StringBuffer sb = new StringBuffer();
         String APIkey = "41924af6fe5d95bebf4d8ddf6fca8d8c";
         try {
@@ -63,26 +35,27 @@ public class KakaoMobilAction implements Action{
 
             // 요청 본문 (JSON) 설정
                 sb.append("{");
+
                 sb.append("\"origin\": {");
                 sb.append("    \"x\": \"126.9718732\",");
                 sb.append("    \"y\": \"37.556074\",");
                 sb.append("    \"angle\": 270");
                 sb.append("},");
+
                 sb.append("\"destination\": {");
                 sb.append("    \"x\": \"126.964775\",");
                 sb.append("    \"y\": \"37.52989\"");
                 sb.append("},");
+
+
+                // 경유지 추가할 때마다 waypoints 늘어나게 for문 돌려야 됨
                 sb.append("\"waypoints\": [");
                 sb.append("    {");
-                sb.append("        \"name\": \"경유지1\",");
                 sb.append("        \"x\": 126.9771397,");
                 sb.append("        \"y\": 37.5366059");
-                sb.append("    },");
-                sb.append("    {");
-                sb.append("        \"name\": \"경유지2\",");
-                sb.append("        \"x\": 126.9993937,");
-                sb.append("        \"y\": 37.5378932");
                 sb.append("    }");
+
+
                 sb.append("],");
                 sb.append("\"priority\": \"DISTANCE\",");
                 sb.append("\"car_fuel\": \"GASOLINE\",");

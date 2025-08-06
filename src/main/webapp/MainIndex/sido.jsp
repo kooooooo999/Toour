@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <html>
 <head id="head">
-    <title>Title</title>
+    <title>👋🏻toour</title>
     <link rel="stylesheet" type="text/css" href="./css/sido.css">
     <style id="style">
         #wrap{
