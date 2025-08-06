@@ -2,8 +2,9 @@ package toour.tripsuggestion.vo;
 
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
-    cat1, cat2, cat3, cat1name,cat2name,cat3name, contentTypeId,contentId, overview, areacode,sigungucode,sigunguname;
+    cat1, cat2, cat3, contentTypeId,contentId, overview;
 
+    
     public  DataVO(){
 
     }
@@ -22,55 +23,6 @@ public class DataVO {
         this.contentTypeId = contentTypeId;
         this.contentId = contentId;
         this.overview = overview;
-    }
-
-
-    public String getCat1name() {
-        return cat1name;
-    }
-
-    public void setCat1name(String cat1name) {
-        this.cat1name = cat1name;
-    }
-
-    public String getCat2name() {
-        return cat2name;
-    }
-
-    public void setCat2name(String cat2name) {
-        this.cat2name = cat2name;
-    }
-
-    public String getCat3name() {
-        return cat3name;
-    }
-
-    public void setCat3name(String cat3name) {
-        this.cat3name = cat3name;
-    }
-
-    public String getAreacode() {
-        return areacode;
-    }
-
-    public void setAreacode(String areacode) {
-        this.areacode = areacode;
-    }
-
-    public String getSigungucode() {
-        return sigungucode;
-    }
-
-    public void setSigungucode(String sigungucode) {
-        this.sigungucode = sigungucode;
-    }
-
-    public String getSigunguname() {
-        return sigunguname;
-    }
-
-    public void setSigunguname(String sigunguname) {
-        this.sigunguname = sigunguname;
     }
 
     public String getContentId() {

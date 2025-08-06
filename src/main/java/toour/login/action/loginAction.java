@@ -27,14 +27,21 @@ public class loginAction implements Action {
                     String hash_pw =Hash.getHash(salt+u_pw);
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
-                        viewPath = "MainIndex/index.jsp";
+//                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         request.getSession().setAttribute("user",mvo);
+
+                        //cornsoup 수정
+                        if(mvo.getMember_type().equals("0")){
+                            viewPath = "admin/admin_main.jsp";
+                        }
+                        else
+                            viewPath = "MainIndex/index.jsp";
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
                         viewPath ="member/login.jsp";
                 }else
                     //입력한 id가 db에 없을 때
-                    viewPath ="MainIndex/index.jsp";
+                    viewPath ="member/login.jsp";
             }else {
                 viewPath="MainIndex/index.jsp";
             }
@@ -42,6 +49,9 @@ public class loginAction implements Action {
             //로그아웃 눌렀을 때
             request.getSession().removeAttribute("user");
         }
+
+        //cornsoup 수정
+        request.setAttribute("u_id", u_id);
 
         return viewPath;
     }

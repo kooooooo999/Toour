@@ -13,6 +13,8 @@ public class MemListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
+
+
         //파라미터 받기
         String member_idx = request.getParameter("member_idx");
 
@@ -21,7 +23,7 @@ public class MemListAction implements Action {
         int totalCount = AdminMemberDAO.getTotalMemCount();
 
         //페이징 처리를 위한 객체 생성
-        Paging page = new Paging(10, 5);
+        Paging page = new Paging(5, 5);
 
         page.setTotalCount(totalCount);//총 페이지 수까지 구했다
 
@@ -38,7 +40,7 @@ public class MemListAction implements Action {
 
         //DAO를 호출하여 원하는 게시글 목록을 받아야 한다.
         MemberVO[] ar = AdminMemberDAO.getmemList(page.getBegin(), page.getEnd());
-
+        System.out.println(totalCount);
         // JSP에서 표현하기 위해서 request에 저장!
 //        System.out.println(ar.length);
 //        System.out.println(ar[1].getMember_password());

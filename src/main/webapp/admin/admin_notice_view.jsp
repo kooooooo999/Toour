@@ -1,66 +1,77 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="toour.post.vo.PostVO" %>
-<%@ page import="toour.post.vo.CommentVO" %>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Insert title here</title>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/post.css" />">
-
-  <style type="text/css">
-    #post table {
-      width:580px;
-      margin-left:10px;
-      border:1px solid black;
-      border-collapse:collapse;
-      font-size:14px;
+  <title>관리자 페이지</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Noto Sans KR', sans-serif;
+      display: flex;
+      background-color: #f4f6f8;
     }
 
-    #post table caption {
-      font-size:20px;
-      font-weight:bold;
-      margin-bottom:10px;
+    .sidebar {
+      width: 220px;
+      background-color: #2c3e50;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      color: white;
+      height: 100vh;
     }
 
-    #post table th {
-      text-align:center;
-      border:1px solid black;
-      padding:4px 10px;
+    .sidebar a {
+      text-decoration: none;
+      color: white;
+      padding: 12px 10px;
+      border-bottom: 1px solid #34495e;
+      transition: background-color 0.3s;
     }
 
-    #post table td {
-      text-align:left;
-      border:1px solid black;
-      padding:4px 10px;
+    .sidebar a:hover {
+      background-color: #34495e;
     }
 
-    .no {width:15%}
-    .subject {width:30%}
-    .writer {width:20%}
-    .reg {width:20%}
-    .hit {width:15%}
-    .title{background:lightsteelblue}
+    .main-content {
+      flex: 1;
+      padding: 40px;
+    }
 
-    .odd {background:silver}
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #fff;
+      border-radius: 6px;
+      overflow: hidden;
+    }
 
-    .hide{ display: none; }
   </style>
-
 </head>
 <body>
-<c:import url="/common/header.jsp" />
+
+<div class="sidebar">
+
+  <!-- 메뉴 -->
+  <a href="AdminController">🏠 HOME</a>
+  <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
+  <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+  <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
+  <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
+  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
+</div>
+
+<div class="main-content">
+  <h1>관리자 페이지</h1>
+</div>
+
 <c:set var="vo" value="${requestScope.vo}"/>
 
 <div id="post">
   <form method="post" >
-    <table summary="게시판 글쓰기">
-      <caption>게시판 글쓰기</caption>
+    <table>
       <tbody>
       <tr>
         <th>제목:</th>
@@ -94,17 +105,6 @@
       </tbody>
     </table>
   </form>
-  <form method="post" action="Controller">
-    이름:<input type="text" name="member_idx"/><br/>
-    내용:<textarea rows="4" cols="55" name="post_content"></textarea><br/>
-    비밀번호:<input type="password" name="pwd"/><br/>
-
-
-    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
-    <input type="hidden" name="cPage" value="${param.cPage}"/>
-    <input type="hidden" name="type" value="command"/>
-    <input type="submit" value="저장하기"/>
-  </form>
 
   <form name="ff" method="post">
     <input type="hidden" name="type"/>
@@ -124,24 +124,11 @@
     </form>
   </div>
 
-</br>
-  댓글들<hr/>
-  <c:forEach var="cvo" items="${requestScope.vo.c_list}" varStatus="vs">
-    <div>
-      이름:${cvo.getMember_idx()} &nbsp;&nbsp;
-      최종수정:${cvo.getComment_updated_at()}<br/>
-      내용:${cvo.getComment_content()}
-    </div>
-    <hr/>
-  </c:forEach>
-
-
-
 </div>
-<c:import url="/common/footer.jsp" />
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
 <script>
   $(function (){
     let option = {
@@ -154,8 +141,8 @@
   });
 
   function goList() {
-    document.ff.action = "Controller";
-    document.ff.type.value = "list"
+    document.ff.action = "AdminController";
+    document.ff.type.value = "adminnotice"
     document.ff.submit();
   }
   function goDel() {
@@ -174,18 +161,6 @@
     document.ff.submit();
   }
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

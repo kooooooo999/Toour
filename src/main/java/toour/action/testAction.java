@@ -12,11 +12,10 @@ public class testAction implements Action{
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         DataVO dvo = new DataVO();
         dvo.setContentTypeId("12");
-        dvo.setAreacode("6");
         dvo.setCat1("A01");
         dvo.setCat2("A0101");
 
-        System.out.println(GetAPIData.getSigungu(request,dvo.getAreacode()).length);
+        System.out.println(GetAPIData.getSigungu(request,"6").length);
         System.out.println(GetAPIData.getCat1(request,dvo.getContentTypeId()).length);
         System.out.println(GetAPIData.getCat2(request,dvo.getCat1()).length);
         System.out.println(GetAPIData.getCat3(request,dvo.getCat1(),dvo.getCat2()).length);

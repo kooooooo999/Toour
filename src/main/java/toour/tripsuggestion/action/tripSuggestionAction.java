@@ -5,6 +5,8 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.tripsuggestion.vo.DataVO;
 import toour.action.Action;
+import toour.util.GetAPIData;
+import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,62 +18,46 @@ import java.util.List;
 
 public class tripSuggestionAction implements Action {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response){
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
 
         String viewPath = null;
         String contentTypeid = request.getParameter("contentTypeId");
+        String areaCode = request.getParameter("areaCode");
+        String sigunguCode = request.getParameter("sigunguCode");
+        String cat1 = request.getParameter("cat1");
+        String cat2 = request.getParameter("cat2");
+        String cat3 = request.getParameter("cat3");
+        String cPage = request.getParameter("cPage");
 
         if (contentTypeid == null) {
-            System.out.println("확인");
+            contentTypeid = "12";
+
             viewPath = "tripSuggestion.jsp";
-        }else {
+        } else {
             viewPath = "tripSuggestion_update.jsp";
         }
-
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
         String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
-        String areaCode = null;
-        String code = request.getParameter("areaCode");
-        if (code == null) {
-            areaCode = "6";
+
+
+        Paging page = new Paging(5, 5);
+
+        if (areaCode == null) {
+            areaCode = "1";
         }
-        else {
-            areaCode = code;
-        }
-        String cPage = request.getParameter("cPage");
+
         if (cPage == null) {
             cPage = "1";
         }
-        String startDate = request.getParameter("startDate");
-        if (startDate == null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
-            Calendar now = Calendar.getInstance();
-            startDate = sdf.format(now.getTime());
-        }
-        String contentType = null;
-        String type = request.getParameter("contentTypeId");
-        if (type == null) {
-            contentType = "12";
-        }else {
-            contentType = type;
-        }
-        System.out.println(contentType);
-
-        String cat_1 = request.getParameter("cat1");
-        String cat_2 = request.getParameter("cat2");
-        String cat_3 = request.getParameter("cat3");
-        if(cat_1 == null){
-            cat_1 = "A01";
-        }
-        if(cat_2 == null){
-            cat_2 = "A0101";
-        }
-        if(cat_3 == null){
-            cat_3 = "A01010500";
-        }
+//        String startDate = request.getParameter("startDate");
+//        if (startDate == null) {
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd");
+//            Calendar now = Calendar.getInstance();
+//            startDate = sdf.format(now.getTime());
+//        }
 
         //&MobileApp=AppTest&MobileOS=ETC&arrange=C&contentTypeId=12&areaCode=6&cat1=A01
         //&cat2=A0101&cat3=A01010500&_type=xml&numOfRows=10&pageNo=1
@@ -79,19 +65,31 @@ public class tripSuggestionAction implements Action {
         //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=C&contentTypeId=");
-        sb.append(contentType);
+        sb.append(contentTypeid);
         sb.append("&areaCode=");
+        if (areaCode.equals("0")) {
+            areaCode = "1";
+        }
         sb.append(areaCode);
-//        sb.append("&cat1=");
-//        sb.append(cat_1);
-//        sb.append("&cat2=");
-//        sb.append(cat_2);
-//        sb.append("&cat3=");
-//        sb.append(cat_3);
+        if (sigunguCode != null && !sigunguCode.equals("0")) {
+            sb.append("&sigunguCode=");
+            sb.append(sigunguCode);
+        }
+        if (cat1 != null && !cat1.equals("0")) {
+            sb.append("&cat1=");
+            sb.append(cat1);
+            if (cat2 != null && !cat2.equals("0")) {
+                sb.append("&cat2=");
+                sb.append(cat2);
+                if (cat3 != null && !cat3.equals("0")) {
+                    sb.append("&cat3=");
+                    sb.append(cat3);
+                }
+            }
+        }
         sb.append("&_type=xml&numOfRows=5&pageNo=");
         sb.append(cPage);
-        System.out.println(sb.toString());
-
+        System.out.println("sb1:"+sb.toString());
         try {
             URL url1 = new URL(sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -101,9 +99,10 @@ public class tripSuggestionAction implements Action {
             Document doc = builder.build(conn1.getInputStream());
             Element root = doc.getRootElement();
             Element body = root.getChild("body");
+
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
-            DataVO[] ar =  new DataVO[item_list.size()];
+            DataVO[] ar = new DataVO[item_list.size()];
             int i = 0;
             for (Element item : item_list) {
                 String title = item.getChildText("title"); //자식 태그 안의 문자열
@@ -116,16 +115,15 @@ public class tripSuggestionAction implements Action {
                 String tel = item.getChildText("tel");
                 String eventstartdate = item.getChildText("eventstartdate");
                 String eventenddate = item.getChildText("eventenddate");
-//                String cat1 = item.getChildText("cat1");
-//                String cat2 = item.getChildText("cat2");
-//                String cat3 = item.getChildText("cat3");
-                String contentTypeId = item.getChildText("contenttypeid");
-                String contentId = item.getChildText("contentid");
+                String voCat1 = item.getChildText("cat1");
+                String voCat2 = item.getChildText("cat2");
+                String voCat3 = item.getChildText("cat3");
+                String voContentTypeid = item.getChildText("contenttypeid");
+                String voContentid = item.getChildText("contentid");
 
-                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=");
-                sb2.append(cPage);
-                sb2.append("&numOfRows=10&_type=xml&contentId=");
-                sb2.append(contentId);
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+                sb2.append("&_type=xml&contentId=");
+                sb2.append(voContentid);
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
@@ -140,14 +138,18 @@ public class tripSuggestionAction implements Action {
                 for (Element item2 : item_list2) {
                     overview = item2.getChildText("overview");
                 }
-                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel,contentTypeId, contentId, overview);
+                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, voContentTypeid, voContentid, overview);
+
                 ar[i++] = vo;
             }
-            request.setAttribute("ar", ar);
+            request.setAttribute("dataAr", ar);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        System.out.println(viewPath);
+
         return viewPath;
     }
 }
+
+
+
