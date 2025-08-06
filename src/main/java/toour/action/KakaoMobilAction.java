@@ -64,22 +64,27 @@ public class KakaoMobilAction implements Action{
             // 요청 본문 (JSON) 설정
                 sb.append("{");
                 sb.append("\"origin\": {");
-                sb.append("    \"x\": \"127.11024293202674\",");
-                sb.append("    \"y\": \"37.394348634049784\",");
+                sb.append("    \"x\": \"126.9718732\",");
+                sb.append("    \"y\": \"37.556074\",");
                 sb.append("    \"angle\": 270");
                 sb.append("},");
                 sb.append("\"destination\": {");
-                sb.append("    \"x\": \"127.10860518470294\",");
-                sb.append("    \"y\": \"37.401999820065534\"");
+                sb.append("    \"x\": \"126.964775\",");
+                sb.append("    \"y\": \"37.52989\"");
                 sb.append("},");
                 sb.append("\"waypoints\": [");
                 sb.append("    {");
                 sb.append("        \"name\": \"경유지1\",");
-                sb.append("        \"x\": 127.11341936045922,");
-                sb.append("        \"y\": 37.39639094915999");
+                sb.append("        \"x\": 126.9771397,");
+                sb.append("        \"y\": 37.5366059");
+                sb.append("    },");
+                sb.append("    {");
+                sb.append("        \"name\": \"경유지2\",");
+                sb.append("        \"x\": 126.9993937,");
+                sb.append("        \"y\": 37.5378932");
                 sb.append("    }");
                 sb.append("],");
-                sb.append("\"priority\": \"RECOMMEND\",");
+                sb.append("\"priority\": \"DISTANCE\",");
                 sb.append("\"car_fuel\": \"GASOLINE\",");
                 sb.append("\"car_hipass\": false,");
                 sb.append("\"alternatives\": false,");
@@ -106,20 +111,22 @@ public class KakaoMobilAction implements Action{
                 System.out.println("응답 결과:");
                 System.out.println(response1);
 
+                ArrayList<Object> vertex_y = new ArrayList<>();
+                ArrayList<Object> vertex_x = new ArrayList<>();
+
                 request.setAttribute("result", response1);
                 JSONObject jsonObject = new JSONObject(response1.toString());
                 JSONObject route =  jsonObject.getJSONArray("routes").getJSONObject(0);
                 JSONArray sections =  route.getJSONArray("sections");
-                JSONObject section =  route.getJSONArray("sections").getJSONObject(0);
-                //경우지 있을 경우 뭐 더 해야함
-                ArrayList<Object[]> vertex_list =new ArrayList<>();
-                Object[][] ar=null;
-                for (int j = 0; j< sections.length();j++) {
-                    JSONArray roads = section.getJSONArray("roads");
-                    for (int i = 0; i < roads.length(); i++) {
-                        JSONObject road = section.getJSONArray("roads").getJSONObject(i);
-                        JSONArray vertexs = road.getJSONArray("vertexes");
-                        int count = vertexs.length()/2;
+                    //경우지 있을 경우 뭐 더 해야함
+                    for (int j = 0; j < sections.length(); j++) {
+                        JSONObject section = route.getJSONArray("sections").getJSONObject(j);
+                        JSONArray roads = section.getJSONArray("roads");
+                        for (int i = 0; i < roads.length(); i++) {
+                            JSONObject road = section.getJSONArray("roads").getJSONObject(i);
+                            JSONArray vertexes = road.getJSONArray("vertexes");
+                            //점 하나하나 나누기 - 사용 불가
+                        /* int count = vertexs.length()/2;
                         for(int k =0;k<count;k++){
                             //점 만들기
                             Object[] xy = new Object[2];
@@ -127,13 +134,19 @@ public class KakaoMobilAction implements Action{
                             xy[1]=vertexs.get(k*2+1);
                             //점 하나씩 저장
                             vertex_list.add(xy);
+                        }*/
+                            for (int k = 0; k < vertexes.length(); k++) {
+                                Object vertex = road.getJSONArray("vertexes").get(k);
+                                if (k % 2 == 0) {
+                                    vertex_y.add(vertex);
+                                } else
+                                    vertex_x.add(vertex);
+                            }
                         }
                     }
-                }
-                ar= new Object[vertex_list.size()][];
-                // 점들을 ar에 저장
-                vertex_list.toArray(ar);
-                request.setAttribute("vertex_ar",ar);
+
+                request.setAttribute("vertex_x",vertex_x);
+                request.setAttribute("vertex_y",vertex_y);
             } else {
                 System.out.println("API 호출 실패. HTTP 응답 코드: " + responseCode);
             }

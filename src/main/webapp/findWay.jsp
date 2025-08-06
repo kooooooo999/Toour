@@ -18,11 +18,12 @@
 <%
     // 예시 좌표: API 응답에서 가져온 값
     String[] names = {"출발지", "경유지", "도착지"};
-    double[] lats = {37.39434769502827, 37.39639094915999, 37.40199450213265}; // 위도
-    double[] lngs = {127.11023403583478, 127.1134174048411, 127.10859622855493}; // 경도
+    double[] lats = {37.394348634049784, 37.39639094915999, 37.401999820065534}; // 위도
+    double[] lngs = {127.11024293202674, 127.11341936045922, 127.10860518470294}; // 경도
 %>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
+    /*지도 표시 부분*/
     var mapContainer = document.getElementById('map');
     var mapOption = {
         center: new kakao.maps.LatLng(<%= lats[0] %>, <%= lngs[0] %>),
@@ -30,11 +31,11 @@
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-
+    /*좌표 찍는 부분*/
     <% for (int i = 0; i < lats.length; i++) { %>
     var marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(<%= lats[0] %>, <%= lngs[0] %>),
-        map: map,
+        position: new kakao.maps.LatLng(<%= lats[i] %>, <%= lngs[i] %>),
+        map: map
         <%--title: "<%= names[i] %>"--%>
     });
 
