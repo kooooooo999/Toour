@@ -6,6 +6,8 @@
 <head>
   <meta charset="UTF-8">
   <title>관리자 페이지</title>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="../css/summernote-lite.css"/>
   <style>
     body {
       margin: 0;
@@ -49,8 +51,17 @@
       overflow: hidden;
     }
 
+    input[readonly] {
+      background-color: #e0e0e0;
+      color: #555555;
+      border: 1px solid #ccc;
+      font-weight: bold;
+      padding: 5px 8px;
+      border-radius: 4px;
+    }
+
   </style>
-</head>
+
 <body>
 <div class="sidebar">
 
@@ -78,14 +89,6 @@
       return;
     }
 
-    let member_idx = $("#member_idx").val();
-    if(member_idx.trim().length < 1){
-      alert("글쓴이를 입력하세요");
-      $("#member_idx").val("");
-      $("#member_idx").focus();
-      return;
-    }
-
     let post_content= $("#post_content").val();
     if(post_content.trim().length < 1){
       alert("내용을 입력하세요");
@@ -105,35 +108,33 @@
     PostVO vo = (PostVO) obj;
 %>
 <div id="post">
-  <form action="Controller?type=adminnoticeedit" method="post"
-        encType="multipart/form-data">
+  <form action="AdminController?type=adminnoticeedit" method="post" encType="multipart/form-data">
     <input type="hidden" name="category_idx" value="2"/>
     <input type="hidden" name="post_idx" value="${param.post_idx}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
-    <table summary="게시판 수정">
-      <caption>게시판 수정</caption>
+    <table summary="공지사항 수정">
+      <caption>공지사항 수정</caption>
       <tbody>
       <tr>
         <th>제목:</th>
-        <td><input type="text" name="Post_title" id="Post_title" size="45" value="<%=vo.getPost_title()%>"/></td>
+        <td><input type="text" name="post_title" id="post_title" size="45" value="<%=vo.getPost_title()%>"/></td>
       </tr>
       <tr>
         <th>이름:</th>
-        <td><input type="text" value="<%=vo.getPost_idx()%>"
-                   name="Post_title" id="Post_title" size="12" disabled/></td>
+        <td><input type="text" value="관리자"
+                   name="member_name" id="member_name" size="12" readonly/></td>
       </tr>
       <tr>
         <th>내용:</th>
-        <td><textarea name="Post_content" cols="50"
-                      id="Post_content" rows="8"><%=vo.getPost_content()%></textarea></td>
+        <td><textarea name="post_content" cols="50"
+                      id="post_content" rows="8"><%=vo.getPost_content()%></textarea></td>
       </tr>
 
       <tr>
         <td colspan="2">
-          <input type="button" value="수정"
-                 onclick="sendData()"/>
-          <input type="button" value="취소" onclick="goBack()"/>
-          <input type="button" value="목록" onclick="location.href = 'Controller?type=adminnotice'" />
+          <input type="button" value="수정" onclick="sendData()"/>
+          <input type="button" value="취소" onclick="location.href = 'AdminController?type=adminnoticeview&post_idx=${param.post_idx}&cPage=${param.cPage}'"/>
+          <input type="button" value="목록" onclick="location.href = 'AdminController?type=adminnotice'" />
         </td>
       </tr>
       </tbody>
@@ -141,13 +142,17 @@
   </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+        crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
+
 <script>
   $(function (){
 
-    $("#content").summernote({
+    $("#post_content").summernote({
       lang: "ko-KR",
       height: 300,
       callbacks: {
@@ -172,7 +177,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "Controller?type=saveImg",
+      url: "AdminController?type=saveImg",
       data: frm,
       type: "post",
       contentType: false,
@@ -183,10 +188,7 @@
     });
   }
 
-  function goBack() {
-    // Controller?type=view&b_idx=5&cPage=1
-    location.href="AdminController?type=adminnoticeview&b_idx=${param.post_idx}&cPage=${param.cPage}";
-  }
+
 
 </script>
 <%

@@ -1,7 +1,9 @@
 package toour.member.action;
 
 import toour.action.Action;
+import toour.member.dao.AdminMemberDAO;
 import toour.member.dao.AdminPostDAO;
+import toour.member.vo.MemberVO;
 import toour.post.dao.PostDAO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -45,14 +47,12 @@ public class AdminNoticeWriteAction implements Action {
 //                String member_idx= mr.getParameter("member_idx");
                 String member_idx= "3";
                 //박준형 끝
+
                 String post_content = mr.getParameter("post_content");
                 String category_idx = mr.getParameter("category_idx");
-                String post_likes = mr.getParameter("post_likes");
-                String post_comments_count = mr.getParameter("post_comments_count");
                 String post_status = mr.getParameter("post_status");
-                String post_created_at = mr.getParameter("post_created_at");
-                String post_star = mr.getParameter("post_star");
                 String post_views = mr.getParameter("post_views");
+
 
                 //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
                 File f = mr.getFile("file");
@@ -65,14 +65,15 @@ public class AdminNoticeWriteAction implements Action {
                 String ip = request.getRemoteAddr();// 요청자의 IP
 
                 //DB에 저장 ++
-                AdminPostDAO.add(post_title, post_content, member_idx,
-                        category_idx, post_views, post_likes, post_comments_count,
-                        post_status, post_created_at, post_star);
+                AdminPostDAO.postadd(post_title, post_content, member_idx,
+                        category_idx, post_views, post_status);
 
+
+                viewPath = "AdminController?type=adminnotice";
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return "admin/admin_notice_write.jsp";
+       return viewPath;
     }
 }

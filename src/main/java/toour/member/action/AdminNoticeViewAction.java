@@ -12,19 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class AdminNoticeViewAction implements Action {
-    public boolean checkPost(List<PostVO> list, PostVO vo){
-        boolean value = true;
-        // list에 vo가 있는지 판단하는 반복문
-        for (PostVO pvo:list){
-            if(pvo.getPost_idx().equals(vo.getPost_idx())){
-                value = false;
-                break;
-            }
-        } // for의 끝
-
-        return value;
-    }
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
@@ -39,14 +26,12 @@ public class AdminNoticeViewAction implements Action {
             list = (ArrayList<PostVO>) obj; // 형변환
 
         PostVO vo = AdminPostDAO.getPost(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
-        System.out.println(vo.getPost_idx());
-        // 검색된 vo가 처음으로 읽은 게시물인지 판단
-        if(checkPost(list, vo)){
-            AdminPostDAO.post_views(post_idx);
-            list.add(vo);
-        }
-
+//        System.out.println(vo.getPost_idx());
+//       if(vo == null){
+//            System.out.println("vo가 존재하지 않습니다.");
+//        }
         request.setAttribute("vo", vo);
+//        System.out.println("vo"+vo.getCategory_idx());
 
         return "admin/admin_notice_view.jsp";
     }

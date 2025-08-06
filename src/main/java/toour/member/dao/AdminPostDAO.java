@@ -12,7 +12,7 @@ public class AdminPostDAO {
     // 총 게시물의 수를 반환
     public static int getTotalCount(String category_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.selectOne("post.totalCount",category_idx);
+        int cnt = ss.selectOne("adminpost.totalCount",category_idx);
         ss.close();
         return cnt;
     }
@@ -26,7 +26,7 @@ public class AdminPostDAO {
         map.put("end",end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.list", map);
+        List<PostVO> list = ss.selectList("adminpost.list", map);
         if(list.size()>0&& list!=null){
             ar= new PostVO[list.size()];
             list.toArray(ar);
@@ -37,32 +37,10 @@ public class AdminPostDAO {
     }
 
 
-    // 저장 +++
-    public static int add(String post_title, String post_content, String member_idx,
-                          String category_idx){
-        int cnt = 0;
-
-        Map<String, String> map = new HashMap<>();
-        map.put("post_title", post_title);
-        map.put("post_content", post_content);
-        map.put("member_idx", member_idx);
-        map.put("category_idx", category_idx);
-
-        SqlSession ss = FactoryService.getFactory().openSession();
-        cnt = ss.insert("post.add", map);
-        if(cnt > 0)
-            ss.commit();
-        else
-            ss.rollback();
-        ss.close();
-
-        return cnt;
-    }
-
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        PostVO vo = ss.selectOne("post.getPost", post_idx);
+        PostVO vo = ss.selectOne("adminpost.getPost", post_idx);
         ss.close();
         return vo;
     }
@@ -78,7 +56,7 @@ public class AdminPostDAO {
         map.put("end",end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.search",map);
+        List<PostVO> list = ss.selectList("adminpost.search",map);
         if(list!=null&&list.size()>0){
             ar= new PostVO[list.size()];
             list.toArray(ar);
@@ -95,7 +73,19 @@ public class AdminPostDAO {
     }
 
 
+    // 삭제
+    public static int delnotice(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("adminpost.del", post_idx);
+        if(cnt > 0){
+            ss.commit();
+        }else{
+            ss.rollback();
+        }
+        ss.close();
+        return cnt;
 
+    }
 
 
     // 목록 반환
@@ -108,7 +98,7 @@ public class AdminPostDAO {
         map.put("end", category_idx);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.list", map);
+        List<PostVO> list = ss.selectList("adminpost.list", map);
         if(list != null && list.size()>0){
             ar = new PostVO[list.size()];
             list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
@@ -117,9 +107,8 @@ public class AdminPostDAO {
         return ar;
     }
     // 저장 +++
-    public static int add(String post_title, String post_content, String member_idx,
-                          String category_idx, String post_views, String post_likes, String post_comments_count,
-                          String post_status, String post_created_at, String post_star){
+    public static int postadd(String post_title, String post_content, String member_idx,
+                          String category_idx, String post_views, String post_status){
         int cnt = 0;
 
         Map<String, String> map = new HashMap<>();
@@ -128,15 +117,12 @@ public class AdminPostDAO {
         map.put("member_idx", member_idx);
         map.put("category_idx", category_idx);
         map.put("post_views", post_views);
-        map.put("post_likes", post_likes);
-        map.put("post_comments_count", post_comments_count);
         map.put("post_status", post_status);
-        map.put("post_created_at", post_created_at)   ;
-        map.put("post_star", post_star);
+
 
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        cnt = ss.insert("post.add", map);
+        cnt = ss.insert("adminpost.add", map);
         if(cnt > 0)
             ss.commit();
         else
@@ -155,15 +141,15 @@ public class AdminPostDAO {
         map.put("post_idx", post_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
-        /*
+
         if(file_name_stored != null){
             map.put("file_name_stored", file_name_stored);
             map.put("file_name_original", file_name_original);
         }
         map.put("ip",ip);
-*/
+
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("post.edit", map);
+        int cnt = ss.update("adminpost.edit", map);
         if(cnt > 0)
             ss.commit();
         else ss.rollback();
@@ -172,16 +158,14 @@ public class AdminPostDAO {
         return cnt;
     }
 
-    // 조회수 증가
-    public static int post_views(String post_idx){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("post.post_views", post_idx);
-        if(cnt > 0)
-            ss.commit();
-        else ss.rollback();
-        ss.close();
-        return cnt;
-    }
-
-
+//    // 조회수 증가
+//    public static int post_views(String post_idx){
+//        SqlSession ss = FactoryService.getFactory().openSession();
+//        int cnt = ss.update("post.post_views", post_idx);
+//        if(cnt > 0)
+//            ss.commit();
+//        else ss.rollback();
+//        ss.close();
+//        return cnt;
+//    }
 }
