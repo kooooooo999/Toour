@@ -4,6 +4,7 @@
   <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
   <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+
   <!DOCTYPE html>
 
   <html>
@@ -13,14 +14,16 @@
     <title>👋🏻toour</title>
       <link rel="stylesheet" href="<c:url value="/css/header.css" />">
       <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+      <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+      <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
       <style>
           .overview {
               width: 650px;
-              height: 120px;
+              height: 80px;
               overflow: hidden;
               display: -webkit-box;
-              -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
+              -webkit-line-clamp: 2; /* 최대 5줄까지 표시 */
               -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
               text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
           }
@@ -98,140 +101,238 @@
 
   <%--바디 영역--%>
 
-  <h2 class="tag">#테마를 선택</h2>
+  <h2 class="tag">#선택</h2>
 
-  <div id="content_check">
-      <a href="#" class="contentTypeId" data-value="12">관광지</a>
-      <a href="#" class="contentTypeId" data-value="14">문화시설</a>
-      <a href="#" class="contentTypeId" data-value="15">축제공연/행사</a>
-      <a href="#" class="contentTypeId" data-value="25">여행코스</a>
-      <a href="#" class="contentTypeId" data-value="28">레포츠</a>
-      <a href="#" class="contentTypeId" data-value="32">숙박</a>
-      <a href="#" class="contentTypeId" data-value="38">쇼핑</a>
-      <a href="#" class="contentTypeId" data-value="39">음식점</a>
-  </div>
+  <div id="selectareaCode">
+      <form name="frm" method="post" action="Controller?type=tripSuggestion">
   <ol>
       <li>
+          <c:set var="requestcontentTypeId" value="${param.contentTypeId}"/>
+          <c:set var="requestareaCode" value="${param.areaCode}"/>
+          <c:set var="requestsigunguCode" value="${param.sigunguCode}"/>
+          <c:set var="requestcat1" value="${param.cat1}"/>
+          <c:set var="requestcat2" value="${param.cat2}"/>
+          <c:set var="requestcat3" value="${param.cat3}"/>
+
+      <select id="contentTypeId" name="contentTypeId">
+          <option value="12" class="contentTypeId" <c:if test="${requestcontentTypeId =='12'}">selected</c:if>>관광지</option>
+          <option value="14" class="contentTypeId" <c:if test="${requestcontentTypeId =='14'}">selected</c:if>>문화시설</option>
+          <option value="15" class="contentTypeId" <c:if test="${requestcontentTypeId =='15'}">selected</c:if>>축제공연/행사</option>
+          <option value="25" class="contentTypeId" <c:if test="${requestcontentTypeId =='25'}">selected</c:if>>여행코스</option>
+          <option value="28" class="contentTypeId" <c:if test="${requestcontentTypeId =='28'}">selected</c:if>>레포츠</option>
+          <option value="32" class="contentTypeId" <c:if test="${requestcontentTypeId =='32'}">selected</c:if>>숙박</option>
+          <option value="38" class="contentTypeId" <c:if test="${requestcontentTypeId =='38'}">selected</c:if>>쇼핑</option>
+          <option value="39" class="contentTypeId" <c:if test="${requestcontentTypeId =='39'}">selected</c:if>>음식점</option>
+      </select>
+      </li>
+      <li>
           <select id="areaCode" name="areaCode">
-              <option value="0">::선택하시오::</option>
-              <option value="1">서울</option>
-              <option value="2">인천</option>
-              <option value="3">대전</option>
-              <option value="4">대구</option>
-              <option value="5">광주</option>
-              <option value="6">부산</option>
-              <option value="7">울산</option>
-              <option value="31">경기도</option>
-              <option value="32">강원도</option>
-              <option value="33">충청북도</option>
-              <option value="34">충청남도</option>
-              <option value="35">경상북도</option>
-              <option value="36">경상남도</option>
-              <option value="37">전라북도</option>
-              <option value="38">전라남도</option>
-              <option value="39">제주도</option>
+              <option value="1" <c:if test="${requestareaCode =='1'}">selected</c:if>>서울</option>
+              <option value="2" <c:if test="${requestareaCode =='2'}">selected</c:if>>인천</option>
+              <option value="3" <c:if test="${requestareaCode =='3'}">selected</c:if>>대전</option>
+              <option value="4" <c:if test="${requestareaCode =='4'}">selected</c:if>>대구</option>
+              <option value="5" <c:if test="${requestareaCode =='5'}">selected</c:if>>광주</option>
+              <option value="6" <c:if test="${requestareaCode =='6'}">selected</c:if>>부산</option>
+              <option value="7" <c:if test="${requestareaCode =='7'}">selected</c:if>>울산</option>
+              <option value="31" <c:if test="${requestareaCode =='31'}">selected</c:if>>경기도</option>
+              <option value="32" <c:if test="${requestareaCode =='32'}">selected</c:if>>강원도</option>
+              <option value="33" <c:if test="${requestareaCode =='33'}">selected</c:if>>충청북도</option>
+              <option value="34" <c:if test="${requestareaCode =='34'}">selected</c:if>>충청남도</option>
+              <option value="35" <c:if test="${requestareaCode =='35'}">selected</c:if>>경상북도</option>
+              <option value="36" <c:if test="${requestareaCode =='36'}">selected</c:if>>경상남도</option>
+              <option value="37" <c:if test="${requestareaCode =='37'}">selected</c:if>>전라북도</option>
+              <option value="38" <c:if test="${requestareaCode =='38'}">selected</c:if>>전라남도</option>
+              <option value="39" <c:if test="${requestareaCode =='39'}">selected</c:if>>제주도</option>
           </select>
       </li>
       <li>
           <select id="sigunguCode" name="sigunguCode">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 구 ::</option>
+              <c:forEach var="sigunguCode" items="${requestScope.sigunguCode_list}">
+                  <option value="${sigunguCode.code}" <c:if test="${sigunguCode.code ==requestsigunguCode}">selected</c:if> >${sigunguCode.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat1" name="cat1">
-              <option value="0">::선택하시오::</option>
-              <option value="A01">자연</option>
-              <option value="A02">인문(문화/예술/역사)</option>
+              <option value="0">:: 선택 ::</option>
+              <c:forEach var="cat1" items="${requestScope.cat1_list}">
+                  <option value="${cat1.code}" <c:if test="${cat1.code ==requestcat1}">selected</c:if>>${cat1.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat2" name="cat2">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 선택 ::</option>
+              <c:forEach var="cat2" items="${requestScope.cat2_list}">
+                  <option value="${cat2.code}" <c:if test="${cat2.code ==requestcat2}">selected</c:if>>${cat2.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
           <select id="cat3" name="cat3">
-              <option value="0">::선택하시오::</option>
+              <option value="0">:: 선택 ::</option>
+              <c:forEach var="cat3" items="${requestScope.cat3_list}">
+                  <option value="${cat3.code}" <c:if test="${cat3.code ==requestcat3}">selected</c:if>>${cat3.name}</option>
+              </c:forEach>
           </select>
       </li>
       <li>
-          <button type="button">검색</button>
+          <div class="searchBtn">
+          <button type="button" id="searchBt">검색</button>
+          </div>
       </li>
   </ol>
-
+      </form>
+  </div>
 
   <div id="main">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
       <c:if test="${count.index < 5}">
-      <div class="item">
-
-        <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-            <div class="text ellipsis">
-       <p class="title"><a href="#">${Dvo.title}</a></p>
-        <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
-        <p class="overview"><a href="#">${Dvo.overview}</a></p>
+        <div id="heartImage">
+          <p class="heartIcon">
+              <i class="fa-solid fa-heart"></i>
+          </p>
+        </div>
+        <img src="${Dvo.firstimage}" class="image">
+            <div class="text ellipsis item">
+        <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
+        <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+        <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
             </div>
-
-
-
-
-      </div>
       </c:if>
     </c:forEach>
   </div>
 
-  <div id="page">
-
-              <ol class="paging">
-                  <c:set var="p" value="${requestScope.page}" scope="page"/>
-
-                  <c:if test="${p.startPage < p.pagePerBlock}">
-
-                      <li class="disable">&lt;</li>
-                  </c:if>
-
-                  <c:if test="${p.startPage >= p.pagePerBlock}">
-
-                      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
-                  </c:if>
-
-                  <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                      <c:if test="${p.nowPage == vs.index}">
-                          <li class="current">${vs.index}</li>
-                      </c:if>
-                      <c:if test="${p.nowPage != vs.index}">
-                          <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
-                      </c:if>
-                  </c:forEach>
-
-                  <c:if test="${p.endPage < p.totalPage}">
-
-                      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
-                  </c:if>
-                  <c:if test="${p.endPage >= p.totalPage}">
-                      <li class="disable">&gt;</li>
-                  </c:if>
-
-              </ol>
+  <div id="nullData">
+      <c:if test="${fn:length(Dvo.title) < 0}">
+          <p>등록된 게시글이 없습니다</p>
+      </c:if>
   </div>
 
-  <c:import url="/common/footer.jsp" />
+  <div id="page">
 
+      <ol class="paging">
+          <c:set var="p" value="${requestScope.page}" scope="page"/>
+
+          <c:if test="${p.startPage < p.pagePerBlock}">
+
+              <li class="disable">&lt;</li>
+          </c:if>
+
+          <c:if test="${p.startPage >= p.pagePerBlock}">
+
+              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
+          </c:if>
+
+          <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+              <c:if test="${p.nowPage == vs.index}">
+                  <li class="current">${vs.index}</li>
+              </c:if>
+              <c:if test="${p.nowPage != vs.index}">
+                  <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
+              </c:if>
+          </c:forEach>
+
+          <c:if test="${p.endPage < p.totalPage}">
+
+              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
+          </c:if>
+          <c:if test="${p.endPage >= p.totalPage}">
+              <li class="disable">&gt;</li>
+          </c:if>
+
+      </ol>
+  </div>
+
+  <footer>
+    <div class="footer-news-ticker">
+      <div class="container ticker-content">
+        <span>[소식]2025년 강원 방문의 해! 7월의 추천 여행지 (동해안, 산악편)</span>
+        <span class="ticker-controls">
+                      <i class="fas fa-pause"></i>
+                      <i class="fas fa-play"></i>
+                      <i class="fas fa-plus"></i>
+                  </span>
+      </div>
+    </div>
+    <div class="container">
+      <div class="footer-sns-links">
+        <a href="#"><div class="sns-icon"><i class="fab fa-blogger-b"></i></div>블로그</a>
+        <a href="#"><div class="sns-icon"><i class="fab fa-facebook-f"></i></div>페이스북</a>
+        <a href="#"><div class="sns-icon"><i class="fab fa-twitter"></i></div>엑스</a>
+        <a href="#"><div class="sns-icon"><i class="fas fa-comments"></i></div>카카오 스토리</a>
+        <a href="#"><div class="sns-icon"><i class="fab fa-instagram"></i></div>인스타그램</a>
+        <a href="#"><div class="sns-icon"><i class="fab fa-band"></i></div>네이버 밴드</a>
+      </div>
+
+      <div class="footer-banners">
+        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=ODii" alt="오디 (ODii)"></div>
+        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Data+Request" alt="관광정보 수정/신청"></div>
+        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Wallpaper" alt="대한민국 구석구석 Wallpaper"></div>
+        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Travel+Guidebook" alt="여행 가이드북"></div>
+        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=1330+Call" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
+      </div>
+
+      <nav class="footer-nav">
+        <ul>
+          <li><a href="#">개인정보처리방침</a></li>
+          <li><a href="#">이용약관</a></li>
+          <li><a href="#">위치기반서비스 이용약관</a></li>
+          <li><a href="#">개인위치정보 처리방침</a></li>
+          <li><a href="#">저작권정책</a></li>
+          <li><a href="#">고객서비스헌장</a></li>
+          <li><a href="#">전자우편무단수집거부</a></li>
+          <li><a href="#">자주 묻는 질문</a></li>
+          <li><a href="#">찾아오시는 길</a></li>
+          <li><a href="#">사이트맵</a></li>
+        </ul>
+      </nav>
+      <address class="text-center">
+        (우)26464 강원특별자치도 원주시 세계로 10 한국관광공사
+      </address>
+      <p class="text-center contact-info">
+        TEL : 033-738-3000 사업자등록번호 : 202-81-50707 통신판매신고 : 제2022-강원원주-0381호
+      </p>
+      <p class="copyright">
+        &copy; 2025 Korea Tourism Organization. All Rights Reserved.
+      </p>
+    </div>
+  </footer>
   <script src="https://code.jquery.com/jquery-3.7.1.min.js"
           integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script>
       $(function (){
-      //contentTypeId = 12 관광지 로 기본선택 되어있기
+
+
+
+
+
           $("#areaCode").blur(function () {
 
               let areaCode = $("#areaCode").val();
-              if(areaCode!=0) {
                   $.ajax({
                       url: "Controller?type=area",
                       method: "POST",
                       data: {areaCode: areaCode}
                   }).done(function (res) {
                       $("#sigunguCode").html(res);
+                  });
+
+          });
+
+          $("#contentTypeId").blur(function () {
+
+              let contentTypeId = $("#contentTypeId").val();
+              if(contentTypeId!=0) {
+                  $.ajax({
+                      url: "Controller?type=area",
+                      method: "POST",
+                      data: {contentTypeId: contentTypeId}
+                  }).done(function (res){
+                      $("#cat1").html(res);
+                      $("#cat2").html("<option value='0'>:: 선택 ::</option>");
+                      $("#cat3").html("<option value='0'>:: 선택 ::</option>");
                   });
               }
           });
@@ -245,7 +346,7 @@
                       data: {cat1: cat1}
                   }).done(function (res) {
                       $("#cat2").html(res);
-                      $("#cat3").html("<option value='0'>::선택하시오::</option>");
+                      $("#cat3").html("<option value='0'>:: 선택 ::</option>");
 
                   });
               }
@@ -266,35 +367,60 @@
           });
       });
 
-      $(".contentTypeId").on("click",function (value){
-          value.preventDefault();
-          let contentTypeId = $(this).data("value");
+      $("#searchBt").on("click",function (){
+
+          let contentTypeId = $("#contentTypeId").val();
           let areaCode = $("#areaCode").val();
           let sigunguCode = $("#sigunguCode").val();
           let cat1 = $("#cat1").val();
           let cat2 = $("#cat2").val();
           let cat3 = $("#cat3").val();
-
+          document.frm.submit();
+/*
           $.ajax({
               url: "Controller?type=tripSuggestion",
               method: "POST",
               data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
-                  cat1:cat1, cat2:cat2, cat3:cat3 /*, cPage:cPage */}
+                  cat1:cat1, cat2:cat2, cat3:cat3, cPage:1}
           }).done(function (res){
                 $("#main").html(res);
-          });
-
-          $.ajax({
-              url: "Controller?type=area",
-              method: "POST",
-              data: {contentTypeId: contentTypeId}
-          }).done(function (res){
-              $("#cat1").html(res);
-              $("#cat2").html("<option value='0'>::선택하시오::</option>");
-              $("#cat3").html("<option value='0'>::선택하시오::</option>");
-          });
+          });*/
 
       });
+
+      function submitData(title, addr1, overview, firstimage){
+          let form = document.createElement('form');
+          form.method = 'POST';
+          form.action = 'Controller?type=tripDetails';
+
+          let titleInput = document.createElement('input');
+          titleInput.type = 'hidden';
+          titleInput.name = 'title';
+          titleInput.value = title;
+
+          let addr1Input = document.createElement('input');
+          addr1Input.type = 'hidden';
+          addr1Input.name = 'addr1';
+          addr1Input.value = addr1;
+
+          let overviewInput = document.createElement('input');
+          overviewInput.type = 'hidden';
+          overviewInput.name = 'overview';
+          overviewInput.value = overview;
+
+          let firstimageInput = document.createElement('input');
+          firstimageInput.type = 'hidden';
+          firstimageInput.name = 'firstimage';
+          firstimageInput.value = firstimage;
+
+          form.appendChild(titleInput);
+          form.appendChild(addr1Input);
+          form.appendChild(overviewInput);
+          form.appendChild(firstimageInput);
+
+          document.body.appendChild(form);
+          form.submit();
+      }
 
   </script>
 
