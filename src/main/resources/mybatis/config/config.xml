@@ -20,5 +20,6 @@
         <mapper resource="mybatis/mapper/file.xml"/>
         <mapper resource="mybatis/mapper/mem.xml"/>
         <mapper resource="mybatis/mapper/member.xml"/>
+        <mapper resource="mybatis/mapper/zzim.xml"/>
     </mappers>
 </configuration>

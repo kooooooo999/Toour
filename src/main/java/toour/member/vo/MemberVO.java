@@ -7,6 +7,16 @@ public class MemberVO {
             member_id, member_warning;
     // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt
 
+    // 내가 저장한 찜 목록저장소
+    private ZzimVO[] zzimlist;
+
+    public ZzimVO[] getZzimlist() {
+        return zzimlist;
+    }
+
+    public void setZzimlist(ZzimVO[] zzimlist) {
+        this.zzimlist = zzimlist;
+    }
 
     public String getMember_idx() {
         return member_idx;}
