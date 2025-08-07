@@ -98,66 +98,9 @@
 
 <%--바디 영역--%>
 
-<h2 class="tag">#테마를 선택</h2>
-
-<div id="content_check">
-  <a href="#" class="contentTypeId" data-value="12">관광지</a>
-  <a href="#" class="contentTypeId" data-value="14">문화시설</a>
-  <a href="#" class="contentTypeId" data-value="15">축제공연/행사</a>
-  <a href="#" class="contentTypeId" data-value="25">여행코스</a>
-  <a href="#" class="contentTypeId" data-value="28">레포츠</a>
-  <a href="#" class="contentTypeId" data-value="32">숙박</a>
-  <a href="#" class="contentTypeId" data-value="38">쇼핑</a>
-  <a href="#" class="contentTypeId" data-value="39">음식점</a>
-</div>
-<ol>
-  <li>
-    <select id="areaCode" name="areaCode">
-      <option value="0">::선택하시오::</option>
-      <option value="1">서울</option>
-      <option value="2">인천</option>
-      <option value="3">대전</option>
-      <option value="4">대구</option>
-      <option value="5">광주</option>
-      <option value="6">부산</option>
-      <option value="7">울산</option>
-      <option value="31">경기도</option>
-      <option value="32">강원도</option>
-      <option value="33">충청북도</option>
-      <option value="34">충청남도</option>
-      <option value="35">경상북도</option>
-      <option value="36">경상남도</option>
-      <option value="37">전라북도</option>
-      <option value="38">전라남도</option>
-      <option value="39">제주도</option>
-    </select>
-  </li>
-  <li>
-    <select id="sigunguCode" name="sigunguCode">
-      <option value="0">::선택하시오::</option>
-    </select>
-  </li>
-  <li>
-    <select id="cat1" name="cat1">
-      <option value="0">::선택하시오::</option>
-      <option value="A01">자연</option>
-      <option value="A02">인문(문화/예술/역사)</option>
-    </select>
-  </li>
-  <li>
-    <select id="cat2" name="cat2">
-      <option value="0">::선택하시오::</option>
-    </select>
-  </li>
-  <li>
-    <select id="cat3" name="cat3">
-      <option value="0">::선택하시오::</option>
-    </select>
-  </li>
   <li>
     <button type="button">검색</button>
   </li>
-</ol>
 
 
 <div id="main">
@@ -200,7 +143,7 @@
 
     <c:if test="${p.startPage >= p.pagePerBlock}">
 
-      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
+      <li><a href="Controller?type=searchKeyword&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
     </c:if>
 
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
@@ -208,13 +151,13 @@
         <li class="current">${vs.index}</li>
       </c:if>
       <c:if test="${p.nowPage != vs.index}">
-        <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
+        <li><a href="Controller?type=searchKeyword&cPage=${vs.index}">${vs.index}</a></li>
       </c:if>
     </c:forEach>
 
     <c:if test="${p.endPage < p.totalPage}">
 
-      <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
+      <li><a href="Controller?type=searchKeyword&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
     </c:if>
     <c:if test="${p.endPage >= p.totalPage}">
       <li class="disable">&gt;</li>
@@ -223,60 +166,6 @@
   </ol>
 </div>
 
-<footer>
-  <div class="footer-news-ticker">
-    <div class="container ticker-content">
-      <span>[소식]2025년 강원 방문의 해! 7월의 추천 여행지 (동해안, 산악편)</span>
-      <span class="ticker-controls">
-                      <i class="fas fa-pause"></i>
-                      <i class="fas fa-play"></i>
-                      <i class="fas fa-plus"></i>
-                  </span>
-    </div>
-  </div>
-  <div class="container">
-    <div class="footer-sns-links">
-      <a href="#"><div class="sns-icon"><i class="fab fa-blogger-b"></i></div>블로그</a>
-      <a href="#"><div class="sns-icon"><i class="fab fa-facebook-f"></i></div>페이스북</a>
-      <a href="#"><div class="sns-icon"><i class="fab fa-twitter"></i></div>엑스</a>
-      <a href="#"><div class="sns-icon"><i class="fas fa-comments"></i></div>카카오 스토리</a>
-      <a href="#"><div class="sns-icon"><i class="fab fa-instagram"></i></div>인스타그램</a>
-      <a href="#"><div class="sns-icon"><i class="fab fa-band"></i></div>네이버 밴드</a>
-    </div>
-
-    <div class="footer-banners">
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=ODii" alt="오디 (ODii)"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Data+Request" alt="관광정보 수정/신청"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Wallpaper" alt="대한민국 구석구석 Wallpaper"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Travel+Guidebook" alt="여행 가이드북"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=1330+Call" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
-    </div>
-
-    <nav class="footer-nav">
-      <ul>
-        <li><a href="#">개인정보처리방침</a></li>
-        <li><a href="#">이용약관</a></li>
-        <li><a href="#">위치기반서비스 이용약관</a></li>
-        <li><a href="#">개인위치정보 처리방침</a></li>
-        <li><a href="#">저작권정책</a></li>
-        <li><a href="#">고객서비스헌장</a></li>
-        <li><a href="#">전자우편무단수집거부</a></li>
-        <li><a href="#">자주 묻는 질문</a></li>
-        <li><a href="#">찾아오시는 길</a></li>
-        <li><a href="#">사이트맵</a></li>
-      </ul>
-    </nav>
-    <address class="text-center">
-      (우)26464 강원특별자치도 원주시 세계로 10 한국관광공사
-    </address>
-    <p class="text-center contact-info">
-      TEL : 033-738-3000 사업자등록번호 : 202-81-50707 통신판매신고 : 제2022-강원원주-0381호
-    </p>
-    <p class="copyright">
-      &copy; 2025 Korea Tourism Organization. All Rights Reserved.
-    </p>
-  </div>
-</footer>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
@@ -336,7 +225,7 @@
     let cat3 = $("#cat3").val();
 
     $.ajax({
-      url: "Controller?type=tripSuggestion",
+      url: "Controller?type=searchKeyword",
       method: "POST",
       data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
         cat1:cat1, cat2:cat2, cat3:cat3 /*, cPage:cPage */}
