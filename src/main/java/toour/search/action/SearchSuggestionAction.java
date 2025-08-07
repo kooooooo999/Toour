@@ -4,6 +4,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
+import toour.search.util.GetAPISearchData;
 import toour.search.vo.SearchResponseVO;
 import toour.search.vo.SearchDataVO;
 import toour.tripsuggestion.vo.DataVO;
@@ -16,11 +17,11 @@ import java.net.URL;
 import java.util.List;
 
 public class SearchSuggestionAction implements Action {
+
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-
         String viewPath = null;
-        String contentTypeid = request.getParameter("contentTypeId"); //관광타입ID(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점)
+        String contentTypeid = request.getParameter("contentTypeId"); //관광타입ID (12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점)
         String areaCode = request.getParameter("areaCode"); //지역코드
         String sigunguCode = request.getParameter("sigunguCode"); //시군구코드
         String cat1 = request.getParameter("cat1"); //대분류
@@ -28,18 +29,30 @@ public class SearchSuggestionAction implements Action {
         String cat3 = request.getParameter("cat3"); //소분류
         String cPage = request.getParameter("cPage"); //지금페이지
 
-        if (contentTypeid == null) {
-            System.out.println("확인");
-            //// 세빈 변경해야 될 부분 ////
-            viewPath = "tripSuggestion.jsp";
-        } else {
-            viewPath = "tripSuggestion_update.jsp";
+        String keyword = request.getParameter("keyword"); //키워드
+
+        //디버깅 로그
+        System.out.println("검색 키워드 :" + keyword);
+
+//        if (contentTypeid == null) {
+//            //// 키워드 기반 검색 ////
+//            SearchDataVO[] searchResults = GetAPISearchData.getSearch(request,keyword);
+//            request.setAttribute("searchResults", searchResults);
+//            //// 세빈 변경해야 될 부분 ////
+//            viewPath = "APISearchData.jsp";
+//        } else {
+//            viewPath = "tripSuggestion_update.jsp";
+//        }
+
+        if (keyword != null && !keyword.trim().isEmpty()){
+            SearchDataVO[] data = GetAPISearchData.getSearch(request,keyword);
+            request.setAttribute("data", data);
         }
+
+
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
-        //세빈 변경
-        StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
         String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
 
         Paging page = new Paging(5, 5);
@@ -58,10 +71,13 @@ public class SearchSuggestionAction implements Action {
 //          cat1=A04&cat2=A0401&cat3=A04010100&arrange=C&areaCode=39&sigunguCode=3&_type=json
 //          &lDongRegnCd=50&lDongSignguCd=130&lclsSystm1=SH&lclsSystm2=SH06&lclsSystm3=SH060100
 
-            SearchDataVO vo = new SearchDataVO();
-            String keyword = vo.getKeyword();
+//            SearchDataVO vo = new SearchDataVO();
+//            String keyword = vo.getKeyword();
 
             //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
+
+            //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
+            StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
             sb.append(key);
             sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=");
             sb.append(cPage);
@@ -100,11 +116,12 @@ public class SearchSuggestionAction implements Action {
                 Document doc = builder.build(conn1.getInputStream());
                 Element root = doc.getRootElement();
                 Element body = root.getChild("body");
-
                 Element items = body.getChild("items");
                 List<Element> item_list = items.getChildren("item");
+
                 SearchResponseVO[] ar = new SearchResponseVO[item_list.size()];
                 int i = 0;
+
                 //응답 메시지
                 for (Element item : item_list) {
                     String addr1 = item.getChildText("addr1");
@@ -140,6 +157,8 @@ public class SearchSuggestionAction implements Action {
                     StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D");
                     sb2.append("&_type=xml&contentId=");
                     sb2.append(voContentid);
+
+                    // 상세정보용 API 호출도 수행 (중첩 API)
                     URL url2 = new URL(sb2.toString());
                     HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                     conn2.setRequestProperty("Content-Type", "application/xml");
@@ -154,10 +173,12 @@ public class SearchSuggestionAction implements Action {
                     for (Element item2 : item_list2) {
                         overview = item2.getChildText("overview");
                     }
-                    SearchResponseVO srvo = new SearchResponseVO();
 
+                    //결과 객체 생성
+                    SearchResponseVO srvo = new SearchResponseVO();
                     ar[i++] = srvo;
                 }
+                // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
                 request.setAttribute("dataAr", ar);
             } catch (Exception e) {
                 e.printStackTrace();

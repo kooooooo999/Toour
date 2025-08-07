@@ -27,8 +27,8 @@
     <div class="container header-main flex-between">
         <a href="Controller" class="logo">👋🏻 toour</a>
         <div class="search-area">
-            <input id="search_header" type="text" placeholder="어디로 떠나고 싶으신가요?"
-                  />
+            <input id="keyword" type="text" placeholder="어디로 떠나고 싶으신가요?" name="keyword"
+            value="${param.keyword}"/>
             <i class="fas fa-search"></i>
         </div>
 
@@ -90,18 +90,33 @@
         location.href = "Controller?type=headSearch";
     }
 
-    $("#search_header").on('keypress',function (e) {//keydown은 안됨 한박자 늦게 인식
-        //사용자가 입력한 아이디가 u_id에 입력되므로 그곳에 있는 값(value)을 가져온다
-        let str = $(this).val();//this는 #u_id
-        //console.log(str);
-        //str의 값에서 공백이 있는지 없는지 판단하고 유효성 검사 해야함-pass(정규표현식 쓰자)
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            if (str.trim().length > 0 && e.keyCode === 'Enter') {
-                goSearch(str);
-            }
-        }
+    // $("#keyword").on('keypress',function (e) {//keydown은 안됨 한박자 늦게 인식
+    //     //사용자가 입력한 아이디가 u_id에 입력되므로 그곳에 있는 값(value)을 가져온다
+    //     let str = $(this).val();//this는 #u_id
+    //     //console.log(str);
+    //     //str의 값에서 공백이 있는지 없는지 판단하고 유효성 검사 해야함-pass(정규표현식 쓰자)
+    //     if (e.key === 'Enter') {
+    //         e.preventDefault();
+    //         if (str.trim().length > 0 && e.keyCode === 'Enter') {
+    //             goSearch(str);
+    //         }
+    //     }
+    // });
 
+    $(function () {
+        $('#keyword').on('keypress', function (e) { //keydown은 안됨 한박자 늦게 인식
+            if (e.key === 'Enter') {
+                e.preventDefault(); // 기본 submit 막기
+                const keyword = $(this).val().trim();
+                if (keyword.length === 0) {
+                    return;
+                }
+
+                // 키워드 넘기기 (GET 방식으로 Controller에 전달)
+                location.href = "Controller?type=searchKeyword&keyword=" + encodeURIComponent(keyword);
+            }
+        });
     });
+
 
 </script>
