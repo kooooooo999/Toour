@@ -2,14 +2,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>관리자 페이지</title>
   <style>
-
     body {
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
@@ -167,26 +165,29 @@
     #writebutton:hover {
       background-color: #2980b9;
     }
+
   </style>
 </head>
 <body>
 
 <div class="sidebar">
+
+  <!-- 메뉴 -->
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
+  <a href="AdminController?type=adminpost ">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
 <div class="main-content">
-  <h1>공지사항 관리</h1>
+  <h1>게시물 관리</h1>
 
   <div id="post">
     <div class="search-area">
       <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
-        <input type="hidden" name="category_idx" value="2">
+        <input type="hidden" name="category_idx" value="1">
         <select id="searchType" name="searchType">
           <option value="post_title">제목</option>
           <option value="post_content">내용</option>
@@ -197,11 +198,11 @@
         <button type="submit">검색</button>
 
       </form>
-      <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
+      <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminpostwrite'">
     </div>
 
     <table>
-<%--      <caption>검색결과 목록</caption>--%>
+      <%--      <caption>검색결과 목록</caption>--%>
       <thead>
       <tr>
         <th>번호</th>
@@ -214,11 +215,12 @@
       <tbody>
       <c:if test="${not empty ar}">
         <c:set var="p" value="${requestScope.page}" />
+
         <c:forEach items="${ar}" var="vo" varStatus="vs">
           <tr>
             <td>${vo.post_idx}</td>
             <td>
-              <a href="AdminController?type=adminnoticeview&post_idx=${vo.post_idx}&cPage=${nowPage}">
+              <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
                   ${vo.post_title}
                 <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
                   (<c:out value="${fn:length(vo.c_list)}"/>)
@@ -237,7 +239,7 @@
 
   <div class="pagination">
     <c:if test="${p.startPage > 1}">
-      <a href="AdminController?type=adminnotice&cPage=${p.startPage - 1}">&lt;</a>
+      <a href="AdminController?type=adminpost&cPage=${p.startPage - 1}">&lt;</a>
     </c:if>
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
       <c:choose>
@@ -245,12 +247,12 @@
           <span class="current">${vs.index}</span>
         </c:when>
         <c:otherwise>
-          <a href="AdminController?type=adminnotice&cPage=${vs.index}">${vs.index}</a>
+          <a href="AdminController?type=adminpost&cPage=${vs.index}">${vs.index}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
     <c:if test="${p.endPage < p.totalPage}">
-      <a href="AdminController?type=adminnotice&cPage=${p.endPage + 1}">&gt;</a>
+      <a href="AdminController?type=adminpost&cPage=${p.endPage + 1}">&gt;</a>
     </c:if>
   </div>
 
@@ -271,3 +273,4 @@
 </div>
 </body>
 </html>
+

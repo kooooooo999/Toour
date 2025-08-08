@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="adminpost">
+<mapper namespace="adminnotice">
 
     <resultMap id="map1" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
@@ -19,12 +19,12 @@
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
     <select id="list" resultMap="map1" parameterType="map">
         select * from(
-        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
+        select ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum, a.*
         from(
         select * from post
         where post_status = 0
-        and category_idx=2
-        order by post_idx DESC
+        and category_idx=#{category_idx}
+        order by post_idx desc
         ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
@@ -38,8 +38,7 @@
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p
-        LEFT OUTER join file f on p.post_idx = f.post_idx
+        SELECT  * FROM post p inner join file f on p.post_idx = f.post_idx
         WHERE p.post_idx = #{post_idx}
     </select>
 

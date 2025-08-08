@@ -6,8 +6,8 @@
   <meta charset="UTF-8">
   <title>관리자 페이지</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-    <link rel="stylesheet" href="../css/summernote-lite.css"/>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="../css/summernote-lite.css"/>
   <style>
     body {
       margin: 0;
@@ -154,8 +154,8 @@
   <h1>관리자 페이지</h1>
 </div>
 <div id="post">
-  <form action="AdminController?type=adminnoticewrite" method="post" encType="multipart/form-data">
-    <input type="hidden" name="category_idx" value="1"/>
+  <form action="AdminController?type=adminpostwrite" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="category_idx" value="2"/>
     <input type="hidden" name="member_idx" value="1"/>
 
     <table summary="공지사항 글쓰기">
@@ -181,7 +181,7 @@
         <td colspan="2">
           <input type="button" value="등록" onclick="sendData()"/>
           <input type="reset" value="초기화" onclick="resetForm()"/>
-          <input type="button" value="목록" onclick="location.href='AdminController?type=adminnotice'"/>
+          <input type="button" value="목록" onclick="location.href='AdminController?type=adminpost'"/>
         </td>
       </tr>
       </tbody>
@@ -233,7 +233,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "AdminController?type=adminnoticesaveimg",
+      url: "AdminController?type=adminpostsaveimg",
       data: frm,
       type: "post",
       contentType: false,
