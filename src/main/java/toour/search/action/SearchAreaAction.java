@@ -10,7 +10,7 @@ public class SearchAreaAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        String areaCode =request.getParameter("areaCode");
+        String areaCode = request.getParameter("areaCode");
         if(areaCode!=null&& !areaCode.equals("0"))
             GetAPIData.getSigungu(request,areaCode);
         String contentTypeId = request.getParameter("contentTypeId");
@@ -23,6 +23,6 @@ public class SearchAreaAction implements Action {
         if(cat1!=null&& !cat1.equals("0")&&cat2!=null&& !cat2.equals("0"))
             GetAPIData.getCat3(request,cat1,cat2);
         //세빈 입력해야 될 부분
-        return "";
+        return "APISearchData.jsp";
     }
 }

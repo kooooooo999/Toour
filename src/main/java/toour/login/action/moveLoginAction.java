@@ -10,4 +10,5 @@ public class moveLoginAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         return "member/login.jsp";
     }
+
 }

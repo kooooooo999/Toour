@@ -12,16 +12,21 @@ import java.net.URL;
 import java.util.List;
 
 public class GetAPISearchData {
-    public static SearchDataVO[] getSearch(HttpServletRequest request, String areaCode){
+    public static SearchDataVO[] getSearch(HttpServletRequest request, String keyword){
         SearchDataVO[] ar = null;
-        // 전달 받은 SearchDataVO안에 Areacode가 있다면
-        if(areaCode != null && areaCode.length()>0){
+        // 전달 받은 SearchDataVO안에 키워드가 있다면
+        if(keyword != null && keyword.length()>0){
+            //https://apis.data.go.kr/B551011/KorService2/searchKeyword2?serviceKey=서비스인증키&MobileApp=AppTest&MobileOS=ETC
+            // &pageNo=1&numOfRows=10&keyword=시장&cat1=A04&cat2=A0401&cat3=A04010100&arrange=C
+            // &areaCode=39&sigunguCode=3&_type=json
+            // &lDongRegnCd=50&lDongSignguCd=130&lclsSystm1=SH&lclsSystm2=SH06&lclsSystm3=SH060100
             //주소 만들기
             StringBuffer sb = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC");
-            sb.append("&numOfRows=5");
+            sb.append("&pageNo=1&numOfRows=5");
             sb.append("&");
-            sb.append("areaCode=");
-            sb.append(areaCode);
+            sb.append(keyword);
+            /*sb.append("areaCode=");
+            sb.append(areaCode);*/
             //확인용 주소 출력
             System.out.println(sb.toString());
             try{
