@@ -9,6 +9,7 @@
   <meta charset="UTF-8">
   <title>관리자 페이지</title>
   <style>
+
     body {
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
@@ -50,6 +51,122 @@
       border-radius: 6px;
       overflow: hidden;
     }
+
+    thead {
+      background-color: #fafafa;
+      border-bottom: 2px solid #e1e4e8;
+    }
+
+    th {
+      padding: 14px 20px;
+      text-align: left;
+      font-weight: 600;
+      color: #2c3e50;
+      font-size: 14px;
+    }
+
+    td {
+      padding: 12px 20px;
+      font-size: 13px;
+      color: #4a4a4a;
+    }
+
+    td a {
+      display: block;
+      width: 100%;
+      height: 100%;
+      color: #34495e;
+      text-decoration: none;
+    }
+
+    td a:hover {
+      color: #1a73e8;
+    }
+
+    tbody tr:nth-child(even) {
+      background-color: #f9fbfc;
+    }
+
+    tbody tr:hover {
+      background-color: #e6f0ff;
+    }
+
+    td.no, th.no {
+      width: 50px;
+      text-align: center;
+    }
+
+    .pagination {
+      margin: 20px auto;
+      text-align: center;
+      width: 100%;
+    }
+
+    .pagination a, .pagination span {
+      display: inline-block;
+      margin: 0 6px;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #3498db;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+
+    .pagination a:hover {
+      background-color: #e7f0ff;
+      border-color: #3498db;
+    }
+
+    .pagination .current {
+      font-weight: 700;
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+
+    .search-area {
+      background: #fff;
+      padding: 20px;
+      margin-bottom: 30px;
+      border: 1px solid #e1e4e8;
+      border-radius: 6px;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-area form {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .search-area select,
+    .search-area input[type="text"],
+    .search-area button,
+    #writebutton {
+      padding: 8px 12px;
+      font-size: 14px;
+      border-radius: 4px;
+      background: white;
+      color: #2c3e50;
+      border: 1px solid #ccc;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .search-area button,
+    #writebutton {
+      background-color: #3498db;
+      color: white;
+      border: none;
+    }
+
+    .search-area button:hover,
+    #writebutton:hover {
+      background-color: #2980b9;
+    }
   </style>
 </head>
 <body>
@@ -78,16 +195,16 @@
         <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
         <button type="submit">검색</button>
       </form>
+      <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
     </div>
 
-    <table summary="검색결과 목록">
-      <caption>검색결과 목록</caption>
+    <table>
+<%--      <caption>검색결과 목록</caption>--%>
       <thead>
       <tr>
         <th>번호</th>
         <th>제목</th>
         <th>작성자</th>
-        <th>별점</th>
         <th>조회수</th>
         <th>작성일</th>
       </tr>
@@ -108,7 +225,6 @@
               </a>
             </td>
             <td>${vo.member_nickname}</td>
-            <td>${vo.post_star}</td>
             <td>${vo.post_views}</td>
             <td>${vo.post_created_at.substring(0,10)}</td>
           </tr>
@@ -118,33 +234,23 @@
     </table>
   </div>
 
-  <div class="paging-area">
-    <ol class="paging">
-      <c:set var="p" value="${requestScope.page}" />
-      <c:if test="${p.startPage < p.pagePerBlock}">
-        <li class="disable">&lt;</li>
-      </c:if>
-      <c:if test="${p.startPage >= p.pagePerBlock}">
-        <li><a href="AdminController?type=adminnotice&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
-      </c:if>
-      <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-        <c:choose>
-          <c:when test="${p.nowPage == vs.index}">
-            <li class="now">${vs.index}</li>
-          </c:when>
-          <c:otherwise>
-            <li><a href="AdminController?type=adminnotice&cPage=${vs.index}">${vs.index}</a></li>
-          </c:otherwise>
-        </c:choose>
-      </c:forEach>
-      <c:if test="${p.endPage < p.totalPage}">
-        <li><a href="AdminController?type=adminnotice&cPage=${p.endPage+1}">&gt;</a></li>
-      </c:if>
-      <c:if test="${p.endPage >= p.totalPage}">
-        <li class="disable">&gt;</li>
-      </c:if>
-    </ol>
-    <input type="button" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
+  <div class="pagination">
+    <c:if test="${p.startPage > 1}">
+      <a href="AdminController?type=adminmemnotice&cPage=${p.startPage - 1}">&lt;</a>
+    </c:if>
+    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+      <c:choose>
+        <c:when test="${p.nowPage == vs.index}">
+          <span class="current">${vs.index}</span>
+        </c:when>
+        <c:otherwise>
+          <a href="AdminController?type=adminmemnotice&cPage=${vs.index}">${vs.index}</a>
+        </c:otherwise>
+      </c:choose>
+    </c:forEach>
+    <c:if test="${p.endPage < p.totalPage}">
+      <a href="AdminController?type=adminmemnotice&cPage=${p.endPage + 1}">&gt;</a>
+    </c:if>
   </div>
 
 

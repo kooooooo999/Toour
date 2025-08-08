@@ -7,130 +7,190 @@
 <head>
   <title>회원정보 관리</title>
   <style>
-    body {
-      margin: 0;
-      font-family: 'Noto Sans KR', sans-serif;
-      background-color: #f0f4f8;
-      display: flex;
-      height: 100vh;
-    }
+      body {
+          margin: 0;
+          font-family: 'Noto Sans KR', sans-serif;
+          background-color: #f0f4f8;
+          display: flex;
+          height: 100vh;
+          font-size: 14px; /* 기본 글자 크기 약간 줄임 */
+      }
 
-    .sidebar {
-      width: 220px;
-      background-color: #2c3e50; /* 기존 색상 유지 */
-      color: white;
-      padding: 20px;
-      display: flex;
-      flex-direction: column;
-    }
+      .sidebar {
+          width: 200px; /* 너비 줄임 */
+          background-color: #2c3e50;
+          color: white;
+          padding: 15px 20px;
+          display: flex;
+          flex-direction: column;
+          font-size: 14px; /* 사이드바 글자 크기 */
+      }
 
-    .sidebar a {
-      color: white;
-      text-decoration: none;
-      margin-bottom: 14px;
-      padding: 10px 12px;
-      border-radius: 6px;
-      transition: background 0.3s;
-    }
+      .sidebar a {
+          color: white;
+          text-decoration: none;
+          margin-bottom: 12px;
+          padding: 8px 10px;
+          border-radius: 5px;
+          transition: background 0.3s;
+          font-size: 14px;
+      }
 
-    .sidebar a:hover {
-      background-color: #34495e;
-    }
+      .sidebar a:hover {
+          background-color: #34495e;
+      }
 
-    .main-content {
-      flex: 1;
-      padding: 40px;
-      background-color: #ffffff;
-      overflow-y: auto;
-    }
+      .main-content {
+          flex: 1;
+          padding: 30px 40px;
+          background-color: #fff;
+          overflow-y: auto;
+          display: flex;
+          flex-direction: column;
+          font-size: 14px;
+      }
 
-    h1 {
-      /*color: #1e3a8a;*/
-      margin-bottom: 30px;
-    }
+      h1 {
+          margin-bottom: 20px;
+          font-weight: 600;
+          color: #2563eb; /* 진한 파랑 대신 #2563eb */
+          font-size: 22px;
+      }
 
-    .form-container {
-      max-width: 600px;
-      margin: 0 auto;
-      background: #f9fbfe;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-    }
+      .search-area {
+          margin-bottom: 15px;
+      }
 
-    .form-group {
-      margin-bottom: 20px;
-    }
+      form.search-form {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+      }
 
-    label {
-      display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
-      color: #333;
-    }
+      select, input[type="text"] {
+          padding: 6px 10px;
+          font-size: 13px;
+          border: 1px solid #cbd5e1;
+          border-radius: 5px;
+          outline: none;
+          font-family: 'Noto Sans KR', sans-serif;
+          box-sizing: border-box;
+      }
 
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #cbd5e1;
-      border-radius: 6px;
-      font-size: 14px;
-      box-sizing: border-box;
-    }
+      button {
+          padding: 7px 16px;
+          background-color: #2563eb; /* 요청하신 색 */
+          color: white;
+          border: none;
+          border-radius: 5px;
+          font-weight: 500;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background-color 0.3s;
+      }
 
-    .form-actions {
-      text-align: center;
-      margin-top: 30px;
-    }
+      button:hover {
+          background-color: #1d4ed8;
+      }
 
-    input[type="submit"],
-    input[type="button"] {
-      padding: 10px 20px;
-      margin: 0 10px;
-      border: none;
-      background-color: #1e40af;
-      color: white;
-      font-weight: 500;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          border-radius: 5px;
+          overflow: hidden;
+          box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+          margin-bottom: 25px;
+          font-size: 14px;
+      }
 
-    input[type="submit"]:hover,
-    input[type="button"]:hover {
-      background-color: #2563eb;
-    }
+      thead {
+          background-color: #2563eb; /* 요청 색으로 변경 */
+          color: white;
+          font-weight: 600;
+      }
 
+      th, td {
+          padding: 12px 10px;
+          text-align: left;
+          border-bottom: 1px solid #e2e8f0;
+          font-size: 13px;
+      }
 
-    #del_dialog{
-      background-color: #f9fbfe;
-      padding: 20px;
-      font-size: 14px;
-    }
+      tbody tr:hover {
+          background-color: #f0f4f8;
+          cursor: pointer;
+      }
 
-    #del_dialog form input[type="text"] {
-      display: block;
-      width: 100%;
-      padding: 8px;
-      margin-bottom: 15px;
-      box-sizing: border-box;
-      border-radius: 4px;
-      border: 1px solid #ccc;
-    }
+      tbody tr td a {
+          color: #2563eb; /* 링크 색상도 동일 */
+          text-decoration: none;
+          font-size: 13px;
+      }
 
-    #del_dialog form button {
-      margin-right: 10px; /* 버튼 간격 */
-      padding: 8px 14px;
-      background-color: #1e40af;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-    }
+      tbody tr td a:hover {
+          text-decoration: underline;
+      }
 
-    #del_dialog form .button-group {
-      text-align: right;
-    }
+      .paging-area {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          font-size: 13px;
+      }
+
+      ol.paging {
+          list-style: none;
+          display: flex;
+          gap: 6px;
+          padding: 0;
+          margin: 0;
+      }
+
+      ol.paging li {
+          padding: 5px 10px;
+          border-radius: 5px;
+          border: 1px solid #cbd5e1;
+          font-size: 13px;
+          cursor: pointer;
+          user-select: none;
+      }
+
+      ol.paging li.now {
+          background-color: #2563eb;
+          color: white;
+          border-color: #2563eb;
+          cursor: default;
+      }
+
+      ol.paging li.disable {
+          color: #a0aec0;
+          cursor: default;
+          border-color: #e2e8f0;
+      }
+
+      ol.paging li a {
+          text-decoration: none;
+          color: inherit;
+          display: block;
+          width: 100%;
+          height: 100%;
+      }
+
+      input[type="button"].write-btn {
+          background-color: #2563eb;
+          padding: 8px 18px;
+          border: none;
+          color: white;
+          font-weight: 600;
+          border-radius: 5px;
+          cursor: pointer;
+          transition: background-color 0.3s;
+          font-size: 14px;
+      }
+
+      input[type="button"].write-btn:hover {
+          background-color: #1d4ed8;
+      }
   </style>
 </head>
 <body>

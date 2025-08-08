@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.Date" %>
-<%@ page import="toour.tripsuggestion.vo.DataVO" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -9,6 +7,10 @@
 
 <html>
 <head>
+
+  <title>길찾기 경로 시각화</title>
+  <script type="text/javascript"
+          src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>👋🏻toour</title>
@@ -18,15 +20,7 @@
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 
   <style>
-    .overview {
-      width: 650px;
-      height: 120px;
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 5; /* 최대 5줄까지 표시 */
-      -webkit-box-orient: vertical; /* 텍스트를 세로로 쌓기 */
-      text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
-    }
+
   </style>
 
 </head>
@@ -37,24 +31,24 @@
 
 <div id="main">
     <c:set var="Dvo" value="${requestScope.detailsAr}"/>
+        <h2 class="tag">${Dvo.title}</h2>
+          <p class="addr1Details">${Dvo.addr1}</p>
+      <p class="lineDetails">
+        <div id="heartImagedetails">
+          <p class="heartIcon"><i class="fa-solid fa-heart"></i></p>
+        </div>
 
-  <p class="titleDetails">${Dvo.title}</p>
-
-  <div id="heartImagedetails">
-    <p class="heartIcon">
-      <i class="fa-solid fa-heart"></i>
-    </p>
-  </div>
-
-  <div class="text ellipsis item">
-      <img src="${Dvo.firstimage}" class="imageDetails">
-
-      <p class="infoText">상세정보</p>
+          <img src="${Dvo.firstimage}" class="imageDetails">
+            <h3 class="infoText">상세정보</h3>
+      <p class="lineDetails">
 
 
-        <p class="addr1">[${Dvo.addr1}]</p>
-        <p class="overview">${Dvo.overview}</p>
-      </div>
+        <p class="overviewDetails">${Dvo.overview}</p>
+</div>
+
+<%--지도영역--%>
+<div id="mapDetails">
+  <div id="map" style="width:100%;height:600px;"></div>
 </div>
 
 
@@ -80,11 +74,11 @@
     </div>
 
     <div class="footer-banners">
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=ODii" alt="오디 (ODii)"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Data+Request" alt="관광정보 수정/신청"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Wallpaper" alt="대한민국 구석구석 Wallpaper"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Travel+Guidebook" alt="여행 가이드북"></div>
-      <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=1330+Call" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
+      <div class="banner-item"><img src="#" alt="오디 (ODii)"></div>
+      <div class="banner-item"><img src="#" alt="관광정보 수정/신청"></div>
+      <div class="banner-item"><img src="#" alt="대한민국 구석구석 Wallpaper"></div>
+      <div class="banner-item"><img src="#" alt="여행 가이드북"></div>
+      <div class="banner-item"><img src="#" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
     </div>
 
     <nav class="footer-nav">
@@ -112,10 +106,23 @@
     </p>
   </div>
 </footer>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script type="text/javascript">
 
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+      center: new kakao.maps.LatLng(${Dvo.mapx}, ${Dvo.mapy}),
+      level: 5
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
+
+    var marker = new kakao.maps.Marker({
+      position: new kakao.maps.LatLng(${Dvo.mapx}, ${Dvo.mapy}),
+      map: map,
+    });
 
 </script>
 

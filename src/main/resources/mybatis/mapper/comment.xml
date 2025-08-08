@@ -3,8 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="comment">
-
-
     <select id="list" resultType="toour.post.vo.CommentVO" parameterType="String">
         select * from comment
         where post_idx = #{post_idx}
