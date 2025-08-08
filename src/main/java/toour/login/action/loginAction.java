@@ -20,6 +20,7 @@ public class loginAction implements Action {
             if(u_id!=null){
                 //요청으로부터 id를 잘받아옴
                 MemberVO mvo = MemberDAO.getMem(u_id);
+                System.out.println("mvo.getZzimlist().length:"+mvo.getZzimlist().length);
                 if(mvo!=null){
                     //입력한 id가 db에 있을때
                     String u_pw = request.getParameter("u_pw");
