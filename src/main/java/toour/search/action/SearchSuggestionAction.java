@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
+import java.util.Objects;
 
 public class SearchSuggestionAction implements Action {
 
@@ -30,6 +31,8 @@ public class SearchSuggestionAction implements Action {
         String cat2 = request.getParameter("cat2"); //중분류
         String cat3 = request.getParameter("cat3"); //소분류
         String cPage = request.getParameter("cPage"); //지금페이지
+
+        Paging page = new Paging(5, 5);
 
         String keyword = request.getParameter("keyword"); //키워드
         String encodedKeyword;
@@ -54,16 +57,15 @@ public class SearchSuggestionAction implements Action {
             SearchDataVO[] data = GetAPISearchData.getSearch(request,keyword);
             request.setAttribute("data", data);
             viewPath = "APISearchData.jsp";
-        }else
+        }else{
             viewPath = "APISearchData_update.jsp";
-
+        }
 
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
 
-        Paging page = new Paging(5, 5);
 
         String code = request.getParameter("areaCode");
         if (code == null) {
@@ -120,10 +122,15 @@ public class SearchSuggestionAction implements Action {
                 Document doc = builder.build(conn1.getInputStream());
                 Element root = doc.getRootElement();
                 Element body = root.getChild("body");
+
+                Element totalCount = body.getChild("totalCount");
+                String totalCountStr = totalCount.getText();
+
                 Element items = body.getChild("items");
                 List<Element> item_list = items.getChildren("item");
 
                 SearchResponseVO[] ar = new SearchResponseVO[item_list.size()];
+
                 int i = 0;
 
                 //응답 메시지
@@ -138,6 +145,9 @@ public class SearchSuggestionAction implements Action {
                     String contenttypeid = item.getChildText("contenttypeid");
                     String createdtime = item.getChildText("createdtime");
                     String firstimage = item.getChildText("firstimage");
+                    System.out.println(firstimage);
+                    if (Objects.equals(firstimage, ""))
+                        firstimage = "./css/images/noImages.png";
                     String firstimage2 = item.getChildText("firstimage2");
                     String cpyrhtDivCd = item.getChildText("cpyrhtDivCd");
                     String mapx = item.getChildText("mapx");
@@ -176,11 +186,19 @@ public class SearchSuggestionAction implements Action {
                     }
 
                     //결과 객체 생성
-                    SearchResponseVO srvo = new SearchResponseVO();
+                    SearchResponseVO srvo = new SearchResponseVO(title,addr1,overview,firstimage);
+
+                    page.setTotalCount(Integer.parseInt(totalCountStr));
+                    page.setNowPage(Integer.parseInt(cPage));
+
+
                     ar[i++] = srvo;
+
                 }
                 // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
-                request.setAttribute("dataAr", ar);
+                request.setAttribute("searchAr", ar);
+                request.setAttribute("page", page);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
