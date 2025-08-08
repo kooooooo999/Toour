@@ -13,6 +13,8 @@
   <title>👋🏻toour</title>
   <link rel="stylesheet" href="<c:url value="/css/header.css" />">
   <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+  <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+
 
   <style>
     .overview {
@@ -104,7 +106,7 @@
 
 
 <div id="main">
-  <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
+  <c:forEach var="Dvo" items="${requestScope.searchAr}" varStatus="count">
     <c:if test="${count.index < 5}">
       <div id="heartImage">
         <p class="heartIcon">
@@ -115,7 +117,9 @@
       <div class="text ellipsis item">
         <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
         <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+<%--
         <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
+--%>
       </div>
     </c:if>
   </c:forEach>

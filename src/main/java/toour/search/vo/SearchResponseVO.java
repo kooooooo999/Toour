@@ -5,16 +5,21 @@ public class SearchResponseVO {
             addr1,addr2,areacode,cat1, cat2, cat3, contentid, contenttypeid, createdtime,
             firstimage, firstimage2, cpyrhtDivCd,mapx, mapy, mlevel, modifiedtime,
             sigungucode, tel, title, lDongRegnCd, lDongSignguCd, lclsSystm1,
-            lclsSystm2,lclsSystm3,zipcode;
+            lclsSystm2,lclsSystm3,zipcode, overview;
 
     public SearchResponseVO(){
 
     }
-
+    public SearchResponseVO(String title, String addr1, String overview, String firstimage) {
+        this.title = title;
+        this.addr1 = addr1;
+        this.overview = overview;
+        this.firstimage = firstimage;
+    }
     public SearchResponseVO( String addr1, String addr2, String areacode, String cat1, String cat2, String cat3, String contentid, String contenttypeid, String createdtime,
                              String firstimage, String firstimage2, String cpyrhtDivCd,String mapx, String mapy, String mlevel, String modifiedtime,
                              String sigungucode, String tel, String title, String lDongRegnCd, String lDongSignguCd, String lclsSystm1,
-                             String lclsSystm2, String lclsSystm3, String zipcode){
+                             String lclsSystm2, String lclsSystm3, String zipcode, String overview){
 
         this.addr1 = addr1;
         this.addr2 = addr2;
@@ -41,6 +46,15 @@ public class SearchResponseVO {
         this.lclsSystm2 = lclsSystm2;
         this.lclsSystm3 = lclsSystm3;
         this.zipcode = zipcode;
+        this.overview = overview;
+    }
+
+    public String getOverview() {
+        return overview;
+    }
+
+    public void setOverview(String overview) {
+        this.overview = overview;
     }
 
     public String getAddr1() {return addr1;}
