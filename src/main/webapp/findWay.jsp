@@ -24,7 +24,7 @@
         .selected_list_item .number { font-weight: bold; font-size: 1.2em; color: #555; width: 25px; text-align: center; }
         .selected_list_item .place-info { flex-grow: 1; margin-left: 10px; }
         #findWayBox { margin: 10px auto; }
-        .buttonRight { position: absolute; right: 0; padding: 2px 7px; margin-top: 5px; }
+        .buttonRight { position: absolute; right: 0; width: 60px; padding: 3px 10px; margin-top: 5px; }
         #searchBox { width: 300px; padding-top: 26px; position: relative; }
         #searchBox2 { width: 300px; position: relative; }
         .hide { display: none }
@@ -33,9 +33,9 @@
         #resultOpen { position: absolute; right: 10px; top: 5px; padding: 2px 7px; }
         .marginAuto { margin: 0 auto; }
         .marginTop55 { margin-top: 55px; }
-        #findButton { margin-top: 50px; }
+        #findButton { width: 260px; height: 30px; margin: auto; position: absolute; bottom: 20px; }
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
-        .closeopen_btn {  background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
+        .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -55,26 +55,19 @@
             <button type="button" id="resultOpen" class="closeopen_btn" onclick="openResult()">&gt;&gt;</button>
 
             <div class="search_container">
-                <h3>출발지</h3>
-                <hr color="#eee" size="1px" width="50px"/>
+                <h3>어디로 갈까?</h3>
+                <hr style="margin-top: 7px;" color="#eee" size="1px" width="100px"/>
                 <input type="text" class="searchKeyword" id="searchKeyword" placeholder="키워드나 주소를 입력하세요">
                 <button type="button" class="buttonRight detail_btn" onclick="searchplace()">검색</button>
             </div>
 
-            <div class="search_container marginTop55">
-                <h3>도착지</h3>
-                <hr color="#eee" size="1px" width="50px"/>
-                <input type="text" class="searchKeyword" id="destinationKeyword" placeholder="키워드나 주소를 입력하세요"/>
-                <button type="button" class="buttonRight detail_btn" onclick="destinationplace()">검색</button>
+            <div class="selected_places">
+                <h3>여기로 가야지!</h3>
+                <ul id="selected_places_list"></ul>
             </div>
 
             <div  id="findButton" class="search_container">
-            <button type="button" class="buttonRight detail_btn" onclick="findWay()">길찾기</button>
-            </div>
-
-            <div class="selected_places">
-                <h3>선택된 코스</h3>
-                <ul id="selected_places_list"></ul>
+                <button type="button" class="buttonRight detail_btn" onclick="findWay()">길찾기</button>
             </div>
 
         </div>
@@ -180,49 +173,6 @@
         function displayMarker(place) {
             // 마커를 생성하고 지도에 표시
                 marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(place.y, place.x)
-            });
-            markers.push(marker);
-
-            // 마커에 클릭이벤트를 등록
-            kakao.maps.event.addListener(marker, 'click', function() {
-                // 마커를 클릭하면 장소명이 인포윈도우에 표출
-                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
-                infowindow.open(map, marker);
-            });
-        }
-        $("#searchBox2").show();
-    }
-
-    function destinationplace() {
-        let keyword = $("#destinationKeyword").val().trim();
-
-        // 키워드로 장소 검색
-        ps.keywordSearch(keyword, placesSearchCB);
-
-        // 키워드 검색 완료 시 호출되는 함수
-        function placesSearchCB(data, status, pagination) {
-            removeMarker();
-            if (status === kakao.maps.services.Status.OK) {
-
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표 추가
-                var bounds = new kakao.maps.LatLngBounds();
-
-                for (var i = 0; i < data.length; i++) {
-                    displayMarker(data[i]);
-                    bounds.extend(new kakao.maps.LatLng(data[i].y, data[i].x));
-                }
-
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정
-                map.setBounds(bounds);
-            }
-        }
-
-        // 지도에 검색한 위치에 마커를 표시하는 함수
-        function displayMarker(place) {
-            // 마커를 생성하고 지도에 표시
-            marker = new kakao.maps.Marker({
                 map: map,
                 position: new kakao.maps.LatLng(place.y, place.x)
             });
