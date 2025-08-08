@@ -2,7 +2,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"  %>
 <html>
 <head id="head">
-    <title>Title</title>
+    <title>👋🏻toour</title>
     <link rel="stylesheet" type="text/css" href="./css/sido.css">
     <style id="style">
         #wrap{
@@ -16,7 +16,7 @@
             width: 500px;
             height: 600px;
             /*border: 1px solid #000;*/
-            <c:if test="${param.imageChange==null}">
+            <c:if test="${param.imageChange == null}">
                 background-image: url("images/total.png");
             </c:if>
             <c:if test="${param.imageChange ne null}">

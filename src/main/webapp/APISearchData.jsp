@@ -106,29 +106,25 @@
 <div id="main">
   <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
     <c:if test="${count.index < 5}">
-      <div class="item">
-        <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid != 25}">
-          <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-          <div class="text ellipsis">
-            <p class="title"><a href="#">${Dvo.title}</a></p>
-            <p class="addr1"><a href="#">[${Dvo.addr1}]</a></p>
-            <p class="overview"><a href="#">${Dvo.overview}</a></p>
-          </div>
-        </c:if>
-
-        <c:if test="${fn:length(Dvo.firstimage)>0 and fn:length(Dvo.title)>0 and
-          fn:length(Dvo.addr2)>0 and fn:length(Dvo.overview)>0 and Dvo.contenttypeid == 25}">
-          <img src="${Dvo.firstimage}" class="image" onclick="selectImage(this)">
-          <div class="text ellipsis">
-            <p class="title"><a href="#">${Dvo.title}</a></p>
-            <p class="overview"><a href="#">${Dvo.overview}</a></p>
-          </div>
-        </c:if>
-
+      <div id="heartImage">
+        <p class="heartIcon">
+          <i class="fa-solid fa-heart"></i>
+        </p>
+      </div>
+      <img src="${Dvo.firstimage}" class="image">
+      <div class="text ellipsis item">
+        <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
+        <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+        <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
       </div>
     </c:if>
   </c:forEach>
+</div>
+
+<div id="nullData">
+  <c:if test="${fn:length(Dvo.title) < 0}">
+    <p>등록된 게시글이 없습니다</p>
+  </c:if>
 </div>
 
 <div id="page">
@@ -245,6 +241,40 @@
 
   });
 
+
+  function submitData(title, addr1, overview, firstimage){
+    let form = document.createElement('form');
+    form.method = 'POST';
+    form.action = 'Controller?type=tripDetails';
+
+    let titleInput = document.createElement('input');
+    titleInput.type = 'hidden';
+    titleInput.name = 'title';
+    titleInput.value = title;
+
+    let addr1Input = document.createElement('input');
+    addr1Input.type = 'hidden';
+    addr1Input.name = 'addr1';
+    addr1Input.value = addr1;
+
+    let overviewInput = document.createElement('input');
+    overviewInput.type = 'hidden';
+    overviewInput.name = 'overview';
+    overviewInput.value = overview;
+
+    let firstimageInput = document.createElement('input');
+    firstimageInput.type = 'hidden';
+    firstimageInput.name = 'firstimage';
+    firstimageInput.value = firstimage;
+
+    form.appendChild(titleInput);
+    form.appendChild(addr1Input);
+    form.appendChild(overviewInput);
+    form.appendChild(firstimageInput);
+
+    document.body.appendChild(form);
+    form.submit();
+  }
 </script>
 
 </body>

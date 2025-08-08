@@ -20,7 +20,7 @@
             <c:if test="${sessionScope.user ne null}">
                 <a href="Controller?type=login">로그아웃</a>
             </c:if>
-            <a href="myPage.jsp">마이 페이지</a>
+            <a href="Controller?type=mypage">마이 페이지</a>
             <a href="#">고객센터</a>
         </div>
     </div>
@@ -51,15 +51,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">맛집</a>
-                <ul class="submenu">
-                    <li><a href="#">검색</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                </ul>
+                <a href="Controller?type=GoWay" class="act">나만의 코스</a>
             </li>
             <li class="dropdown">
                 <a href="#" class="act">추천코스</a>

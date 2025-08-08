@@ -20,7 +20,7 @@
       <style>
           .overview {
               width: 650px;
-              height: 80px;
+              height: 45px;
               overflow: hidden;
               display: -webkit-box;
               -webkit-line-clamp: 2; /* 최대 5줄까지 표시 */
@@ -91,6 +91,10 @@
           ol.paging li.disable {
               display: none; /* li 태그 자체를 숨김 (a 태그도 포함) */
           }
+
+          #heartImage>p>i{
+              color: #f00;
+          }
       </style>
 
   </head>
@@ -104,7 +108,7 @@
   <h2 class="tag">#선택</h2>
 
   <div id="selectareaCode">
-      <form name="frm" method="post" action="Controller?type=tripSuggestion">
+      <form name="frm" method="post">
   <ol>
       <li>
           <c:set var="requestcontentTypeId" value="${param.contentTypeId}"/>
@@ -186,20 +190,22 @@
       </form>
   </div>
 
+  <%--<i class="fa-solid fa-heart"></i>  꽉찬 하트--%>
   <div id="main">
-    <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
-      <c:if test="${count.index < 5}">
-        <div id="heartImage">
-          <p class="heartIcon">
-              <i class="fa-solid fa-heart"></i>
-          </p>
-        </div>
-        <img src="${Dvo.firstimage}" class="image">
-            <div class="text ellipsis item">
-        <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
-        <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
-        <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
-            </div>
+      <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
+        <c:if test="${count.index < 5}">
+          <div id="heartImage">
+            <p class="heartIcon"><i class="fa-regular fa-heart" ></i></p>
+          </div>
+
+        <img src="${Dvo.firstimage}" class="image"/>
+
+          <div class="text ellipsis item">
+            <p class="title"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.title}</a></p>
+            <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.addr1}</a></p>
+            <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.overview}</a></p>
+          </div>
+
       </c:if>
     </c:forEach>
   </div>
@@ -211,37 +217,36 @@
   </div>
 
   <div id="page">
-
       <ol class="paging">
           <c:set var="p" value="${requestScope.page}" scope="page"/>
 
           <c:if test="${p.startPage < p.pagePerBlock}">
-
               <li class="disable">&lt;</li>
           </c:if>
 
           <c:if test="${p.startPage >= p.pagePerBlock}">
-
-              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
+              <li><a href="javascript:moveBigPage(${p.nowPage-p.pagePerBlock}),movePage(${p.nowPage-p.pagePerBlock})">&lt;</a></li>
           </c:if>
 
           <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
               <c:if test="${p.nowPage == vs.index}">
-                  <li class="current">${vs.index}</li>
+                  <li class="current" value="${vs.index}" id="${vs.index}">${vs.index}</li>
               </c:if>
+
               <c:if test="${p.nowPage != vs.index}">
-                  <li><a href="Controller?type=tripSuggestion&cPage=${vs.index}">${vs.index}</a></li>
+                  <li value="${vs.index}" id="${vs.index}">
+                      <a href="javascript:movePage(${vs.index})">${vs.index}</a>
+                  </li>
               </c:if>
           </c:forEach>
 
           <c:if test="${p.endPage < p.totalPage}">
-
-              <li><a href="Controller?type=tripSuggestion&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
+              <li><a href="javascript:moveBigPage(${p.nowPage+p.pagePerBlock}) , movePage(${p.nowPage+p.pagePerBlock})">&gt;</a></li>
           </c:if>
+
           <c:if test="${p.endPage >= p.totalPage}">
               <li class="disable">&gt;</li>
           </c:if>
-
       </ol>
   </div>
 
@@ -267,11 +272,11 @@
       </div>
 
       <div class="footer-banners">
-        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=ODii" alt="오디 (ODii)"></div>
-        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Data+Request" alt="관광정보 수정/신청"></div>
-        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Wallpaper" alt="대한민국 구석구석 Wallpaper"></div>
-        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Travel+Guidebook" alt="여행 가이드북"></div>
-        <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=1330+Call" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
+        <div class="banner-item"><img src="#" alt="오디 (ODii)"></div>
+        <div class="banner-item"><img src="#" alt="관광정보 수정/신청"></div>
+        <div class="banner-item"><img src="#" alt="대한민국 구석구석 Wallpaper"></div>
+        <div class="banner-item"><img src="#" alt="여행 가이드북"></div>
+        <div class="banner-item"><img src="#" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
       </div>
 
       <nav class="footer-nav">
@@ -304,11 +309,7 @@
   <script>
       $(function (){
 
-
-
-
-
-          $("#areaCode").blur(function () {
+          $("#areaCode").change(function () {
 
               let areaCode = $("#areaCode").val();
                   $.ajax({
@@ -321,7 +322,7 @@
 
           });
 
-          $("#contentTypeId").blur(function () {
+          $("#contentTypeId").change(function () {
 
               let contentTypeId = $("#contentTypeId").val();
               if(contentTypeId!=0) {
@@ -337,7 +338,7 @@
               }
           });
 
-          $("#cat1").blur(function (){
+          $("#cat1").change(function (){
               let cat1 = $("#cat1").val();
               if(cat1!= 0) {
                   $.ajax({
@@ -352,7 +353,7 @@
               }
           });
 
-          $("#cat2").blur(function (){
+          $("#cat2").change(function (){
               let cat1 = $("#cat1").val();
               let cat2 = $("#cat2").val();
               if(cat2!=0 && cat3!=0) {
@@ -367,14 +368,47 @@
           });
       });
 
-      $("#searchBt").on("click",function (){
-
+      function movePage(npage) {
           let contentTypeId = $("#contentTypeId").val();
           let areaCode = $("#areaCode").val();
           let sigunguCode = $("#sigunguCode").val();
           let cat1 = $("#cat1").val();
           let cat2 = $("#cat2").val();
           let cat3 = $("#cat3").val();
+
+          //기존 current였던 애에서 current를 삭제하고 <a>를 삽입
+          let currentedPage = $(".current").val();
+          $("#"+currentedPage).removeClass('current');
+          $("#"+currentedPage).html("<a href='javascript:movePage("+currentedPage+")'>"+currentedPage+"</a>")
+
+          // 사용자가 선택한 페이지에 class로 current를 부여하고 <a> 삭제
+          $("#"+npage).addClass('current');
+          $("#"+npage).html(npage);
+
+            $.ajax({
+                url: "Controller?type=tripSuggestion",
+                method: "POST",
+                data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
+                    cat1:cat1, cat2:cat2, cat3:cat3, cPage:npage}
+            }).done(function (res){
+                  $("#main").html(res);
+            });
+      }
+
+      function moveBigPage(npage) {
+          let totalCount =${p.totalCount};
+          $.ajax({
+              url: "Controller?type=tripPaging",
+              method: "POST",
+              data: {cPage:npage, totalCount:totalCount}
+          }).done(function (res){
+              $("#page").html(res);
+          });
+      }
+
+      $("#searchBt").on("click",function (){
+
+          document.frm.action = "Controller?type=tripSuggestion";
           document.frm.submit();
 /*
           $.ajax({
@@ -386,6 +420,19 @@
                 $("#main").html(res);
           });*/
 
+      });
+
+      $(document).ready(function() { //보안을 위해 거쳐서 이동
+          $('.data-link').on('click', function(e) {
+              e.preventDefault(); // a태그 href 링크 이동 방지
+              let title = $(this).data('title');
+              let addr1 = $(this).data('addr1');
+              let overview = $(this).data('overview');
+              let firstimage = $(this).data('firstimage');
+              // let mapx = $(this).data('mapx');
+              // let mapy = $(this).data('mapy');
+              submitData(title, addr1, overview, firstimage);
+          });
       });
 
       function submitData(title, addr1, overview, firstimage){
@@ -413,12 +460,26 @@
           firstimageInput.name = 'firstimage';
           firstimageInput.value = firstimage;
 
+          // let mapxInput = document.createElement('input');
+          // mapxInput.type = 'hidden';
+          // mapxInput.name = 'mapx';
+          // mapxInput.value = mapx;
+          //
+          // let mapyInput = document.createElement('input');
+          // mapyInput.type = 'hidden';
+          // mapyInput.name = 'mapy';
+          // mapyInput.value = mapy;
+
+
           form.appendChild(titleInput);
           form.appendChild(addr1Input);
           form.appendChild(overviewInput);
           form.appendChild(firstimageInput);
+          // form.appendChild(mapx);
+          // form.appendChild(mapy);
 
           document.body.appendChild(form);
+
           form.submit();
       }
 
