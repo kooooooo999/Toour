@@ -4,13 +4,14 @@
 body { line-height: 1.6; color: #333; background-color: #f8f9fa;}
 a { text-decoration: none; color: inherit; }
 ul { list-style: none; }
-.image { width: 500px; height: 250px; margin-right: 20px; text-align: center;}
-.container { width: 90%; max-width: 1280px; margin: 0 auto; }
+img { max-width: 100%; height: auto; display: block; }
+.container { width: 100%; max-width: 1560px; margin: 0 auto; }
 .section-padding { padding: 40px 0; }
 .flex-between { display: flex; justify-content: space-between; align-items: center; }
 .text-center { text-align: center; }
 .text-right { text-align: right; }
 .section-title { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 30px; }
+.image { width: 500px; height: 250px; margin-right: 20px; text-align: center;}
 
 
 /* Main Navigation */

@@ -1,9 +1,9 @@
 package toour.action;
 
-import mybatis.vo.CityInfoVO;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+import toour.tripsuggestion.vo.DataVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,14 +57,19 @@ public class sidoAction implements Action {
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
-            CityInfoVO[] ar = new CityInfoVO[item_list.size()];
+            DataVO[] ar = new DataVO[item_list.size()];
             int i = 0;
             for (Element item : item_list) {
                 String title = item.getChildText("title"); //자식 태그 안의 문자열
                 String addr1 = item.getChildText("addr1");
                 String firstimage = item.getChildText("firstimage");
+                String contentId = item.getChildText("contentId");
 
-                CityInfoVO vo = new CityInfoVO(title, firstimage, addr1);
+                DataVO vo = new DataVO();
+                vo.setTitle(title);
+                vo.setAddr1(addr1);
+                vo.setFirstimage(firstimage);
+                vo.setContentId(contentId);
                 ar[i++] = vo;
             }
             request.setAttribute("ar2", ar);

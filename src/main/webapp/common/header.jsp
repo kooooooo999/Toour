@@ -51,15 +51,7 @@
                 </ul>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">맛집</a>
-                <ul class="submenu">
-                    <li><a href="#">검색</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                    <li><a href="#">맛집</a> </li>
-                </ul>
+                <a href="Controller?type=GoWay" class="act">나만의 코스</a>
             </li>
             <li class="dropdown">
                 <a href="#" class="act">추천코스</a>
