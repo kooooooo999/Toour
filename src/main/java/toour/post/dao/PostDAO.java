@@ -74,7 +74,18 @@ public class PostDAO {
     }
 
 
-
+    //조회수 증가
+    public static int hit(String post_idx){
+        int cnt = 0;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        cnt = ss.update("post.hit", post_idx);
+        if(cnt>0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+        return cnt;
+    }
 
 
     // 목록 반환

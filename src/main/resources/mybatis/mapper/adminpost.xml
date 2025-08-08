@@ -20,13 +20,12 @@
 
     <select id="list" resultMap="map1" parameterType="map">
         select * from(
-        select @RN:=@RN+1 AS rnum, a.*
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
         select * from post
         where post_status = 0
         and category_idx=#{category_idx}
-        order by post_idx desc
-        ) a, (select @RN:=0)b
+        ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
     </select>

@@ -90,8 +90,11 @@ public class SearchSuggestionAction implements Action {
             //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
             StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
             sb.append(key);
-            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=");
-            sb.append("5");
+            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=" );
+            System.out.println(cPage);
+            sb.append(Integer.parseInt(cPage));
+            sb.append("&numOfRows=");
+            sb.append("10");
             sb.append("&keyword=");
             sb.append(encodedKeyword);
             if (cat1 != null && !cat1.equals("0")) {//0이 전부를 뜻함
@@ -146,8 +149,7 @@ public class SearchSuggestionAction implements Action {
                     String createdtime = item.getChildText("createdtime");
                     String firstimage = item.getChildText("firstimage");
                     System.out.println(firstimage);
-                    if (Objects.equals(firstimage, ""))
-                        firstimage = "./css/images/noImages.png";
+
                     String firstimage2 = item.getChildText("firstimage2");
                     String cpyrhtDivCd = item.getChildText("cpyrhtDivCd");
                     String mapx = item.getChildText("mapx");
@@ -184,13 +186,13 @@ public class SearchSuggestionAction implements Action {
                     for (Element item2 : item_list2) {
                         overview = item2.getChildText("overview");
                     }
-
                     //결과 객체 생성
                     SearchResponseVO srvo = new SearchResponseVO(title,addr1,overview,firstimage);
 
                     page.setTotalCount(Integer.parseInt(totalCountStr));
                     page.setNowPage(Integer.parseInt(cPage));
-
+                    int totalCount2 = page.getTotalCount();
+                    int nowPage2 = page.getNowPage();
 
                     ar[i++] = srvo;
 
@@ -198,7 +200,10 @@ public class SearchSuggestionAction implements Action {
                 // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
                 request.setAttribute("searchAr", ar);
                 request.setAttribute("page", page);
-
+                request.setAttribute("totalCount", totalCountStr);
+                request.setAttribute("cPage", cPage);
+                request.setAttribute("keyword",keyword);
+                request.setAttribute("encodeKeyword",encodedKeyword);
             } catch (Exception e) {
                 e.printStackTrace();
             }

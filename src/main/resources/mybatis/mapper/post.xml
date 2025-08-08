@@ -10,6 +10,12 @@
         <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
 
+    <!--조회수 증가-->
+    <update id="hit" parameterType="String">
+        UPDATE post
+        SET hit = hit + 1
+        where post_idx = #{post_idx}
+    </update>
     <!-- 총 게시물 수를 반환하는 기능 -->
     <select id="totalCount" resultType="int" parameterType="String">
         select count(*) from post
