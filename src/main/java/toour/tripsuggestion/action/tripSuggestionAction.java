@@ -21,7 +21,7 @@ public class tripSuggestionAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-        String viewPath = null;
+        String viewPath = "tripSuggestion.jsp";
         String contentTypeid = request.getParameter("contentTypeId");
         String areaCode = request.getParameter("areaCode");
         String sigunguCode = request.getParameter("sigunguCode");
@@ -32,9 +32,9 @@ public class tripSuggestionAction implements Action {
 
         if (contentTypeid == null) {
             contentTypeid = "12";
-            viewPath = "tripSuggestion.jsp";
-        } else {
-            viewPath = "tripSuggestion.jsp";
+        }
+        if(cPage!=null){
+            viewPath = "tripSuggestion_update.jsp";
         }
         //공공데이터 openAPI 호출하는 경로
         //serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D
@@ -111,7 +111,6 @@ public class tripSuggestionAction implements Action {
                 Element body = root.getChild("body");
                 Element totalCount = body.getChild("totalCount");
                 String totalCountStr = totalCount.getText();
-                System.out.println(totalCountStr);
                 Element items = body.getChild("items");
                 List<Element> item_list = items.getChildren("item");
                 DataVO[] ar = new DataVO[item_list.size()];

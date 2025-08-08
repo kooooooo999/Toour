@@ -40,9 +40,9 @@ public class chkPwAction implements Action {
                             alertText = "비밀번호 사용이 가능합니다";;
                             usable = true;
                         }else
-                            alertText = pw_len+"자 이상 기입해주세요";
+                            alertText = pw_len+"자 이상 기입해주세요.";
                     }else {
-                        alertText = "영문 소문자, 숫자, 특수기호를 모두 사용하여 구성해주세요";
+                        alertText = "영문 소문자, 숫자, 특수기호를 모두 사용하여 구성해주세요.";
                     }
 
                 }else{
