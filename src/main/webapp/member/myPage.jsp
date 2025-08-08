@@ -8,14 +8,32 @@
   <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
   <style>
     .listArea{
-      border: 1px solid #1e40af;
+      border: 0.5px solid #1e40af;
       width: 500px;
       height: 500px;
-      background-color: #adb5bd;
+      background-color: #EFF7FF;
+      overflow: hidden;
     }
     .div44{
-      grid-template-columns: 200px 200px;
+      display: grid;
+      grid-template-columns: 500px 500px;
     }
+    .divSmall44{
+        display: grid;
+        grid-template-columns: 250px 250px;
+    }
+    .oneDiv{
+        height: 238px;
+        width: 250px;
+    }
+    .imgSize{
+        height: 160px;
+        width: 250px;
+    }
+    .overflowHidden{
+        overflow: hidden;
+    }
+
   </style>
 </head>
 <body>
@@ -26,44 +44,44 @@
       <%--내 정보--%>
     </div>
 
-    <tbody>
-    <tr>
-      <td>
+    <div class="div44">
         <div id="zzim_list" class="listArea">
           <a href="Controller">찜 목록</a>
-          <hr/>
-          <div class="div44">
-            <c:forEach var="data" items="${requestScope.dataVO4List}">
-              <div>
-                <img src="${data}">
+          <div class="divSmall44">
+            <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
+              <div class="oneDiv" >
+                  <a href="#">${dataVO.title}</a>
+                  <img src="${dataVO.firstimage}" class="imgSize">
+                  <p class="overflowHidden">${dataVO.addr1}</p>
               </div>
             </c:forEach>
           </div>
         </div>
-      </td>
-      <td>
+
         <div id="course_list" class="listArea">
           <a href="Controller">내 코스 목록</a>
-          <hr/>
+            <div class="divSmall44">
+                <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
+                    <div class="oneDiv" >
+                        <a href="#">${courseVO.course_name}</a>
+                        <p> ${courseVO.course_summary}</p>
+                    </div>
+                </c:forEach>
+            </div>
+
         </div>
-      </td>
-    </tr>
-    <tr>
-      <td>
+
         <div id="post_list" class="listArea">
           <a href="Controller">내 게시글/ 댓글</a>
-          <hr/>
+
         </div>
-      </td><td>
+
       <div id="suggest_list" class="listArea">
         <a href="Controller">건의사항</a>
-        <hr/>
-      </div>
-    </td>
-    </tr>
-    </tbody>
-  </table>
-<c:import url="/common/footer.jsp" />
 
+      </div>
+    </div>
+
+<c:import url="/common/footer.jsp" />
 </body>
 </html>

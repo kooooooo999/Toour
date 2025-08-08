@@ -22,5 +22,6 @@
         <mapper resource="mybatis/mapper/mem.xml"/>
         <mapper resource="mybatis/mapper/member.xml"/>
         <mapper resource="mybatis/mapper/zzim.xml"/>
+        <mapper resource="mybatis/mapper/course.xml"/>
     </mappers>
 </configuration>

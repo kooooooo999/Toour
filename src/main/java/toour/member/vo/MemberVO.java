@@ -10,6 +10,16 @@ public class MemberVO {
     // 내가 저장한 찜 목록저장소
     private ZzimVO[] zzimlist;
 
+    private CourseVO[] courselist;
+
+    public CourseVO[] getCourselist() {
+        return courselist;
+    }
+
+    public void setCourselist(CourseVO[] courselist) {
+        this.courselist = courselist;
+    }
+
     public ZzimVO[] getZzimlist() {
         return zzimlist;
     }
