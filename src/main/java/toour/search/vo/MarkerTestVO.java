@@ -1,12 +1,9 @@
 package toour.search.vo;
 
 public class MarkerTestVO {
-    private String mapx, mpay;
+    private String mapx, mapy;
 
-    public MarkerTestVO(String mapx, String mpay) {
-        this.mapx = mapx;
-        this.mpay = mpay;
-
+    public MarkerTestVO() {
 
     }
 
@@ -18,11 +15,11 @@ public class MarkerTestVO {
         this.mapx = mapx;
     }
 
-    public String getMpay() {
-        return mpay;
+    public String getMapy() {
+        return mapy;
     }
 
-    public void setMpay(String mpay) {
-        this.mpay = mpay;
+    public void setMapy(String mapy) {
+        this.mapy = mapy;
     }
 }
