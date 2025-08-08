@@ -201,9 +201,9 @@
         <img src="${Dvo.firstimage}" class="image"/>
 
           <div class="text ellipsis item">
-            <p class="title"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.title}</a></p>
-            <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.addr1}</a></p>
-            <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" >${Dvo.overview}</a></p>
+            <p class="title"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.title}</a></p>
+            <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.addr1}</a></p>
+            <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.overview}</a></p>
           </div>
 
       </c:if>
@@ -429,13 +429,15 @@
               let addr1 = $(this).data('addr1');
               let overview = $(this).data('overview');
               let firstimage = $(this).data('firstimage');
-              // let mapx = $(this).data('mapx');
-              // let mapy = $(this).data('mapy');
-              submitData(title, addr1, overview, firstimage);
+              let mapx = $(this).data('mapx');
+              let mapy = $(this).data('mapy');
+              let contentTypeId = $(this).data('contentTypeId');
+              let contentId = $(this).data('contentId');
+              submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId);
           });
       });
 
-      function submitData(title, addr1, overview, firstimage){
+      function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId){
           let form = document.createElement('form');
           form.method = 'POST';
           form.action = 'Controller?type=tripDetails';
@@ -460,23 +462,34 @@
           firstimageInput.name = 'firstimage';
           firstimageInput.value = firstimage;
 
-          // let mapxInput = document.createElement('input');
-          // mapxInput.type = 'hidden';
-          // mapxInput.name = 'mapx';
-          // mapxInput.value = mapx;
-          //
-          // let mapyInput = document.createElement('input');
-          // mapyInput.type = 'hidden';
-          // mapyInput.name = 'mapy';
-          // mapyInput.value = mapy;
+          let mapxInput = document.createElement('input');
+          mapxInput.type = 'hidden';
+          mapxInput.name = 'mapx';
+          mapxInput.value = mapx;
 
+          let mapyInput = document.createElement('input');
+          mapyInput.type = 'hidden';
+          mapyInput.name = 'mapy';
+          mapyInput.value = mapy;
+
+          let contentTypeIdInput = document.createElement('input');
+          contentTypeIdInput.type = 'hidden';
+          contentTypeIdInput.name = 'contentTypeId';
+          contentTypeIdInput.value = contentTypeId;
+
+          let contentIdInput = document.createElement('input');
+          contentIdInput.type = 'hidden';
+          contentIdInput.name = 'contentId';
+          contentIdInput.value = contentId;
 
           form.appendChild(titleInput);
           form.appendChild(addr1Input);
           form.appendChild(overviewInput);
           form.appendChild(firstimageInput);
-          // form.appendChild(mapx);
-          // form.appendChild(mapy);
+          form.appendChild(mapxInput);
+          form.appendChild(mapyInput);
+          form.appendChild(contentTypeIdInput);
+          form.appendChild(contentIdInput);
 
           document.body.appendChild(form);
 
