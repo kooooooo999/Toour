@@ -2,6 +2,8 @@ package toour.login.action;
 
 
 import toour.action.Action;
+import toour.member.dao.CourseDAO;
+import toour.member.vo.CourseVO;
 import toour.member.vo.MemberVO;
 import toour.login.dao.MemberDAO;
 import toour.util.Hash;
@@ -21,7 +23,6 @@ public class loginAction implements Action {
             if(u_id!=null){
                 //요청으로부터 id를 잘받아옴
                 MemberVO mvo = MemberDAO.getMem(u_id);
-                System.out.println("mvo.getZzimlist().length:"+mvo.getZzimlist().length);
                 if(mvo!=null){
                     //입력한 id가 db에 있을때
                     String u_pw = request.getParameter("u_pw");
@@ -30,6 +31,10 @@ public class loginAction implements Action {
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
+                        
+                        // 로그인이 승인 됐을 때 회원의 코스를 가져와 mvo에 저장
+                        CourseVO[] cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
+                        mvo.setCourselist(cvo_ar);
                         request.getSession().setAttribute("user",mvo);
 
 
