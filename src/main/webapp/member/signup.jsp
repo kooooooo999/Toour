@@ -642,6 +642,8 @@
     // 유효성 검사 통과 여부 확인
     if ($(".disable_check").length > 0) {
       alert("입력 조건을 모두 확인해주세요.");
+      let len= $(".disable_check").length;
+      console.log(len);
     } else {
       document.SignUp_form.submit();
     }

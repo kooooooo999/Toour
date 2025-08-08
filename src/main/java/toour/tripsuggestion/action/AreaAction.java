@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 public class AreaAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-
+        // 지역 검색
         String areaCode =request.getParameter("areaCode");
         if(areaCode!=null&& !areaCode.equals("0"))
             GetAPIData.getSigungu(request,areaCode);

@@ -37,7 +37,7 @@ public class chkPwAction implements Action {
 
                     if(chk1&&chk2&&chk3){
                         if(u_pw.length()>=pw_len) {
-                            alertText = "비밀번호 양식에 만족되었습니다";;
+                            alertText = "비밀번호 사용이 가능합니다";;
                             usable = true;
                         }else
                             alertText = pw_len+"자 이상 기입해주세요";

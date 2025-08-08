@@ -186,9 +186,119 @@
       <button type="button" class="login-button" onclick="sendForm(this.form)">로그인</button>
     </div>
   </form>
+  <a id="kakao-login-btn" href="javascript:loginWithKakao()">
+    <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" alt="카카오 로그인 버튼" />
+  </a>
+  <p id="token-result"></p>
+
+
 </div>
 
 <script>
+</script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script><script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script>
+  Kakao.init('e8b842dc97356296e338660ae4063b8a'); //발급받은 키 중 javascript키를 사용해준다.
+  Kakao.isInitialized();
+
+  console.log(Kakao.isInitialized()); // sdk초기화여부판단
+</script>
+<script>
+
+  // 아래는 데모를 위한 UI 코드입니다.
+  displayToken()
+  function displayToken() {
+    var token = getCookie('authorize-access-token');
+
+    if(token) {
+      Kakao.Auth.setAccessToken(token);
+      Kakao.Auth.getStatusInfo()
+              .then(function(res) {
+                if (res.status === 'connected') {
+                  document.getElementById('token-result').innerText
+                          = 'login success, token: ' + Kakao.Auth.getAccessToken();
+                }
+              })
+              .catch(function(err) {
+                Kakao.Auth.setAccessToken(null);
+              });
+    }
+  }
+
+  function getCookie(name) {
+    var parts = document.cookie.split(name + '=');
+    if (parts.length === 2) { return parts[1].split(';')[0]; }
+  }
+
+  function loginWithKakao() {
+    Kakao.Auth.authorize({
+      redirectUri: 'http://localhost:8080/Controller?type=moveLogin',
+    });
+  }
+
+  //카카오로그인
+  function kakaoLogin() {
+    //로그인 요청(회원가입)
+    Kakao.Auth.login({
+      success: function (response) {
+        //회원 정보 가져오기
+        Kakao.API.request({
+          url: '/v2/user/me',
+          success: function (response) {
+            $.ajax({
+              url:'/user/kakaoLogin',
+              type: 'post',
+              data: {//동의항목을 카카오톡 닉네임과 이메일만 설정했기 때문에 이렇게만 가져옴 더추가하려면 동의항목을 늘리면됨
+                'user_name' : response.properties.nickname,
+                'user_email' : response.kakao_account.email
+              },
+              success: function(result){//로그인성공
+                console.log(result);
+                window.location.href='/';
+              }
+            });
+          },
+          fail: function (error) {//로그인 실패
+            console.log(error);
+          },
+        })
+                .then(function (response) {
+                  console.log(response);
+                })
+      },
+      fail: function (error) {
+        console.log(error);
+      },
+    })
+  };
+
+  //로그아웃
+  function Logout() {
+    if (!Kakao.Auth.getAccessToken()) {
+      alert('로그아웃 하였습니다.');
+      window.location.href='/user/logout';
+    }
+    Kakao.Auth.logout(function (response) {
+      alert('로그아웃 하였습니다.');
+      window.location.href = '/user/logout';
+    });
+  };
+
+  //카카오연결 끊기 및 회원 탈퇴
+  /*$("#delete").click(function(){
+    if(confirm("정말 삭제하시겠습니까?")){
+      Kakao.API.request({
+        url: '/v1/user/unlink',
+      })
+      $("#register").attr({
+        'method' : 'post',
+        'action' : '/user/delete'
+      });
+      $("#register").submit();
+    }
+  });*/
+
+
   function sendForm(frm) {
     let u_id = document.getElementById("u_id").value.trim();
     let u_pw = document.getElementById("u_pw").value.trim();
@@ -199,6 +309,7 @@
       alert("모든 입력란에 입력을 완수해주세요.");
     }
   }
+
 </script>
 
 </body>
