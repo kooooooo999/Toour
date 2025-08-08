@@ -1,4 +1,4 @@
-package toour.member.action;
+package toour.member.action.post;
 
 import toour.action.Action;
 import toour.member.dao.AdminMemberDAO;
@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 
-public class AdminNoticeWriteAction implements Action {
+public class AdminPostWriteAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         //세션에서 user 받고 그걸 MemberVO로 형변환한뒤 member_idx 받아오기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -48,10 +48,15 @@ public class AdminNoticeWriteAction implements Action {
                 String member_idx= "3";
                 //박준형 끝
 
+                String post_idx = null;
+
+                post_idx = mr.getParameter("post_idx");
                 String post_content = mr.getParameter("post_content");
                 String category_idx = mr.getParameter("category_idx");
                 String post_status = mr.getParameter("post_status");
                 String post_views = mr.getParameter("post_views");
+
+                post_idx = AdminPostDAO.postadd(post_title, post_content, member_idx, category_idx, post_views, post_status);
 
 
                 //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
@@ -59,25 +64,21 @@ public class AdminNoticeWriteAction implements Action {
                 String file_name_stored = null;
                 String file_s3_url = "";
                 String file_name_original = null;
-                String post_idx = null;
                 String file_size = null;
                 String file_type = null;
 
-                if( f != null && f.length() > 0 ){
+                if(f != null && f.length() > 0){
                     file_name_stored = f.getName();// 현재 저장된 파일명
                     file_name_original = mr.getOriginalFileName("file");// 원래 파일명
-                    post_idx = mr.getParameter("post_idx");
+
                     file_size = String.valueOf(f.length());
                     file_type = mr.getContentType("file");
+
+                    AdminPostDAO.fileadd(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type);
                 }
 
-                //DB에 저장 ++
-                post_idx = AdminPostDAO.postadd(post_title, post_content, member_idx, category_idx, post_views, post_status);
-                AdminPostDAO.fileadd(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type);
-//                System.out.println("post_idx:"+post_idx);
-//                System.out.println("file_name_original"+file_name_original);
 
-                viewPath = "AdminController?type=adminnotice";
+                viewPath = "AdminController?type=adminpost";
             } catch (Exception e) {
                 e.printStackTrace();
             }

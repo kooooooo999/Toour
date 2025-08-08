@@ -174,7 +174,7 @@
 <div class="sidebar">
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
@@ -276,16 +276,19 @@
     <c:if test="${p.startPage > 1}">
       <a href="AdminController?type=adminmemlist&cPage=${p.startPage - 1}">&lt;</a>
     </c:if>
+
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
       <c:choose>
         <c:when test="${p.nowPage == vs.index}">
           <span class="current">${vs.index}</span>
         </c:when>
+
         <c:otherwise>
           <a href="AdminController?type=adminmemlist&cPage=${vs.index}">${vs.index}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
+
     <c:if test="${p.endPage < p.totalPage}">
       <a href="AdminController?type=adminmemlist&cPage=${p.endPage + 1}">&gt;</a>
     </c:if>

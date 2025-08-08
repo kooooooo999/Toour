@@ -109,7 +109,7 @@
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
 
 <div id="post">
-  <form id="editform" action="AdminController?type=adminnoticeedit" method="post" enctype="multipart/form-data">
+  <form id="editform" action="AdminController?type=adminpostedit" method="post" enctype="multipart/form-data">
     <input type="hidden" name="category_idx" value="2"/>
     <input type="hidden" name="post_idx" value="${param.post_idx}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
@@ -132,7 +132,7 @@
       </tr>
       <tr>
         <th>첨부파일:</th>
-          <td><input id="file" type="file" name="file"></td>
+        <td><input id="file" type="file" name="file"></td>
         <c:if test="${vo.file_name_original != null}">
           <p class="t_bold">${vo.file_name_original}</p>
         </c:if>
@@ -141,8 +141,8 @@
       <tr>
         <td colspan="2">
           <input type="button" value="수정" onclick="sendData()"/>
-          <input type="button" value="취소" onclick="location.href = 'AdminController?type=adminnoticeview&post_idx=${param.post_idx}&cPage=${param.cPage}'"/>
-          <input type="button" value="목록" onclick="location.href='AdminController?type=adminnotice'" />
+          <input type="button" value="취소" onclick="location.href = 'AdminController?type=adminpostview&post_idx=${param.post_idx}&cPage=${param.cPage}'"/>
+          <input type="button" value="목록" onclick="location.href='AdminController?type=adminpost'" />
         </td>
       </tr>
       </tbody>
@@ -185,7 +185,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "AdminController?type=adminnoticesaveimg",
+      url: "AdminController?type=adminpostsaveimg",
       data: frm,
       type: "post",
       contentType: false,
@@ -198,3 +198,4 @@
 </script>
 </body>
 </html>
+

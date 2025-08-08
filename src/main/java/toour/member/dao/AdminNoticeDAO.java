@@ -8,11 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class AdminPostDAO {
+public class AdminNoticeDAO {
     // 총 게시물의 수를 반환
     public static int getTotalCount(String category_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.selectOne("adminpost.totalCount",category_idx);
+        int cnt = ss.selectOne("adminnotice.totalCount",category_idx);
         ss.close();
         return cnt;
     }
@@ -21,11 +21,10 @@ public class AdminPostDAO {
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        PostVO vo = ss.selectOne("adminpost.getPost", post_idx);
+        PostVO vo = ss.selectOne("adminnotice.getPost", post_idx);
         ss.close();
         return vo;
     }
-
 
     public static PostVO[] search(String searchType,String searchValue,int begin,int end){
         PostVO[] ar = null;
@@ -38,7 +37,7 @@ public class AdminPostDAO {
         map.put("end",end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("adminpost.search",map);
+        List<PostVO> list = ss.selectList("adminnotice.search",map);
         if(list!=null&&list.size()>0){
             ar= new PostVO[list.size()];
             list.toArray(ar);
@@ -58,7 +57,7 @@ public class AdminPostDAO {
     // 삭제
     public static int delnotice(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("adminpost.del", post_idx);
+        int cnt = ss.update("adminnotice.del", post_idx);
         if(cnt > 0){
             ss.commit();
         }else{
@@ -80,7 +79,7 @@ public class AdminPostDAO {
         map.put("end", end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("adminpost.list", map);
+        List<PostVO> list = ss.selectList("adminnotice.list", map);
         if(list != null && list.size()>0){
             ar = new PostVO[list.size()];
             list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
@@ -91,7 +90,7 @@ public class AdminPostDAO {
 
     // 저장 +++
     public static String postadd(String post_title, String post_content, String member_idx,
-                                 String category_idx, String post_views, String post_status){
+                          String category_idx, String post_views, String post_status){
         int cnt = 0;
 
         Map<String, String> map = new HashMap<>();
@@ -103,7 +102,7 @@ public class AdminPostDAO {
         map.put("post_status", post_status);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        cnt = ss.insert("adminpost.add", map);
+        cnt = ss.insert("adminnotice.add", map);
         String post_idx = String.valueOf(map.get("post_idx"));
 //        System.out.println("DAO:"+post_idx);
         if(cnt > 0)
@@ -127,7 +126,7 @@ public class AdminPostDAO {
         map.put("file_type", file_type);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        cnt = ss.insert("adminpost.add_file", map);
+        cnt = ss.insert("adminnotice.add_file", map);
 
         if(cnt > 0)
             ss.commit();
@@ -151,7 +150,7 @@ public class AdminPostDAO {
         map.put("post_content", post_content);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("adminpost.edit", map);
+        int cnt = ss.update("adminnotice.edit", map);
         if(cnt > 0)
             ss.commit();
         else ss.rollback();
@@ -174,15 +173,15 @@ public class AdminPostDAO {
             filemap.put("file_type", file_type);
 
             SqlSession ss = FactoryService.getFactory().openSession();
-            int filenum = ss.selectOne("adminpost.file_num", post_idx);
+            int filenum = ss.selectOne("adminnotice.file_num", post_idx);
 
             if(filenum > 0){
                 //파일이 있음 - update 해줌
-                filecnt = ss.update("adminpost.edit_file", filemap);
+                filecnt = ss.update("adminnotice.edit_file", filemap);
             }
             else {
                 //파일이 없음 - insert 해줌
-                filecnt = ss.insert("adminpost.add_file", filemap);
+                filecnt = ss.insert("adminnotice.add_file", filemap);
             }
 
 
@@ -195,7 +194,7 @@ public class AdminPostDAO {
         }
         return filecnt;
     }
-}
+    }
 
 //    // 조회수 증가
 //    public static int post_views(String post_idx){

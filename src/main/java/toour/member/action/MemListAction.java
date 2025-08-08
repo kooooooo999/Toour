@@ -13,8 +13,6 @@ public class MemListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
-
-
         //파라미터 받기
         String member_idx = request.getParameter("member_idx");
 
@@ -23,7 +21,7 @@ public class MemListAction implements Action {
         int totalCount = AdminMemberDAO.getTotalMemCount();
 
         //페이징 처리를 위한 객체 생성
-        Paging page = new Paging(5, 5);
+        Paging page = new Paging(10, 5);
 
         page.setTotalCount(totalCount);//총 페이지 수까지 구했다
 
