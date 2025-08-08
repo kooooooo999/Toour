@@ -22,7 +22,7 @@ public class AdminNoticeWriteAction implements Action {
         // list.jsp에 있는 [글쓰기]버튼을 클릭하면 get방식으로
         //현재 객체를 수행한다. 이때 요청시 contentType을 얻어낸다. 분명
         // get방식 null값을 받게된다.
-        String enc_type = request.getContentType();
+        String enc_type  = request.getContentType();
         //System.out.println(enc_type);
 
         if(enc_type == null)
@@ -57,17 +57,25 @@ public class AdminNoticeWriteAction implements Action {
                 //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
                 File f = mr.getFile("file");
                 String file_name_stored = null;
+                String file_s3_url = "";
                 String file_name_original = null;
+                String post_idx = null;
+                String file_size = null;
+                String file_type = null;
+
                 if( f != null ){
                     file_name_stored = f.getName();// 현재 저장된 파일명
                     file_name_original = mr.getOriginalFileName("file");// 원래 파일명
+                    post_idx = mr.getParameter("post_idx");
+                    file_size = String.valueOf(f.length());
+                    file_type = mr.getContentType("file");
                 }
-                String ip = request.getRemoteAddr();// 요청자의 IP
 
                 //DB에 저장 ++
-                AdminPostDAO.postadd(post_title, post_content, member_idx,
-                        category_idx, post_views, post_status);
-
+                post_idx = AdminPostDAO.postadd(post_title, post_content, member_idx, category_idx, post_views, post_status);
+                AdminPostDAO.fileadd(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type);
+                System.out.println("post_idx:"+post_idx);
+                System.out.println("file_name_original"+file_name_original);
 
                 viewPath = "AdminController?type=adminnotice";
             } catch (Exception e) {

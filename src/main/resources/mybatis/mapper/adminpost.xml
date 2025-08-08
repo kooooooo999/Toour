@@ -32,17 +32,15 @@
     </select>
 
     <!--게시글 작성 -->
-    <insert id="add" parameterType="Map">
+    <insert id="add" parameterType="Map" useGeneratedKeys="true" keyProperty="post_idx">
         insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
         values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), now())
-
     </insert>
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p inner join file f
+        SELECT  * FROM post p inner join file f on p.post_idx = f.post_idx
         WHERE p.post_idx = #{post_idx}
-        group by p.post_idx
     </select>
 
     <!-- 게시글 삭제 -->
@@ -63,13 +61,38 @@
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
         UPDATE post p
-        INNER JOIN file f ON p.post_idx = f.post_idx
+        LEFT JOIN file f ON p.post_idx = f.post_idx
         <trim prefix="SET" suffixOverrides=",">
             p.post_title = #{post_title},
-            p.post_content = #{post_content}
+            p.post_content = #{post_content},
         </trim>
         WHERE p.post_idx = #{post_idx}
+        AND p.category_idx = #{category_idx}
     </update>
+
+    <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->
+    <select id="file_num" resultType="int">
+        select count(*) from file
+        where post_idx = #{post_idx}
+    </select>
+
+    <!-- 파일 수정 -->
+    <update id="edit_file" parameterType="Map">
+        UPDATE file
+        SET file_name_original = #{file_name_original},
+        file_name_stored = #{file_name_stored},
+        file_size = #{file_size},
+        file_type = #{file_type},
+        uploaded_at = NOW()
+
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 파일 추가 -->
+    <insert id="add_file" parameterType="Map">
+        INSERT INTO file(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
+        VALUES ( #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type}, NOW() )
+    </insert>
 
     <select id="search" parameterType="map" resultMap="map1">
         SELECT a.*

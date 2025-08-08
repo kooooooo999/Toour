@@ -1,5 +1,9 @@
 <%@ page import="toour.post.vo.PostVO" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+
 
 <!DOCTYPE html>
 <html>
@@ -59,9 +63,8 @@
       padding: 5px 8px;
       border-radius: 4px;
     }
-
   </style>
-
+</head>
 <body>
 <div class="sidebar">
 
@@ -80,6 +83,7 @@
 
 <script type="text/javascript">
   function sendData(){
+    $("#post_content").val($("#post_content").summernote("code"));
 
     let post_title = $("#post_title").val();
     if(post_title.trim().length < 1){
@@ -97,18 +101,15 @@
       return;
     }
 
-    document.forms[0].submit();
+    document.getElementById("editform").submit();
   }
 </script>
-</head>
+<%--</body>--%>
 
-<%
-  Object obj = request.getAttribute("vo");
-  if(obj != null){
-    PostVO vo = (PostVO) obj;
-%>
+<c:set var="vo" value="${requestScope.vo}" scope="page"/>
+
 <div id="post">
-  <form action="AdminController?type=adminnoticeedit" method="post" encType="multipart/form-data">
+  <form id="editform" action="AdminController?type=adminnoticeedit" method="post" enctype="multipart/form-data">
     <input type="hidden" name="category_idx" value="2"/>
     <input type="hidden" name="post_idx" value="${param.post_idx}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
@@ -117,7 +118,7 @@
       <tbody>
       <tr>
         <th>제목:</th>
-        <td><input type="text" name="post_title" id="post_title" size="45" value="<%=vo.getPost_title()%>"/></td>
+        <td><input type="text" name="post_title" id="post_title" size="45" value="${vo.post_title}"/></td>
       </tr>
       <tr>
         <th>이름:</th>
@@ -127,7 +128,14 @@
       <tr>
         <th>내용:</th>
         <td><textarea name="post_content" cols="50"
-                      id="post_content" rows="8"><%=vo.getPost_content()%></textarea></td>
+                      id="post_content" rows="8">${vo.post_content}</textarea></td>
+      </tr>
+      <tr>
+        <th>첨부파일:</th>
+          <td><input id="file" type="file" name="file"></td>
+        <c:if test="${vo.file_name_original != null}">
+          <p class="t_bold">${vo.file_name_original}</p>
+        </c:if>
       </tr>
 
       <tr>
@@ -177,7 +185,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "AdminController?type=saveImg",
+      url: "AdminController?type=adminnoticesaveimg",
       data: frm,
       type: "post",
       contentType: false,
@@ -187,12 +195,6 @@
       $("#content").summernote("editor.insertImage", res.img_url);
     });
   }
-
-
-
 </script>
-<%
-  }//if문의 끝
-%>
 </body>
 </html>

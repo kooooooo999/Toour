@@ -107,7 +107,7 @@ public class AdminPostDAO {
         return ar;
     }
     // 저장 +++
-    public static int postadd(String post_title, String post_content, String member_idx,
+    public static String postadd(String post_title, String post_content, String member_idx,
                           String category_idx, String post_views, String post_status){
         int cnt = 0;
 
@@ -119,10 +119,33 @@ public class AdminPostDAO {
         map.put("post_views", post_views);
         map.put("post_status", post_status);
 
-
-
         SqlSession ss = FactoryService.getFactory().openSession();
         cnt = ss.insert("adminpost.add", map);
+        String post_idx = String.valueOf(map.get("post_idx"));
+//        System.out.println("DAO:"+post_idx);
+        if(cnt > 0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+
+        return post_idx;
+    }
+
+    //파일 저장
+    public static int fileadd(String post_idx, String file_name_original,String file_name_stored, String file_s3_url, String file_size,String file_type) {
+        int cnt = 0;
+        Map<String, String> map = new HashMap<>();
+        map.put("post_idx", post_idx);
+        map.put("file_name_original", file_name_original);
+        map.put("file_name_stored", file_name_stored);
+        map.put("file_s3_url", file_s3_url);
+        map.put("file_size", file_size);
+        map.put("file_type", file_type);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        cnt = ss.insert("adminpost.add_file", map);
+
         if(cnt > 0)
             ss.commit();
         else
@@ -134,19 +157,15 @@ public class AdminPostDAO {
 
 
 
+
     // 수정
-    public static int edit(String post_idx, String post_title, String post_content,
-                           String file_name_stored, String file_name_original, String ip){
+    public static int edit(String post_idx, String category_idx, String post_title, String post_content){
         Map<String, String> map = new HashMap<>();
+
         map.put("post_idx", post_idx);
+        map.put("category_idx", category_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
-
-        if(file_name_stored != null){
-            map.put("file_name_stored", file_name_stored);
-            map.put("file_name_original", file_name_original);
-        }
-        map.put("ip",ip);
 
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("adminpost.edit", map);
@@ -156,6 +175,43 @@ public class AdminPostDAO {
         ss.close();
 
         return cnt;
+    }
+
+
+
+    public static int fileedit(String post_idx,String file_name_original,String file_name_stored,String file_size,String file_type ) {
+        int filecnt = 0;
+        if (file_name_stored != null && file_name_original != null) {
+            Map<String, String> filemap = new HashMap<>();
+
+            filemap.put("post_idx", post_idx);
+            filemap.put("file_name_stored", file_name_stored);
+            filemap.put("file_name_original", file_name_original);
+            filemap.put("file_size", file_size);
+            filemap.put("file_type", file_type);
+
+            SqlSession ss = FactoryService.getFactory().openSession();
+            int filenum = ss.selectOne("adminpost.file_num", post_idx);
+
+            if(filenum > 0){
+                //파일이 있음 - update 해줌
+                filecnt = ss.update("adminpost.edit_file", filemap);
+            }
+            else {
+                //파일이 없음 - insert 해줌
+                filecnt = ss.insert("adminpost.add_file", filemap);
+            }
+
+
+            if (filecnt > 0)
+                ss.commit();
+            else
+                ss.rollback();
+            ss.close();
+
+        }
+        return filecnt;
+    }
     }
 
 //    // 조회수 증가
@@ -168,4 +224,4 @@ public class AdminPostDAO {
 //        ss.close();
 //        return cnt;
 //    }
-}
+
