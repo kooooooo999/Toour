@@ -16,6 +16,7 @@ public class loginAction implements Action {
         String viewPath=null;
         String u_id =request.getParameter("u_id");
         if(request.getSession().getAttribute("user")==null){
+            System.out.println("if");
             //로그인이 안 되어 있을 때
             if(u_id!=null){
                 //요청으로부터 id를 잘받아옴
@@ -30,6 +31,7 @@ public class loginAction implements Action {
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         request.getSession().setAttribute("user",mvo);
+
 
                         //cornsoup 수정
                         if(mvo.getMember_type().equals("0")){
@@ -48,6 +50,7 @@ public class loginAction implements Action {
             }
         }else {
             //로그아웃 눌렀을 때
+            System.out.println("else");
             request.getSession().removeAttribute("user");
         }
 

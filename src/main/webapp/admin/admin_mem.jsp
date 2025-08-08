@@ -318,10 +318,7 @@
   })
 
   function goDel() {
-
-
-      document.getElementById("delform").submit();
-
+    document.getElementById("delform").submit();
   }
 
     function validateForm() {
