@@ -1,5 +1,7 @@
 package toour.post.action;
 
+import toour.post.vo.FileVO;
+import toour.post.dao.FileDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
 import toour.post.dao.PostDAO;
@@ -27,22 +29,41 @@ public class ViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
+        if(post_idx==null||post_idx.isEmpty()){
+            return "Controller?type=list";
+        }
         HttpSession session = request.getSession();
         System.out.println("post_idx:"+post_idx);
         Object obj = session.getAttribute("read_list");
-        ArrayList<PostVO> list = null;
-        if(obj == null){
-            list = new ArrayList<>();
-            session.setAttribute("read_list", list);
-        }else
-            list = (ArrayList<PostVO>) obj; // 형변환
 
-        PostVO vo = PostDAO.getPost(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
+        ArrayList<String> readList = null;
+        if(obj == null){
+            readList = new ArrayList<>();
+            session.setAttribute("read_list", readList);
+        }else
+            readList = (ArrayList<String>) obj;
+
+        //DB에서 게시물 정보를 한번만 조회한다
+        PostVO vo = PostDAO.getPost(post_idx);
+
+
+        if (vo != null) {
+            // 1. post_idx와 연관된 파일 가져오기
+            List<FileVO> fileList = FileDAO.getFilesByPost(post_idx);
+
+            // 2. 존재한다면 request에 파일정보를 더한다
+            if (fileList != null) {
+                request.setAttribute("fileList", fileList);
+            }
+        }else {
+            return "error.jsp";//오류페이지로 보내기 여기는 고쳐야할 부분~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+            }
+
         System.out.println(vo.getPost_idx());
         // 검색된 vo가 처음으로 읽은 게시물인지 판단
-        if(checkPost(list, vo)){
+        if(!readList.contains(post_idx)){
             PostDAO.post_views(post_idx);
-            list.add(vo);
+            readList.add(post_idx);
         }
 
         request.setAttribute("vo", vo);

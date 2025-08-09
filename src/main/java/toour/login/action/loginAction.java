@@ -11,6 +11,7 @@ import toour.util.Hash;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 public class loginAction implements Action {
     @Override
@@ -37,26 +38,36 @@ public class loginAction implements Action {
                         mvo.setCourselist(cvo_ar);
                         request.getSession().setAttribute("user",mvo);
 
+                        HttpSession session = request.getSession();
+                        System.out.println(mvo.getMember_idx());
+                        session.setAttribute("member",mvo);
+                        session.setAttribute("userIdx", mvo.getMember_idx());
+                        session.setAttribute("userId", mvo.getMember_id());
+                        session.setAttribute("userNickName", mvo.getMember_nickname());
+                        System.out.println(mvo.getMember_nickname());
+                        session.setMaxInactiveInterval(30*60);
+                        System.out.println(session.getAttribute("userNickName"));
 
                         //cornsoup 수정
                         if(mvo.getMember_type().equals("0")){
-                            viewPath = "admin/admin_main.jsp";
+                            viewPath = "AdminController?type=AdminMain";
                         }
                         else
-                            viewPath = "MainIndex/index.jsp";
+                            viewPath = "Controller?type=index";
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
-                        viewPath ="member/login.jsp";
+                        viewPath ="Controller?type=login";
                 }else
                     //입력한 id가 db에 없을 때
-                    viewPath ="member/login.jsp";
+                    viewPath ="Controller?type=login";
             }else {
-                viewPath="MainIndex/index.jsp";
+                viewPath="Controller?type=index";
             }
         }else {
             //로그아웃 눌렀을 때
-            System.out.println("else");
+            System.out.println("로그아웃");
             request.getSession().removeAttribute("user");
+            viewPath="Controller?type=index";
         }
 
         //cornsoup 수정

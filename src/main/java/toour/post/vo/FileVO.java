@@ -1,4 +1,4 @@
-package mybatis.vo;
+package toour.post.vo;
 
 public class FileVO {
     private String file_idx, post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at;

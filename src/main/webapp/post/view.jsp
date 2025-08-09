@@ -69,14 +69,24 @@
 
       <tr>
         <th>첨부파일:</th>
-        <td><a href="#">
-          ${vo.file_name_original}
-        </a></td>
+        <td>
+          <c:if test="${not empty requestScope.fileList}">
+            <c:forEach var="file" items="${requestScope.fileList}">
+              <div>
+                <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
+              </div>
+            </c:forEach>
+          </c:if>
+          <%-- Display message if the list of files is empty --%>
+          <c:if test="${empty requestScope.fileList}">
+            첨부파일 없음
+          </c:if>
+        </td>
       </tr>
 
       <tr>
         <th>이름:</th>
-        <td>${vo.member_idx}</td>
+        <td>${sessionScope.user.member_nickname}</td>
       </tr>
       <tr>
         <th>내용:</th>
@@ -87,7 +97,6 @@
         <td colspan="2">
           <input type="button" value="수정" onclick="goEdit()"/>
           <input type="button" value="삭제" onclick="goDel()"/>
-          <%--<input type="button" value="목록" onclick="javascript:location.href='Controller?type=list&cPage=${param.cPage}'"/>--%>
           <input type="button" value="목록" onclick="goList()"/>
         </td>
       </tr>
@@ -106,8 +115,8 @@
     <input type="submit" value="저장하기"/>
   </form>
 
-  <form name="ff" method="post">
-    <input type="hidden" name="type"/>
+  <form name="ff" method="get">
+    <input type="hidden" name="type" />
     <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
   </form>
@@ -115,7 +124,6 @@
   <!-- 삭제시 보여주는 팝업창 -->
   <div id="del_dialog" title="삭제">
     <form action="Controller" method="post">
-      <%--비밀번호 표현등 할 수 있음 --%>
       <p>정말로 삭제 하시겠습니까?</p>
       <input type="hidden" name="type" value="del"/>
       <input type="hidden" name="post" value="${vo.getPost_idx()}"/>
@@ -169,6 +177,7 @@
   }
 
   function goEdit() {
+    // ff 폼의 action과 type을 설정
     document.ff.action = "Controller";
     document.ff.type.value = "edit";
     document.ff.submit();

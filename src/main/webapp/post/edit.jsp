@@ -1,6 +1,7 @@
 1 <%@ page import="toour.post.vo.PostVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,120 +50,95 @@
         .t_bold{ font-weight: bold; color: #007bff; }
 
     </style>
-    <script type="text/javascript">
-        function sendData(){
-            /*for(var i=0 ; i<document.forms[0].elements.length ; i++){
-              if(document.forms[0].elements[i].value == ""){
-                alert(document.forms[0].elements[i].name+
-                        "를 입력하세요");
-                document.forms[0].elements[i].focus();
-                return;//수행 중단
-              }
-            }*/
 
-//		document.forms[0].action = "test.jsp";
-
-            let post_title = $("#post_title").val();
-            if(post_title.trim().length < 1){
-                alert("제목을 입력하세요");
-                $("#post_title").val("");
-                $("#post_title").focus();
-                return;
-            }
-
-            let member_idx = $("member_idx").val();
-            if(member_idx.trim().length < 1){
-                alert("글쓴이를 입력하세요");
-                $("#member_idx").val("");
-                $("#member_idx").focus();
-                return;
-            }
-
-            let post_content= $("#post_content").val();
-            if(post_content.trim().length < 1){
-                alert("내용을 입력하세요");
-                $("#post_content").val("");
-                $("#post_content").focus();
-                return;
-            }
-
-            document.forms[0].submit();
-        }
-    </script>
 </head>
 <body>
 <c:import url="/common/header.jsp" />
+<c:if test="${empty sessionScope.user}">
+    <h3>로그인이 필요합니다.</h3>
+    <p>
+        <a href="Controller?type=login">로그인</a>
+        또는
+        <a href="Controller?type=signup">회원가입</a>을 해주세요.
+    </p>
+</c:if>
 
-<%
-    Object obj = request.getAttribute("vo");
-    if(obj != null){
-        PostVO vo = (PostVO) obj;
-%>
+
+<c:if test="${not empty sessionScope.user}">
+<c:set var="vo" value="${requestScope.vo}" scope="page"/>
+    <c:set var="filevo" value="${requestScope.filevo}" scope="page"/>
+    <c:set value="${requestScope.cPage}" var="cPage"/>
+
 <div id="post">
-    <form action="Controller?type=edit" method="post"
-          encType="multipart/form-data">
-        <input type="hidden" name="category_idx" value="2"/>
-        <input type="hidden" name="post_idx" value="${param.post_idx}"/>
-        <input type="hidden" name="cPage" value="${param.cPage}"/>
-        <table summary="게시판 수정">
+    <form name="editForm" action="Controller?type=edit" method="post"
+          encType="multipart/form-data" onsubmit="return sendData()">
+        <<input type="hidden" name="category_idx" value="2"/>
+        <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+        <input type="hidden" name="cPage" value="${cPage}"/>
+        <table>
             <caption>게시판 수정</caption>
             <tbody>
             <tr>
                 <th>제목:</th>
-                <td><input type="text" name="Post_title" id="Post_title" size="45" value="<%=vo.getPost_title()%>"/></td>
+                <td><input type="text" name="post_title" id="post_title" size="45" value="${vo.post_title}"/></td>
             </tr>
             <tr>
                 <th>이름:</th>
-                <td><input type="text" value="<%=vo.getPost_idx()%>"
-                       name="Post_title" id="Post_title" size="12" disabled/></td>
+                <td><input type="text" value="${sessionScope.user.member_nickname}"
+                       name="member_nickname" id="member_nickname" size="12" readonly/></td>
             </tr>
             <tr>
                 <th>내용:</th>
-                <td><textarea name="Post_content" cols="50"
-                              id="Post_content" rows="8"><%=vo.getPost_content()%></textarea></td>
+                <td><textarea name="post_content" cols="50" id="post_content" rows="8">${vo.post_content}</textarea></td>
+
             </tr>
-            <%--
+
             <tr>
                 <th>첨부파일:</th>
-                <td><input type="file" id="file" name="file"/>
-                <%
-                    if(vo.getFile_name() != null){
-                %>
-                    <p class="t_bold">(<%=vo.getFile_name()%>)</p>
-                <%
-                    }
-                %>
+                <td>
+                        <%-- Check if a list of files exists --%>
+                    <c:if test="${not empty requestScope.file}">
+                        <%-- Loop through each file in the list --%>
+                        <c:forEach var="file" items="${requestScope.file}">
+                            <div>
+                                    <%-- Use the 'file' variable from the loop to get each file's data --%>
+                                <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
+                                <label>
+                                    <input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제
+                                </label>
+                            </div>
+                        </c:forEach>
+                    </c:if>
+
+                    <div>
+                        <label for="file">새 파일 첨부:</label>
+                        <input type="file" id="file" name="file"/>
+                    </div>
                 </td>
             </tr>
-            --%>
-            <%--
-                            <tr>
-                                <th>비밀번호:</th>
-                                <td><input type="password" name="pwd" size="12"/></td>
-                            </tr>
-            --%>
+
             <tr>
                 <td colspan="2">
-                    <input type="button" value="수정"
-                           onclick="sendData()"/>
+                    <input type="submit" value="수정"/>
                     <input type="button" value="취소" onclick="goBack()"/>
-                    <input type="button" value="목록"/>
+                    <input type="button" value="목록" onclick="location.href='Controller?type=list'"/>
                 </td>
             </tr>
             </tbody>
         </table>
     </form>
 </div>
+</c:if>
 <c:import url="/common/footer.jsp" />
 
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
 <script>
     $(function (){
 
-        $("#content").summernote({
+        $("#post_content").summernote({
             lang: "ko-KR",
             height: 300,
             callbacks: {
@@ -176,6 +152,27 @@
         });
 
     });
+
+        function sendData() {
+        let title = $("#post_title").val();
+        if (title.trim().length < 1) {
+            alert("제목을 입력하세요");
+            $("#post_title").val("");
+            $("#post_title").focus();
+            return false;
+        }
+
+        let content = $("#post_content").val();
+        if (content.trim().length < 1) {
+            alert("내용을 입력하세요");
+            $("#post_content").val("");
+            $("#post_content").focus();
+            return false;
+        }
+        //유효성 검사 통과시 폼제출!
+        return true;
+        }
+
 
     function sendImg(file, editor) {
         //서버로 비동기식 통신을 수행하기 위해 준비한다.
@@ -194,18 +191,17 @@
             processData: false,
             dataType: "json"
         }).done(function (res){
-            $("#content").summernote("editor.insertImage", res.img_url);
+            $("#post_content").summernote("editor.insertImage", res.img_url);
         });
     }
 
     function goBack() {
-        // Controller?type=view&b_idx=5&cPage=1
-        location.href="Controller?type=view&b_idx=${param.post_idx}&cPage=${param.cPage}";
+        let post_idx = $('input[name="post_idx"]').val();
+        let cPage = $('input[name="cPage"]').val();
+        location.href = `Controller?type=view&b_idx=${post_idx}&cPage=${cPage}`;
     }
 </script>
-<%
-    }//if문의 끝
-%>
+
 </body>
 </html>
 
