@@ -1,5 +1,6 @@
 package toour.util;
 
+import toour.tripsuggestion.vo.DataVO;
 import toour.tripsuggestion.vo.LoCatVO;
 import org.jdom2.Document;
 import org.jdom2.Element;
@@ -179,5 +180,46 @@ public class GetAPIData {
             }
         }
         return ar;
+    }
+    public static DataVO getDataVO(String contentId){
+        DataVO dvo = null;
+        try {
+            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId="+contentId);
+            HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
+            conn1.setRequestProperty("Content-Type", "application/xml");
+            conn1.connect();
+            SAXBuilder builder = new SAXBuilder();
+            Document doc = builder.build(conn1.getInputStream());
+            Element root = doc.getRootElement();
+            Element body = root.getChild("body");
+            Element items = body.getChild("items");
+            List<Element> item_list = items.getChildren("item");
+            int i = 0;
+            for (Element item : item_list) {
+                String title = item.getChildText("title"); //자식 태그 안의 문자열
+                String mapx = item.getChildText("mapx");
+                String mapy = item.getChildText("mapy");
+                String addr1 = item.getChildText("addr1");
+                String addr2 = item.getChildText("addr2");
+                String firstimage = item.getChildText("firstimage");
+                String firstimage2 = item.getChildText("firstimage2");
+                String tel = item.getChildText("tel");
+                String eventstartdate = item.getChildText("eventstartdate");
+                String eventenddate = item.getChildText("eventenddate");
+                String voCat1 = item.getChildText("cat1");
+                String voCat2 = item.getChildText("cat2");
+                String voCat3 = item.getChildText("cat3");
+                String voContentTypeid = item.getChildText("contenttypeid");
+                String voContentid = item.getChildText("contentid");
+                String overview = item.getChildText("overview");
+                //vo 안에 시군구 코드와 이름만 저장됨
+                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, voContentTypeid, voContentid, overview);
+                dvo = vo;
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return  dvo;
     }
 }

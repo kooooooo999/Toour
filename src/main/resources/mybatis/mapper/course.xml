@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course">
+    <resultMap id="Map1" type="toour.member.vo.CourseVO">
+        <id property="course_idx" column="course_idx"/>
+        <collection property="courseIn_list" ofType="toour.member.vo.CourseInVO" select="course.getCourseIn" column="course_idx"/>
+    </resultMap>
+
+    <select id="get" parameterType="String" resultMap="Map1">
+        SELECT * FROM course
+        WHERE member_idx = #{member_idx}
+    </select>
+
+    <select id="getCourseIn" parameterType="String" resultType="toour.member.vo.CourseInVO">
+        SELECT * FROM courseIn
+        WHERE course_idx = #{course_idx}
+    </select>
+</mapper>

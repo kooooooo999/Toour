@@ -6,21 +6,48 @@
 <mapper namespace="file">
 
 
-    <insert id="insert" parameterType="mybatis.vo.FileVO">
-        INSERT INTO file ( file_idx, post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
-        VALUES ( #{file_idx}, #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type], NOW())
-    </insert>
-
-
-    <select id="getByPost" parameterType="String" resultType="mybatis.vo.FileVO">
+    <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->
+    <select id="file_num" resultType="int">
+        select count(*) from file
+        where post_idx = #{post_idx}
+    </select>
+    <!--파일 목록 가져오기 -->
+    <select id="selectByPost" parameterType="String" resultType="toour.post.vo.FileVO">
         SELECT * FROM file
         WHERE post_idx = #{post_idx}
     </select>
+    <!-- 파일 수정 -->
+    <update id="edit_file" parameterType="Map">
+        UPDATE file
+        SET file_name_original = #{file_name_original},
+        file_name_stored = #{file_name_stored},
+        file_size = #{file_size},
+        file_type = #{file_type},
+        uploaded_at = NOW()
 
+        WHERE post_idx = #{post_idx}
+    </update>
 
-    <delete id="delete" parameterType="String">
-        DELETE FROM file
-        WHERE file_idx = #{file_idx}
+    <!-- 파일 추가 -->
+    <insert id="add_file" parameterType="Map">
+        INSERT INTO file(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
+        VALUES ( #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type}, NOW() )
+    </insert>
+
+    <insert id="addFile" parameterType="toour.post.vo.FileVO">
+        INSERT INTO file (post_idx, file_name, file_path)
+        VALUES (#{post_idx}, #{file_name}, #{file_path})
+    </insert>
+
+    <delete id="deleteFile" parameterType="String">
+        DELETE FROM file WHERE post_idx = #{post_idx}
     </delete>
 
+    <select id="getFile" resultType="toour.post.vo.FileVO">
+        SELECT * FROM file WHERE post_idx = #{post_idx}
+    </select>
+
+    <select id="getFileList" resultType="toour.post.vo.FileVO">
+        SELECT * FROM file WHERE post_idx = #{post_idx}
+    </select>
 </mapper>

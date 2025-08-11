@@ -17,10 +17,12 @@
     <mappers>
         <mapper resource="mybatis/mapper/post.xml"/>
         <mapper resource="mybatis/mapper/adminpost.xml"/>
+        <mapper resource="mybatis/mapper/adminnotice.xml"/>
         <mapper resource="mybatis/mapper/comment.xml"/>
         <mapper resource="mybatis/mapper/file.xml"/>
         <mapper resource="mybatis/mapper/mem.xml"/>
         <mapper resource="mybatis/mapper/member.xml"/>
         <mapper resource="mybatis/mapper/zzim.xml"/>
+        <mapper resource="mybatis/mapper/course.xml"/>
     </mappers>
 </configuration>

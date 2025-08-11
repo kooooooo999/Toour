@@ -71,7 +71,7 @@
   <!-- 메뉴 -->
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
@@ -142,7 +142,7 @@
         <td colspan="2">
           <input type="button" value="수정" onclick="sendData()"/>
           <input type="button" value="취소" onclick="location.href = 'AdminController?type=adminnoticeview&post_idx=${param.post_idx}&cPage=${param.cPage}'"/>
-          <input type="button" value="목록" onclick="location.href = 'AdminController?type=adminnotice'" />
+          <input type="button" value="목록" onclick="location.href='AdminController?type=adminnotice'" />
         </td>
       </tr>
       </tbody>
@@ -192,7 +192,7 @@
       processData: false,
       dataType: "json"
     }).done(function (res){
-      $("#content").summernote("editor.insertImage", res.img_url);
+      $("#post_content").summernote("editor.insertImage", res.img_url);
     });
   }
 </script>

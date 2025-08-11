@@ -1,9 +1,8 @@
 package toour.member.action;
 
-import toour.member.dao.AdminPostDAO;
+import toour.member.dao.AdminNoticeDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
-import toour.post.dao.PostDAO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,13 +14,14 @@ public class AdminNotice implements Action {
         String category_idx=request.getParameter("category_idx");
         if(category_idx==null)
             category_idx="1";
-        int totalCount= AdminPostDAO.getTotalCount(category_idx);
+
+        int totalCount= AdminNoticeDAO.getTotalCount(category_idx);
         Paging page = new Paging(10,5);
         page.setTotalCount(totalCount);
 
         String cPage = request.getParameter("cPage");
 
-        if (cPage == null) {
+        if (cPage == null || cPage.equals("") || cPage.equals("null")) {
             page.setNowPage(1);
         }
         else{
@@ -29,7 +29,7 @@ public class AdminNotice implements Action {
             page.setNowPage(nowPage);
         }
 
-        PostVO[] ar = AdminPostDAO.getList(category_idx,page.getBegin(),page.getEnd());
+        PostVO[] ar = AdminNoticeDAO.getnoticeList(category_idx,page.getBegin(),page.getEnd());
 
         request.setAttribute("category_idx", category_idx);
         request.setAttribute("page",page);

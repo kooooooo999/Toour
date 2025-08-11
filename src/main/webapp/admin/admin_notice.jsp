@@ -174,7 +174,7 @@
 <div class="sidebar">
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
@@ -185,15 +185,17 @@
 
   <div id="post">
     <div class="search-area">
-      <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
+      <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
         <input type="hidden" name="category_idx" value="2">
         <select id="searchType" name="searchType">
           <option value="post_title">제목</option>
           <option value="post_content">내용</option>
           <option value="member_nickname">글쓴이</option>
         </select>
+
         <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
         <button type="submit">검색</button>
+
       </form>
       <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
     </div>
@@ -213,9 +215,8 @@
       <c:if test="${not empty ar}">
         <c:set var="p" value="${requestScope.page}" />
         <c:forEach items="${ar}" var="vo" varStatus="vs">
-          <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
           <tr>
-            <td>${num}</td>
+            <td>${vo.post_idx}</td>
             <td>
               <a href="AdminController?type=adminnoticeview&post_idx=${vo.post_idx}&cPage=${nowPage}">
                   ${vo.post_title}
@@ -236,7 +237,7 @@
 
   <div class="pagination">
     <c:if test="${p.startPage > 1}">
-      <a href="AdminController?type=adminmemnotice&cPage=${p.startPage - 1}">&lt;</a>
+      <a href="AdminController?type=adminnotice&cPage=${p.startPage - 1}">&lt;</a>
     </c:if>
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
       <c:choose>
@@ -244,12 +245,12 @@
           <span class="current">${vs.index}</span>
         </c:when>
         <c:otherwise>
-          <a href="AdminController?type=adminmemnotice&cPage=${vs.index}">${vs.index}</a>
+          <a href="AdminController?type=adminnotice&cPage=${vs.index}">${vs.index}</a>
         </c:otherwise>
       </c:choose>
     </c:forEach>
     <c:if test="${p.endPage < p.totalPage}">
-      <a href="AdminController?type=adminmemnotice&cPage=${p.endPage + 1}">&gt;</a>
+      <a href="AdminController?type=adminnotice&cPage=${p.endPage + 1}">&gt;</a>
     </c:if>
   </div>
 

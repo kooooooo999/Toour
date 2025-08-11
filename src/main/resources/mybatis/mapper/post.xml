@@ -10,6 +10,12 @@
         <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
 
+    <!--조회수 증가-->
+    <update id="hit" parameterType="String">
+        UPDATE post
+        SET hit = hit + 1
+        where post_idx = #{post_idx}
+    </update>
     <!-- 총 게시물 수를 반환하는 기능 -->
     <select id="totalCount" resultType="int" parameterType="String">
         select count(*) from post
@@ -20,21 +26,22 @@
 
     <select id="list" resultMap="map1" parameterType="map">
         select * from(
-        select @RN:=@RN+1 AS rnum, a.*
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
         select * from post
         where post_status = 0
-        and category_idx=#{category_idx}
-        order by post_idx desc
-        ) a, (select @RN:=0)b
+        and category_idx=2
+        order by post_idx DESC
+        ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
+        order by post_idx desc
     </select>
 
     <!--게시글 작성 -->
-    <insert id="add" parameterType="Map">
+    <insert id="add" parameterType="Map" useGeneratedKeys="true" keyProperty="post_idx">
         insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
-        values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), #{post_updated_at})
+        values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), now())
     </insert>
 
     <!-- 게시글 보기 -->
@@ -62,7 +69,7 @@
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
         UPDATE post p
-        INNER JOIN file f ON p.member_idx = f.member_idx
+        INNER JOIN file f ON p.post_idx = f.post_idx
         <trim prefix="SET" suffixOverrides=",">
             p.post_title = #{post_title},
             p.post_content = #{post_content}
@@ -93,5 +100,9 @@
         )a
          where a.rnum BETWEEN #{begin} AND #{end};
     </select>
-
+    <select id="getPostIdx" parameterType="String">
+        select post_idx
+        from post
+        where post_idx=#{post_idx}
+    </select>
 </mapper>

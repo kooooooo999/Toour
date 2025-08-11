@@ -18,25 +18,6 @@ public class AdminPostDAO {
     }
 
 
-    public static PostVO[] getList(String category_idx, int begin, int end ){
-        PostVO[] ar = null;
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("category_idx",category_idx);
-        map.put("begin",begin);
-        map.put("end",end);
-
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("adminpost.list", map);
-        if(list.size()>0&& list!=null){
-            ar= new PostVO[list.size()];
-            list.toArray(ar);
-        }
-        ss.close();
-
-        return ar;
-    }
-
-
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -44,6 +25,7 @@ public class AdminPostDAO {
         ss.close();
         return vo;
     }
+
 
     public static PostVO[] search(String searchType,String searchValue,int begin,int end){
         PostVO[] ar = null;
@@ -89,13 +71,13 @@ public class AdminPostDAO {
 
 
     // 목록 반환
-    public static PostVO[] getgetList(String category_idx, int begin, int end){
+    public static PostVO[] getnoticeList(String category_idx, int begin, int end){
         PostVO[] ar = null;
 
         Map<String, Object> map = new HashMap<>();
         map.put("category_idx", category_idx);
-        map.put("begin", category_idx);
-        map.put("end", category_idx);
+        map.put("begin", begin);
+        map.put("end", end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
         List<PostVO> list = ss.selectList("adminpost.list", map);
@@ -106,9 +88,10 @@ public class AdminPostDAO {
         ss.close();
         return ar;
     }
+
     // 저장 +++
     public static String postadd(String post_title, String post_content, String member_idx,
-                          String category_idx, String post_views, String post_status){
+                                 String category_idx, String post_views, String post_status){
         int cnt = 0;
 
         Map<String, String> map = new HashMap<>();
@@ -212,7 +195,7 @@ public class AdminPostDAO {
         }
         return filecnt;
     }
-    }
+}
 
 //    // 조회수 증가
 //    public static int post_views(String post_idx){

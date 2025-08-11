@@ -26,7 +26,7 @@ public class AdminNoticeWriteAction implements Action {
         //System.out.println(enc_type);
 
         if(enc_type == null)
-            viewPath = "admin/admin_notice_write.jsp";
+            viewPath = "admin/admin_post_write.jsp";
         else if(enc_type.startsWith("multipart")){
             // 여기는 write.jsp에서 내용을 입력한 후 [보내기] 버튼을
             // 클릭했을 때 수행하는 곳
@@ -45,7 +45,7 @@ public class AdminNoticeWriteAction implements Action {
                 String post_title = mr.getParameter("post_title");
                 //박준형 시작
 //                String member_idx= mr.getParameter("member_idx");
-                String member_idx= "3";
+                String member_idx= mr.getParameter("member_idx");
                 //박준형 끝
 
                 String post_content = mr.getParameter("post_content");
@@ -63,7 +63,7 @@ public class AdminNoticeWriteAction implements Action {
                 String file_size = null;
                 String file_type = null;
 
-                if( f != null ){
+                if( f != null && f.length() > 0 ){
                     file_name_stored = f.getName();// 현재 저장된 파일명
                     file_name_original = mr.getOriginalFileName("file");// 원래 파일명
                     post_idx = mr.getParameter("post_idx");
@@ -74,14 +74,14 @@ public class AdminNoticeWriteAction implements Action {
                 //DB에 저장 ++
                 post_idx = AdminPostDAO.postadd(post_title, post_content, member_idx, category_idx, post_views, post_status);
                 AdminPostDAO.fileadd(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type);
-                System.out.println("post_idx:"+post_idx);
-                System.out.println("file_name_original"+file_name_original);
+//                System.out.println("post_idx:"+post_idx);
+//                System.out.println("file_name_original"+file_name_original);
 
                 viewPath = "AdminController?type=adminnotice";
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-       return viewPath;
+        return viewPath;
     }
 }

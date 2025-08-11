@@ -1,7 +1,5 @@
 package toour.post.vo;
 
-import mybatis.vo.FileVO;
-
 import java.util.List;
 
 

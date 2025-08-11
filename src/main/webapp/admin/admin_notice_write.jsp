@@ -144,7 +144,7 @@
   <!-- 메뉴 -->
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="product_list.jsp?category=sp003">📝 게시물 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
   <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
@@ -209,7 +209,7 @@
           // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
           for(let i=0; i<files.length; i++)
             sendImg(files[i], editor);
-          console.log(files.length);
+          // console.log(files.length);
         }
       }
     });
@@ -233,7 +233,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "Controller?type=saveImg",
+      url: "AdminController?type=adminnoticesaveimg",
       data: frm,
       type: "post",
       contentType: false,

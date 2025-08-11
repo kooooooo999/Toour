@@ -17,16 +17,15 @@
     </select>
 
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
-
     <select id="list" resultMap="map1" parameterType="map">
         select * from(
-        select @RN:=@RN+1 AS rnum, a.*
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
         select * from post
         where post_status = 0
-        and category_idx=#{category_idx}
-        order by post_idx desc
-        ) a, (select @RN:=0)b
+        and category_idx=2
+        order by post_idx DESC
+        ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
     </select>
@@ -39,7 +38,8 @@
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p inner join file f on p.post_idx = f.post_idx
+        SELECT  * FROM post p
+        LEFT OUTER join file f on p.post_idx = f.post_idx
         WHERE p.post_idx = #{post_idx}
     </select>
 
@@ -60,14 +60,12 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post p
-        LEFT JOIN file f ON p.post_idx = f.post_idx
+        UPDATE post
         <trim prefix="SET" suffixOverrides=",">
-            p.post_title = #{post_title},
-            p.post_content = #{post_content},
+            post_title = #{post_title},
+            post_content = #{post_content},
         </trim>
-        WHERE p.post_idx = #{post_idx}
-        AND p.category_idx = #{category_idx}
+        WHERE post_idx = #{post_idx}
     </update>
 
     <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->

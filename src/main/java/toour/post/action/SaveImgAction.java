@@ -1,4 +1,4 @@
-package toour.login.action;
+package toour.post.action;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -27,12 +27,18 @@ public class SaveImgAction implements Action {
             //파일이 저장될 때 이름이 변경될 수 있기때문에 저장된 파일의
             // 정확한 이름을 알아내야 한다.
             File f = mr.getFile("upload");
-            String file_name_stored = null;
+           /* String file_name_stored = null;
 
             if( f != null ) {
                 file_name_stored = f.getName();//저장된 파일명!!!!!
                 request.setAttribute("f_name", file_name_stored);
+            }*/
+            String f_name = null;
+            if(f != null){
+                f_name = f.getName();
+                request.setAttribute("f_name", f_name);//저장된 파일명
             }
+            request.setAttribute("contextPath", request.getContextPath());
         } catch (Exception e) {
             e.printStackTrace();
             try {
