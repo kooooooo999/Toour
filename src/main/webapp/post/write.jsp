@@ -67,9 +67,9 @@
 <c:if test="${empty sessionScope.user}">
   <h3>로그인이 필요합니다.</h3>
   <p>
-    <a href="Controller?type=login">로그인</a>
+    <a href="Controller?type=moveLogin">로그인</a>
     또는
-    <a href="Controller?type=signup">회원가입</a>을 해주세요.
+    <a href="Controller?type=moveSignup">회원가입</a>을 해주세요.
   </p>
 </c:if>
 

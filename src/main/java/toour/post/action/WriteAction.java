@@ -72,9 +72,7 @@ public class WriteAction implements Action {
                 String member_idx = loginMember.getMember_idx();
                 String member_nickname = loginMember.getMember_nickname();
 
-                //박준형 시작
-//                String member_idx= mr.getParameter("member_idx");
-                //박준형 끝
+
                 //나머지 파라미터들 얻기(post_title, member_idx, post_content)
                 String post_title = mr.getParameter("post_title");
                 String post_content = mr.getParameter("post_content");
@@ -91,7 +89,7 @@ public class WriteAction implements Action {
                 int generatedPostIdx = PostDAO.add(post_title, post_content, member_idx,
                         category_idx, post_views, post_likes, post_comments_count,
                         post_status, post_created_at, post_star);
-                System.out.println(generatedPostIdx);
+                System.out.println("WriteAction 94"+generatedPostIdx);
                 //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
                 File f = mr.getFile("file");
 

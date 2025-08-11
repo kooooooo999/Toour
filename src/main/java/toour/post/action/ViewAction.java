@@ -1,6 +1,7 @@
 package toour.post.action;
 
 import toour.member.vo.MemberVO;
+import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.dao.FileDAO;
 import toour.post.vo.PostVO;
@@ -30,11 +31,11 @@ public class ViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
+        System.out.println("viewAction post_idx = " + post_idx);
         if(post_idx==null||post_idx.isEmpty()){
             return "Controller?type=list";
         }
         HttpSession session = request.getSession();
-        System.out.println("post_idx:"+post_idx);
         Object obj = session.getAttribute("read_list");
 
         ArrayList<String> readList = null;
@@ -68,7 +69,8 @@ public class ViewAction implements Action {
             PostDAO.post_views(post_idx);
             readList.add(post_idx);
         }
-
+        CommentVO[] comment_list =PostDAO.getCommentList(post_idx);
+        request.setAttribute("comment_list", comment_list);
         request.setAttribute("vo", vo);
 
         return "post/view.jsp";

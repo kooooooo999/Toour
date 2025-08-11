@@ -15,19 +15,18 @@ import java.io.IOException;
 public class CommentAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        String post_idx=null;
         String viewPath=null;
         String enc_type =request.getContentType();
 
         HttpSession session=request.getSession();
         if(session.getAttribute("user")==null){
             System.out.println("comment session nothing");
-            return "Controller?type=login";
+            return "Controller?type=moveLogin";
         }
         MemberVO loginMember=(MemberVO)session.getAttribute("user");
         System.out.println("CommentLoginMember:"+loginMember);
-        if(loginMember!=null){
-            return "Controller?type=login";
+        if(loginMember==null){
+            return "Controller?type=moveLogin";
         }
         if (enc_type==null) {
             //get방식?
@@ -42,7 +41,7 @@ public class CommentAction implements Action {
             MultipartRequest mr = null;
             //첨부파일을 넣기로 했다면 필요한 곳
             try {
-                mr= new MultipartRequest(request,realPath,1024*1024*10, "utf-8",new DefaultFileRenamePolicy());
+                mr= new MultipartRequest(request, realPath, 1024*1024*10, "utf-8",new DefaultFileRenamePolicy());
 
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -52,12 +51,15 @@ public class CommentAction implements Action {
             String member_idx = loginMember.getMember_idx();
             String member_nickname=loginMember.getMember_nickname();
 
+            //파라미터 받아오기
             String comment_content = mr.getParameter("comment_content");
-            post_idx = mr.getParameter("post_idx");
+            String post_idx = mr.getParameter("post_idx");
 
-            int comment = PostDAO.insertComment(post_idx,member_idx,comment_content);
-            System.out.println("comment:"+comment);
+            //comment insert
+            PostDAO.insertComment(post_idx, member_idx, comment_content);
+
+            viewPath="Controller?type=view&post_idx="+post_idx;
         }
-        return "Controller?type=view&post_idx"+post_idx;
+        return viewPath;
     }
 }
