@@ -1,7 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
   <div id="post">
     <div class="search-area">
       <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
@@ -51,29 +51,29 @@
     </table>
   </div>
 
-  <div class="paging-area">
-    <ol class="paging">
-      <c:set var="p" value="${requestScope.page}" />
-      <c:if test="${p.startPage < p.pagePerBlock}">
-        <li class="disable">&lt;</li>
+<div class="paging-area">
+  <ol class="paging">
+    <c:set var="p" value="${requestScope.page}" />
+    <c:if test="${p.startPage < p.pagePerBlock}">
+      <li class="disable">&lt;</li>
+    </c:if>
+    <c:if test="${p.startPage >= p.pagePerBlock}">
+      <li><a href="javascript:movePage(${p.startPage-p.pagePerBlock})">&lt;</a></li>
+    </c:if>
+    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+      <c:if test="${p.nowPage == vs.index}">
+        <li class="now">${vs.index}</li>
       </c:if>
-      <c:if test="${p.startPage >= p.pagePerBlock}">
-        <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+      <c:if test="${p.nowPage != vs.index}">
+        <li><a href="javascript:movePage(${vs.index})">${vs.index}</a></li>
       </c:if>
-      <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-        <c:if test="${p.nowPage == vs.index}">
-          <li class="now">${vs.index}</li>
-        </c:if>
-        <c:if test="${p.nowPage != vs.index}">
-          <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
-        </c:if>
-      </c:forEach>
-      <c:if test="${p.endPage < p.totalPage}">
-        <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
-      </c:if>
-      <c:if test="${p.endPage >= p.totalPage}">
-        <li class="disable">&gt;</li>
-      </c:if>
-    </ol>
-    <input type="button" value="댓글" onclick="javascript:location.href=''">
-  </div>
+    </c:forEach>
+    <c:if test="${p.endPage < p.totalPage}">
+      <li><a href="javascript:movePage(${p.endPage+1})">&gt;</a></li>
+    </c:if>
+    <c:if test="${p.endPage >= p.totalPage}">
+      <li class="disable">&gt;</li>
+    </c:if>
+  </ol>
+  <input type="button" value="댓글" onclick="javascript:location.href=''">
+</div>
