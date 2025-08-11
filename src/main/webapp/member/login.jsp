@@ -206,7 +206,7 @@
     System.out.println(apiURL);
   %>
   <a id="naver_id_login" href="<%=apiURL%>">
-    <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" width="190" height="46.72" alt="네이버 로그인 버튼" />
+    <img src="https://static.nid.naver.com/oauth/big_g.PNG" width="190" height="46.72" alt="네이버 로그인 버튼" />
   </a>
 
   <p id="token-result"></p>

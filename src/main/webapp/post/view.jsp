@@ -55,8 +55,57 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
+<c:set value="${sessionScope.user}" var="user"/>
 <c:set var="vo" value="${requestScope.vo}"/>
+<c:set var="member_info" value="${requestScope.member_info}"/>
 
+
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+  $(function (){
+    let option = {
+      modal: true,
+      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
+      resizable: false,
+    };
+
+    $("#del_dialog").dialog(option);
+  });
+
+  function commentData() {
+    let title = $("#comment_content").val();
+    if (title.trim().length < 1) {
+      alert("내용을 입력하세요");
+      $("#comment_content").val("");
+      $("#comment_content").focus();
+      return false;
+    }
+    return true;
+  }
+  function goList() {
+    document.ff.action = "Controller";
+    document.ff.type.value = "list";
+    document.ff.submit();
+  }
+  function goDel() {
+    /*document.ff.action = "Controller";
+    document.ff.type.value = "del"
+    document.ff.submit();*/
+    $("#del_dialog").dialog("open");
+  }
+  function del(frm) {
+    frm.submit();
+  }
+
+  function goEdit() {
+    // ff 폼의 action과 type을 설정
+    document.ff.action = "Controller";
+    document.ff.type.value = "edit";
+    document.ff.submit();
+  }
+</script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <div id="post">
   <form method="post" >
     <table summary="게시판 글쓰기">
@@ -86,34 +135,54 @@
 
       <tr>
         <th>이름:</th>
-        <td>${sessionScope.user.member_nickname}</td>
+        <td>${member_info.member_nickname}</td>
       </tr>
       <tr>
         <th>내용:</th>
         <td>${vo.post_content}</td>
       </tr>
-
       <tr>
         <td colspan="2">
-          <input type="button" value="수정" onclick="goEdit()"/>
-          <input type="button" value="삭제" onclick="goDel()"/>
+          <c:if test="${not empty sessionScope.user}">
+            <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
+              <input type="button" value="수정" onclick="goEdit()"/>
+              <input type="button" value="삭제" onclick="goDel()"/>
+            </c:if>
+          </c:if>
           <input type="button" value="목록" onclick="goList()"/>
         </td>
       </tr>
       </tbody>
     </table>
   </form>
-  <form method="post" action="Controller">
-    이름:<input type="text" name="member_idx"/><br/>
-    내용:<textarea rows="4" cols="55" name="post_content"></textarea><br/>
-    비밀번호:<input type="password" name="pwd"/><br/>
 
+  <!--댓글 작성-->
+  <div id="comment_form">
+    <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
+           onsubmit="return commentData()">
 
-    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
-    <input type="hidden" name="cPage" value="${param.cPage}"/>
-    <input type="hidden" name="type" value="command"/>
-    <input type="submit" value="저장하기"/>
-  </form>
+      <label>이름:<span>${sessionScope.user.member_nickname}</span><br/></label>
+      <label>내용:<textarea rows="4" cols="55" name="comment_content" id="comment_content"></textarea><br/></label>
+
+      <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+      <input type="hidden" name="cPage" value="${param.cPage}"/>
+      <input type="hidden" name="type" value="comment"/>
+      <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+      <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
+      <c:if test="${not empty sessionScope.user}">
+        <input type="submit" value="댓글작성"/>
+      </c:if>
+      <c:if test="${empty sessionScope.user}">
+        <h3>로그인이 필요합니다.</h3>
+        <p>
+          <a href="Controller?type=moveLogin">로그인</a>
+          또는
+          <a href="Controller?type=moveSignup">회원가입</a>을 해주세요.
+        </p>
+      </c:if>
+
+    </form>
+  </div>
 
   <form name="ff" method="get">
     <input type="hidden" name="type" />
@@ -132,58 +201,30 @@
     </form>
   </div>
 
-</br>
+  </br>
   댓글들<hr/>
-  <c:forEach var="cvo" items="${requestScope.vo.c_list}" varStatus="vs">
+  <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
+
     <div>
-      이름:${cvo.getMember_idx()} &nbsp;&nbsp;
-      최종수정:${cvo.getComment_updated_at()}<br/>
-      내용:${cvo.getComment_content()}
+      별명 :${cvo.member_nickname} &nbsp;&nbsp;
+      최종수정:${cvo.comment_updated_at}<br/>
+      내용:${cvo.comment_content}
     </div>
     <hr/>
+
   </c:forEach>
 
 
 
+
+
 </div>
+
+
+</body>
+
 <c:import url="/common/footer.jsp" />
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-<script>
-  $(function (){
-    let option = {
-      modal: true,
-      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
-      resizable: false,
-    };
-
-    $("#del_dialog").dialog(option);
-  });
-
-  function goList() {
-    document.ff.action = "Controller";
-    document.ff.type.value = "list"
-    document.ff.submit();
-  }
-  function goDel() {
-    /*document.ff.action = "Controller";
-    document.ff.type.value = "del"
-    document.ff.submit();*/
-    $("#del_dialog").dialog("open");
-  }
-  function del(frm) {
-    frm.submit();
-  }
-
-  function goEdit() {
-    // ff 폼의 action과 type을 설정
-    document.ff.action = "Controller";
-    document.ff.type.value = "edit";
-    document.ff.submit();
-  }
-</script>
-</body>
 </html>
 
 
