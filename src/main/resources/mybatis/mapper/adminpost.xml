@@ -21,11 +21,10 @@
         select * from(
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
-        select * from post
-        where post_status = 0
-        and category_idx=2
-        order by post_idx DESC
-        ) a
+            select * from post
+            where post_status = 0
+            and category_idx=2
+            ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
     </select>

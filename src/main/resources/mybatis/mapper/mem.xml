@@ -34,7 +34,7 @@
     <!-- 여러 회원정보글 목록: 인자 3개(bname, begin, end)-->
     <select id="mem_list" parameterType="Map" resultType="toour.member.vo.MemberVO">
         SELECT * FROM(
-        SELECT ROW_NUMBER() OVER(ORDR BY member_idx DESC) AS rnum, a.*
+        SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum, a.*
         FROM(
         SELECT * FROM member
         WHERE member_status = 0 <!--삭제되지않은 글-->
