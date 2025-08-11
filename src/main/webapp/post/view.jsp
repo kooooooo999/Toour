@@ -14,42 +14,122 @@
   <link rel="stylesheet" href="<c:url value="/css/post.css" />">
 
   <style type="text/css">
-    #post table {
-      width:580px;
-      margin-left:10px;
-      border:1px solid black;
-      border-collapse:collapse;
-      font-size:14px;
-    }
 
-    #post table caption {
-      font-size:20px;
-      font-weight:bold;
-      margin-bottom:10px;
-    }
+      #post {
+          max-width: 1200px;
+          margin: 0 auto;
+          background-color: #fff;
+          border: 1px solid #dee2e6;
+          border-radius: 8px !important;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
 
-    #post table th {
-      text-align:center;
-      border:1px solid black;
-      padding:4px 10px;
-    }
+      /* 게시글 테이블 */
+      .post-table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #ddd;
+      }
 
-    #post table td {
-      text-align:left;
-      border:1px solid black;
-      padding:4px 10px;
-    }
+      .post-table th,
+      .post-table td {
+          padding: 12px 15px;
+          border: 1px solid #ddd;
+          vertical-align: top;
+          font-size: 14px;
+      }
 
-    .no {width:15%}
-    .subject {width:30%}
-    .writer {width:20%}
-    .reg {width:20%}
-    .hit {width:15%}
-    .title{background:lightsteelblue}
+      .post-table th {
+          background-color: #f5f5f5;
+          text-align: left;
+          width: 120px;
+      }
 
-    .odd {background:silver}
+      /* 본문 내용 */
+      .post-content {
+          padding: 20px;
+          line-height: 1.6;
+          background: #fafafa;
+          font-size: 15px;
+          height: 150px;
+          vertical-align: middle;
+      }
 
-    .hide{ display: none; }
+
+      #comment_form {
+          margin-top: 50px;
+          padding: 20px 40px;
+          background-color: #fff;
+          border-top: 1px solid #eee;
+      }
+
+      #comment_form h3 {
+          font-size: 18px;
+          margin-bottom: 12px;
+          font-weight: 600;
+          color: #333;
+      }
+
+      .comment-container {
+          width: 100%;
+      }
+
+      .comment-container textarea {
+          width: 100%;
+          height: 120px;
+          padding: 16px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          resize: none;
+          box-sizing: border-box;
+          line-height: 1.5;
+          margin-bottom: 12px;
+          color: #333;
+          background-color: #fafafa;
+      }
+
+      .comment-actions {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .post-buttons {
+          text-align: right;
+          margin-top: 20px;
+          margin-right: 20px;
+      }
+
+
+
+      .btn-pho {
+          display: inline-block;
+          padding: 7px 16px;
+          border: 1px solid #ccc;
+          background-color: #fff;
+          color: #333;
+          font-size: 14px;
+          border-radius: 6px;
+          cursor: pointer;
+      }
+
+      .btn-register {
+          padding: 8px 20px;
+          background-color: #222;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background-color 0.2s;
+      }
+
+      .btn-register:hover {
+          background-color: #444;
+      }
+
   </style>
 
 </head>
@@ -60,58 +140,14 @@
 <c:set var="member_info" value="${requestScope.member_info}"/>
 
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
-<script>
-  $(function (){
-    let option = {
-      modal: true,
-      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
-      resizable: false,
-    };
-
-    $("#del_dialog").dialog(option);
-  });
-
-  function commentData() {
-    let title = $("#comment_content").val();
-    if (title.trim().length < 1) {
-      alert("내용을 입력하세요");
-      $("#comment_content").val("");
-      $("#comment_content").focus();
-      return false;
-    }
-    return true;
-  }
-  function goList() {
-    document.ff.action = "Controller";
-    document.ff.type.value = "list";
-    document.ff.submit();
-  }
-  function goDel() {
-    /*document.ff.action = "Controller";
-    document.ff.type.value = "del"
-    document.ff.submit();*/
-    $("#del_dialog").dialog("open");
-  }
-  function del(frm) {
-    frm.submit();
-  }
-
-  function goEdit() {
-    // ff 폼의 action과 type을 설정
-    document.ff.action = "Controller";
-    document.ff.type.value = "edit";
-    document.ff.submit();
-  }
-</script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <div id="post">
   <form method="post" >
-    <table summary="게시판 글쓰기">
+    <table summary="게시판 글쓰기" class="post-table">
       <caption>게시판 글쓰기</caption>
       <tbody>
-      <tr>
+      <tr class="post-title">
         <th>제목:</th>
         <td>${vo.post_title}</td>
       </tr>
@@ -132,45 +168,58 @@
           </c:if>
         </td>
       </tr>
-
-      <tr>
+      <!--게시물-->
+      <tr class="post-name">
         <th>이름:</th>
         <td>${member_info.member_nickname}</td>
+        <th>작성일</th>
+        <td>${sessionScope.user.member_updated_at}</td>
       </tr>
-      <tr>
+      <tr class="post-content">
         <th>내용:</th>
-        <td>${vo.post_content}</td>
+        <td colspan="3">${vo.post_content}</td>
       </tr>
-      <tr>
-        <td colspan="2">
-          <c:if test="${not empty sessionScope.user}">
-            <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
-              <input type="button" value="수정" onclick="goEdit()"/>
-              <input type="button" value="삭제" onclick="goDel()"/>
-            </c:if>
-          </c:if>
-          <input type="button" value="목록" onclick="goList()"/>
-        </td>
-      </tr>
+
       </tbody>
     </table>
   </form>
 
+      <div class="post-buttons">
+        <c:if test="${not empty sessionScope.user}">
+          <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
+            <input type="button" value="수정" onclick="goEdit()"/>
+            <input type="button" value="삭제" onclick="goDel()"/>
+          </c:if>
+        </c:if>
+        <input type="button" value="목록" onclick="goList()"/>
+      </div>
+
   <!--댓글 작성-->
   <div id="comment_form">
+    <h3>댓글</h3>
     <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
            onsubmit="return commentData()">
+      <div class="comment-container">
+        <textarea placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
+        <div class="comment-actions">
+          <div>
+            <label for="fileUp" class="btn-pho">
+              <span class="icon">📷</span> 사진
+            </label>
 
       <label>이름:<span>${sessionScope.user.member_nickname}</span><br/></label>
       <label>내용:<textarea rows="4" cols="55" name="comment_content" id="comment_content"></textarea><br/></label>
 
-      <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+
+            <input type="file" id="fileUp" name="fileUp" onchange="fileChange(this,true)" style="display:none;">
+
+            <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
       <input type="hidden" name="cPage" value="${param.cPage}"/>
       <input type="hidden" name="type" value="comment"/>
       <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
       <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
       <c:if test="${not empty sessionScope.user}">
-        <input type="submit" value="댓글작성"/>
+        <input type="submit" value="댓글작성" class="btn-register"/>
       </c:if>
       <c:if test="${empty sessionScope.user}">
         <h3>로그인이 필요합니다.</h3>
@@ -220,6 +269,51 @@
 
 </div>
 
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+
+<script>
+  $(function (){
+    let option = {
+      modal: true,
+      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
+      resizable: false,
+    };
+
+    $("#del_dialog").dialog(option);
+  });
+
+  function commentData() {
+    let title = $("#comment_content").val();
+    if (title.trim().length < 1) {
+      alert("내용을 입력하세요");
+      $("#comment_content").val("");
+      $("#comment_content").focus();
+      return false;
+    }
+    return true;
+  }
+  function goList() {
+    document.ff.action = "Controller";
+    document.ff.type.value = "list";
+    document.ff.submit();
+  }
+  function goDel() {
+    /*document.ff.action = "Controller";
+    document.ff.type.value = "del"
+    document.ff.submit();*/
+    $("#del_dialog").dialog("open");
+  }
+  function del(frm) {
+    frm.submit();
+  }
+
+  function goEdit() {
+    // ff 폼의 action과 type을 설정
+    document.ff.action = "Controller";
+    document.ff.type.value = "edit";
+    document.ff.submit();
+  }
+</script>
 
 </body>
 
