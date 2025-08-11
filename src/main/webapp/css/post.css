@@ -153,6 +153,7 @@ button[type="submit"]{
     transition: background-color 0.2s ease;
 }
 
+
 input[type="button"]:hover {
     background-color: #218838;
 }

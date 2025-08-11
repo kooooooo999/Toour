@@ -13,34 +13,32 @@
       margin: 0;
       font-family: 'Noto Sans KR', sans-serif;
       display: flex;
-      background-color: #f0f4f8; /* 좀 더 연한 배경 */
+      background-color: #f4f6f8;
       font-size: 14px;
     }
 
     .sidebar {
-      width: 200px; /* 조금 줄임 */
+      width: 220px;
       background-color: #2c3e50;
       display: flex;
       flex-direction: column;
       padding: 20px;
       color: white;
       height: 100vh;
-      font-size: 14px;
     }
 
     .sidebar a {
       text-decoration: none;
       color: white;
-      padding: 10px 12px;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      padding: 12px 10px;
+      border-bottom: 1px solid #34495e;
       transition: background-color 0.3s;
-      display: block;
     }
 
     .sidebar a:hover {
       background-color: #34495e;
     }
+
 
     .main-content {
       flex: 1;
@@ -50,27 +48,27 @@
       border-radius: 6px;
       margin: 20px;
       font-size: 14px;
-    }
-
-    h1 {
-      margin-bottom: 25px;
-      color: #2563eb;
-      font-weight: 600;
-      font-size: 22px;
+      max-width: 900px;
     }
 
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 10px; /* 행 사이 여백 */
       background: none;
+    }
+
+    h1.page-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 30px;
     }
 
     table caption {
       font-weight: 600;
       font-size: 18px;
       margin-bottom: 15px;
-      color: #2563eb;
+      color: #000000;
       text-align: left;
     }
 
@@ -151,15 +149,16 @@
 </div>
 
 <div class="main-content">
-  <h1>관리자 페이지</h1>
-</div>
+  <h1 class="page-title">관리자 페이지 - 공지사항 글쓰기</h1>
+
+
 <div id="post">
   <form action="AdminController?type=adminnoticewrite" method="post" encType="multipart/form-data">
     <input type="hidden" name="category_idx" value="1"/>
     <input type="hidden" name="member_idx" value="1"/>
 
+
     <table summary="공지사항 글쓰기">
-      <caption>공지사항 글쓰기</caption>
       <tbody>
       <tr>
         <th>제목:</th>
@@ -187,6 +186,7 @@
       </tbody>
     </table>
   </form>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"

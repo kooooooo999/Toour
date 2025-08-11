@@ -35,6 +35,7 @@
             background-color: #34495e;
         }
 
+
         .main-content {
             flex: 1;
             padding: 40px;
