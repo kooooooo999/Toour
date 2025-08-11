@@ -12,6 +12,7 @@ img { max-width: 100%; height: auto; display: block; }
 .text-right { text-align: right; }
 .section-title { font-size: 28px; font-weight: bold; color: #333; margin-bottom: 30px; }
 .image { width: 500px; height: 250px; margin-right: 20px; text-align: center;}
+footer {background: #e0f0ff}
 
 
 /* Main Navigation */
@@ -95,4 +96,131 @@ nav.main-nav a:hover { text-decoration: underline; }
 .healing-card .heart-icon { position: absolute; top: 10px; right: 10px; background-color: rgba(255,255,255,0.8); border-radius: 50%; width: 30px; height: 30px; display: flex; justify-content: center; align-items: center; font-size: 16px; color: #e74c3c; cursor: pointer; }
 .healing-navigation { position: absolute; top: 50%; right: 0; transform: translateY(-50%); background-color: rgba(255,255,255,0.8); border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; font-size: 20px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
 .healing-pagination-dots { text-align: center; margin-top: 20px; font-size: 14px; color: #666; }
+
+/* footer botton*/
+.banner-item {width: 220px; height: 80px; background-repeat: no-repeat; background-size: 220px}
+.footer-banners {margin-left: 120px; margin-right: 120px}
+
+/* 아이콘 */
+.sns-icon1 {background: url('../images/blog.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon1:hover {background: url('../images/blog_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon2 {background: url('../images/facebook.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon2:hover {background: url('../images/facebook_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon3 {background: url('../images/x.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon3:hover {background: url('../images/x_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon4 {background: url('../images/kakao.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon4:hover {background: url('../images/kakao_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon5 {background: url('../images/instar.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon5:hover {background: url('../images/instar_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon6 {background: url('../images/band_.png') center/cover no-repeat; width: 40px; height: 40px}
+.sns-icon6:hover {background: url('../images/band_1.png');
+                  background-position: center;
+                  background-repeat: no-repeat;
+                  background-size: contain;}
+
+.sns-icon1,
+.sns-icon2,
+.sns-icon3,
+.sns-icon4,
+.sns-icon5,
+.sns-icon6 {
+    border: none;
+    outline: none;
+}
+
+.footer-sns-links a {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 76px;
+    height: 80px;
+    text-align: center;
+}
+
+.sns-icon {
+    display: inline-flex;
+    justify-content: center; /* 가로 중앙 */
+    align-items: center;     /* 세로 중앙 */
+    width: 40px;  /* 원하는 크기 */
+    height: 40px;
+    /*margin: auto;*/
+}
+
+
+/* 애니메이션 */
+.footer-news-ticker {
+    overflow: hidden;           /* 넘치는 텍스트 숨기기 */
+    background-color: #99ccff;  /* 배경색*/
+    white-space: nowrap;        /* 텍스트 줄바꿈 방지 */
+    /*border: 1px solid #ccc;     /* 테두리 (선택) */
+    padding: 10px 0;
+    position: relative;
+    width: 100%;                /* 가로 전체 */
+    box-sizing: border-box;
+}
+
+.ticker-content span:first-child {
+    display: inline-block;
+    padding-left: 100%;         /* 시작 위치를 오른쪽 바깥으로 설정 */
+    animation: tickerMove 15s linear infinite;
+    color: #666666; /* 글씨색 */
+}
+
+/* 텍스트가 오른쪽에서 왼쪽으로 움직이는 애니메이션 */
+@keyframes tickerMove {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-100%); }
+}
+
+/* 대한민국 toour을 sns에서 만나보세요 */
+.footer-sns-intro {
+    padding: 20px 0;
+    text-align: center; /* 가로 가운데 정렬 */
+    font-size: 22px;
+    color: #333333;
+    font-weight: 500; /* 글씨체 굵기 */
+    font-family: sans-serif;
+}
+
+footer address,
+footer .contact-info,
+footer .copyright {
+    color: #666666;
+}
+
+
+
+.footer-sns-links a,
+.footer-banners a,
+.footer-nav a {
+    color: #666666;
+    text-decoration: none; /* 밑줄 제거(선택) */
+}
+
+.footer-sns-links a:hover,
+.footer-banners a:hover,
+.footer-nav a:hover {
+    color: #222222; /* hover 시 조금 진하게(선택) */
+}
 
