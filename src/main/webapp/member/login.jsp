@@ -176,11 +176,11 @@
       <tbody>
       <tr>
         <td>ID:</td>
-        <td><input type="text" id="u_id" name="u_id" value="${param.u_id}" class="input-field" placeholder="아이디"/></td>
+        <td><input type="text" id="u_id" name="u_id" value="${param.u_id}" class="input-field" placeholder="아이디" onkeydown="if(event.key=='Enter') sendForm(this.form)"/></td>
       </tr>
       <tr>
         <td>PW:</td>
-        <td><input type="password" id="u_pw" name="u_pw" value="${param.u_pw}" class="input-field" placeholder="비밀번호"/></td>
+        <td><input type="password" id="u_pw" name="u_pw" value="${param.u_pw}" class="input-field" placeholder="비밀번호"  onkeydown="if(event.key=='Enter') sendForm(this.form)"/></td>
       </tr>
       </tbody>
     </table>
@@ -390,6 +390,8 @@
       alert("모든 입력란에 입력을 완수해주세요.");
     }
   }
+
+
 
 </script>
 

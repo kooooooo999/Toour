@@ -38,6 +38,22 @@
         order by post_idx desc
     </select>
 
+    <!-- 마이 페이지용 본인 게시글 가져오기-->
+    <select id="mylist" resultMap="map1" parameterType="map">
+        select * from(
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
+        from(
+        select * from post
+        where post_status = 0
+        and member_idx = #{member_idx}
+        and category_idx=2
+        order by post_idx DESC
+        ) a
+        ) c inner join member m on c.member_idx=m.member_idx
+        where c.rnum Between #{begin} and #{end}
+        order by post_idx desc
+    </select>
+
     <!--게시글 작성 -->
     <insert id="add" parameterType="Map" useGeneratedKeys="true" keyProperty="post_idx">
         insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)

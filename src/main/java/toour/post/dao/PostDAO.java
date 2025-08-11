@@ -107,6 +107,25 @@ public class PostDAO {
         ss.close();
         return ar;
     }
+
+    public static PostVO[] getMyList(String member_idx, int begin, int end){
+        PostVO[] ar = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("member_idx", member_idx);
+        map.put("begin", begin);
+        map.put("end", end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.mylist", map);
+        if(list != null && list.size()>0){
+            ar = new PostVO[list.size()];
+            list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
+        }
+        ss.close();
+        return ar;
+    }
+
     // 저장 +++
     public static int add(String post_title, String post_content, String member_idx,
                           String category_idx, String post_views, String post_likes, String post_comments_count,
