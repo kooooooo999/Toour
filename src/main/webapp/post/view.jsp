@@ -168,7 +168,7 @@
       <tr class="post-content">
         <th>내용:</th>
         <td colspan="3">${vo.post_content}</td>
-      </tr>
+      </tr> 
   </table>
 
       <div class="post-buttons">
