@@ -56,14 +56,14 @@
       }
 
 
-      #comments {
+      #comment_form {
           margin-top: 50px;
           padding: 20px 40px;
           background-color: #fff;
           border-top: 1px solid #eee;
       }
 
-      #comments h3 {
+      #comment_form h3 {
           font-size: 18px;
           margin-bottom: 12px;
           font-weight: 600;
@@ -135,14 +135,24 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
+<c:set value="${sessionScope.user}" var="user"/>
 <c:set var="vo" value="${requestScope.vo}"/>
+<c:set var="member_info" value="${requestScope.member_info}"/>
 
+
+
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <div id="post">
-  <table class="post-table" >
+  <form method="post" >
+    <table summary="게시판 글쓰기" class="post-table">
+      <caption>게시판 글쓰기</caption>
       <tbody>
       <tr class="post-title">
         <th>제목:</th>
         <td>${vo.post_title}</td>
+      </tr>
+
+      <tr>
         <th>첨부파일:</th>
         <td>
           <c:if test="${not empty requestScope.fileList}">
@@ -158,49 +168,70 @@
           </c:if>
         </td>
       </tr>
-
+      <!--게시물-->
       <tr class="post-name">
-        <th>작성자:</th>
-        <td>${sessionScope.user.member_nickname}</td>
+        <th>이름:</th>
+        <td>${member_info.member_nickname}</td>
         <th>작성일</th>
         <td>${sessionScope.user.member_updated_at}</td>
-        </tr>
+      </tr>
       <tr class="post-content">
         <th>내용:</th>
         <td colspan="3">${vo.post_content}</td>
-      </tr> 
-  </table>
+      </tr>
 
-      <div class="post-buttons">
-          <input type="button" value="수정" onclick="goEdit()"/>
-          <input type="button" value="삭제" onclick="goDel()"/>
-          <input type="button" value="목록" onclick="goList()"/>
-      </div>
-
-
-<div id="comments">
-    <h3>댓글</h3>
-
-    <form method="post" action="Controller" enctype="multipart/form-data">
-        <div class="comment-container">
-    <textarea placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
-            <div class="comment-actions">
-      <div>
-        <label for="fileUp" class="btn-pho">
-          <span class="icon">📷</span> 사진
-        </label>
-        <input type="file" id="fileUp" name="fileUp" onchange="fileChange(this,true)" style="display:none;">
-
-        <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
-        <input type="hidden" name="cPage" value="${param.cPage}"/>
-        <input type="hidden" name="type" value="command"/>
-
-        <input type="submit" value="등록" class="btn-register"/>
-      </div>
-            </div>
-        </div>
+      </tbody>
+    </table>
   </form>
 
+      <div class="post-buttons">
+        <c:if test="${not empty sessionScope.user}">
+          <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
+            <input type="button" value="수정" onclick="goEdit()"/>
+            <input type="button" value="삭제" onclick="goDel()"/>
+          </c:if>
+        </c:if>
+        <input type="button" value="목록" onclick="goList()"/>
+      </div>
+
+  <!--댓글 작성-->
+  <div id="comment_form">
+    <h3>댓글</h3>
+    <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
+           onsubmit="return commentData()">
+      <div class="comment-container">
+        <textarea placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
+        <div class="comment-actions">
+          <div>
+            <label for="fileUp" class="btn-pho">
+              <span class="icon">📷</span> 사진
+            </label>
+
+      <label>이름:<span>${sessionScope.user.member_nickname}</span><br/></label>
+      <label>내용:<textarea rows="4" cols="55" name="comment_content" id="comment_content"></textarea><br/></label>
+
+
+            <input type="file" id="fileUp" name="fileUp" onchange="fileChange(this,true)" style="display:none;">
+
+            <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+      <input type="hidden" name="cPage" value="${param.cPage}"/>
+      <input type="hidden" name="type" value="comment"/>
+      <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+      <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
+      <c:if test="${not empty sessionScope.user}">
+        <input type="submit" value="댓글작성" class="btn-register"/>
+      </c:if>
+      <c:if test="${empty sessionScope.user}">
+        <h3>로그인이 필요합니다.</h3>
+        <p>
+          <a href="Controller?type=moveLogin">로그인</a>
+          또는
+          <a href="Controller?type=moveSignup">회원가입</a>을 해주세요.
+        </p>
+      </c:if>
+
+    </form>
+  </div>
 
   <form name="ff" method="get">
     <input type="hidden" name="type" />
@@ -218,26 +249,28 @@
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
   </div>
+
+  </br>
+  댓글들<hr/>
+  <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
+
+    <div>
+      별명 :${cvo.member_nickname} &nbsp;&nbsp;
+      최종수정:${cvo.comment_updated_at}<br/>
+      내용:${cvo.comment_content}
+    </div>
+    <hr/>
+
+  </c:forEach>
+
+
+
+
+
 </div>
 
-  <div id="comment_list">
-  <c:forEach var="cvo" items="${requestScope.vo.c_list}" varStatus="vs">
-    <div>
-      <div>
-        <strong>${cvo.getMember_idx()}</strong> ${cvo.getComment_updated_at()}
-        <div>
-      ${cvo.getComment_content()}
-        </div>
-    </div>
-      <div>
-  </c:forEach>
-  </div>
-
-
-<c:import url="/common/footer.jsp" />
-
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+
 <script>
   $(function (){
     let option = {
@@ -249,9 +282,19 @@
     $("#del_dialog").dialog(option);
   });
 
+  function commentData() {
+    let title = $("#comment_content").val();
+    if (title.trim().length < 1) {
+      alert("내용을 입력하세요");
+      $("#comment_content").val("");
+      $("#comment_content").focus();
+      return false;
+    }
+    return true;
+  }
   function goList() {
     document.ff.action = "Controller";
-    document.ff.type.value = "list"
+    document.ff.type.value = "list";
     document.ff.submit();
   }
   function goDel() {
@@ -271,7 +314,11 @@
     document.ff.submit();
   }
 </script>
+
 </body>
+
+<c:import url="/common/footer.jsp" />
+
 </html>
 
 

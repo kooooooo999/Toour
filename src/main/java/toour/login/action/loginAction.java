@@ -44,9 +44,9 @@ public class loginAction implements Action {
                         session.setAttribute("userIdx", mvo.getMember_idx());
                         session.setAttribute("userId", mvo.getMember_id());
                         session.setAttribute("userNickName", mvo.getMember_nickname());
-                        System.out.println(mvo.getMember_nickname());
+                        System.out.println("loginAction mvo.nickname="+mvo.getMember_nickname());
                         session.setMaxInactiveInterval(30*60);
-                        System.out.println(session.getAttribute("userNickName"));
+                        System.out.println("userNickName:"+session.getAttribute("userNickName"));
 
                         //cornsoup 수정
                         if(mvo.getMember_type().equals("0")){
