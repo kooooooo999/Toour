@@ -35,7 +35,7 @@
         .marginTop55 { margin-top: 55px; }
         #findButton { width: 260px; height: 30px; margin: auto; position: absolute; bottom: 20px; }
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
-        .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
+        .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; background}
         #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
     </style>
     <script type="text/javascript"
@@ -58,8 +58,8 @@
             <div class="search_container">
                 <h3>어디로 갈까?</h3>
                 <hr style="margin-top: 7px;" color="#eee" size="1px" width="100px"/>
-                <input type="text" class="searchKeyword" id="searchKeyword" placeholder="키워드나 주소를 입력하세요">
-                <button type="button" class="buttonRight detail_btn" onclick="realsearchplace()">검색</button>
+                <input type="text" class="searchKeyword" id="searchKeyword" placeholder="키워드나 주소를 입력하세요" onkeydown="if(event.key=='Enter') searchplace()">
+                <button type="button" class="buttonRight detail_btn" onclick="searchplace()">검색</button>
             </div>
 
             <div class="selected_places">
@@ -86,16 +86,8 @@
     </div>
 </div>
 
-<%--<div id="map" style="width:800px;height:600px;"></div>--%>
-
 <div id="test"></div>
 
-<%
-    // 예시 좌표: API 응답에서 가져온 값
-    String[] names = {"출발지", "경유지", "도착지"};
-    double[] lats = {37.394348634049784, 37.39639094915999, 37.401999820065534}; // 위도
-    double[] lngs = {127.11024293202674, 127.11341936045922, 127.10860518470294}; // 경도
-%>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script type="text/javascript">
     /*지도 표시 부분*/
@@ -128,16 +120,6 @@
     // 장소 검색 객체
     var ps = new kakao.maps.services.Places();
 
-    /*좌표 찍는 부분*/
-    <%--<% for (int i = 0; i < lats.length; i++) { %>
-    var marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(<%= lats[i] %>, <%= lngs[i] %>),
-        map: map
-        &lt;%&ndash;title: "<%= names[i] %>"&ndash;%&gt;
-    });
-
-    <% } %>--%>
-
     function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
         $.ajax({
             url: "Controller?type=findWay",
@@ -148,7 +130,7 @@
         });
     }
 
-    function realsearchplace() {
+    function searchplace() {
 
         let keyword = $("#searchKeyword").val().trim();
         removeMarker();
@@ -163,49 +145,6 @@
 
         $("#searchBox2").show();
 
-    }
-
-    function searchplace() {
-        let keyword = $("#searchKeyword").val().trim();
-
-        // 키워드로 장소 검색
-        ps.keywordSearch(keyword, placesSearchCB);
-
-        // 키워드 검색 완료 시 호출되는 함수
-        function placesSearchCB(data, status, pagination) {
-
-            if (status === kakao.maps.services.Status.OK) {
-
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표 추가
-                var bounds = new kakao.maps.LatLngBounds();
-
-                <c:forEach var="ar" items="${requestScope.resultAr}">
-                    displayMarker(data[i]);
-                    bounds.extend(new kakao.maps.LatLng(data[i].${ar.mapy}, data[i].${ar.mapx}));
-                </c:forEach>
-
-                // 검색된 장소 위치를 기준으로 지도 범위를 재설정
-                map.setBounds(bounds);
-            }
-        }
-
-        // 지도에 검색한 위치에 마커를 표시하는 함수
-        function displayMarker(place) {
-            // 마커를 생성하고 지도에 표시
-                marker = new kakao.maps.Marker({
-                map: map,
-                position: new kakao.maps.LatLng(place.y, place.x)
-            });
-            markers.push(marker);
-
-           /* // 마커에 클릭이벤트를 등록
-            kakao.maps.event.addListener(marker, 'click', function() {
-                // 마커를 클릭하면 장소명이 인포윈도우에 표출
-                infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
-                infowindow.open(map, marker);
-            });*/
-        }
-        $("#searchBox2").show();
     }
 
     // 검색 결과 창 숨기기

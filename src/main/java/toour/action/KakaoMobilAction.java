@@ -132,6 +132,6 @@ public class KakaoMobilAction implements Action{
             throw new RuntimeException(e);
         }
 
-        return "json.jsp";
+        return "kakaojson.jsp";
     }
 }
