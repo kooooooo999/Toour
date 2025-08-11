@@ -1,6 +1,7 @@
 package toour.post.dao;
 
 import mybatis.service.FactoryService;
+import toour.member.vo.MemberVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
 
@@ -18,7 +19,7 @@ public class PostDAO {
         return cnt;
     }
 
-
+    //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
         Map<String,Object> map = new HashMap<String,Object>();
@@ -227,4 +228,26 @@ public class PostDAO {
         return postIdx;
 
     }
+    //게시물 멤버idx가져오기
+    public static MemberVO getPostMemberIdx(String post_idx){
+        System.out.println("here is getPostMemberIdx");
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO postMemberIdx = ss.selectOne("post.getPostMember",post_idx);
+        ss.close();
+        return postMemberIdx;
+    }
+
+
+
+    //댓글 쓰기
+    public static int insertComment(String post_idx,String member_idx,String comment_content){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.insertComment",post_idx);
+        if(cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+        return cnt;
+    }
 }
+

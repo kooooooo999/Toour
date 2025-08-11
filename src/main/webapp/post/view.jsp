@@ -56,7 +56,7 @@
 <body>
 <c:import url="/common/header.jsp" />
 <c:set var="vo" value="${requestScope.vo}"/>
-
+<c:set var="member_info" value="${requestScope.member_info}"/>
 <div id="post">
   <form method="post" >
     <table summary="게시판 글쓰기">
@@ -86,16 +86,19 @@
 
       <tr>
         <th>이름:</th>
-        <td>${sessionScope.user.member_nickname}</td>
+        <td>${member_info.member_nickname}</td>
       </tr>
       <tr>
         <th>내용:</th>
         <td>${vo.post_content}</td>
       </tr>
-
       <tr>
         <td colspan="2">
+          <c:if test="${not empty sessionScope.user}">
+            <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
           <input type="button" value="수정" onclick="goEdit()"/>
+            </c:if>
+          </c:if>
           <input type="button" value="삭제" onclick="goDel()"/>
           <input type="button" value="목록" onclick="goList()"/>
         </td>
@@ -103,17 +106,32 @@
       </tbody>
     </table>
   </form>
-  <form method="post" action="Controller">
-    이름:<input type="text" name="member_idx"/><br/>
-    내용:<textarea rows="4" cols="55" name="post_content"></textarea><br/>
-    비밀번호:<input type="password" name="pwd"/><br/>
 
+  <!--댓글 작성-->
+  <div id="comment_form">
+    <form  encType="multipart/form-data" action="Controller" method="post" name="comment_form">
 
-    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+    <label>이름:<input type="text" name="${sessionScope.userNickName}" readonly/><br/></label>
+    <label>내용:<textarea rows="4" cols="55" name="comment_content"></textarea><br/></label>
+
+    <input type="hidden" name="post_idx" value="${vo.post_idx()}">
     <input type="hidden" name="cPage" value="${param.cPage}"/>
-    <input type="hidden" name="type" value="command"/>
-    <input type="submit" value="저장하기"/>
-  </form>
+    <input type="hidden" name="type" value="comment"/>
+    <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+    <c:if test="${not empty sessionScope.user}">
+      <input type="button" value="댓글작성" onclick="CommentAdd(this.form)"/>
+    </c:if>
+    <c:if test="${empty sessionScope.user}">
+      <h3>로그인이 필요합니다.</h3>
+      <p>
+        <a href="Controller?type=login">로그인</a>
+        또는
+        <a href="Controller?type=signup">회원가입</a>을 해주세요.
+      </p>
+    </c:if>
+
+</form>
+  </div>
 
   <form name="ff" method="get">
     <input type="hidden" name="type" />
@@ -161,6 +179,11 @@
     $("#del_dialog").dialog(option);
   });
 
+  function CommentAdd() {
+    document.comment_form.action = "Controller"
+    document.comment_form.type.value = "comment"
+    document.comment_form.submit();
+  }
   function goList() {
     document.ff.action = "Controller";
     document.ff.type.value = "list"

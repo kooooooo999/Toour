@@ -51,6 +51,13 @@
         group by p.post_idx
     </select>
 
+    <!--게시글 보기(회원정보 불러오기)-->
+    <select id="getPostMember" parameterType="String" resultType="toour.member.vo.MemberVO">
+        select *
+        from post p inner join member m
+        where p.member_idx=m.member_idx and p.post_idx = #{post_idx}
+    </select>
+
     <!-- 게시글 삭제 -->
     <update id="del" parameterType="String">
         UPDATE post
@@ -105,4 +112,9 @@
         from post
         where post_idx=#{post_idx}
     </select>
+
+    <insert id="insertComment" parameterType="Map" useGeneratedKeys="true" keyProperty="post_idx">
+    insert into post( post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status)
+    values ( #{post_idx}, #{member_idx}, #{comment_content}, now(), now(), 0)
+    </insert>
 </mapper>
