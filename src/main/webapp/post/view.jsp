@@ -14,42 +14,122 @@
   <link rel="stylesheet" href="<c:url value="/css/post.css" />">
 
   <style type="text/css">
-    #post table {
-      width:580px;
-      margin-left:10px;
-      border:1px solid black;
-      border-collapse:collapse;
-      font-size:14px;
-    }
 
-    #post table caption {
-      font-size:20px;
-      font-weight:bold;
-      margin-bottom:10px;
-    }
+      #post {
+          max-width: 1200px;
+          margin: 0 auto;
+          background-color: #fff;
+          border: 1px solid #dee2e6;
+          border-radius: 8px !important;
+          box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      }
 
-    #post table th {
-      text-align:center;
-      border:1px solid black;
-      padding:4px 10px;
-    }
+      /* 게시글 테이블 */
+      .post-table {
+          width: 100%;
+          border-collapse: collapse;
+          border: 1px solid #ddd;
+      }
 
-    #post table td {
-      text-align:left;
-      border:1px solid black;
-      padding:4px 10px;
-    }
+      .post-table th,
+      .post-table td {
+          padding: 12px 15px;
+          border: 1px solid #ddd;
+          vertical-align: top;
+          font-size: 14px;
+      }
 
-    .no {width:15%}
-    .subject {width:30%}
-    .writer {width:20%}
-    .reg {width:20%}
-    .hit {width:15%}
-    .title{background:lightsteelblue}
+      .post-table th {
+          background-color: #f5f5f5;
+          text-align: left;
+          width: 120px;
+      }
 
-    .odd {background:silver}
+      /* 본문 내용 */
+      .post-content {
+          padding: 20px;
+          line-height: 1.6;
+          background: #fafafa;
+          font-size: 15px;
+          height: 150px;
+          vertical-align: middle;
+      }
 
-    .hide{ display: none; }
+
+      #comments {
+          margin-top: 50px;
+          padding: 20px 40px;
+          background-color: #fff;
+          border-top: 1px solid #eee;
+      }
+
+      #comments h3 {
+          font-size: 18px;
+          margin-bottom: 12px;
+          font-weight: 600;
+          color: #333;
+      }
+
+      .comment-container {
+          width: 100%;
+      }
+
+      .comment-container textarea {
+          width: 100%;
+          height: 120px;
+          padding: 16px;
+          font-size: 14px;
+          border: 1px solid #ccc;
+          border-radius: 8px;
+          resize: none;
+          box-sizing: border-box;
+          line-height: 1.5;
+          margin-bottom: 12px;
+          color: #333;
+          background-color: #fafafa;
+      }
+
+      .comment-actions {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+          gap: 10px;
+      }
+
+      .post-buttons {
+          text-align: right;
+          margin-top: 20px;
+          margin-right: 20px;
+      }
+
+
+
+      .btn-pho {
+          display: inline-block;
+          padding: 7px 16px;
+          border: 1px solid #ccc;
+          background-color: #fff;
+          color: #333;
+          font-size: 14px;
+          border-radius: 6px;
+          cursor: pointer;
+      }
+
+      .btn-register {
+          padding: 8px 20px;
+          background-color: #222;
+          color: white;
+          border: none;
+          border-radius: 6px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: background-color 0.2s;
+      }
+
+      .btn-register:hover {
+          background-color: #444;
+      }
+
   </style>
 
 </head>
@@ -58,16 +138,11 @@
 <c:set var="vo" value="${requestScope.vo}"/>
 
 <div id="post">
-  <form method="post" >
-    <table summary="게시판 글쓰기">
-      <caption>게시판 글쓰기</caption>
+  <table class="post-table" >
       <tbody>
-      <tr>
+      <tr class="post-title">
         <th>제목:</th>
         <td>${vo.post_title}</td>
-      </tr>
-
-      <tr>
         <th>첨부파일:</th>
         <td>
           <c:if test="${not empty requestScope.fileList}">
@@ -84,36 +159,48 @@
         </td>
       </tr>
 
-      <tr>
-        <th>이름:</th>
+      <tr class="post-name">
+        <th>작성자:</th>
         <td>${sessionScope.user.member_nickname}</td>
-      </tr>
-      <tr>
+        <th>작성일</th>
+        <td>${sessionScope.user.member_updated_at}</td>
+        </tr>
+      <tr class="post-content">
         <th>내용:</th>
-        <td>${vo.post_content}</td>
+        <td colspan="3">${vo.post_content}</td>
       </tr>
+  </table>
 
-      <tr>
-        <td colspan="2">
+      <div class="post-buttons">
           <input type="button" value="수정" onclick="goEdit()"/>
           <input type="button" value="삭제" onclick="goDel()"/>
           <input type="button" value="목록" onclick="goList()"/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
-  <form method="post" action="Controller">
-    이름:<input type="text" name="member_idx"/><br/>
-    내용:<textarea rows="4" cols="55" name="post_content"></textarea><br/>
-    비밀번호:<input type="password" name="pwd"/><br/>
+      </div>
 
 
-    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
-    <input type="hidden" name="cPage" value="${param.cPage}"/>
-    <input type="hidden" name="type" value="command"/>
-    <input type="submit" value="저장하기"/>
+<div id="comments">
+    <h3>댓글</h3>
+
+    <form method="post" action="Controller" enctype="multipart/form-data">
+        <div class="comment-container">
+    <textarea placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
+            <div class="comment-actions">
+      <div>
+        <label for="fileUp" class="btn-pho">
+          <span class="icon">📷</span> 사진
+        </label>
+        <input type="file" id="fileUp" name="fileUp" onchange="fileChange(this,true)" style="display:none;">
+
+        <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+        <input type="hidden" name="cPage" value="${param.cPage}"/>
+        <input type="hidden" name="type" value="command"/>
+
+        <input type="submit" value="등록" class="btn-register"/>
+      </div>
+            </div>
+        </div>
   </form>
+
 
   <form name="ff" method="get">
     <input type="hidden" name="type" />
@@ -131,21 +218,22 @@
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
   </div>
+</div>
 
-</br>
-  댓글들<hr/>
+  <div id="comment_list">
   <c:forEach var="cvo" items="${requestScope.vo.c_list}" varStatus="vs">
     <div>
-      이름:${cvo.getMember_idx()} &nbsp;&nbsp;
-      최종수정:${cvo.getComment_updated_at()}<br/>
-      내용:${cvo.getComment_content()}
+      <div>
+        <strong>${cvo.getMember_idx()}</strong> ${cvo.getComment_updated_at()}
+        <div>
+      ${cvo.getComment_content()}
+        </div>
     </div>
-    <hr/>
+      <div>
   </c:forEach>
+  </div>
 
 
-
-</div>
 <c:import url="/common/footer.jsp" />
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>

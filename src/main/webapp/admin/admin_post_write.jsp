@@ -18,29 +18,28 @@
     }
 
     .sidebar {
-      width: 200px; /* 조금 줄임 */
+      width: 220px;
       background-color: #2c3e50;
       display: flex;
       flex-direction: column;
       padding: 20px;
       color: white;
       height: 100vh;
-      font-size: 14px;
     }
 
     .sidebar a {
       text-decoration: none;
       color: white;
-      padding: 10px 12px;
-      border-radius: 5px;
-      margin-bottom: 10px;
+      padding: 12px 10px;
+      border-bottom: 1px solid #34495e;
       transition: background-color 0.3s;
-      display: block;
     }
 
     .sidebar a:hover {
       background-color: #34495e;
     }
+
+
 
     .main-content {
       flex: 1;
@@ -50,19 +49,20 @@
       border-radius: 6px;
       margin: 20px;
       font-size: 14px;
+      max-width: 900px;
     }
 
     h1 {
       margin-bottom: 25px;
-      color: #2563eb;
-      font-weight: 600;
-      font-size: 22px;
+      color: #000000;
+      font-weight: 700;
+      font-size: 32px;
     }
+
 
     table {
       width: 100%;
       border-collapse: separate;
-      border-spacing: 0 10px; /* 행 사이 여백 */
       background: none;
     }
 
@@ -151,15 +151,15 @@
 </div>
 
 <div class="main-content">
-  <h1>관리자 페이지</h1>
-</div>
+  <h1>공지사항 관리 - 게시글 쓰기</h1>
+
 <div id="post">
   <form action="AdminController?type=adminpostwrite" method="post" enctype="multipart/form-data">
     <input type="hidden" name="category_idx" value="2"/>
     <input type="hidden" name="member_idx" value="1"/>
 
-    <table summary="공지사항 글쓰기">
-      <caption>공지사항 글쓰기</caption>
+    <table summary="게시글 글쓰기">
+<%--      <caption>게시글 글쓰기</caption>--%>
       <tbody>
       <tr>
         <th>제목:</th>
@@ -187,6 +187,7 @@
       </tbody>
     </table>
   </form>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"

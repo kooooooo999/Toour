@@ -1,6 +1,7 @@
 package toour.control;
 
 import toour.action.Action;
+import toour.member.vo.MemberVO;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -105,7 +106,7 @@ public class AdminController extends HttpServlet {
         String type = request.getParameter("type");
 
         //type이 전달되지 않아 null을 가지면 AdminMain으로 초기화 하자!
-        if(type == null)
+        if (type == null)
             type = "AdminMain";
 
         //type으로 받은 값이 actionMap의 key로 사용되고 있으므로
@@ -114,15 +115,29 @@ public class AdminController extends HttpServlet {
 
         String viewPath = action.execute(request, response);
 
+        Object obj = request.getSession().getAttribute("user");
+        if (obj != null){
+        MemberVO mvo = (MemberVO) obj;;
+        String membertype = mvo.getMember_type();
+        if (membertype.equals("1")) {
+            //로그인을 했을 때 회원이라면
+            viewPath = "MainIndex/index.jsp";
+        }
+        }else
+            viewPath = "MainIndex/index.jsp";
+
+
+
         //viewPath가 null이면 현재 컨트롤러를 sendRedirect로
         // 다시 호출되도록 한다.
-        if(viewPath == null)
+        if (viewPath == null)
             response.sendRedirect("AdminController");
-        else{
+
+        else {
             // forward로 이동~~~~~~~~~!
             RequestDispatcher disp =
                     request.getRequestDispatcher(viewPath);
-            disp.forward(request,response);
+            disp.forward(request, response);
         }
     }
 
