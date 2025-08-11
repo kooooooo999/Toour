@@ -1,41 +1,57 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 쌍용교육센터
-  Date: 25. 8. 8.
-  Time: 오전 11:57
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <c:if test="${requestScope.resultAr != null}">
-<h3>검색 결과</h3>
-<c:forEach items="${requestScope.resultAr}" var="vo">
-  <%-- 주소 있는 결과들만 검색창에 표현 --%>
-  <c:if test="${fn:length(vo.addr1) > 0 }">
-    <c:if test="${vo.mapy ne '19.6944274800'}">
-      <a href="">
-      <div id="places_list">
-        <div>
-          <p style="font-weight: bold;">${vo.title}</p>
-          <p style="display: block; font-weight: bold; font-size: 10px; color: #6c757d">${vo.addr1}</p>
+  <h3>검색 결과</h3>
+  <c:forEach items="${requestScope.resultAr}" var="vo" varStatus="vs">
+    <%-- 주소 있는 결과들만 검색창에 표현 --%>
+    <c:if test="${fn:length(vo.addr1) > 0 }">
+      <c:if test="${vo.mapy ne '19.6944274800'}">
+        <a href="">
+        <div id="places_list">
+          <div>
+            <p class="ellip">${vo.title}</p>
+            <p class="ellip" style="display: block; font-weight: bold; font-size: 10px; color: #6c757d">${vo.addr1}</p>
+          </div>
         </div>
-      </div>
-        <hr style="margin-top: 10px;" color="#eee" size="1px" width="100%"/>
-      </a>
+          <c:if test="${fn:length(requestScope.resultAr) != (vs.index+1)}">
+            <hr style="margin-top: 13px;" color="#eee" size="1px" width="100%"/>
+          </c:if>
+        </a>
+      </c:if>
     </c:if>
-  </c:if>
-</c:forEach>
+  </c:forEach>
 
+  <%--  페이징 넣는 코드 --%>
+  <div id="page" class="paging-area">
+    <ol class="paging">
+      <c:set var="p" value="${requestScope.mapPage}" />
+      <c:if test="${p.startPage < p.pagePerBlock}">
+        <li class="disable">&lt;</li>
+      </c:if>
+      <c:if test="${p.startPage >= p.pagePerBlock}">
+        <li><a href="javascript:paging(${p.startPage-p.pagePerBlock})">&lt;</a></li>
+      </c:if>
+      <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+        <c:if test="${p.nowPage == vs.index}">
+          <li class="now">${vs.index}</li>
+        </c:if>
+        <c:if test="${p.nowPage != vs.index}">
+          <li><a href="javascript:paging(${vs.index})">${vs.index}</a></li>
+        </c:if>
+      </c:forEach>
+      <c:if test="${p.endPage < p.totalPage}">
+        <li><a href="javascript:paging(${p.endPage+1})">&gt;</a></li>
+      </c:if>
+      <c:if test="${p.endPage >= p.totalPage}">
+        <li class="disable">&gt;</li>
+      </c:if>
+    </ol>
+  </div>
 
   <script>
-
-
-
     // 좌표값 저장할 배열
     var points = [];
-
-
 
     // 지도를 재설정할 범위정보를 가지고 있을 LatLngBounds 객체를 생성
     var bounds = new kakao.maps.LatLngBounds();
@@ -64,7 +80,5 @@
     }
     // 지도 범위 재설정
     map.setBounds(bounds);
-</c:if>
-
-
   </script>
+</c:if>

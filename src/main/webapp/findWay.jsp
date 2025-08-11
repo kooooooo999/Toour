@@ -13,9 +13,9 @@
         .search_container { margin-bottom: 40px; position: relative;}
         .searchKeyword { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         #destinationKeyword { width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
-        .search_results { margin-top: 5px; }
+        .search_results { margin-top: 5px; overflow: hidden; text-overflow: ellipsis; }
         .selected_places { margin-top: 50px; display: inline-block}
-        .search_results h3, .selected_places h3 { margin-top: 0; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .search_results h3, .selected_places h3 { margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .list_item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .list_item:last-child { border-bottom: none; }
         .list_item button { padding: 5px 10px; border: none; background-color: #f7e600; cursor: pointer; border-radius: 4px; }
@@ -35,8 +35,11 @@
         .marginTop55 { margin-top: 55px; }
         #findButton { width: 260px; height: 30px; margin: auto; position: absolute; bottom: 20px; }
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
-        .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; background}
-        #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
+        .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
+        #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; }
+        #page { position: absolute; bottom: 20px; left: 88px; }
+        .ellip{ font-weight: bold; display: inline-block; width: 97%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -76,7 +79,6 @@
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
             <div id="search_results" class="search_results">
-
             </div>
         </div>
 
@@ -130,6 +132,7 @@
         });
     }
 
+    // 검색어로 장소 찾기
     function searchplace() {
 
         let keyword = $("#searchKeyword").val().trim();
@@ -144,7 +147,20 @@
         });
 
         $("#searchBox2").show();
+    }
 
+    // 페이지 누르면 해당 페이지로 변경되는 코드
+    function paging(cPage) {
+        <c:set var="p" value="${requestScope.mapPage}" />
+        let keyword = $("#searchKeyword").val().trim();
+
+        $.ajax({
+            url: "Controller?type=searchResult",
+            method: "post",
+            data: {keyword: keyword, cPage: cPage}
+        }).done(function (res) {
+            $("#search_results").html(res);
+        });
     }
 
     // 검색 결과 창 숨기기
