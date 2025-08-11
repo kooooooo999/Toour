@@ -22,6 +22,12 @@
         where post_status = 0 and category_idx = #{category_idx}
     </select>
 
+    <!-- My Page 총 게시물 수를 반환하는 기능 -->
+    <select id="myTotalCount" resultType="int" parameterType="String">
+        select count(*) from post
+        where post_status = 0 and category_idx = 2 and member_idx=#{member_idx}
+    </select>
+
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
 
     <select id="list" resultMap="map1" parameterType="map">

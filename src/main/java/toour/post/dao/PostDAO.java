@@ -18,6 +18,14 @@ public class PostDAO {
         return cnt;
     }
 
+    // 내가 쓴 총 게시물의 수를 반환
+    public static int getMyTotalCount(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.myTotalCount",member_idx);
+        ss.close();
+        return cnt;
+    }
+
 
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;

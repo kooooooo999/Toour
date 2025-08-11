@@ -10,6 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 public class myPostAction implements Action {
+    //페이징을 사용하려고 새로 생성
+    int numPerPage = 5;
+    int pagePerBlock = 5;
+
+    Paging p = new Paging(numPerPage, pagePerBlock);
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         //회원 정보 가져오기
@@ -20,11 +25,7 @@ public class myPostAction implements Action {
             mvo = (MemberVO) obj;
         }
 
-        //페이징을 사용하려고 새로 생성
-        int numPerPage = 5;
-        int pagePerBlock = 5;
 
-        Paging p = new Paging(numPerPage, pagePerBlock);
         String nPage = request.getParameter("nPage");
         String totalCount = request.getParameter("totalCount");
         //혹시라도 현재 페이지가 넘어오지 않았을 경우 1로 초기화
@@ -45,7 +46,6 @@ public class myPostAction implements Action {
 
         PostVO[] myPost = PostDAO.getMyList(member_idx,begin,end);
         request.setAttribute("myPost_ar",myPost);
-
 
         return "member/myPost.jsp";
     }

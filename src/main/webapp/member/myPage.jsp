@@ -186,12 +186,14 @@
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script>
     function movePage(nPage) {
+
         $.ajax({
             url:"Controller?type=mypost",
             type:"POST",
             data:{nPage:nPage , totalCount:${requestScope.page.totalCount}}
         }).done(function (res) {
-            $("#mypost").html(res)
+            console.log(${requestScope.page.totalCount})
+            $("#mypost").html(res);
         })
     }
 </script>

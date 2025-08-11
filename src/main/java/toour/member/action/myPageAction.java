@@ -60,8 +60,8 @@ public class myPageAction implements Action {
             //내 게시글 설정
             // 처음 마이 페이지로 가므로 1~6으로
             Paging page = new Paging(5, 5);
-            PostVO[] myPost = PostDAO.getMyList(mvo.getMember_idx(),1,6);
-            page.setTotalCount(myPost.length);
+            PostVO[] myPost = PostDAO.getMyList(mvo.getMember_idx(),1,5);
+            page.setTotalCount(PostDAO.getMyTotalCount(mvo.getMember_idx()));
             page.setNowPage(1);
 
             //request에 page 값 저장
