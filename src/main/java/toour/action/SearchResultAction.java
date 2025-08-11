@@ -1,13 +1,11 @@
-package toour.search.action;
+package toour.action;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
-import toour.action.Action;
 import toour.search.util.GetAPISearchData;
-import toour.search.vo.SearchResponseVO;
 import toour.search.vo.SearchDataVO;
-import toour.tripsuggestion.vo.DataVO;
+import toour.search.vo.SearchResponseVO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +17,7 @@ import java.net.URLEncoder;
 import java.util.List;
 import java.util.Objects;
 
-public class SearchSuggestionAction implements Action {
-
+public class SearchResultAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String viewPath = null;
@@ -56,9 +53,7 @@ public class SearchSuggestionAction implements Action {
         if (keyword != null && !keyword.trim().isEmpty()){
             SearchDataVO[] data = GetAPISearchData.getSearch(request,keyword);
             request.setAttribute("data", data);
-            viewPath = "APISearchData.jsp";
-        }else{
-            viewPath = "APISearchData_update.jsp";
+            viewPath = "searchReturn.jsp";
         }
 
         //공공데이터 openAPI 호출하는 경로
@@ -90,11 +85,8 @@ public class SearchSuggestionAction implements Action {
             //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
             StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
             sb.append(key);
-            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=" );
-            System.out.println(cPage);
-            sb.append(Integer.parseInt(cPage));
-            sb.append("&numOfRows=");
-            sb.append("10");
+            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=");
+            sb.append("7");
             sb.append("&keyword=");
             sb.append(encodedKeyword);
             if (cat1 != null && !cat1.equals("0")) {//0이 전부를 뜻함
@@ -149,7 +141,8 @@ public class SearchSuggestionAction implements Action {
                     String createdtime = item.getChildText("createdtime");
                     String firstimage = item.getChildText("firstimage");
                     System.out.println(firstimage);
-
+                    if (Objects.equals(firstimage, ""))
+                        firstimage = "./css/images/noImages.png";
                     String firstimage2 = item.getChildText("firstimage2");
                     String cpyrhtDivCd = item.getChildText("cpyrhtDivCd");
                     String mapx = item.getChildText("mapx");
@@ -167,43 +160,26 @@ public class SearchSuggestionAction implements Action {
 
 //https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=인증키
 // &MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&contentId=126128&_type=json
-                    StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10");
-                    sb2.append("&_type=xml&contentId=");
-                    sb2.append(contentid);
-                    System.out.println("sb2:"+sb2);
-                    // 상세정보용 API 호출도 수행 (중첩 API)
-                    URL url2 = new URL(sb2.toString());
-                    HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
-                    conn2.setRequestProperty("Content-Type", "application/xml");
-                    conn2.connect();
-                    SAXBuilder builder2 = new SAXBuilder();
-                    Document doc2 = builder2.build(conn2.getInputStream());
-                    Element root2 = doc2.getRootElement();
-                    Element body2 = root2.getChild("body");
-                    Element items2 = body2.getChild("items");
-                    List<Element> item_list2 = items2.getChildren("item");
-                    String overview = null;
-                    for (Element item2 : item_list2) {
-                        overview = item2.getChildText("overview");
-                    }
+
                     //결과 객체 생성
-                    SearchResponseVO srvo = new SearchResponseVO(title,addr1,overview,firstimage);
+                    SearchResponseVO srvo = new SearchResponseVO();
+                    srvo.setAddr1(addr1);
+                    srvo.setFirstimage(firstimage);
+                    srvo.setTitle(title);
+                    srvo.setMapx(mapx);
+                    srvo.setMapy(mapy);
 
                     page.setTotalCount(Integer.parseInt(totalCountStr));
                     page.setNowPage(Integer.parseInt(cPage));
-                    int totalCount2 = page.getTotalCount();
-                    int nowPage2 = page.getNowPage();
+
 
                     ar[i++] = srvo;
 
                 }
                 // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
-                request.setAttribute("searchAr", ar);
+                request.setAttribute("resultAr", ar);
                 request.setAttribute("page", page);
-                request.setAttribute("totalCount", totalCountStr);
-                request.setAttribute("cPage", cPage);
-                request.setAttribute("keyword",keyword);
-                request.setAttribute("encodeKeyword",encodedKeyword);
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -213,4 +189,3 @@ public class SearchSuggestionAction implements Action {
     }
 
 }
-

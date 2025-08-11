@@ -7,8 +7,6 @@
 
 <html>
 <head>
-
-  <title>길찾기 경로 시각화</title>
   <script type="text/javascript"
           src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
   <meta charset="UTF-8">
@@ -44,13 +42,17 @@
 
 
         <p class="overviewDetails">${Dvo.overview}</p>
+
 </div>
 
 <%--지도영역--%>
+<div style="display: flex; justify-content: center; width: 100%; margin-left: -200px; padding-bottom: 40px">
 <div id="mapDetails">
-  <div id="map" style="width:100%;height:600px;"></div>
+  <div id="map" style="width: 850px; height: 300px;"></div>
+</div>
 </div>
 
+<%--주차 가능여부 등 API 새로 가져오기--%>
 
 <footer>
   <div class="footer-news-ticker">
@@ -114,13 +116,13 @@
 
     var mapContainer = document.getElementById('map');
     var mapOption = {
-      center: new kakao.maps.LatLng(${Dvo.mapx}, ${Dvo.mapy}),
+      center: new kakao.maps.LatLng(${Dvo.mapy}, ${Dvo.mapx}),
       level: 5
     };
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
     var marker = new kakao.maps.Marker({
-      position: new kakao.maps.LatLng(${Dvo.mapx}, ${Dvo.mapy}),
+      position: new kakao.maps.LatLng(${Dvo.mapy}, ${Dvo.mapx}),
       map: map,
     });
 

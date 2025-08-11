@@ -45,7 +45,7 @@ public class AdminNoticeWriteAction implements Action {
                 String post_title = mr.getParameter("post_title");
                 //박준형 시작
 //                String member_idx= mr.getParameter("member_idx");
-                String member_idx= "3";
+                String member_idx= mr.getParameter("member_idx");
                 //박준형 끝
 
                 String post_content = mr.getParameter("post_content");

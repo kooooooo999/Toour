@@ -23,7 +23,7 @@ public class ListAction implements Action {
 
         String cPage = request.getParameter("cPage");
 
-        if (cPage == null) {
+        if (cPage == null||cPage.equals("")) {
             page.setNowPage(1);
         }
         else{

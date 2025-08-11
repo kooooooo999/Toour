@@ -62,47 +62,58 @@
 <body>
 <c:import url="/common/header.jsp" />
 
-<div id="post">
-  <form action="Controller?type=write" method="post"
-        encType="multipart/form-data">
-    <input type="hidden" name="category_idx" value="2"/>
-    <table summary="게시판 글쓰기">
-      <caption>게시판 글쓰기</caption>
-      <tbody>
-      <tr>
-        <th>제목:</th>
-        <td><input type="text" name="post_title" id="post_title" size="45"/></td>
-      </tr>
-      <tr>
-        <th>이름:</th>
-        <td><input type="text" name="member_idx" id="member_idx" size="12"/></td>
-      </tr>
-      <tr>
-        <th>내용:</th>
-        <td><textarea name="post_content" cols="50"
-               id="post_content" rows="8"></textarea></td>
-      </tr>
-      <tr>
-        <th>첨부파일:</th>
-        <td><input type="file" id="file" name="file"/></td>
-      </tr>
-      <!--
-                      <tr>
-                          <th>비밀번호:</th>
-                          <td><input type="password" name="pwd" size="12"/></td>
-                      </tr>
-      -->
-      <tr>
-        <td colspan="2">
-          <input type="button" value="등록" onclick="sendData()"/>
-          <input type="reset" value="다시" onclick="resetForm()"/>
-          <input type="button" value="목록" onclick="location.href='Controller?type=list'"/>
-        </td>
-      </tr>
-      </tbody>
-    </table>
-  </form>
-</div>
+
+<%-- 로그인하지 않았을 때 보여줄 내용 --%>
+<c:if test="${empty sessionScope.user}">
+  <h3>로그인이 필요합니다.</h3>
+  <p>
+    <a href="Controller?type=login">로그인</a>
+    또는
+    <a href="Controller?type=signup">회원가입</a>을 해주세요.
+  </p>
+</c:if>
+
+
+<c:if test="${not empty sessionScope.user}">
+
+  <div id="post">
+    <form action="Controller?type=write" method="post"
+          encType="multipart/form-data" onsubmit="return sendData()">
+      <input type="hidden" name="category_idx" value="2"/>
+      <table summary="게시판 글쓰기">
+        <caption>게시판 글쓰기</caption>
+        <tbody>
+        <tr>
+          <th>제목:</th>
+          <td><input type="text" name="post_title" id="post_title" size="45"/></td>
+        </tr>
+        <tr>
+          <th>이름:</th>
+          <td>${sessionScope.userNickName}</td>
+        </tr>
+        <tr>
+          <th>내용:</th>
+          <td><textarea name="post_content" cols="50"
+                        id="post_content" rows="8"></textarea></td>
+        </tr>
+        <tr>
+          <th>첨부파일:</th>
+          <td><input type="file" id="file" name="file"/></td>
+        </tr>
+
+        <tr>
+          <td colspan="2">
+            <input type="submit" value="등록" />
+            <input type="reset" value="다시" onclick="resetForm()"/>
+            <input type="button" value="목록" onclick="location.href='Controller?type=list'"/>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </form>
+  </div>
+</c:if>
+
 
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
@@ -119,7 +130,7 @@
           // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
           for(let i=0; i<files.length; i++)
             sendImg(files[i], editor);
-          console.log(files.length);
+          //console.log(files.length);
         }
       }
     });
@@ -160,15 +171,7 @@
       alert("제목을 입력하세요");
       $("#post_title").val("");
       $("#post_title").focus();
-      return;
-    }
-
-    let writer = $("#member_idx").val();
-    if(writer.trim().length < 1){
-      alert("글쓴이를 입력하세요");
-      $("#member_idx").val("");
-      $("#member_idx").focus();
-      return;
+      return false;
     }
 
     let content= $("#post_content").val();
@@ -176,10 +179,11 @@
       alert("내용을 입력하세요");
       $("#post_content").val("");
       $("#post_content").focus();
-      return;
+      return false;
     }
+  //유효성 검사 통과시 폼제출!
+    return true;
 
-    document.forms[0].submit();
   }
 </script>
 <c:import url="/common/footer.jsp" />

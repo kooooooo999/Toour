@@ -4,6 +4,7 @@ import mybatis.service.FactoryService;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -74,7 +75,18 @@ public class PostDAO {
     }
 
 
-
+    //조회수 증가
+    public static int hit(String post_idx){
+        int cnt = 0;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        cnt = ss.update("post.hit", post_idx);
+        if(cnt>0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+        return cnt;
+    }
 
 
     // 목록 반환
@@ -99,30 +111,43 @@ public class PostDAO {
     public static int add(String post_title, String post_content, String member_idx,
                           String category_idx, String post_views, String post_likes, String post_comments_count,
                           String post_status, String post_created_at, String post_star){
-        int cnt = 0;
 
-        Map<String, String> map = new HashMap<>();
+        SqlSession ss = FactoryService.getFactory().openSession();
+
+        Map<String, Object> map = new HashMap<>();
         map.put("post_title", post_title);
         map.put("post_content", post_content);
         map.put("member_idx", member_idx);
         map.put("category_idx", category_idx);
-        map.put("post_views", post_views);
-        map.put("post_likes", post_likes);
-        map.put("post_comments_count", post_comments_count);
-        map.put("post_status", post_status);
-        map.put("post_created_at", post_created_at)   ;
-        map.put("post_star", post_star);
 
+        map.put("post_views", "0");
+        map.put("post_likes", "0");
+        map.put("post_comments_count", "0");
+        map.put("post_status", "0");
+        map.put("post_star", "0");
 
-        SqlSession ss = FactoryService.getFactory().openSession();
-        cnt = ss.insert("post.add", map);
-        if(cnt > 0)
+        int cnt = ss.insert("post.add", map);
+        // MyBatis가 반환한 객체가 BigInteger 타입일 경우
+        Object generatedKey = map.get("post_idx");
+
+        int generatedPostIdx = 0;
+        if (generatedKey instanceof BigInteger) {
+            generatedPostIdx = ((BigInteger) generatedKey).intValue();
+        } else if (generatedKey instanceof Integer) {
+            generatedPostIdx = (Integer) generatedKey;
+        } else if (generatedKey instanceof Long) {
+            generatedPostIdx = ((Long) generatedKey).intValue();
+        }
+
+        if(cnt > 0) {
             ss.commit();
-        else
+        }
+        else {
             ss.rollback();
+        }
         ss.close();
 
-        return cnt;
+        return generatedPostIdx;
     }
 
 
@@ -134,13 +159,13 @@ public class PostDAO {
         map.put("post_idx", post_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
-        /*
+
         if(file_name_stored != null){
             map.put("file_name_stored", file_name_stored);
             map.put("file_name_original", file_name_original);
         }
-        map.put("ip",ip);
-*/
+
+
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("post.edit", map);
         if(cnt > 0)
@@ -150,7 +175,39 @@ public class PostDAO {
 
         return cnt;
     }
+    public static int fileedit(String post_idx,String file_name_original,String file_name_stored,String file_size,String file_type ) {
+        int filecnt = 0;
+        if (file_name_stored != null && file_name_original != null) {
+            Map<String, String> filemap = new HashMap<>();
 
+            filemap.put("post_idx", post_idx);
+            filemap.put("file_name_stored", file_name_stored);
+            filemap.put("file_name_original", file_name_original);
+            filemap.put("file_size", file_size);
+            filemap.put("file_type", file_type);
+
+            SqlSession ss = FactoryService.getFactory().openSession();
+            int filenum = ss.selectOne("file.file_num", post_idx);
+
+            if(filenum > 0){
+                //파일이 있음 - update 해줌
+                filecnt = ss.update("file.edit_file", filemap);
+            }
+            else {
+                //파일이 없음 - insert 해줌
+                filecnt = ss.insert("file.add_file", filemap);
+            }
+
+
+            if (filecnt > 0)
+                ss.commit();
+            else
+                ss.rollback();
+            ss.close();
+
+        }
+        return filecnt;
+    }
     // 조회수 증가
     public static int post_views(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -162,5 +219,12 @@ public class PostDAO {
         return cnt;
     }
 
+    //게시물 식별자 가져오기
+    public static String getPostIdx(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        String postIdx = ss.selectOne("post.getPostIdx",post_idx);
+        ss.close();
+        return postIdx;
 
+    }
 }

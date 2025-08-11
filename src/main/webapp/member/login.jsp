@@ -1,4 +1,6 @@
-<%--
+<%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.security.SecureRandom" %>
+<%@ page import="java.math.BigInteger" %><%--
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -186,25 +188,103 @@
       <button type="button" class="login-button" onclick="sendForm(this.form)">로그인</button>
     </div>
   </form>
-  <a id="kakao-login-btn" href="javascript:loginWithKakao()">
-    <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" alt="카카오 로그인 버튼" />
+  <a id="kakao_login_btn" href="javascript:loginWithKakao()">
+    <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" height="46.72" alt="카카오 로그인 버튼" />
   </a>
+  <!-- 네이버 로그인 버튼 -->
+  <%
+    String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
+    String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
+    SecureRandom random = new SecureRandom();
+    String state = new BigInteger(130, random).toString();
+    String apiURL = "https://nid.naver.com/oauth2.0/authorize?response_type=code"
+            + "&client_id=" + clientId
+            + "&redirect_uri=" + redirectURI
+            + "&state=" + state;
+    session.setAttribute("state", state);
+    System.out.println(apiURL);
+  %>
+  <a id="naver_id_login" href="<%=apiURL%>">
+    <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" width="190" height="46.72" alt="네이버 로그인 버튼" />
+  </a>
+
   <p id="token-result"></p>
-
-
 </div>
 
-<script>
+
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<div id="naver_id_login"></div>
+
+<%--여기 부분이 화면을 따로 띄우는 부분--%>
+<!-- 네이버 로그인 초기화 Script -->
+<script type="text/javascript">
+  var naver_id_login = new naver_id_login("WqKlg2ns39WEN3SEtV0G", "http://localhost:8080/member/callback.jsp");
+  var state = naver_id_login.getUniqState(); // 토큰 담을곳
+  naver_id_login.setButton("green", 3,40);
+  // naver_id_login.setDomain(""); // 서비스 UI
+  naver_id_login.setState(state); //
+  naver_id_login.setPopup();
+  naver_id_login.init_naver_id_login();
 </script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script><script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+
+
+<!-- 네이버 로그인 Callback페이지 처리 Script -->
+<script type="text/javascript">
+  // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function
+  function naverSignInCallback() {
+    // naver_id_login.getProfileData('프로필 항목명');
+    // 프로필 항목은 개발가이드를 참고하시기 바랍니다.
+    alert(naver_id_login.getProfileData('email'));
+    alert(naver_id_login.getProfileData('nickname'));
+    alert(naver_id_login.getProfileData('age'));
+  }
+
+  // 네이버 사용자 프로필 조회
+  naver_id_login.get_naver_userprofile("naverSignInCallback()");
+</script>
+
+
+
+<script>
+  // CSRF 방지용 state 토큰 생성 (JavaScript)
+  function generateState() {
+    return [...crypto.getRandomValues(new Uint32Array(4))]
+            .map(num => num.toString(36))
+            .join('');
+  }
+
+  function initNaverLogin() {
+    var naver_id_login = new naver_id_login(
+            "WqKlg2ns39WEN3SEtV0G", // 클라이언트 ID
+            "http://localhost:8080/member/callback.jsp" // redirect URI
+    );
+
+    var state = generateState(); // JS에서 생성
+    sessionStorage.setItem("naver_state", state); // 콜백에서 검증하려면 저장
+
+    naver_id_login.setButton("white", 3, 40);
+    naver_id_login.setState(state);
+    naver_id_login.setPopup();
+    naver_id_login.init_naver_id_login();
+  }
+
+  // 페이지 로드 시 실행
+  initNaverLogin();
+</script>
+
+
 <script>
   Kakao.init('e8b842dc97356296e338660ae4063b8a'); //발급받은 키 중 javascript키를 사용해준다.
   Kakao.isInitialized();
 
   console.log(Kakao.isInitialized()); // sdk초기화여부판단
 </script>
-<script>
 
+<script>
   // 아래는 데모를 위한 UI 코드입니다.
   displayToken()
   function displayToken() {
@@ -235,6 +315,7 @@
       redirectUri: 'http://localhost:8080/Controller?type=moveLogin',
     });
   }
+  https://nid.naver.com/oauth2.0/authorize?client_id={클라이언트 아이디}&response_type=code&redirect_uri={개발자 센터에 등록한 콜백 URL(URL 인코딩)}&state={상태 토큰}
 
   //카카오로그인
   function kakaoLogin() {

@@ -1,6 +1,7 @@
 package toour.control;
 
 import toour.action.Action;
+import toour.member.vo.MemberVO;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
@@ -120,6 +121,8 @@ public class Controller extends HttpServlet {
                     request.getRequestDispatcher(viewPath);
             disp.forward(request,response);
         }
+
+
     }
 
     @Override

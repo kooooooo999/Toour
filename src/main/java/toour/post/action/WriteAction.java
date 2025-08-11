@@ -1,6 +1,8 @@
 package toour.post.action;
 
 import toour.action.Action;
+import toour.member.vo.MemberVO;
+import toour.post.dao.FileDAO;
 import toour.post.dao.PostDAO;
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
@@ -8,7 +10,9 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 
 public class WriteAction implements Action {
     @Override
@@ -21,57 +25,94 @@ public class WriteAction implements Action {
         // get방식 null값을 받게된다.
         String enc_type = request.getContentType();
         //System.out.println(enc_type);
+        //세션에 저장된 사용자정보를 가져오기
+        HttpSession session = request.getSession();
+        if(session.getAttribute("user") == null){
+            //로그인 안된 상태면
+            System.out.println("session nothing");
+            return "Controller?type=login";
+        }
+        //1. 로그인 상태 확인!
+        MemberVO loginMember = (MemberVO)session.getAttribute("user");
 
-        if(enc_type == null)
-            viewPath = "write.jsp";
-        else if(enc_type.startsWith("multipart")){
+        System.out.println("loginMember:"+loginMember.getMember_idx());
+        if(loginMember == null){
+            System.out.println("loginMember nothing");
+            return "Controller?type=login";
+        }
+
+        //2. 요청타입에 따른 로직 분기
+        if(enc_type == null) {
+            //get방식
+            System.out.println("GET request: Showing write form.");
+            viewPath = "post/write.jsp";
+            //post 방식(form submit)
+        }else if(enc_type.startsWith("multipart")){
             // 여기는 write.jsp에서 내용을 입력한 후 [보내기] 버튼을
             // 클릭했을 때 수행하는 곳
             // 첨부파일을 받아서 bbs_upload라는 폴더에 저장해야 합니다.
             try{
+                System.out.println("enc_type exist");
                 ServletContext application = request.getServletContext();
                 String realPath = application.getRealPath("/bbs_upload");
 
+
                 //첨부파일과 다른 파라미터들을 받기위해 MultipartRequest생성
-                MultipartRequest mr = new MultipartRequest(request,realPath,
-                        1024*1024*5, "utf-8",
-                        new DefaultFileRenamePolicy());
+                MultipartRequest mr = null;
+                try {
+                    mr = new MultipartRequest(request,realPath,
+                            1024*1024*10, "utf-8",
+                            new DefaultFileRenamePolicy());
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
                 //이때 첨부파일이 있다면 realPath경로에 저장된 상태다.
 
-                //나머지 파라미터들 얻기(post_title, member_idx, post_content)
-                String post_title = mr.getParameter("post_title");
+                //세션으로부터 가져온 것
+                String member_idx = loginMember.getMember_idx();
+                String member_nickname = loginMember.getMember_nickname();
+
                 //박준형 시작
 //                String member_idx= mr.getParameter("member_idx");
-                String member_idx= "3";
                 //박준형 끝
+                //나머지 파라미터들 얻기(post_title, member_idx, post_content)
+                String post_title = mr.getParameter("post_title");
                 String post_content = mr.getParameter("post_content");
                 String category_idx = mr.getParameter("category_idx");
-                String post_likes = mr.getParameter("post_likes");
-                String post_comments_count = mr.getParameter("post_comments_count");
-                String post_status = mr.getParameter("post_status");
-                String post_created_at = mr.getParameter("post_created_at");
-                String post_star = mr.getParameter("post_star");
-                String post_views = mr.getParameter("post_views");
 
-                //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
-                File f = mr.getFile("file");
-                String file_name_stored = null;
-                String file_name_original = null;
-                if( f != null ){
-                    file_name_stored = f.getName();// 현재 저장된 파일명
-                    file_name_original = mr.getOriginalFileName("file");// 원래 파일명
-                }
-                String ip = request.getRemoteAddr();// 요청자의 IP
+                String post_views = "0";
+                String post_likes = "0";
+                String post_comments_count = "0";
+                String post_status = "0";
+                String post_created_at = null; // Let DB handle this with NOW()
+                String post_star = "0";
 
-                //DB에 저장 ++
-                PostDAO.add(post_title, post_content, member_idx,
+
+                int generatedPostIdx = PostDAO.add(post_title, post_content, member_idx,
                         category_idx, post_views, post_likes, post_comments_count,
                         post_status, post_created_at, post_star);
+                System.out.println(generatedPostIdx);
+                //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
+                File f = mr.getFile("file");
 
+                if( f != null && f.length() > 0 ){
+                    String file_name_stored = f.getName();
+                    String file_name_original = mr.getOriginalFileName("file");
+                    String file_size = String.valueOf(f.length());
+                    String file_type = mr.getContentType("file");
+                    String file_s3_url = "";
+                    FileDAO.fileadd(String.valueOf(generatedPostIdx), file_name_original, file_name_stored, file_s3_url, file_size, file_type);
+                }
+
+
+                //DB에 저장 ++
+                viewPath = "Controller?type=view&post_idx=" + generatedPostIdx;
+                System.out.println("write success");
             } catch (Exception e) {
+                System.out.println("writeAction error");
                 e.printStackTrace();
             }
         }
-        return "post/write.jsp";
+        return viewPath;
     }
 }

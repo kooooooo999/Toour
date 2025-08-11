@@ -13,10 +13,240 @@
   <title>👋🏻toour</title>
   <link rel="stylesheet" href="<c:url value="/css/header.css" />">
   <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/style.css" />">
 
 
   <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background-color: #f8f9fa;
+      padding: 20px;
+    }
+
+    /* 기존 코드를 위한 새로운 스타일 */
+    #searchwrap {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+      position: relative;
+    }
+
+    /* 각 카드를 감싸는 컨테이너 */
+    .card-container {
+      display: flex;
+      flex-direction: column;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      position: relative;
+    }
+
+    .card-container:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    }
+
+    /* 이미지 컨테이너 */
+    .image-container {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .searchImage {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .card-container:hover .searchImage {
+      transform: scale(1.05);
+    }
+
+    /* 하트 아이콘 */
+    #heartImage {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      z-index: 10;
+    }
+
+    .heartIcon {
+      background: rgba(255,255,255,0.9);
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .heartIcon:hover {
+      background: rgba(255,255,255,1);
+      transform: scale(1.1);
+    }
+
+    .heartIcon i {
+      color: #ff4757;
+      font-size: 16px;
+    }
+
+    /* 텍스트 영역 */
+    .text {
+      padding: 16px;
+      flex: 1;
+    }
+
+    .searchTitle {
+      margin-bottom: 8px;
+    }
+
+    .searchTitle a {
+      color: #2c3e50;
+      text-decoration: none;
+      font-size: 16px;
+      font-weight: 600;
+      line-height: 1.4;
+      display: block;
+    }
+
+    .searchTitle a:hover {
+      color: #3498db;
+    }
+
+    .searchAddr1 {
+      margin-bottom: 8px;
+    }
+
+    .searchAddr1 a {
+      color: #7f8c8d;
+      text-decoration: none;
+      font-size: 14px;
+      display: block;
+    }
+
+    .searchAddr1 a:hover {
+      color: #34495e;
+    }
+
+    /* 말줄임 효과 */
+    .ellipsis {
+      overflow: hidden;
+    }
+
+    .ellipsis .searchTitle a {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    /* 빈 데이터 메시지 */
+    #nullData {
+      text-align: center;
+      padding: 40px;
+      color: #7f8c8d;
+      font-size: 16px;
+    }
+
+    /* 페이징 스타일 */
+    #page {
+      margin-top: 40px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .paging {
+      display: flex;
+      list-style: none;
+      gap: 8px;
+    }
+
+    .paging li {
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .paging li a,
+    .paging li.current,
+    .paging li.disable {
+      display: block;
+      padding: 10px 14px;
+      text-decoration: none;
+      color: #495057;
+      background: white;
+      border: 1px solid #dee2e6;
+      transition: all 0.2s ease;
+    }
+
+    .paging li a:hover {
+      background: #e9ecef;
+      color: #212529;
+    }
+
+    .paging li.current {
+      background: #007bff;
+      color: white;
+      border-color: #007bff;
+    }
+
+    .paging li.disable {
+      color: #6c757d;
+      background: #e9ecef;
+      cursor: not-allowed;
+    }
+
+    /* 반응형 디자인 */
+    @media (max-width: 768px) {
+      #searchwrap {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      body {
+        padding: 16px;
+      }
+
+      .image-container {
+        height: 180px;
+      }
+    }
+
+    #searchText{display: inline-block;}
+
+    #searchwrap{    box-sizing: border-box;
+      word-wrap: break-word !important;
+      word-break: keep-all !important;
+      display: flex
+    ;
+      flex-wrap: wrap;
+      align-content: space-between;
+      border: 1px solid #e6e6e6;
+      padding: 20px;
+      overflow: hidden;
+      margin: 20px 0 0;
+      position: relative;
+      min-height: 195px;
+      min-height: 167px;
+      padding: 15px;
+      margin: 15px 0 0;
+    }
+    .searchImage{ width: 300px; height: 200px; display: inline-block}
+    .searchTitle{  display: inline-block; font-size: 15px;}
+    .searchAddr1{  display: inline-block; font-size: 11px;}
     .overview {
       width: 650px;
       height: 120px;
@@ -105,24 +335,36 @@
   </li>
 
 
-<div id="main">
-  <c:forEach var="Dvo" items="${requestScope.searchAr}" varStatus="count">
-    <c:if test="${count.index < 5}">
-      <div id="heartImage">
-        <p class="heartIcon">
-          <i class="fa-solid fa-heart"></i>
-        </p>
-      </div>
-      <img src="${Dvo.firstimage}" class="image">
-      <div class="text ellipsis item">
-        <p class="title"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
-        <p class="addr1"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
-<%--
-        <p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>
---%>
-      </div>
-    </c:if>
-  </c:forEach>
+<div id="searchwrap">
+      <c:forEach var="Dvo" items="${requestScope.searchAr}" varStatus="count">
+        <div class="card-container">
+          <div class="image-container">
+        <c:if test="${count.index < 5}">
+          <div id="heartImage">
+            <p class="heartIcon">
+            <i class="fa-solid fa-heart"></i>
+            </p>
+          </div>
+        <span>
+          <c:choose>
+          <c:when test="${empty Dvo.firstimage}">
+            <img src="./images/noImage.png" class="searchImage">
+          </c:when>
+            <c:otherwise>
+              <img src="${Dvo.firstimage}" class="searchImage">
+            </c:otherwise>
+          </c:choose>
+        </span>
+          <div class="text ellipsis" id="searchText">
+            <p class="searchTitle"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
+            <p class="searchAddr1"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+            <%--<p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>--%>
+          </div>
+        </c:if>
+          </div>
+        </div>
+      </c:forEach>
+
 </div>
 
 <div id="nullData">
@@ -135,15 +377,10 @@
 
   <ol class="paging">
     <c:set var="p" value="${requestScope.page}" scope="page"/>
-
-    <c:if test="${p.startPage < p.pagePerBlock}">
-
-      <li class="disable">&lt;</li>
-    </c:if>
+    <c:set var="keyword" value="${requestScope.keyword}" scope="page"/>
 
     <c:if test="${p.startPage >= p.pagePerBlock}">
-
-      <li><a href="Controller?type=searchKeyword&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
+      <li><a href="javascript:goToPage(${p.nowPage-p.pagePerBlock})">&lt;</a></li>
     </c:if>
 
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
@@ -151,70 +388,36 @@
         <li class="current">${vs.index}</li>
       </c:if>
       <c:if test="${p.nowPage != vs.index}">
-        <li><a href="Controller?type=searchKeyword&cPage=${vs.index}">${vs.index}</a></li>
+        <li><a href="javascript:goToPage(${vs.index})">${vs.index}</a></li>
       </c:if>
     </c:forEach>
 
     <c:if test="${p.endPage < p.totalPage}">
+      <li><a href="javascript:goToPage(${p.nowPage+p.pagePerBlock})">&gt;</a></li>
+    </c:if>
 
-      <li><a href="Controller?type=searchKeyword&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
-    </c:if>
-    <c:if test="${p.endPage >= p.totalPage}">
-      <li class="disable">&gt;</li>
-    </c:if>
 
   </ol>
 </div>
+<c:set var="cPage" scope="page" value="${requestScope.cPage}"/>
+<c:import url="/common/footer.jsp" />
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
+
+  function goToPage(pageNum) {
+    const keyword = '${param.keyword}';
+    const url = 'Controller?type=searchKeyword&cPage=' + pageNum + '&keyword=' + encodeURIComponent(keyword);
+    window.location.href = url;
+  }
+
   $(function (){
     //contentTypeId = 12 관광지 로 기본선택 되어있기
-    $("#areaCode").blur(function () {
 
-      let areaCode = $("#areaCode").val();
-      if(areaCode!=0) {
-        $.ajax({
-          url: "Controller?type=area",
-          method: "POST",
-          data: {areaCode: areaCode}
-        }).done(function (res) {
-          $("#sigunguCode").html(res);
-        });
-      }
-    });
-
-    $("#cat1").blur(function (){
-      let cat1 = $("#cat1").val();
-      if(cat1!= 0) {
-        $.ajax({
-          url: "Controller?type=area",
-          method: "POST",
-          data: {cat1: cat1}
-        }).done(function (res) {
-          $("#cat2").html(res);
-          $("#cat3").html("<option value='0'>::선택하시오::</option>");
-
-        });
-      }
-    });
-
-    $("#cat2").blur(function (){
-      let cat1 = $("#cat1").val();
-      let cat2 = $("#cat2").val();
-      if(cat2!=0 && cat3!=0) {
-        $.ajax({
-          url: "Controller?type=area",
-          method: "POST",
-          data: {cat1: cat1,cat2: cat2}
-        }).done(function (res) {
-          $("#cat3").html(res);
-        });
-      }
-    });
   });
-
+let keyword = document.getElementById("keyword");
+console.log(keyword);
   $(".contentTypeId").on("click",function (value){
     value.preventDefault();
     let contentTypeId = $(this).data("value");
@@ -225,27 +428,31 @@
     let cat3 = $("#cat3").val();
 
     $.ajax({
-      url: "Controller?type=searchKeyword",
+      url: "Controller?type=searchKeyword="+encodedKeyword,
       method: "POST",
       data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
         cat1:cat1, cat2:cat2, cat3:cat3 /*, cPage:cPage */}
     }).done(function (res){
-      $("#main").html(res);
+      $("#searchwrap").html(res);
     });
 
-    $.ajax({
-      url: "Controller?type=area",
-      method: "POST",
-      data: {contentTypeId: contentTypeId}
-    }).done(function (res){
-      $("#cat1").html(res);
-      $("#cat2").html("<option value='0'>::선택하시오::</option>");
-      $("#cat3").html("<option value='0'>::선택하시오::</option>");
-    });
 
   });
 
 
+
+  $(document).ready(function() { //보안을 위해 거쳐서 이동
+    $('.data-link').on('click', function(e) {
+      e.preventDefault(); // a태그 href 링크 이동 방지
+      let title = $(this).data('title');
+      let addr1 = $(this).data('addr1');
+      let overview = $(this).data('overview');
+      let firstimage = $(this).data('firstimage');
+      // let mapx = $(this).data('mapx');
+      // let mapy = $(this).data('mapy');
+      submitData(title, addr1, overview, firstimage);
+    });
+  });
   function submitData(title, addr1, overview, firstimage){
     let form = document.createElement('form');
     form.method = 'POST';
