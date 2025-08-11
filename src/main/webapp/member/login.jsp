@@ -192,6 +192,7 @@
     <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" height="46.72" alt="카카오 로그인 버튼" />
   </a>
   <!-- 네이버 로그인 버튼 -->
+  <span></span>
   <%
     String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
