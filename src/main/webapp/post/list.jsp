@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="<c:url value="/css/post.css" />">
     <style>
         #post {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background-color: #fff;
             border: 1px solid #dee2e6;
@@ -23,12 +23,18 @@
             text-align: center;
             min-width: 800px; /* 테이블이 너무 작아지는 것 방지 */
         }
+
+        #post h1{
+            color: #222;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <c:import url="/common/header.jsp" />
 
     <div id="post">
+        <h1>여행후기</h1>
         <div class="search-area">
             <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
                 <input type="hidden" name="category_idx" value="2">
@@ -41,6 +47,7 @@
                 <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
             </form>
         </div>
+
         <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
             <thead>
