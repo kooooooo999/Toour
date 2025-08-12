@@ -341,6 +341,15 @@
             text-align: center;
         }
 
+        .overflowHidden2 {
+            padding: 8px;
+            font-size: 0.9em; /* 주소 폰트 사이즈 확장 */
+            color: #666;
+            overflow: hidden;
+            flex-grow: 1;
+            text-align: center;
+        }
+
         #post_list .listArea > div {
             padding: 15px;
         }
@@ -382,14 +391,14 @@
             gap: 8px;
         }
 
-        .search-area select, .search-area input[type="text"] {
+        #search-area select, #search-area input[type="text"] {
             padding: 10px; /* 검색 입력창 패딩 확장 */
             border: 1px solid #ccc;
             border-radius: 4px;
             font-size: 1em; /* 폰트 사이즈 확장 */
         }
 
-        .search-area .search-btn {
+        #search-area .search-btn {
             padding: 10px 15px; /* 검색 버튼 패딩 확장 */
             border: none;
             background-color: #1e40af;
@@ -406,7 +415,6 @@
         .paging {
             list-style: none;
             padding: 0;
-            display: inline-block;
         }
 
         .paging li {
@@ -461,8 +469,8 @@
     <%-- 내 정보 섹션 --%>
     <div class="left-info-area">
         <h2>내 정보</h2>
-        <p><strong><c:out value="홍길동" /></strong>님, 환영합니다.</p>
-        <p>개인정보 수정</p>
+        <p><strong><c:out value="${sessionScope.user.member_nickname}" /></strong>님, 환영합니다.</p>
+
         <a href="#">개인정보 수정</a>
     </div>
 
@@ -496,7 +504,7 @@
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
                                 <a href="#">${courseVO.course_name}</a>
-                                <p class="overflowHidden">${courseVO.course_summary}</p>
+                                <p class="overflowHidden2">${courseVO.course_summary}</p>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -512,15 +520,15 @@
                 <a href="Controller">내 게시글/ 댓글</a>
                 <div id="mypost">
                     <div id="post">
-                        <div class="search-area">
-                            <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
+                        <div id="search-area">
+                            <form method="post" action="Controller?type=postSearch">
                                 <input type="hidden" name="category_idx" value="2">
                                 <select id="searchType" name="searchType">
                                     <option value="post_title">제목</option>
                                     <option value="post_content">내용</option>
                                 </select>
                                 <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                                <button type="submit" class="search-btn">검색</button>
+                                <button type="button" class="search-btn" id="search-btn">검색</button>
                             </form>
                         </div>
                         <table summary="검색결과 목록">
@@ -604,15 +612,33 @@
 </div>
 
 <c:import url="/common/footer.jsp" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
+
+    $(function () {
+
+        $("#search-btn").on("click",function () {
+            let searchType = $("#searchType").val().trim();
+            let searchValue = $("#searchValue").val().trim();
+            console.log(searchType);
+            console.log(searchValue);
+            $.ajax({
+              url:"Controller?type=mypostsearch",
+              type:"POST",
+              data:{searchType:searchType, searchValue:searchValue}
+            }).done(function (res) {
+                $("#mypost").html(res);
+            });
+        })
+    })
+
+
     function movePage(nPage) {
         $.ajax({
             url:"Controller?type=mypost",
             type:"POST",
             data:{nPage:nPage , totalCount:${requestScope.page.totalCount}}
         }).done(function (res) {
-            console.log(${requestScope.page.totalCount})
             $("#mypost").html(res);
         })
     }
