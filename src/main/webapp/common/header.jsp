@@ -90,7 +90,6 @@
                 }
 
                 // 키워드 넘기기 (GET 방식으로 Controller에 전달)
-                $('#search_form').submit();
                 location.href = "Controller?type=searchKeyword&keyword=" + encodeURIComponent(keyword);
             }
         });

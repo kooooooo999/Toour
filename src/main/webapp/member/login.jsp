@@ -334,6 +334,7 @@
                 'user_email' : response.kakao_account.email
               },
               success: function(result){//로그인성공
+
                 console.log(result);
                 window.location.href='/';
               }
