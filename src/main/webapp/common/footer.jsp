@@ -6,7 +6,7 @@
 <footer>
     <div class="footer-news-ticker">
         <div class="container ticker-content">
-            <span>[한국관광공사] ‘2025 대한민국 밤밤 페스타’ 전국 개막</span>
+            <span>[toour] ‘2025 대한민국 쌍용 페스타’ 전국 개막</span>
             <span class="ticker-controls">
                     <i class="fas fa-pause"></i>
                     <i class="fas fa-play"></i>
