@@ -63,7 +63,7 @@ public class GetAPIData {
         sb.append("&contentTypeId=");
         sb.append(contentTypeId);
         //확인용 주소 출력
-        System.out.println(sb.toString());
+//        System.out.println(sb.toString());
         try {
             URL url1 = new URL(sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -104,7 +104,7 @@ public class GetAPIData {
             sb.append("cat1=");
             sb.append(cat1);
             //확인용 주소 출력
-            System.out.println(sb.toString());
+//            System.out.println(sb.toString());
             try {
                 URL url1 = new URL(sb.toString());
                 HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -150,7 +150,7 @@ public class GetAPIData {
             sb.append("cat2=");
             sb.append(cat2);
             //확인용 주소 출력
-            System.out.println(sb.toString());
+//            System.out.println(sb.toString());
             try {
                 URL url1 = new URL(sb.toString());
                 HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();

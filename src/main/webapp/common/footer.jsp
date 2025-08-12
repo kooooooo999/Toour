@@ -31,11 +31,11 @@
         </div>
 
         <div class="footer-banners">
-            <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=ODii" alt="오디 (ODii)"></div>
-            <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Data+Request" alt="관광정보 수정/신청"></div>
-            <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Wallpaper" alt="대한민국 구석구석 Wallpaper"></div>
-            <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=Travel+Guidebook" alt="여행 가이드북"></div>
-            <div class="banner-item"><img src="https://via.placeholder.com/200x80?text=1330+Call" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
+            <div class="banner-item"><img src="#" alt="오디 (ODii)"></div>
+            <div class="banner-item"><img src="#" alt="관광정보 수정/신청"></div>
+            <div class="banner-item"><img src="#" alt="대한민국 구석구석 Wallpaper"></div>
+            <div class="banner-item"><img src="#" alt="여행 가이드북"></div>
+            <div class="banner-item"><img src="#" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
         </div>
 
         <nav class="footer-nav">

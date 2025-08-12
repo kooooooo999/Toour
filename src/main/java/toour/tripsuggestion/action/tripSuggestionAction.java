@@ -8,6 +8,8 @@ import toour.action.Action;
 import toour.tripsuggestion.vo.LoCatVO;
 import toour.util.GetAPIData;
 import toour.util.Paging;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -111,6 +113,9 @@ public class tripSuggestionAction implements Action {
                 Element body = root.getChild("body");
                 Element totalCount = body.getChild("totalCount");
                 String totalCountStr = totalCount.getText();
+                page.setTotalCount(Integer.parseInt(totalCountStr));
+                page.setNowPage(Integer.parseInt(cPage));
+                request.setAttribute("page", page);
                 Element items = body.getChild("items");
                 List<Element> item_list = items.getChildren("item");
                 DataVO[] ar = new DataVO[item_list.size()];
@@ -120,12 +125,8 @@ public class tripSuggestionAction implements Action {
                     String mapx = item.getChildText("mapx");
                     String mapy = item.getChildText("mapy");
                     String addr1 = item.getChildText("addr1");
-                    String addr2 = item.getChildText("addr2");
                     String firstimage = item.getChildText("firstimage");
-                    String firstimage2 = item.getChildText("firstimage2");
                     String tel = item.getChildText("tel");
-                    String eventstartdate = item.getChildText("eventstartdate");
-                    String eventenddate = item.getChildText("eventenddate");
                     String voCat1 = item.getChildText("cat1");
                     String voCat2 = item.getChildText("cat2");
                     String voCat3 = item.getChildText("cat3");
@@ -145,21 +146,42 @@ public class tripSuggestionAction implements Action {
                     Element items2 = body2.getChild("items");
                     List<Element> item_list2 = items2.getChildren("item");
                     String overview = null;
+                    String homepage = null;
+                    String homepageUrl = null;
+                    String homepageText = null;
+                    String addr2 = null;
                     for (Element item2 : item_list2) {
                         overview = item2.getChildText("overview");
-                    }
-                    DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, firstimage2, eventstartdate, eventenddate, tel, voContentTypeid, voContentid, overview);
-                    page.setTotalCount(Integer.parseInt(totalCountStr));
-                    page.setNowPage(Integer.parseInt(cPage));
+                        addr2 = item2.getChildText("addr2");
+                        homepage = item2.getChildText("homepage");
+                        if (homepage != null && homepage.contains("<a href")) {
+                            // URL 추출
+                            Pattern urlPattern = Pattern.compile("href=['\"]([^'\"]+)['\"]");
+                            Matcher urlMatcher = urlPattern.matcher(homepage);
+                            if (urlMatcher.find()) {
+                                homepageUrl = urlMatcher.group(1);
+                            }
 
+                            // 텍스트 추출
+                            Pattern textPattern = Pattern.compile(">(.+?)</a>");
+                            Matcher textMatcher = textPattern.matcher(homepage);
+                            if (textMatcher.find()) {
+                                homepageText = textMatcher.group(1);
+                            }
+                        } else {
+                            // HTML 태그가 없는 경우 그대로 사용
+                            homepageUrl = homepage;
+                            homepageText = homepage;
+                        }
+                    }
+                    DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, tel, voContentTypeid, voContentid, overview, homepageText, homepageUrl);
                     ar[i++] = vo;
                 }
+
                 request.setAttribute("dataAr", ar);
-                request.setAttribute("page", page);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         return viewPath;
     }
 
