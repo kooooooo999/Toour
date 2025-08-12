@@ -20,6 +20,30 @@ public class PostDAO {
         return cnt;
     }
 
+    // 내가 쓴 총 게시물의 수를 반환
+    public static int getMyTotalCount(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.myTotalCount",member_idx);
+        ss.close();
+        return cnt;
+    }
+
+    // 내가 쓴 총 게시물에서 검색결과 수를 반환
+    public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+        map.put("member_idx", member_idx);
+
+        int cnt = ss.selectOne("post.mySearchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
+
     //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
@@ -76,6 +100,34 @@ public class PostDAO {
         return ar;
     }
 
+    public static PostVO[] mysearch(String searchType,String searchValue,int begin,int end,String member_idx){
+        PostVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+        map.put("begin",begin);
+        map.put("end",end);
+        map.put("member_idx", member_idx);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.mysearch",map);
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        }
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new PostVO[0];
+        }
+        ss.close();
+        return ar;
+    }
+
 
     //조회수 증가
     public static int hit(String post_idx){
@@ -109,6 +161,25 @@ public class PostDAO {
         ss.close();
         return ar;
     }
+
+    public static PostVO[] getMyList(String member_idx, int begin, int end){
+        PostVO[] ar = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("member_idx", member_idx);
+        map.put("begin", begin);
+        map.put("end", end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.mylist", map);
+        if(list != null && list.size()>0){
+            ar = new PostVO[list.size()];
+            list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
+        }
+        ss.close();
+        return ar;
+    }
+
     // 저장 +++
     public static int add(String post_title, String post_content, String member_idx,
                           String category_idx, String post_views, String post_likes, String post_comments_count,

@@ -12,6 +12,7 @@ import toour.util.Hash;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 public class loginAction implements Action {
     @Override
@@ -19,7 +20,7 @@ public class loginAction implements Action {
         String viewPath=null;
         String u_id =request.getParameter("u_id");
         if(request.getSession().getAttribute("user")==null){
-            System.out.println("if");
+
             //로그인이 안 되어 있을 때
             if(u_id!=null){
                 //요청으로부터 id를 잘받아옴
@@ -53,21 +54,22 @@ public class loginAction implements Action {
                             viewPath = "AdminController?type=AdminMain";
                         }
                         else
-                            viewPath = "Controller?type=index";
+                            viewPath = "member/myPage.jsp";
+                        
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
-                        viewPath ="Controller?type=login";
+                        viewPath ="member/login.jsp";
                 }else
                     //입력한 id가 db에 없을 때
-                    viewPath ="Controller?type=login";
+                    viewPath ="member/login.jsp";
             }else {
-                viewPath="Controller?type=index";
+                viewPath="member/login.jsp";
             }
         }else {
             //로그아웃 눌렀을 때
-            System.out.println("로그아웃");
+            System.out.println("logout");
             request.getSession().removeAttribute("user");
-            viewPath="Controller?type=index";
+            viewPath="MainIndex/index.jsp";
         }
 
         //cornsoup 수정
