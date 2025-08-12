@@ -6,7 +6,77 @@
 <!DOCTYPE html>
 
 <html>
+<style>
+  /* 지도를 감싸는 부모 컨테이너에 적용 */
+  .map-container {
+    display: flex;
+    justify-content: center; /* 자식 요소를 가로 중앙으로 정렬 */
+    width: 100%;
+    padding-bottom: 40px; /* 아래 여백 */
+  }
+
+  /* 상세 정보를 감싸는 부모 컨테이너에 적용 */
+  #detailsInfo {
+    display: flex;
+    justify-content: center; /* ul을 가로 중앙으로 정렬 */
+    width: 100%;
+    padding-bottom: 50px;
+  }
+
+  /* 상세 정보 목록 ul에 적용 */
+  #detailsInfo ul {
+    width: 850px; /* 지도와 동일한 너비로 설정하여 정렬 맞추기 */
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0;
+    list-style-type: none;
+    justify-content: center;
+  }
+
+  /* 상세 정보 목록 li에 적용 */
+  #detailsInfo li {
+    width: calc(100% / 3 - 20px * 2 / 3);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-left: 70px;
+  }
+     /* 뒤로가기 버튼 스타일 */
+   .back-button {
+     position: fixed; /* 👈 스크롤에 상관없이 화면에 고정 */
+     bottom: 20px;    /* 👈 화면 아래쪽에서 20px 떨어진 위치 */
+     left: 20px;      /* 👈 화면 왼쪽에서 20px 떨어진 위치 */
+     z-index: 1000;   /* 다른 요소보다 위에 표시 */
+
+     /* 버튼 디자인 */
+     background-color: #337ab7;
+     color: white;
+     border-radius: 50%; /* 원형 모양 */
+     width: 50px;
+     height: 50px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     font-size: 24px;
+     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+     transition: background-color 0.3s;
+     text-decoration: none; /* 밑줄 제거 */
+   }
+
+  .back-button:hover {
+    background-color: #286090;
+  }
+
+  .infocenterText{
+    word-break: break-all;
+  }
+
+</style>
+
 <head>
+
   <script type="text/javascript"
           src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
   <meta charset="UTF-8">
@@ -26,11 +96,13 @@
 
 <c:import url="/common/header.jsp" />
 
+<a href="javascript:history.back()" class="back-button">
+  <i class="fas fa-arrow-left"></i>
+</a>
 
 <div id="main">
     <c:set var="Dvo" value="${requestScope.detailsAr}"/>
-        <h2 class="tag">${Dvo.title}</h2>
-          <p class="addr1Details">${Dvo.addr1}</p>
+        <h1 class="tag">${Dvo.title}</h1>
       <p class="lineDetails">
         <div id="heartImagedetails">
           <p class="heartIcon"><i class="fa-solid fa-heart"></i></p>
@@ -46,13 +118,95 @@
 </div>
 
 <%--지도영역--%>
-<div style="display: flex; justify-content: center; width: 100%; margin-left: -200px; padding-bottom: 40px">
+<div class="map-container" style="display: flex; justify-content: center; width: 100%;padding-bottom: 40px">
 <div id="mapDetails">
-  <div id="map" style="width: 850px; height: 300px;"></div>
+  <div id="map" style="width: 850px; height: 300px; margin-left: 80px"></div>
 </div>
 </div>
 
 <%--주차 가능여부 등 API 새로 가져오기--%>
+
+<%--String accomcount =  item.getChildText("accomcount"); //수용인원--%>
+<%--String chkpet =  item.getChildText("chkpet"); //애완동물동반가능정보--%>
+<%--String infocenter =  item.getChildText("infocenter"); //문의안내--%>
+<%--String parking =   item.getChildText("parking"); //주차시설--%>
+<%--String restdate =  item.getChildText("restdate"); //쉬는날--%>
+<%--String usetime =   item.getChildText("usetime"); //이용시간--%>
+<div id="detailsInfo">
+<ul>
+  <c:forEach var="Dvo2" items="${requestScope.detailsAr_2}">
+
+    <li>
+      <strong><span>■ 문의안내</span></strong>
+        <c:choose>
+          <c:when test="${not empty Dvo2.infocenter}">
+            <p>
+              <c:out value="${fn:replace(Dvo2.infocenter, ' 0', '<br/>')}" escapeXml="false" />
+            </p>
+          </c:when>
+          <c:otherwise>
+            <span>[정보없음]</span>
+          </c:otherwise>
+        </c:choose>
+    </li>
+    <li>
+      <strong><span>■ 상세주소</span></strong>
+      <c:choose>
+      <c:when test="${not empty Dvo2.infocenter}">
+      <span>${Dvo.addr1} ${Dvo.addr2}</span>
+      </c:when>
+      <c:otherwise>
+        <span>[정보없음]</span>
+      </c:otherwise>
+      </c:choose>
+    </li>
+    <li>
+      <strong><span>■ 주차시설</span></strong>
+      <c:choose>
+      <c:when test="${not empty Dvo2.infocenter}">
+      <span>${Dvo2.parking}</span>
+      </c:when>
+      <c:otherwise>
+        <span>[정보없음]</span>
+      </c:otherwise>
+      </c:choose>
+    </li>
+    <li>
+      <strong><span>■ 이용시간</span></strong>
+      <c:choose>
+      <c:when test="${not empty Dvo2.infocenter}">
+      <span>${Dvo2.usetime}</span>
+      </c:when>
+      <c:otherwise>
+        <span>[정보없음]</span>
+      </c:otherwise>
+      </c:choose>
+    </li>
+    <li>
+      <strong><span>■ 쉬는날</span></strong>
+      <c:choose>
+      <c:when test="${not empty Dvo2.infocenter}">
+      <span>${Dvo2.restdate}</span>
+      </c:when>
+      <c:otherwise>
+        <span>[정보없음]</span>
+      </c:otherwise>
+      </c:choose>
+    </li>
+    <li>
+      <strong><span>■ 홈페이지</span></strong>
+      <c:choose>
+      <c:when test="${not empty Dvo2.infocenter}">
+      <span><a href="${Dvo.homepageUrl}">${Dvo.homepageText}</a></span>
+      </c:when>
+      <c:otherwise>
+        <span>[정보없음]</span>
+      </c:otherwise>
+      </c:choose>
+    </li>
+  </c:forEach>
+</ul>
+</div>
 
 <footer>
   <div class="footer-news-ticker">

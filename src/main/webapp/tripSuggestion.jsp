@@ -95,6 +95,36 @@
           #heartImage>p>i{
               color: #f00;
           }
+
+
+
+          /* 이미지를 감싸는 부모 컨테이너 */
+          .image-container {
+              width: 500px;
+              height: 250px;
+              position: relative; /* 자식 요소의 위치 기준이 됨 */
+          }
+
+          /* 이미지 스타일 (이미지가 있을 때) */
+          .image-container .image{
+              width: 100%;
+              height: 100%;
+              object-fit: cover; /* 이미지가 컨테이너를 꽉 채우도록 설정 */
+          }
+
+          /* 이미지가 없을 때의 텍스트 스타일 */
+          .image-container .emptyText {
+              width: 100%;
+              height: 100%;
+              background-color: #f0f0f0; /* 배경색 */
+              color: #888; /* 텍스트 색상 */
+              font-size: 24px;
+              font-weight: bold;
+              display: flex; /* Flexbox를 사용하여 내부 요소를 정렬 */
+              justify-content: center; /* 가로 중앙 정렬 */
+              align-items: center; /* 세로 중앙 정렬 */
+          }
+
       </style>
 
   </head>
@@ -117,6 +147,7 @@
           <c:set var="requestcat1" value="${param.cat1}"/>
           <c:set var="requestcat2" value="${param.cat2}"/>
           <c:set var="requestcat3" value="${param.cat3}"/>
+          <c:set var="requestcPage" value="${param.cPage}"/>
 
       <select id="contentTypeId" name="contentTypeId">
           <option value="12" class="contentTypeId" <c:if test="${requestcontentTypeId =='12'}">selected</c:if>>관광지</option>
@@ -192,34 +223,34 @@
 
   <%--<i class="fa-solid fa-heart"></i>  꽉찬 하트--%>
   <div id="main">
-      <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
+      <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count" >
         <c:if test="${count.index < 5}">
           <div id="heartImage">
             <p class="heartIcon"><i class="fa-regular fa-heart" ></i></p>
           </div>
-
+            <div class="image-container">
+        <c:if test="${empty Dvo.firstimage}">
+            <div class="emptyText">
+            [이미지없음]
+            </div>
+        </c:if>
+            <c:if test="${not empty Dvo.firstimage}">
         <img src="${Dvo.firstimage}" class="image"/>
-
+            </c:if>
+            </div>
           <div class="text ellipsis item">
-            <p class="title"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.title}</a></p>
-            <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.addr1}</a></p>
-            <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentTypeId="${Dvo.contentTypeId}" data-contentId="${Dvo.contentId}">${Dvo.overview}</a></p>
+            <p class="title"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">${Dvo.title}</a></p>
+            <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">${Dvo.addr1}</a></p>
+            <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">${Dvo.overview}</a></p>
           </div>
-
       </c:if>
     </c:forEach>
   </div>
 
-  <div id="nullData">
-      <c:if test="${fn:length(Dvo.title) < 0}">
-          <p>등록된 게시글이 없습니다</p>
-      </c:if>
-  </div>
-
   <div id="page">
       <ol class="paging">
-          <c:set var="p" value="${requestScope.page}" scope="page"/>
 
+          <c:set var="p" value="${requestScope.page}" scope="page"/>
           <c:if test="${p.startPage < p.pagePerBlock}">
               <li class="disable">&lt;</li>
           </c:if>
@@ -266,6 +297,7 @@
                       data: {areaCode: areaCode}
                   }).done(function (res) {
                       $("#sigunguCode").html(res);
+                      console.log("areacode");
                   });
 
           });
@@ -279,6 +311,7 @@
                       method: "POST",
                       data: {contentTypeId: contentTypeId}
                   }).done(function (res){
+                      console.log("contentTypeId");
                       $("#cat1").html(res);
                       $("#cat2").html("<option value='0'>:: 선택 ::</option>");
                       $("#cat3").html("<option value='0'>:: 선택 ::</option>");
@@ -294,6 +327,7 @@
                       method: "POST",
                       data: {cat1: cat1}
                   }).done(function (res) {
+                      console.log("cat1");
                       $("#cat2").html(res);
                       $("#cat3").html("<option value='0'>:: 선택 ::</option>");
 
@@ -310,6 +344,7 @@
                       method: "POST",
                       data: {cat1: cat1,cat2: cat2}
                   }).done(function (res) {
+                      console.log("cat2");
                       $("#cat3").html(res);
                   });
               }
@@ -371,7 +406,7 @@
       });
 
       $(document).ready(function() { //보안을 위해 거쳐서 이동
-          $('.data-link').on('click', function(e) {
+          $(document).on('click', '.data-link', function(e) {
               e.preventDefault(); // a태그 href 링크 이동 방지
               let title = $(this).data('title');
               let addr1 = $(this).data('addr1');
@@ -379,13 +414,16 @@
               let firstimage = $(this).data('firstimage');
               let mapx = $(this).data('mapx');
               let mapy = $(this).data('mapy');
-              let contentTypeId = $(this).data('contentTypeId');
-              let contentId = $(this).data('contentId');
-              submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId);
+              let contentTypeId = $("#contentTypeId").val();
+              let contentId = $(this).data('contentid');
+              let homepageUrl = $(this).data('homepageurl');
+              let homepageText = $(this).data('homepagetext');
+              submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText);
           });
       });
 
-      function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId){
+      function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText){
+          console.log(contentId);
           let form = document.createElement('form');
           form.method = 'POST';
           form.action = 'Controller?type=tripDetails';
@@ -430,6 +468,16 @@
           contentIdInput.name = 'contentId';
           contentIdInput.value = contentId;
 
+          let homepageUrlInput = document.createElement('input');
+          homepageUrlInput.type = 'hidden';
+          homepageUrlInput.name = 'homepageUrl';
+          homepageUrlInput.value = homepageUrl;
+
+          let homepageTextInput = document.createElement('input');
+          homepageTextInput.type = 'hidden';
+          homepageTextInput.name = 'homepageText';
+          homepageTextInput.value = homepageText;
+
           form.appendChild(titleInput);
           form.appendChild(addr1Input);
           form.appendChild(overviewInput);
@@ -438,6 +486,8 @@
           form.appendChild(mapyInput);
           form.appendChild(contentTypeIdInput);
           form.appendChild(contentIdInput);
+          form.appendChild(homepageUrlInput);
+          form.appendChild(homepageTextInput);
 
           document.body.appendChild(form);
 
