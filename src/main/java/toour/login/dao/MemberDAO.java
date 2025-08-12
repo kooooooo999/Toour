@@ -36,4 +36,22 @@ public class MemberDAO {
         ss.close();
         return mvo;
     }
+
+    public static void updateLastLogin(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        ss.update("member.updateLastLogin", member_idx);
+    }
+
+    public static MemberVO getMemberByLoginType(String login_type,String member_email){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        //입력된 값을 memberVO로 만들어 parameter 만들기
+        MemberVO member = new MemberVO();
+        member.setLogin_type(login_type);
+        member.setMember_email(member_email);
+        //resultType이  MemberVO라 이렇게 해줌
+        MemberVO mvo = ss.selectOne("member.getByLoginType", member);
+        ss.close();
+        return mvo;
+    }
+
 }
