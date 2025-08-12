@@ -33,7 +33,7 @@
 
         /* 게시판 컨테이너 */
         #post {
-            max-width: 1200px;
+            max-width: 1600px;
             margin: 0 auto;
             background-color: #fff;
             border: 1px solid #dee2e6;
@@ -181,6 +181,11 @@
             background-color: #218838;
         }
 
+        #post h1{
+            color: #222;
+            text-align: center;
+        }
+
     </style>
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
@@ -190,6 +195,7 @@
 <c:import url="/common/header.jsp" />
 
 <div id="post">
+    <h1>공지사항</h1>
     <div class="search-area">
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
             <input type="hidden" name="category_idx" value="2">
@@ -218,7 +224,7 @@
                 <tr>
                     <td>${num}</td>
                     <td style="text-align: left">
-                        <a href="Controller?type=list&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                        <a href="Controller?type=noticeview&post_idx=${vo.post_idx}&cPage=${nowPage}">
                                 ${vo.post_title}
                             <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
                                 (<c:out value="${fn:length(vo.c_list)}"/>)
