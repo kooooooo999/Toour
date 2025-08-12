@@ -29,7 +29,7 @@ public class SearchResultAction implements Action{
         String cat3 = request.getParameter("cat3"); //소분류
         String cPage = request.getParameter("cPage"); //지금페이지
 
-        Paging page = new Paging(5, 5);
+        Paging page = new Paging(7, 3);
 
         String keyword = request.getParameter("keyword"); //키워드
         String encodedKeyword;
@@ -61,7 +61,6 @@ public class SearchResultAction implements Action{
 
         String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
 
-
         String code = request.getParameter("areaCode");
         if (code == null) {
             areaCode = "0";
@@ -85,7 +84,9 @@ public class SearchResultAction implements Action{
             //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
             StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
             sb.append(key);
-            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=");
+            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=");
+            sb.append(cPage);
+            sb.append("&numOfRows=");
             sb.append("7");
             sb.append("&keyword=");
             sb.append(encodedKeyword);
@@ -178,7 +179,7 @@ public class SearchResultAction implements Action{
                 }
                 // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
                 request.setAttribute("resultAr", ar);
-                request.setAttribute("page", page);
+                request.setAttribute("mapPage", page);
 
             } catch (Exception e) {
                 e.printStackTrace();

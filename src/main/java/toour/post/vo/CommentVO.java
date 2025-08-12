@@ -1,6 +1,17 @@
 package toour.post.vo;
 
 public class CommentVO {
+
+    private String member_nickname;
+
+    public String getMember_nickname() {
+        return member_nickname;
+    }
+
+    public void setMember_nickname(String member_nickname) {
+        this.member_nickname = member_nickname;
+    }
+
     private String comment_idx, post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status;
 
     public String getComment_content() {

@@ -13,11 +13,13 @@ public class AdminMainAction implements Action {
         Object obj = request.getSession().getAttribute("user");
         MemberVO mvo = null;
         if(obj != null) {
+            //로그인을 함
             mvo = (MemberVO) obj;
 
             if (mvo.getMember_type().equals("0")) {
                 viewPath = "admin/admin_main.jsp";
             }
+
         }
         return viewPath;
     }

@@ -3,6 +3,7 @@ package toour.action;
 import com.mysql.cj.xdevapi.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +24,7 @@ public class KakaoMobilAction implements Action{
 
         StringBuffer sb = new StringBuffer();
         String APIkey = "41924af6fe5d95bebf4d8ddf6fca8d8c";
+
         try {
             URL url = new URL("https://apis-navi.kakaomobility.com/v1/waypoints/directions");
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -132,6 +134,6 @@ public class KakaoMobilAction implements Action{
             throw new RuntimeException(e);
         }
 
-        return "json.jsp";
+        return "kakaojson.jsp";
     }
 }

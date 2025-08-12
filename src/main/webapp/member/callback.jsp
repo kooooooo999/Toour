@@ -37,7 +37,7 @@
 </head>
 <body>
 <%
-
+    int a=0;
     String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
     String clientSecret = "eWWORJKfvA";//애플리케이션 클라이언트 시크릿값";
     String code = request.getParameter("code");
