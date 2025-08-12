@@ -36,10 +36,13 @@
         #findButton { width: 260px; height: 30px; margin: auto; position: absolute; bottom: 20px; }
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
-        #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; }
-        #page { position: absolute; bottom: 20px; left: 88px; }
-        .ellip{ font-weight: bold; display: inline-block; width: 97%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
+        #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
+        #course { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
+        #courseList { width: 260px }
+        #page { position: absolute; bottom: 18px; left: 85px; }
+        .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .plusButton {display: inline-block; background-image: url("images/plus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
+        .minusButton {display: inline-block; background-image: url("images/minus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -67,7 +70,7 @@
 
             <div class="selected_places">
                 <h3>여기로 가야지!</h3>
-                <ul id="selected_places_list"></ul>
+                <div id="courseList"></div>
             </div>
 
             <div  id="findButton" class="search_container">
@@ -136,6 +139,11 @@
     function searchplace() {
 
         let keyword = $("#searchKeyword").val().trim();
+        if (keyword.length < 1) {
+            alert("키워드나 주소를 입력해 주세요")
+            $("searchKeyword").focus();
+            return;
+        }
         removeMarker();
 
         $.ajax({
@@ -151,7 +159,7 @@
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
     function paging(cPage) {
-        <c:set var="p" value="${requestScope.mapPage}" />
+
         let keyword = $("#searchKeyword").val().trim();
 
         $.ajax({
@@ -161,6 +169,39 @@
         }).done(function (res) {
             $("#search_results").html(res);
         });
+    }
+
+    // 검색 결과 창에서 + 버튼 누르면 코스 칸으로 넘어가는 함수
+    function addList(title, i) {
+
+        let keyword = $("#searchKeyword").val().trim();
+        console.log(title);
+        console.log(i);
+
+        $.ajax({
+            url: "Controller?type=searchResult",
+            method: "post",
+            data: {keyword: keyword, title: title, index: i}
+        }).done(function (res) {
+            $("#courseList").html(res);
+        });
+    }
+
+    // 코스 짜는 창에서 - 버튼 누르면 삭제
+    function removeList(title, i) {
+
+        let keyword = $("#searchKeyword").val().trim();
+        console.log(title);
+        console.log(i);
+
+        $.ajax({
+            url: "Controller?type=searchResult",
+            method: "post",
+            data: {keyword: keyword, removeTitle: title, index: i}
+        }).done(function (res) {
+            $("#courseList").html(res);
+        });
+
     }
 
     // 검색 결과 창 숨기기

@@ -43,7 +43,8 @@
           <c:if test="${vs.index < 4}">
             <c:if test="${fn:length(vo.firstimage) > 0}">
             <div id="column">
-                    <img id="image" src="${vo.firstimage}"/>
+                    <img id="image" src="${vo.firstimage}"
+                        onerror="this.src='images/noImage.png'"/>
                     <p>${vo.addr1}</p>
                     <a href="#">${vo.title}</a>
             </div>
