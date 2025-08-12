@@ -54,7 +54,7 @@ public class loginAction implements Action {
                             viewPath = "AdminController?type=AdminMain";
                         }
                         else
-                            viewPath = "MainIndex/index.jsp";
+                            viewPath = "member/myPage.jsp";
                         
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때

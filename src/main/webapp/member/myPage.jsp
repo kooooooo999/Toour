@@ -528,7 +528,7 @@
                                     <option value="post_content">내용</option>
                                 </select>
                                 <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                                <button type="button" class="search-btn" id="search-btn">검색</button>
+                                <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
                             </form>
                         </div>
                         <table summary="검색결과 목록">
@@ -615,13 +615,9 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
 
-    $(function () {
-
-        $("#search-btn").on("click",function () {
-            let searchType = $("#searchType").val().trim();
-            let searchValue = $("#searchValue").val().trim();
-            console.log(searchType);
-            console.log(searchValue);
+    function mysearch(){
+        let searchType = $("#searchType").val().trim();
+        let searchValue = $("#searchValue").val().trim();
             $.ajax({
               url:"Controller?type=mypostsearch",
               type:"POST",
@@ -629,8 +625,18 @@
             }).done(function (res) {
                 $("#mypost").html(res);
             });
-        })
-    })
+    }
+
+    function moveSearchPage(cPage) {
+
+        $.ajax({
+            url:"Controller?type=mypostsearch",
+            type:"POST",
+            data:{cPage:cPage}
+        }).done(function (res) {
+            $("#mypost").html(res);
+        });
+    }
 
 
     function movePage(nPage) {
