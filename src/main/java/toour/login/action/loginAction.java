@@ -23,6 +23,7 @@ public class loginAction implements Action {
 
             //로그인이 안 되어 있을 때
             if(u_id!=null){
+                //로그인 성공
                 //요청으로부터 id를 잘받아옴
                 MemberVO mvo = MemberDAO.getMem(u_id);
                 if(mvo!=null){
@@ -55,7 +56,7 @@ public class loginAction implements Action {
                         }
                         else
                             viewPath = "member/myPage.jsp";
-                        
+
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
                         viewPath ="member/login.jsp";

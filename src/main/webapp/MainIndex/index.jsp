@@ -17,6 +17,9 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
+<%
+    System.out.println("index");
+%>
 <main>
     <section class="hero-travel-guide container">
         <div class="hero-content-left">

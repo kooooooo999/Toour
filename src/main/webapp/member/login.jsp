@@ -213,7 +213,9 @@
 
 
 <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script>
+<%--
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+--%>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
@@ -276,17 +278,14 @@
   initNaverLogin();
 </script>
 
-
+<!--카카오 로그인 관련-->
 <script>
   Kakao.init('e8b842dc97356296e338660ae4063b8a'); //발급받은 키 중 javascript키를 사용해준다.
-  Kakao.isInitialized();
 
   console.log(Kakao.isInitialized()); // sdk초기화여부판단
-</script>
 
-<script>
-  // 아래는 데모를 위한 UI 코드입니다.
-  displayToken()
+  displayToken();
+
   function displayToken() {
     var token = getCookie('authorize-access-token');
 
@@ -309,15 +308,18 @@
     var parts = document.cookie.split(name + '=');
     if (parts.length === 2) { return parts[1].split(';')[0]; }
   }
-
+  //redirect방식의 카카오 로그인
   function loginWithKakao() {
     Kakao.Auth.authorize({
-      redirectUri: 'http://localhost:8080/Controller?type=moveLogin',
-    });
-  }
-  https://nid.naver.com/oauth2.0/authorize?client_id={클라이언트 아이디}&response_type=code&redirect_uri={개발자 센터에 등록한 콜백 URL(URL 인코딩)}&state={상태 토큰}
+      redirectUri: 'http://localhost:8080/Controller?type=kakaoLogin',
+      scope: 'account_email,profile_nickname',
 
-  //카카오로그인
+    });
+
+  }
+ // https://nid.naver.com/oauth2.0/authorize?client_id={클라이언트 아이디}&response_type=code&redirect_uri={개발자 센터에 등록한 콜백 URL(URL 인코딩)}&state={상태 토큰}
+
+  /*//jdk 방식 카카오로그인
   function kakaoLogin() {
     //로그인 요청(회원가입)
     Kakao.Auth.login({
@@ -334,6 +336,7 @@
                 'user_email' : response.kakao_account.email
               },
               success: function(result){//로그인성공
+
                 console.log(result);
                 window.location.href='/';
               }
@@ -351,7 +354,7 @@
         console.log(error);
       },
     })
-  };
+  };*/
 
   //로그아웃
   function Logout() {
