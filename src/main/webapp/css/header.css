@@ -310,6 +310,7 @@ select:focus {
     padding-bottom: 10px;
 }
 
-#emptyText{
+.emptyText{
     width: 500px; height: 250px; margin-right: 20px; text-align: center;
 }
+

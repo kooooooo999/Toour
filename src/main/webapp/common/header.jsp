@@ -40,28 +40,13 @@
                 <a href="Controller" class="act">홈</a>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">관광지</a>
-                <ul class="submenu">
-                    <li><a href="#">검색</a> </li>
-                    <li><a href="Controller?type=tripSuggestion">테마</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                    <li><a href="#">관광</a> </li>
-                </ul>
+                <a href="Controller?type=tripSuggestion&pageType=trip" class="act">관광지</a>
             </li>
             <li class="dropdown">
                 <a href="Controller?type=GoWay" class="act">나만의 코스</a>
             </li>
             <li class="dropdown">
-                <a href="#" class="act">추천코스</a>
-                <ul class="submenu">
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                    <li><a href="#">계획</a></li>
-                </ul>
+                <a href="Controller?type=tripSuggestion&pageType=course" class="act">추천코스</a>
             </li>
             <li class="dropdown">
                 <a href="<c:url value="/Controller?type=list" />" class="act">게시판</a>

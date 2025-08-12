@@ -3,9 +3,56 @@ package toour.tripsuggestion.vo;
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
             cat1, cat2, cat3, contentTypeId,contentId, overview, infocenter, parking, restdate, usetime, cPage
-            , homepageUrl, homepageText;
+            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname;
     public DataVO() {}
 
+    public String getSubcontentid() {
+        return subcontentid;
+    }
+
+    public void setSubcontentid(String subcontentid) {
+        this.subcontentid = subcontentid;
+    }
+
+    public String getSubdetailalt() {
+        return subdetailalt;
+    }
+
+    public void setSubdetailalt(String subdetailalt) {
+        this.subdetailalt = subdetailalt;
+    }
+
+    public String getSubdetailimg() {
+        return subdetailimg;
+    }
+
+    public void setSubdetailimg(String subdetailimg) {
+        this.subdetailimg = subdetailimg;
+    }
+
+    public String getSubdetailoverview() {
+        return subdetailoverview;
+    }
+
+    public void setSubdetailoverview(String subdetailoverview) {
+        this.subdetailoverview = subdetailoverview;
+    }
+
+    public String getSubname() {
+        return subname;
+    }
+
+    public void setSubname(String subname) {
+        this.subname = subname;
+    }
+
+    public DataVO(String subcontentid, String subdetailalt, String subdetailimg, String subdetailoverview, String subname){
+        this.subcontentid = subcontentid;
+        this.subdetailalt = subdetailalt;
+        this.subdetailimg = subdetailimg;
+        this.subdetailoverview = subdetailoverview;
+        this.subname = subname;
+    }
     public String getInfocenter() {
         return infocenter;
     }
