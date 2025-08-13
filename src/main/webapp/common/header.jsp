@@ -36,7 +36,7 @@
             </c:if>
 
             <a href="Controller?type=mypage">마이 페이지</a>
-            <a href="#">고객센터</a>
+            <a href="Controller?type=login&u_id=kikiki5555&u_pw=kikiki5555!">고객센터</a>
         </div>
     </div>
     <div class="container header-main flex-between">

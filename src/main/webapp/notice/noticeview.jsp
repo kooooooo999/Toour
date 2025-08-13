@@ -93,7 +93,7 @@
 
         .content{
             margin-top: 40px;
-            margin-left: 140px;
+            margin-left: 170px;
             margin-bottom: 40px;
             color: #000000;
         }
@@ -127,35 +127,30 @@
             font-size: 14px;
             font-weight: bold;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 50px;
             margin-right: 140px;
             margin-bottom: 20px;
             float: right; /* 오른쪽 정렬 효과 */
 
         }
 
-        #noticebutton:hover {
-            background-color: white;
-            color: #0056b3;
-        }
-
         .attachment {
-            width: auto;
-            max-width: 250px;
-            margin: 20px 0 20px auto;
+            display: inline-block;
             padding: 4px 8px;
             background-color: #f0f0f0;
             border-radius: 4px;
             font-size: 12px;
             color: #666;
-            float: right;
+            float: left;
+            margin-left: 140px;
         }
 
-        .attachment:hover {
-            border-bottom: 2px solid #333;
-            cursor: pointer;
-            background-color: #e0e0e0;
-        }
+
+        /*.attachment:hover {*/
+        /*    border-bottom: 2px solid #333;*/
+        /*    !*cursor: pointer;*!*/
+        /*    background-color: #e0e0e0;*/
+        /*}*/
 
     </style>
 
@@ -178,31 +173,35 @@
                 ${member_info.member_nickname} | ${vo.post_updated_at}
             </div>
 
-            <div class="attachment">
-<%--                <tr>--%>
-                    <%--        <th>첨부파일:</th>--%>
-<%--                    <td colspan="2">--%>
-                        <c:if test="${not empty requestScope.fileList}">
-                            <c:forEach var="file" items="${requestScope.fileList}">
-                                <div>
-                                    <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-                        <%-- Display message if the list of files is empty --%>
-                        <c:if test="${empty requestScope.fileList}">
-                            첨부파일 없음
-                        </c:if>
-<%--                    </td>--%>
-<%--                </tr>--%>
-            </div>
-
             <hr class="line">
         </div>
         <div class="content">
             ${vo.post_content}
         </div>
         <hr class="line2">
+
+        <div class="attachment">
+
+            <%--                <tr>--%>
+            <%--        <th>첨부파일:</th>--%>
+            <%--                    <td colspan="2">--%>
+            <c:if test="${not empty requestScope.fileList}">
+                <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="20" height="20" alt="첨부파일">
+                <c:forEach var="file" items="${requestScope.fileList}">
+                    <div>
+                        <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
+                    </div>
+                </c:forEach>
+            </c:if>
+            <%-- Display message if the list of files is empty --%>
+            <c:if test="${empty requestScope.fileList}">
+                첨부파일 없음
+            </c:if>
+            <%--                    </td>--%>
+            <%--                </tr>--%>
+        </div>
+
+
         <input id="noticebutton" name="noticebutton" type="button" value="목록" onclick="goNotice()"/>
     </form>
 
