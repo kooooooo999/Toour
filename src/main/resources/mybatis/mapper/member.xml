@@ -23,7 +23,7 @@
     <!-- 이메일로 회원 정보 받기 -->
     <select id="getE" parameterType="String" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member
-        WHERE member_email = #{member_email}
+        WHERE member_email = #{member_email} and login_type=#{login_type}
     </select>
 
     <!--회원가입-->
@@ -33,7 +33,7 @@
     </insert>
 
 
-        <!--카카오 로그인-->
+        <!--카카오 회원가입-->
     <insert id="insertMember" parameterType="toour.member.vo.MemberVO" useGeneratedKeys="true" keyProperty="member_idx">
         INSERT INTO member (
         login_type, member_nickname, member_email,
@@ -47,10 +47,15 @@
     <update id="updateLastLogin" parameterType="String">
         UPDATE member SET member_last_login_at = NOW() WHERE member_idx = #{member_idx}
     </update>
-
-    <select id="getByLoginType" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+    <!--이게 필요한지는 모르겠음 일단 만들어둠-->
+    <select id="getKakaoLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member
-        WHERE login_type = #{login_type} AND member_id = #{member_id}
+        WHERE login_type = #{login_type} AND member_email = #{member_email}
+    </select>
+
+    <select id="getNaverLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE login_type = 'NAVER' AND member_email = #{member_email}
     </select>
 
 </mapper>

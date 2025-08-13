@@ -20,6 +20,7 @@ public class KakaoLoginAction implements Action {
             String code = request.getParameter("code");
             if (code == null || code.isEmpty()) {
                 request.setAttribute("msg", "카카오 인증 코드가 없습니다.");
+                System.out.println("code is null");
                 return "member/login.jsp";
             }
 
@@ -28,6 +29,7 @@ public class KakaoLoginAction implements Action {
 
             if (token == null) {
                 request.setAttribute("msg", "카카오 토큰 발급 실패");
+                System.out.println("token is null");
                 return "member/login.jsp";
             }
 
@@ -37,14 +39,19 @@ public class KakaoLoginAction implements Action {
             String profile_nickname = userInfo.optString("nickname", null);
 
             if (account_email == null) {
+                System.out.println("account_email is null");
                 request.setAttribute("msg", "카카오 로그인에 실패했습니다. 이메일 정보를 확인하세요.");
                 return "member/login.jsp";
             }
 
             // 4. DB 처리
-            MemberVO member = MemberDAO.getMemE(account_email);
+            //db정보랑 대조
+
+            MemberVO member = MemberDAO.getKakaoMember("KAKAO", account_email);
+            System.out.println("kakaomember_idx is:"+member.getMember_idx());
 
             if (member == null) {
+                System.out.println("member is null");
                 //정보가 없으니까 회원가입
                 MemberVO newMember = new MemberVO();
                 newMember.setMember_id(null);
@@ -59,16 +66,26 @@ public class KakaoLoginAction implements Action {
                 MemberDAO.addMem(newMember);
                 member = newMember;
             } else {
+                System.out.println("kakao member already exist");
                 //기존회원으로 마지막 로그인 날짜만 업데이트
-                MemberDAO.updateLastLogin(member.getMember_idx());
-                member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                try {
+                    MemberDAO.updateLastLogin(member.getMember_idx());
+                    member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    throw new RuntimeException(e);
+                }
             }
 
             // 5. 세션 저장
             HttpSession session = request.getSession();
-            session.setAttribute("user", member);
-
-            return "Controller?type=index";
+            session.setAttribute("accessToken", token);
+            session.setAttribute("member", member);
+            session.setAttribute("userIdx", member.getMember_idx());
+            session.setAttribute("userId", member.getMember_id());
+            session.setAttribute("userNickName", member.getMember_nickname());
+            System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
+            return "MainIndex/index.jsp";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -102,9 +119,12 @@ public class KakaoLoginAction implements Action {
         if (responseCode == 200) {
             String result = readResponse(conn.getInputStream());
             JSONObject json = new JSONObject(result);
+
+            System.out.println("Access Token Response: " + result);
+
             return json.getString("access_token");
         }
-        return null;
+        return params;
     }
 
     // 사용자 정보 요청

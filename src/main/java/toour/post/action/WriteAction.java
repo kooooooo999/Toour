@@ -1,6 +1,7 @@
 package toour.post.action;
 
 import toour.action.Action;
+import toour.login.dao.MemberDAO;
 import toour.member.vo.MemberVO;
 import toour.post.dao.FileDAO;
 import toour.post.dao.PostDAO;
@@ -35,7 +36,9 @@ public class WriteAction implements Action {
         //1. 로그인 상태 확인!
         MemberVO loginMember = (MemberVO)session.getAttribute("user");
 
+        MemberVO mvo=MemberDAO.getKakaoMember(loginMember.getLogin_type(),loginMember.getMember_email());
         System.out.println("loginMember:"+loginMember.getMember_idx());
+
         if(loginMember == null){
             System.out.println("loginMember nothing");
             return "Controller?type=login";
@@ -52,7 +55,7 @@ public class WriteAction implements Action {
             // 클릭했을 때 수행하는 곳
             // 첨부파일을 받아서 bbs_upload라는 폴더에 저장해야 합니다.
             try{
-                System.out.println("enc_type exist");
+                System.out.println("WriteAction: enc_type multipart");
                 ServletContext application = request.getServletContext();
                 String realPath = application.getRealPath("/bbs_upload");
 
@@ -69,8 +72,8 @@ public class WriteAction implements Action {
                 //이때 첨부파일이 있다면 realPath경로에 저장된 상태다.
 
                 //세션으로부터 가져온 것
-                String member_idx = loginMember.getMember_idx();
-                String member_nickname = loginMember.getMember_nickname();
+                String member_idx = mvo.getMember_idx();
+                String member_nickname = mvo.getMember_nickname();
 
 
                 //나머지 파라미터들 얻기(post_title, member_idx, post_content)

@@ -16,6 +16,9 @@
     <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
 </head>
 <body>
+<script>
+    console.log('index'+'${sessionScope.user.member_idx}');
+</script>
 <c:import url="/common/header.jsp" />
 <%
     System.out.println("index");

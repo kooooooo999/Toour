@@ -256,6 +256,7 @@
 
 
   <form name="ff" method="get">
+    <input type="hidden" name="member_idx" value="${vo.getMember_idx()}">
     <input type="hidden" name="type" />
     <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>

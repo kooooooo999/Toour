@@ -18,8 +18,17 @@
                 <a href="Controller?type=moveSignup">회원가입</a>
             </c:if>
             <c:if test="${sessionScope.user ne null}">
-                <a href="Controller?type=login">로그아웃</a>
+                <c:choose>
+                    <c:when test="${sessionScope.user.login_type=='LOCAL'}">
+                    <a href="Controller?type=login">로그아웃</a>
+                    </c:when>
+                    <c:when test="${sessionScope.user.login_type=='KAKAO'}">
+                        <a href="javascript:Logout()">로그아웃</a>
+                    </c:when>
+                </c:choose>
+
             </c:if>
+
             <a href="Controller?type=mypage">마이 페이지</a>
             <a href="#">고객센터</a>
         </div>
@@ -63,6 +72,18 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 
 <script>
+    //카카오 로그아웃
+    function Logout() {
+        if (!Kakao.Auth.getAccessToken()) {
+            alert('로그아웃 하였습니다.');
+            window.location.href='/user/logout';
+        }
+        Kakao.Auth.logout(function (response) {
+            alert('로그아웃 하였습니다.');
+            window.location.href = '/user/logout';
+        });
+        location.href='Controller?type=kakaologout';
+    };
 
 
     $(function () {

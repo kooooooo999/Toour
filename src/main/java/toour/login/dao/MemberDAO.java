@@ -42,16 +42,27 @@ public class MemberDAO {
         ss.update("member.updateLastLogin", member_idx);
     }
 
-    public static MemberVO getMemberByLoginType(String login_type,String member_email){
+
+
+    //카카오 로그인?
+    public static MemberVO getKakaoMember(String login_type, String account_email) {
         SqlSession ss = FactoryService.getFactory().openSession();
-        //입력된 값을 memberVO로 만들어 parameter 만들기
         MemberVO member = new MemberVO();
         member.setLogin_type(login_type);
-        member.setMember_email(member_email);
-        //resultType이  MemberVO라 이렇게 해줌
-        MemberVO mvo = ss.selectOne("member.getByLoginType", member);
+        member.setMember_email(account_email);
+        MemberVO mvo = ss.selectOne("member.getKakaoLogin",member);
         ss.close();
         return mvo;
     }
+
+    public static MemberVO getNaverMember(String member_email) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO mvo = ss.selectOne("member.getNaverLogin",member_email);
+        ss.close();
+        return mvo;
+    }
+
+
+
 
 }

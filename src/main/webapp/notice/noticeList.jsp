@@ -198,7 +198,7 @@
     <h1>공지사항</h1>
     <div class="search-area">
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
-            <input type="hidden" name="category_idx" value="2">
+            <input type="hidden" name="category_idx" value="1">
             <select id="searchType" name="searchType">
                 <option value="post_title">제목</option>
                 <option value="post_content">내용</option>
