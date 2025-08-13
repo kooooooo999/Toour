@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 public class courseDetailsAction implements Action {
@@ -31,18 +32,21 @@ public class courseDetailsAction implements Action {
         String mapy1 = request.getParameter("mapy");
         String homepageUrl = request.getParameter("homepageUrl");
         String homepageText = request.getParameter("homepageText");
+        String totalCount = request.getParameter("totalCount");
+
+        DataVO dvo = new DataVO(title,addr1,overview,firstimage,mapx1,mapy1,homepageUrl,homepageText,totalCount);
+        request.setAttribute("getAr", dvo);
 
         StringBuilder sb1 = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailInfo2?");
         String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
-
         sb1.append(key);
-        sb1.append("&MobileApp=AppTest&MobileOS=ETC&numOfRows=1&_type=xml&contentTypeId=");
+        sb1.append("&MobileApp=AppTest&MobileOS=ETC&numOfRows=");
+        sb1.append(totalCount);
+        sb1.append("&_type=xml&contentTypeId=");
         sb1.append(contentTypeId);
         sb1.append("&contentId=");
         sb1.append(contentId);
         sb1.append("&pageNo=1");
-//        sb.append(cPage);
-        System.out.println("courseAction: "+sb1.toString());
         try {
             URL url1 = new URL(sb1.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -52,10 +56,11 @@ public class courseDetailsAction implements Action {
             Document doc1 = builder1.build(conn1.getInputStream());
             Element root1 = doc1.getRootElement();
             Element body1 = root1.getChild("body");
+            Element totalCount2 = body1.getChild("totalCount");
+            String totalCountStr = totalCount2.getText();
             Element items1 = body1.getChild("items");
             List<Element> itemList1 = items1.getChildren("item");
-            DataVO[] ar =  new DataVO[itemList1.size()];
-            int i = 0;
+            List<DataVO> arList = new ArrayList<DataVO>();
             for (Element item : itemList1) {
                 String subcontentid =  item.getChildText("subcontentid");
                 String subdetailalt =   item.getChildText("subdetailalt");
@@ -63,7 +68,6 @@ public class courseDetailsAction implements Action {
                 String subdetailoverview =   item.getChildText("subdetailoverview");
                 String subname =   item.getChildText("subname");
                 StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
-                DataVO vo = new DataVO(subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname);
                 sb2.append(subcontentid);
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
@@ -78,21 +82,16 @@ public class courseDetailsAction implements Action {
                 for(Element item2 : itemList2) {
                     String mapx2 = item2.getChildText("mapx");
                     String mapy2 = item2.getChildText("mapy");
-                    System.out.println("mapx1:"+mapx1);
-                    System.out.println("mapy1:"+mapy1);
-                    System.out.println("mapx2:"+mapx2);
-                    System.out.println("mapy2:"+mapy2);
+                    DataVO vo = new DataVO(subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, mapx2, mapy2,totalCountStr);
+                    arList.add(vo);
                 }
-                ar[i++] = vo;
             }
-            request.setAttribute("couserAr", ar);
+            request.setAttribute("couserAr", arList);
+
         }catch (Exception e){
             e.printStackTrace();
         }
 
-        RequestDispatcher rd = request.getRequestDispatcher("Controller?type=tripSuggestion&pageType=courseDetails");
-        rd.forward(request,response);
-
-        return null;
+        return "courseDetails.jsp";
     }
 }

@@ -3,8 +3,16 @@ package toour.tripsuggestion.vo;
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
             cat1, cat2, cat3, contentTypeId,contentId, overview, infocenter, parking, restdate, usetime, cPage
-            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname;
+            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount;
     public DataVO() {}
+
+    public String getTotalCount() {
+        return totalCount;
+    }
+
+    public void setTotalCount(String totalCount) {
+        this.totalCount = totalCount;
+    }
 
     public String getSubcontentid() {
         return subcontentid;
@@ -46,12 +54,27 @@ public class DataVO {
         this.subname = subname;
     }
 
-    public DataVO(String subcontentid, String subdetailalt, String subdetailimg, String subdetailoverview, String subname){
+    public DataVO(String title,String addr1,String overview,String firstimage,String mapx,String mapy,String homepageUrl,String homepageText, String totalCount){
+        this.title = title;
+        this.addr1 = addr1;
+        this.overview = overview;
+        this.firstimage = firstimage;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.homepageUrl = homepageUrl;
+        this.homepageText = homepageText;
+        this.totalCount = totalCount;
+    }
+
+    public DataVO(String subcontentid, String subdetailalt, String subdetailimg, String subdetailoverview, String subname, String mapx, String mapy, String totalCount) {
         this.subcontentid = subcontentid;
         this.subdetailalt = subdetailalt;
         this.subdetailimg = subdetailimg;
         this.subdetailoverview = subdetailoverview;
         this.subname = subname;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.totalCount = totalCount;
     }
     public String getInfocenter() {
         return infocenter;
