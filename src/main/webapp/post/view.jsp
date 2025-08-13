@@ -21,6 +21,8 @@
       border: 1px solid #dee2e6;
       border-radius: 8px !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 0 40px;
+
     }
 
     /* 댓글 폼 영역 */
@@ -48,6 +50,15 @@
       align-items: flex-start;
     }
 
+    .btn-register{
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+
+
     .comment_container textarea{
       width: 100%;
       flex-grow: 1;
@@ -59,24 +70,6 @@
       resize: none;
       box-sizing: border-box;
       margin-bottom: 12px;
-    }
-
-    /* 댓글 버튼 영역 */
-    .post-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: flex-end;
-      margin-right: 20px;
-    }
-
-    .btn-pho {
-      padding: 7px 16px;
-      border: 1px solid #ccc;
-      background-color: #fff;
-      color: #333;
-      font-size: 14px;
-      border-radius: 6px;
-      cursor: pointer;
     }
 
     .btn-register {
@@ -96,17 +89,14 @@
 
     /* 댓글 리스트 영역 */
     .comment_list {
-      display: inline-block;
-      width: 60%; /* 나머지 60% */
-      max-height: 300px;
+      width: 100%;
+      height: auto;
       overflow-y: auto;
       border: 1px solid #ddd;
       border-radius: 6px;
       padding: 10px 20px;
       font-size: 14px;
       line-height: 1.5;
-      color: #333;
-      background: #fafafa;
     }
 
     .comment_list div {
@@ -134,7 +124,6 @@
     }
 
 
-
     /* footer 스타일 */
     footer {
       margin-top: 40px;
@@ -145,6 +134,113 @@
       color: #666;
       border-radius: 0 0 8px 8px;
     }
+
+    .post-table {
+      width: 100%;
+      border-collapse: collapse;
+      table-layout: fixed;
+      font-size: 15px;
+    }
+
+    .post-table th, .post-table td {
+      border: 1px solid #ccc;
+      padding: 12px;
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .post-table th {
+      background-color: #f0f0f0;
+      width: 120px;
+    }
+
+    .post-title {
+      background-color: #e8f4ff;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    .post-title th {
+      font-size: 24px;
+      font-weight: 700;
+      background-color: #ffffff;
+      padding: 20px;
+      text-align: center;
+      }
+
+
+
+    .post-title td {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 20px;
+      background-color: #f9fbfe;
+      text-align: center;
+    }
+
+    .post-name th{
+      text-align: center;
+    }
+
+    .post-name td{
+      text-align: center;
+    }
+
+    .post-content th {
+      background-color: #fcfcfc;
+      line-height: 1.6;
+      padding: 20px;
+      text-align: left;
+      margin-left: 500px;
+
+    }
+
+    .post-buttons{
+      text-align: right;
+      margin-right: 40px;
+      margin-top: 40px;
+    }
+
+    .attachment td {
+      background-color: #fefefe;
+      padding: 15px;
+    }
+
+    .attachment {
+      display: inline-block;
+      padding: 4px 8px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #666;
+      float: left;
+      margin-left: 20px;
+      margin-top: 10px;
+    }
+
+    #comment_lilist{
+      margin-left: 20px;
+      margin-top: 5px;
+      font-size: 16px;
+    }
+
+    #comment_nickname{
+      font-weight: bold;
+    }
+
+    #comment_btn {
+      padding: 4px 12px;
+      font-size: 14px;
+      height: 36px;
+      line-height: 1;
+      border: 1px solid #0066cc;
+      background-color: #0066cc;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
 
 
 
@@ -166,42 +262,45 @@
       <caption>게시판 글쓰기</caption>
       <tbody>
       <tr class="post-title">
-        <th>제목:</th>
-        <td colspan="3">${vo.post_title}</td>
+        <th colspan="6">${vo.post_title}</th>
       </tr>
 
       <!--게시물-->
       <tr class="post-name">
-        <th>별명:</th>
+        <th>별명</th>
         <td>${member_info.member_nickname}</td>
         <th>작성일</th>
         <td>${vo.post_updated_at}</td>
+        <th>조회수</th>
+        <td>${vo.post_views}</td>
       </tr>
+
       <tr class="post-content">
-        <th>내용:</th>
-       <td colspan="3">${vo.post_content}</td>
+       <th colspan="6" rowspan="6">${vo.post_content}</th>
       </tr>
       </tbody>
-
-      <tr>
-        <th>첨부파일:</th>
-        <td colspan="3">
-          <c:if test="${not empty requestScope.fileList}">
-            <c:forEach var="file" items="${requestScope.fileList}">
-
-              <div>
-                <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
-              </div>
-            </c:forEach>
-          </c:if>
-          <%-- Display message if the list of files is empty --%>
-          <c:if test="${empty requestScope.fileList}">
-            첨부파일 없음
-          </c:if>
-        </td>
-      </tr>
-
     </table>
+
+      <div class="attachment">
+
+        <%--                <tr>--%>
+        <%--        <th>첨부파일:</th>--%>
+        <%--                    <td colspan="2">--%>
+        <c:if test="${not empty requestScope.fileList}">
+          <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="20" height="20" alt="첨부파일">
+          <c:forEach var="file" items="${requestScope.fileList}">
+            <div>
+              <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
+            </div>
+          </c:forEach>
+        </c:if>
+        <%-- Display message if the list of files is empty --%>
+        <c:if test="${empty requestScope.fileList}">
+          첨부파일 없음
+        </c:if>
+        <%--                    </td>--%>
+        <%--                </tr>--%>
+      </div>
   </form>
 
       <div class="post-buttons">
@@ -220,36 +319,24 @@
     <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
            onsubmit="return commentData()">
       <div class="comment_container">
+        <c:if test="${empty sessionScope.user}">
+          <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
+
+        </c:if>
+        <c:if test="${not empty sessionScope.user}">
         <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
+        <input id="comment_btn" type="submit" value="댓글" class="btn-register"/>
+        <hr class="comment-line"/>
       </div>
+      </c:if>
         <div class="comment_action">
           <div>
-            <label for="fileUp" class="btn-pho">
-              <span class="icon">📷</span> 사진
-            </label>
-
-            <input type="file" id="fileUp" name="fileUp" onchange="fileChange(this,true)" style="display:none;">
-
             <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
             <input type="hidden" name="cPage" value="${param.cPage}"/>
             <input type="hidden" name="type" value="comment"/>
             <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
             <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
 
-            <%--      <c:if test="${not empty sessionScope.user}">--%>
-            <input type="submit" value="댓글" class="btn-register"/>
-
-            <div id="loginDialog" title="로그인" style="display: none">
-              <%--      </c:if>--%>
-              <%--      <c:if test="${empty sessionScope.user}">--%>
-              <h3>댓글 작성을 하려면 로그인이 필요합니다.</h3>
-              <p>
-                <a href="Controller?type=moveLogin">로그인</a>
-                또는
-                <a href="Controller?type=moveSignup">회원가입</a>을 해주세요.
-              </p>
-              <%--      </c:if>--%>
-            </div>
           </div>
         </div>
     </form>
@@ -272,19 +359,27 @@
     </form>
   </div>
 
-<%--  댓글들<hr/>--%>
-<div class="comment_list">
-  <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
 
-    <div>
-      별명 :${cvo.member_nickname} &nbsp;
-      | ${cvo.comment_updated_at}<br/>
+<%--  댓글들<hr/>--%>
+
+  <c:if test="${not empty requestScope.comment_list}">
+    <div class="comment_list">
+  <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
+    <div id="comment_lilist">
+      <div id="comment_nickname">
+      ${cvo.member_nickname} &nbsp;
+        | &nbsp;${cvo.comment_updated_at}
+      </div>
+      <div id="comment_post">
       내용:${cvo.comment_content}
+      </div>
     </div>
     <hr/>
 
   </c:forEach>
-</div>
+  </c:if>
+
+    </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
