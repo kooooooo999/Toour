@@ -134,10 +134,21 @@
     /* 로그인 버튼 스타일 */
     .login-button-container {
       padding-top: 20px;
+      margin-bottom: 10px;
+    }
+
+    .kakao_login_btn {
+      display: block;
+      margin-bottom: 5px; /* 카카오와 네이버 버튼 사이 */
+    }
+
+    .naver_id_login {
+      height: 47px;
     }
 
     .login-button {
-      width: 100%;
+      /*width: 100%;*/
+      width: 190px;
       padding: 12px;
       border: none;
       border-radius: 5px;
@@ -164,6 +175,7 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
+
   </style>
 </head>
 <body>
@@ -184,11 +196,13 @@
       </tr>
       </tbody>
     </table>
+  <%-- 로그인 버튼 --%>
     <div class="login-button-container">
       <button type="button" class="login-button" onclick="sendForm(this.form)">로그인</button>
     </div>
   </form>
-  <a id="kakao_login_btn" href="javascript:loginWithKakao()">
+  <%-- 카카오 로그인 버튼 --%>
+  <a class="kakao_login_btn" id="kakao_login_btn" href="javascript:loginWithKakao()">
     <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" height="46.72" alt="카카오 로그인 버튼" />
   </a>
   <!-- 네이버 로그인 버튼 -->
@@ -204,8 +218,8 @@
     session.setAttribute("state", state);
     System.out.println(apiURL);
   %>
-  <a id="naver_id_login" href="<%=apiURL%>">
-    <img src="https://static.nid.naver.com/oauth/big_g.PNG" width="190" height="46.72" alt="네이버 로그인 버튼" />
+  <a class="naver_id_login" id="naver_id_login" href="<%=apiURL%>">
+    <img src="src/main/webapp/images/naver_btn.png" width="190" height="46.72" alt="네이버 로그인 버튼" />
   </a>
 
   <p id="token-result"></p>

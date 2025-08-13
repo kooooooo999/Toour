@@ -1,25 +1,14 @@
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<link rel="stylesheet" href="<c:url value="/css/error.css" />
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <title id="headTitle">한국관광공사</title>
+    <title id="headTitle">toour</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <link rel="stylesheet" href="/humanframe/theme/kto/assets/style/style.css">
-    <link rel="stylesheet" href="/humanframe/theme/kto/assets/style/component/error.css">
-
-    <script type="text/javascript" src="/humanframe/theme/global/assets/script/jquery-1.12.4.min.js"></script><!-- global -->
-    <script src="/humanframe/theme/kto/assets/script/device.js"></script>
-
-    <!--[if lt IE 9]>
-    <script src="/humanframe/theme/global/assets/script/html5shiv.min.js"></script>
-    <script src="/humanframe/theme/global/assets/script/respond.min.js"></script>
-    <![endif]-->
+    <link rel="stylesheet" href="/css/error.css">
 
 </head>
 <body class="page-error-body">
@@ -36,7 +25,9 @@
             </p>
         </div>
         <div class="page-error-btn-wrap">
-            <a href="/index" class="btn is-default is-go"><span>메인으로 이동<i class="icon is-go"></i></span></a>
+            <a href="/index" class="btn is-default is-go">
+                <span>메인으로 이동<i class="icon is-go"></i></span>
+            </a>
         </div>
     </div>
 </div>
