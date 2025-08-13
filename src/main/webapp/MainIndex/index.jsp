@@ -16,9 +16,7 @@
     <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
 </head>
 <body>
-
 <c:import url="/common/header.jsp" />
-
 <main>
     <section class="hero-travel-guide container">
         <div class="hero-content-left">
@@ -52,7 +50,7 @@
             </div>
             <div class="recommend-cards">
                 <div class="card">
-                    <img src="#" alt="노도(김만중)">
+                    <img src="https://via.placeholder.com/300x200?text=Nodo+Island" alt="노도(김만중)">
                     <div class="card-content">
                         <h4>노도(김만중)<br><small>경상남도 남해군</small></h4>
                         <p>섬 전체가 하나의 거대한 문학 공원</p>
@@ -60,7 +58,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="card">
-                    <img src="#" alt="취한대">
+                    <img src="https://via.placeholder.com/300x200?text=Chwihancheonjeong" alt="취한대">
                     <div class="card-content">
                         <h4>취한대<br><small>경상남도 하동군</small></h4>
                         <p>지리산 산자락에 위치한 고즈넉한 정자</p>
@@ -68,7 +66,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="card">
-                    <img src="#" alt="산의한우마을">
+                    <img src="https://via.placeholder.com/300x200?text=Sanui+Hanok+Village" alt="산의한우마을">
                     <div class="card-content">
                         <h4>산의한우마을<br><small>전라북도 진안군</small></h4>
                         <p>싱싱한 한우를 맛볼 수 있는 한우거리</p>
@@ -76,7 +74,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="card">
-                    <img src="#" alt="대구 등산">
+                    <img src="https://via.placeholder.com/300x200?text=Daegu+Hiking" alt="대구 등산">
                     <div class="card-content">
                         <h4>대구 히스토리...<br><small>대구광역시 북구</small></h4>
                         <p>대구의 역사와 문화를 느낄 수 있는 곳</p>
@@ -122,7 +120,7 @@
         <div class="healing-carousel-wrapper">
             <div class="healing-card-wrapper">
                 <div class="healing-card">
-                    <img src="#" alt="경주 풍력발전소">
+                    <img src="https://via.placeholder.com/300x200?text=Gyeongju+Windmill" alt="경주 풍력발전소">
                     <div class="card-content">
                         <h4>일출 명소부터 짜릿한 체험까지!</h4>
                         <p>경주에서 보내는 특별한 하루</p>
@@ -130,7 +128,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="healing-card">
-                    <img src="#" alt="전남 미식 여행">
+                    <img src="https://via.placeholder.com/300x200?text=Jeonnam+Sea" alt="전남 미식 여행">
                     <div class="card-content">
                         <h4>입안 가득 바다의 맛 🎣</h4>
                         <p>전남 미식 여행 코스 추천</p>
@@ -138,7 +136,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="healing-card">
-                    <img src="#" alt="서울 걷기 명소">
+                    <img src="https://via.placeholder.com/300x200?text=Seoul+Healing+Trail" alt="서울 걷기 명소">
                     <div class="card-content">
                         <h4>낭만 치사랑 한도 초과💖</h4>
                         <p>서울 경기 능소화 명소 4</p>
@@ -146,7 +144,7 @@
                     <span class="heart-icon"><i class="far fa-heart"></i></span>
                 </div>
                 <div class="healing-card">
-                    <img src="#" alt="서울 트리하우스">
+                    <img src="https://via.placeholder.com/300x200?text=Seoul+Treehouse" alt="서울 트리하우스">
                     <div class="card-content">
                         <h4>그늘 아래 휴식 한 스푼 🌳</h4>
                         <p>서울 근교 트리하우스 명소 4</p>
