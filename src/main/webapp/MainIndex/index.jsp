@@ -16,8 +16,11 @@
     <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
 </head>
 <body>
+
 <c:import url="/common/header.jsp" />
+
 <main>
+
     <section class="hero-travel-guide container">
         <div class="hero-content-left">
             <small>선비의 발자취를 따라,</small>
@@ -40,55 +43,83 @@
     <section class="travel-cockcock">
         <div class="container">
             <div class="section-header">
-                <h3>여행콕콕</h3>
-                <p>빅데이터 기반 AI 추천 여행지와 코스를 알려드려요.</p>
+                <h3><strong>추천코스</strong></h3>
+                <p>빅데이터 기반 AI 추천 여행지 코스를 알려드려요.</p>
             </div>
+
             <div class="tabs">
-                <button class="active">AI콕콕</button>
-                <button>핫플콕콕</button>
-                <button>AI콕콕 플래너</button>
+                <button class="tab active">AI콕콕</button>
+                <button class="tab">핫플콕콕</button>
+                <button class="tab">AI콕콕 플래너</button>
             </div>
+
+            <div class="ai-intro">
+                <p>당신의 성향, 취향 분석 완료! 마음에 쏙 들 여행지를 추천해 드릴게요.</p>
+                <p>  　</p>
+            </div>
+
             <div class="recommend-cards">
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Nodo+Island" alt="노도(김만중)">
+<<<<<<< HEAD
+                    <img src="#" alt="노도(김만중)">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=5479400c-1531-4197-a861-0dd37bc1603a" alt="덕가산">
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>노도(김만중)<br><small>경상남도 남해군</small></h4>
-                        <p>섬 전체가 하나의 거대한 문학 공원</p>
+                        <h4>덕가산<br><small>강원도 영월군</small></h4>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+<%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
+
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Chwihancheonjeong" alt="취한대">
+<<<<<<< HEAD
+                    <img src="#" alt="취한대">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=169a3167-0d2a-4bf4-a680-cb8df73bc5c0" alt="백석봉(정선)">
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>취한대<br><small>경상남도 하동군</small></h4>
-                        <p>지리산 산자락에 위치한 고즈넉한 정자</p>
+                        <h4>백석봉(정선)<br><small>강원도 정선군</small></h4>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+<%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
+
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Sanui+Hanok+Village" alt="산의한우마을">
+<<<<<<< HEAD
+                    <img src="#" alt="산의한우마을">
+=======
+                    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAyMThfMTkw%2FMDAxNzA4MjY1MTgzOTQ0.RqIVGcDhC1X9PLb6Z4pdU-qmIGnL2TG4mMAAyXqvFDog.w8ny-Go8I4pb4N5Tph-YrSs1PwS_Q8oZdkHSYsX8pa8g.JPEG.rtop221%2F%25B7%25CE%25B0%25ED20240218_215307.678.jpg&type=a340" alt="데미샘자연휴양림">
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>산의한우마을<br><small>전라북도 진안군</small></h4>
-                        <p>싱싱한 한우를 맛볼 수 있는 한우거리</p>
+                        <h4>데미샘자연휴양림<br><small>전라북도 진안군</small></h4>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+<%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
+
                 <div class="card">
-                    <img src="https://via.placeholder.com/300x200?text=Daegu+Hiking" alt="대구 등산">
+<<<<<<< HEAD
+                    <img src="#" alt="대구 등산">
+=======
+                    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA4MjFfMjk5%2FMDAxNzI0MTcyMTc3Mzg3.UYaBrb1zmdbf7D1dZGbEMmpxYRpwMkx_4ayoAo4MJ8sg.5GlKf4KjJigUkWl0nXDM7W8Xreb4LDJVNVDnrBVyHI4g.PNG%2F1724167398298.png&type=l340_165" alt="양평 쉬자파크">
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>대구 히스토리...<br><small>대구광역시 북구</small></h4>
-                        <p>대구의 역사와 문화를 느낄 수 있는 곳</p>
+                        <h4>양평 쉬자파크공원<br><small>경기도 양평군</small></h4>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+<%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
             </div>
-            <a href="#" class="more-button">오늘의 AI콕콕 추천 더보기 <i class="fas fa-plus"></i></a>
+
+            <a href="#" class="more-button">오늘의 추천 코스<i class="fas fa-plus"></i></a>
         </div>
     </section>
 
+
     <section class="news-banner-section container">
         <div class="news-area">
-            <h3>오늘의 여행 소식 <i class="fas fa-plus plus-icon"></i></h3>
+            <h3>
+                <a href="/Controller?type=notice" class="news-link">
+                    오늘의 공지 사항 <i class="fas fa-plus plus-icon"></i>
+                </a>
+            </h3>
             <ul class="news-list">
                 <li>
                     <span class="category">행정안전부</span>
@@ -112,7 +143,6 @@
                 </li>
             </ul>
         </div>
-
     </section>
 
     <section class="healing-travel-section container section-padding">
@@ -120,36 +150,52 @@
         <div class="healing-carousel-wrapper">
             <div class="healing-card-wrapper">
                 <div class="healing-card">
-                    <img src="https://via.placeholder.com/300x200?text=Gyeongju+Windmill" alt="경주 풍력발전소">
+<<<<<<< HEAD
+                    <img src="#" alt="경주 풍력발전소">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=7266caa0-cb58-48a0-a04b-0dd60ee0ac1c" alt="경주 풍력발전소" />
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>일출 명소부터 짜릿한 체험까지!</h4>
-                        <p>경주에서 보내는 특별한 하루</p>
+                        <h4>차 향 따라 쉬어가는 여름방학 🍧</h4>
+                        <p>보성 가족여행 코스 추천</p>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+
                 </div>
                 <div class="healing-card">
-                    <img src="https://via.placeholder.com/300x200?text=Jeonnam+Sea" alt="전남 미식 여행">
+<<<<<<< HEAD
+                    <img src="#" alt="전남 미식 여행">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=89662693-e69e-4c7d-bd6d-b731a04df674" alt="단양 디지털 관광주민증" />
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>입안 가득 바다의 맛 🎣</h4>
-                        <p>전남 미식 여행 코스 추천</p>
+                        <h4>디지털 관광주민증으로 알뜰하게!</h4>
+                        <p>단양에서 즐기는 짜릿한 여름</p>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+
                 </div>
                 <div class="healing-card">
-                    <img src="https://via.placeholder.com/300x200?text=Seoul+Healing+Trail" alt="서울 걷기 명소">
+<<<<<<< HEAD
+                    <img src="#" alt="서울 걷기 명소">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=a483fc35-1ee1-4848-acce-ab9bf19b4819" alt="서울 사진미술관" />
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>낭만 치사랑 한도 초과💖</h4>
-                        <p>서울 경기 능소화 명소 4</p>
+                        <h4>따끈한 신상 공간,</h4>
+                        <p>서울시립 사진미술관 📷</p>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+
                 </div>
                 <div class="healing-card">
-                    <img src="https://via.placeholder.com/300x200?text=Seoul+Treehouse" alt="서울 트리하우스">
+<<<<<<< HEAD
+                    <img src="#" alt="서울 트리하우스">
+=======
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f60d9fe7-8cf0-496a-be9e-9be868875f95" alt="템플스테이" />
+>>>>>>> origin/feature_sebin
                     <div class="card-content">
-                        <h4>그늘 아래 휴식 한 스푼 🌳</h4>
-                        <p>서울 근교 트리하우스 명소 4</p>
+                        <h4>템플스테이부터 천문대까지!</h4>
+                        <p>영월의 여름을 즐기는 법</p>
                     </div>
-                    <span class="heart-icon"><i class="far fa-heart"></i></span>
+
                 </div>
             </div>
             <div class="healing-navigation">
@@ -160,6 +206,7 @@
             <span>1 / 3</span>
         </div>
     </section>
+
 </main>
 
 <c:import url="/common/footer.jsp" />
