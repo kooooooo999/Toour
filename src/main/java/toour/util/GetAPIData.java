@@ -185,6 +185,7 @@ public class GetAPIData {
         DataVO dvo = null;
         try {
             URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId="+contentId);
+            System.out.println("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId="+contentId);
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();

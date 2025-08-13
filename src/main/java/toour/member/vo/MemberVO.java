@@ -1,5 +1,7 @@
 package toour.member.vo;
 
+import java.util.List;
+
 public class MemberVO {
     private  String   member_idx, member_name, member_nickname, member_password,
             member_email, member_created_at, member_updated_at,
@@ -8,24 +10,24 @@ public class MemberVO {
     // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt
 
     // 내가 저장한 찜 목록저장소
-    private ZzimVO[] zzimlist;
+    private List<ZzimVO> zzimlist;
 
-    private CourseVO[] courselist;
+    private List<CourseVO> courselist;
 
-    public CourseVO[] getCourselist() {
-        return courselist;
-    }
-
-    public void setCourselist(CourseVO[] courselist) {
-        this.courselist = courselist;
-    }
-
-    public ZzimVO[] getZzimlist() {
+    public List<ZzimVO> getZzimlist() {
         return zzimlist;
     }
 
-    public void setZzimlist(ZzimVO[] zzimlist) {
+    public void setZzimlist(List<ZzimVO> zzimlist) {
         this.zzimlist = zzimlist;
+    }
+
+    public List<CourseVO> getCourselist() {
+        return courselist;
+    }
+
+    public void setCourselist(List<CourseVO> courselist) {
+        this.courselist = courselist;
     }
 
     public String getMember_idx() {

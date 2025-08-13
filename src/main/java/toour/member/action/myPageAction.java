@@ -2,6 +2,7 @@ package toour.member.action;
 
 import toour.action.Action;
 import toour.member.dao.CourseDAO;
+import toour.member.dao.ZzimDAO;
 import toour.member.vo.MemberVO;
 import toour.member.vo.CourseVO;
 import toour.member.vo.ZzimVO;
@@ -31,14 +32,16 @@ public class myPageAction implements Action {
 
             int tour_cnt =0;
             int course_cnt =0;
+            ZzimVO[] zzim_ar= ZzimDAO.getZzimAr(mvo.getMember_idx());
 
-            for(ZzimVO zvo :mvo.getZzimlist()) {
+            for(ZzimVO zvo :zzim_ar) {
                 String zzimType = zvo.getZzim_type();
                 // 관광지를 담는 배열에 최대 4개만 담는 문장
                 if (zzimType.equals("tour")) {
                     if (tour_cnt < cnt) {
                         tour_ar[tour_cnt] = GetAPIData.getDataVO(zvo.getZzim_content_id());
                         tour_cnt++;
+                        System.out.println("tour_cnt:"+tour_cnt);
                     }
                 }
 
@@ -51,8 +54,8 @@ public class myPageAction implements Action {
             
             //회원의 코스를 4개만 가져옴
             for (int i = 0;i<cnt;i++){
-                if(i<mvo.getCourselist().length) {
-                    course_ar[i] = mvo.getCourselist()[i];
+                if(i<mvo.getCourselist().size()) {
+                    course_ar[i] = mvo.getCourselist().get(i);
                 }else
                     break;
             }
@@ -71,6 +74,7 @@ public class myPageAction implements Action {
             //request에 배열 2개 저장해서 마이페이지로 이동
             request.setAttribute("tour_ar", tour_ar);
             request.setAttribute("course_ar", course_ar);
+
         }
         return "member/myPage.jsp";
     }
