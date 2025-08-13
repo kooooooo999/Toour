@@ -64,7 +64,7 @@
 
 
 <%-- 로그인하지 않았을 때 보여줄 내용 --%>
-<c:if test="${empty sessionScope.user}">
+<c:if test="${empty sessionScope.member}">
   <h3>로그인이 필요합니다.</h3>
   <p>
     <a href="Controller?type=moveLogin">로그인</a>
@@ -74,7 +74,7 @@
 </c:if>
 
 
-<c:if test="${not empty sessionScope.user}">
+<c:if test="${not empty sessionScope.member}">
 
   <div id="post">
     <form action="Controller?type=write" method="post"
@@ -89,7 +89,7 @@
         </tr>
         <tr>
           <th>이름:</th>
-          <td>${sessionScope.userNickName}</td>
+          <td>${sessionScope.member.member_nickname}</td>
         </tr>
         <tr>
           <th>내용:</th>
@@ -131,6 +131,10 @@
           for(let i=0; i<files.length; i++)
             sendImg(files[i], editor);
           //console.log(files.length);
+        },
+        onImageUploadError: function(msg) {
+          console.error('이미지 업로드 오류:', msg);
+          alert('이미지 업로드에 실패했습니다: ' + msg);
         }
       }
     });
@@ -162,6 +166,9 @@
       dataType: "json"
     }).done(function(res) {
       $("#post_content").summernote("editor.insertImage", res.img_url);
+    }).fail(function(xhr, status, error) {
+      console.error('이미지 업로드 실패:', xhr.responseText);
+      alert('이미지 업로드에 실패했습니다: ' + error);
     });
   }
   function sendData(){

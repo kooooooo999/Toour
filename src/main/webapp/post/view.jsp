@@ -267,8 +267,9 @@
     <form action="Controller" method="post">
       <p>정말로 삭제 하시겠습니까?</p>
       <input type="hidden" name="type" value="del"/>
-      <input type="hidden" name="post" value="${vo.getPost_idx()}"/>
+      <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
       <input type="hidden" name="cPage" value="${param.cPage}"/>
+      <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
   </div>

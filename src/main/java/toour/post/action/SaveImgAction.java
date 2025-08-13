@@ -16,11 +16,18 @@ public class SaveImgAction implements Action {
         ServletContext application = request.getServletContext();
         String realPath = application.getRealPath("/editor_img");
 
+
+        // 업로드 디렉토리 생성
+        File uploadDir = new File(realPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+            System.out.println("create summernote directory: " + realPath);
+        }
         //첨부되어오는 이미지 파일을 위에서 준비한 절대경로에 업로드 시키기 위해서다.
         // 그렇게 하기 위해서는 cos라이브러리의 MultipartRequest객체가 필요함!
         try {
             MultipartRequest mr = new MultipartRequest(request, realPath,
-                    1024*1024*5, "utf-8",
+                    1024*1024*10, "utf-8",
                     new DefaultFileRenamePolicy());
             // 이때 파일은 이미 editor_img폴더에 업로드가 된 상태다.
 
@@ -37,6 +44,8 @@ public class SaveImgAction implements Action {
             if(f != null){
                 f_name = f.getName();
                 request.setAttribute("f_name", f_name);//저장된 파일명
+                String file_name_original = mr.getOriginalFileName("upload");
+                request.setAttribute("file_name_original", file_name_original);
             }
             request.setAttribute("contextPath", request.getContextPath());
         } catch (Exception e) {

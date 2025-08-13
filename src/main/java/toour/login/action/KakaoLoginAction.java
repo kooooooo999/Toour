@@ -81,8 +81,9 @@ public class KakaoLoginAction implements Action {
             HttpSession session = request.getSession();
             session.setAttribute("accessToken", token);
             session.setAttribute("member", member);
+            session.setAttribute("user", member);
             session.setAttribute("userIdx", member.getMember_idx());
-            session.setAttribute("userId", member.getMember_id());
+            session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
             System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
             return "MainIndex/index.jsp";
@@ -94,16 +95,22 @@ public class KakaoLoginAction implements Action {
         }
     }
 
-    // 카카오 토큰 요청
+    // 카카오 토큰 요청 (디버깅 버전)
     private String getAccessToken(String code) throws IOException {
         String tokenUrl = "https://kauth.kakao.com/oauth/token";
-        String redirectUri = "http://localhost:8080/Controller?type=kakaoLogin"; // 동일해야 함
-        String clientId = "f08deb4abc2cec584eecade447daf3bf"; // 여기에 REST API 키 입력
+        String redirectUri = "http://localhost:8080/Controller?type=kakaoLogin";
+        String clientId = "f08deb4abc2cec584eecade447daf3bf"; // 실제 REST API 키 입력 필요
+
+        System.out.println("=== 토큰 요청 시작 ===");
+        System.out.println("code: " + code);
+        System.out.println("clientId: " + clientId);
+        System.out.println("redirectUri: " + redirectUri);
 
         URL url = new URL(tokenUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("POST");
         conn.setDoOutput(true);
+        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
         String params = "grant_type=authorization_code" +
                 "&client_id=" + clientId +
@@ -116,29 +123,60 @@ public class KakaoLoginAction implements Action {
         }
 
         int responseCode = conn.getResponseCode();
+        System.out.println("토큰 요청 응답 코드: " + responseCode);
+
         if (responseCode == 200) {
             String result = readResponse(conn.getInputStream());
+            System.out.println("토큰 응답: " + result);
+
             JSONObject json = new JSONObject(result);
-
-            System.out.println("Access Token Response: " + result);
-
-            return json.getString("access_token");
+            String accessToken = json.getString("access_token");
+            System.out.println("발급된 액세스 토큰: " + accessToken);
+            return accessToken;
+        } else {
+            // 에러 응답도 읽어보기
+            String errorResult = "";
+            try {
+                errorResult = readResponse(conn.getErrorStream());
+            } catch (Exception e) {
+                errorResult = "에러 스트림을 읽을 수 없음";
+            }
+            System.out.println("토큰 요청 실패 - 응답 코드: " + responseCode);
+            System.out.println("에러 응답: " + errorResult);
+            return null;
         }
-        return params;
     }
 
-    // 사용자 정보 요청
+    // 사용자 정보 요청 (디버깅 버전)
     private JSONObject getUserInfo(String accessToken) throws IOException {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
+
+        System.out.println("=== 사용자 정보 요청 시작 ===");
+        System.out.println("사용할 액세스 토큰: " + accessToken);
 
         URL url = new URL(reqUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
         conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
-        String result = readResponse(conn.getInputStream());
-        JSONObject json = new JSONObject(result);
+        int responseCode = conn.getResponseCode();
+        System.out.println("responseCode: " + responseCode);
 
+        if (responseCode != 200) {
+            String errorResult = "";
+            try {
+                errorResult = readResponse(conn.getErrorStream());
+            } catch (Exception e) {
+                errorResult = "error stream can't be read";
+            }
+            System.out.println("request failed error result: " + errorResult);
+            throw new IOException("request failed, response code is " + responseCode);
+        }
+
+        String result = readResponse(conn.getInputStream());
+        System.out.println("userInfo response: " + result);
+
+        JSONObject json = new JSONObject(result);
         JSONObject kakaoAccount = json.getJSONObject("kakao_account");
         JSONObject profile = kakaoAccount.getJSONObject("profile");
 
@@ -146,6 +184,7 @@ public class KakaoLoginAction implements Action {
         userInfo.put("email", kakaoAccount.optString("email", null));
         userInfo.put("nickname", profile.optString("nickname", null));
 
+        System.out.println("userInfo: " + userInfo.toString());
         return userInfo;
     }
 

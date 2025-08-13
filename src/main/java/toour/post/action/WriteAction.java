@@ -28,20 +28,20 @@ public class WriteAction implements Action {
         //System.out.println(enc_type);
         //세션에 저장된 사용자정보를 가져오기
         HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
+        if(session.getAttribute("member") == null){
             //로그인 안된 상태면
-            System.out.println("session nothing");
-            return "Controller?type=login";
+            System.out.println("session nothing - no member in session");
+            return "Controller?type=moveLogin";
         }
         //1. 로그인 상태 확인!
-        MemberVO loginMember = (MemberVO)session.getAttribute("user");
+        MemberVO loginMember = (MemberVO)session.getAttribute("member");
 
         MemberVO mvo=MemberDAO.getKakaoMember(loginMember.getLogin_type(),loginMember.getMember_email());
         System.out.println("loginMember:"+loginMember.getMember_idx());
 
         if(loginMember == null){
             System.out.println("loginMember nothing");
-            return "Controller?type=login";
+            return "Controller?type=moveLogin";
         }
 
         //2. 요청타입에 따른 로직 분기
@@ -51,10 +51,12 @@ public class WriteAction implements Action {
             viewPath = "post/write.jsp";
             //post 방식(form submit)
         }else if(enc_type.startsWith("multipart")){
+            // GET 방식 (form)
             // 여기는 write.jsp에서 내용을 입력한 후 [보내기] 버튼을
             // 클릭했을 때 수행하는 곳
             // 첨부파일을 받아서 bbs_upload라는 폴더에 저장해야 합니다.
             try{
+                // POST 방식
                 System.out.println("WriteAction: enc_type multipart");
                 ServletContext application = request.getServletContext();
                 String realPath = application.getRealPath("/bbs_upload");
@@ -85,15 +87,27 @@ public class WriteAction implements Action {
                 String post_likes = "0";
                 String post_comments_count = "0";
                 String post_status = "0";
-                String post_created_at = null; // Let DB handle this with NOW()
+                String post_created_at = null;// DB에서 NOW() 처리
                 String post_star = "0";
 
 
-                int generatedPostIdx = PostDAO.add(post_title, post_content, member_idx,
-                        category_idx, post_views, post_likes, post_comments_count,
-                        post_status, post_created_at, post_star);
-                System.out.println("WriteAction 94"+generatedPostIdx);
-                //첨부파일이 있다면 file_name_stored과 file_name_original을 얻어내야 한다.
+                int generatedPostIdx = 0;
+
+                try {
+                    generatedPostIdx = PostDAO.add(post_title, post_content, member_idx, category_idx);
+                    System.out.println("write to success post_idx: " + generatedPostIdx);
+                } catch (Exception e) {
+                    System.out.println("DB insert failure: " + e.getMessage());
+                    e.printStackTrace();
+                    try {
+                        // insert 실패 시 write form으로 redirect
+                        response.sendRedirect("Controller?type=write");
+                    } catch (IOException ioException) {
+                        ioException.printStackTrace();
+                    }
+                    return null;
+                }
+
                 File f = mr.getFile("file");
 
                 if( f != null && f.length() > 0 ){
@@ -102,16 +116,25 @@ public class WriteAction implements Action {
                     String file_size = String.valueOf(f.length());
                     String file_type = mr.getContentType("file");
                     String file_s3_url = "";
-                    FileDAO.fileadd(String.valueOf(generatedPostIdx), file_name_original, file_name_stored, file_s3_url, file_size, file_type);
+                    try {
+                        FileDAO.fileadd(String.valueOf(generatedPostIdx), file_name_original,
+                                file_name_stored, file_s3_url, file_size, file_type);
+                        System.out.println("file DB save");
+                    } catch (Exception e) {
+                        System.out.println("file DB can't save: " + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
 
 
                 //DB에 저장 ++
-                viewPath = "Controller?type=view&post_idx=" + generatedPostIdx;
+                response.sendRedirect("Controller?type=view&post_idx=" + generatedPostIdx);
                 System.out.println("write success");
-            } catch (Exception e) {
+                return null;
+            }  catch (Exception e) {
                 System.out.println("writeAction error");
                 e.printStackTrace();
+                return "post/write.jsp";
             }
         }
         return viewPath;

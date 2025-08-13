@@ -182,8 +182,7 @@ public class PostDAO {
 
     // 저장 +++
     public static int add(String post_title, String post_content, String member_idx,
-                          String category_idx, String post_views, String post_likes, String post_comments_count,
-                          String post_status, String post_created_at, String post_star){
+                          String category_idx){
 
         SqlSession ss = FactoryService.getFactory().openSession();
 
@@ -193,11 +192,8 @@ public class PostDAO {
         map.put("member_idx", member_idx);
         map.put("category_idx", category_idx);
 
-        map.put("post_views", "0");
-        map.put("post_likes", "0");
-        map.put("post_comments_count", "0");
-        map.put("post_status", "0");
-        map.put("post_star", "0");
+
+
 
         int cnt = ss.insert("post.add", map);
         // MyBatis가 반환한 객체가 BigInteger 타입일 경우
@@ -248,6 +244,20 @@ public class PostDAO {
 
         return cnt;
     }
+
+    public static int deleteUpdate(String post_idx){
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("post.deleteUpdate", post_idx);
+        if(cnt > 0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+        return cnt;
+
+    }
+
     public static int fileedit(String post_idx,String file_name_original,String file_name_stored,String file_size,String file_type ) {
         int filecnt = 0;
         if (file_name_stored != null && file_name_original != null) {

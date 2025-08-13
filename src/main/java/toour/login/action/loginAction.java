@@ -70,6 +70,7 @@ public class loginAction implements Action {
             //로그아웃 눌렀을 때
             System.out.println("logout");
             request.getSession().removeAttribute("user");
+            request.getSession().invalidate();
             viewPath="MainIndex/index.jsp";
         }
 

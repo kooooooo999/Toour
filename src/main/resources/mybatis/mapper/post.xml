@@ -87,7 +87,7 @@
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
         SELECT  * FROM post p inner join file f
-        WHERE p.post_idx = #{post_idx}
+        WHERE p.post_idx = #{post_idx} and post_status=0
         group by p.post_idx
     </select>
 
@@ -99,10 +99,10 @@
     </select>
 
     <!-- 게시글 삭제 -->
-    <update id="del" parameterType="String">
+    <update id="deleteUpdate" parameterType="String">
         UPDATE post
-        SET status = 1
-        WHERE post_idx = #{post_idx}
+        SET post_status = 1
+        WHERE post_idx = #{value}
     </update>
     <!--게시판 검색기능-->
 

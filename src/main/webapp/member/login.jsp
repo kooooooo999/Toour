@@ -166,6 +166,8 @@
     }
   </style>
 </head>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script>
+
 <body>
 
 <div class="login-container">
@@ -188,9 +190,13 @@
       <button type="button" class="login-button" onclick="sendForm(this.form)">로그인</button>
     </div>
   </form>
-  <a id="kakao_login_btn" href="javascript:loginWithKakao()">
-    <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="190" height="46.72" alt="카카오 로그인 버튼" />
-  </a>
+  <!-- 카카오 로그인 -->
+  <div class="social">
+    <a id="kakao_login_btn" href="javascript:loginWithKakao()">
+      <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+           width="190" height="46.72" alt="카카오 로그인 버튼"/>
+    </a>
+  </div>
   <!-- 네이버 로그인 버튼 -->
   <%
     String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
@@ -212,7 +218,6 @@
 </div>
 
 
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script>
 <%--
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 --%>
