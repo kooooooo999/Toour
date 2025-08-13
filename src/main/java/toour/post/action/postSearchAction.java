@@ -17,7 +17,7 @@ public class postSearchAction implements Action {
         String category_idx = request.getParameter("category_idx");
         if (category_idx == null)
             category_idx = "2";
-        int totalCount = PostDAO.getTotalCount(category_idx);
+        int totalCount = PostDAO.getSearchTotalCount(searchType,searchValue);
 
         Paging page = new Paging(10,5);
 
