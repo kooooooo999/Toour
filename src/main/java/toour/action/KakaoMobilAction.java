@@ -38,6 +38,7 @@ public class KakaoMobilAction implements Action{
             // 요청 본문 (JSON) 설정
                 sb.append("{");
 
+
                 sb.append("\"origin\": {");
                 sb.append("    \"x\": \"126.9718732\",");
                 sb.append("    \"y\": \"37.556074\",");
@@ -52,13 +53,14 @@ public class KakaoMobilAction implements Action{
 
                 // 경유지 추가할 때마다 waypoints 늘어나게 for문 돌려야 됨
                 sb.append("\"waypoints\": [");
+
                 sb.append("    {");
                 sb.append("        \"x\": 126.9771397,");
                 sb.append("        \"y\": 37.5366059");
                 sb.append("    }");
 
-
                 sb.append("],");
+
                 sb.append("\"priority\": \"DISTANCE\",");
                 sb.append("\"car_fuel\": \"GASOLINE\",");
                 sb.append("\"car_hipass\": false,");
