@@ -152,10 +152,10 @@
 <body>
 
 <c:import url="/common/header.jsp" />
-
+<c:set var="p" value="${requestScope.page}" scope="page"/>
 <div class="courseGrid">
   <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
-    <a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">
+    <a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}" data-totalcount="${p.totalCount}">
         <div class="courseBox">
           <div class="courseImage">
           <c:if test="${not empty Dvo.firstimage}">
@@ -176,8 +176,6 @@
 
 <div id="page">
   <ol class="paging">
-
-    <c:set var="p" value="${requestScope.page}" scope="page"/>
     <c:if test="${p.startPage < p.pagePerBlock}">
       <li class="disable">&lt;</li>
     </c:if>
@@ -257,11 +255,12 @@
       let contentId = $(this).data('contentid');
       let homepageUrl = $(this).data('homepageurl');
       let homepageText = $(this).data('homepagetext');
-      submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText);
+      let totalCount = $(this).data('totalcount');
+      submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText,totalCount);
     });
   });
 
-  function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText){
+  function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl,homepageText,totalCount){
     console.log(contentTypeId);
     let form = document.createElement('form');
     form.method = 'POST';
@@ -318,6 +317,11 @@
     homepageTextInput.name = 'homepageText';
     homepageTextInput.value = homepageText;
 
+    let totalCountInput = document.createElement('input');
+    totalCountInput.type = 'hidden';
+    totalCountInput.name = 'totalCount';
+    totalCountInput.value = totalCount;
+
     form.appendChild(titleInput);
     form.appendChild(addr1Input);
     form.appendChild(overviewInput);
@@ -328,6 +332,7 @@
     form.appendChild(contentIdInput);
     form.appendChild(homepageUrlInput);
     form.appendChild(homepageTextInput);
+    form.appendChild(totalCountInput);
 
     document.body.appendChild(form);
 
