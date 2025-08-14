@@ -113,12 +113,9 @@ public class Controller extends HttpServlet {
 
         //viewPath가 null이면 현재 컨트롤러를 sendRedirect로
         // 다시 호출되도록 한다.
-        if(viewPath == null)
-            response.sendRedirect("Controller");
-        else{
+        if(viewPath != null){
             // forward로 이동~~~~~~~~~!
-            RequestDispatcher disp =
-                    request.getRequestDispatcher(viewPath);
+            RequestDispatcher disp = request.getRequestDispatcher(viewPath);
             disp.forward(request,response);
         }
 

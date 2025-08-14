@@ -36,4 +36,33 @@ public class MemberDAO {
         ss.close();
         return mvo;
     }
+
+    public static void updateLastLogin(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        ss.update("member.updateLastLogin", member_idx);
+    }
+
+
+
+    //카카오 로그인?
+    public static MemberVO getKakaoMember(String login_type, String account_email) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO member = new MemberVO();
+        member.setLogin_type(login_type);
+        member.setMember_email(account_email);
+        MemberVO mvo = ss.selectOne("member.getKakaoLogin",member);
+        ss.close();
+        return mvo;
+    }
+
+    public static MemberVO getNaverMember(String member_email) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO mvo = ss.selectOne("member.getNaverLogin",member_email);
+        ss.close();
+        return mvo;
+    }
+
+
+
+
 }

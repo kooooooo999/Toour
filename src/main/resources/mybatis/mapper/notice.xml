@@ -3,7 +3,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="post">
+<mapper namespace="notice">
 
     <resultMap id="map1" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
@@ -22,30 +22,6 @@
         where post_status = 0 and category_idx = #{category_idx}
     </select>
 
-    <!-- My Page 총 게시물 수를 반환하는 기능 -->
-    <select id="myTotalCount" resultType="int" parameterType="String">
-        select count(*) from post
-        where post_status = 0 and category_idx = 2 and member_idx=#{member_idx}
-    </select>
-
-    <!-- My Page 검색 게시물 수를 반환하는 기능 -->
-    <select id="mySearchTotalCount" resultType="int" parameterType="String">
-        select count(*) from post p
-        <where>
-            <if test="searchValue != null and searchValue != ''">
-                <choose>
-                    <when test="searchType != null and searchType == 'post_title'">
-                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
-                    </when>
-                    <when test="searchType != null and searchType == 'post_content'">
-                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
-                    </when>
-                </choose>
-                and p.post_status = 0 and p.category_idx = 2 and p.member_idx=#{member_idx}
-            </if>
-        </where>
-    </select>
-
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
 
     <select id="list" resultMap="map1" parameterType="map">
@@ -54,23 +30,7 @@
         from(
         select * from post
         where post_status = 0
-        and category_idx=2
-        order by post_idx DESC
-        ) a
-        ) c inner join member m on c.member_idx=m.member_idx
-        where c.rnum Between #{begin} and #{end}
-        order by post_idx desc
-    </select>
-
-    <!-- 마이 페이지용 본인 게시글 가져오기-->
-    <select id="mylist" resultMap="map1" parameterType="map">
-        select * from(
-        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
-        from(
-        select * from post
-        where post_status = 0
-        and member_idx = #{member_idx}
-        and category_idx=2
+        and category_idx=1
         order by post_idx DESC
         ) a
         ) c inner join member m on c.member_idx=m.member_idx
@@ -87,7 +47,7 @@
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
         SELECT  * FROM post p inner join file f
-        WHERE p.post_idx = #{post_idx} and post_status=0
+        WHERE p.post_idx = #{post_idx}
         group by p.post_idx
     </select>
 
@@ -99,10 +59,10 @@
     </select>
 
     <!-- 게시글 삭제 -->
-    <update id="deleteUpdate" parameterType="String">
+    <update id="del" parameterType="String">
         UPDATE post
-        SET post_status = 1
-        WHERE post_idx = #{value}
+        SET status = 1
+        WHERE post_idx = #{post_idx}
     </update>
     <!--게시판 검색기능-->
 
@@ -127,30 +87,6 @@
     <select id="search" parameterType="map" resultMap="map1">
         SELECT a.*
         FROM (
-            SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
-            FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
-            <where>
-                <if test="searchValue != null and searchValue != ''">
-                    <choose>
-                        <when test="searchType != null and searchType == 'post_title'">
-                            p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
-                        </when>
-                        <when test="searchType != null and searchType == 'post_content'">
-                            p.post_content LIKE CONCAT('%', #{searchValue}, '%')
-                        </when>
-                        <when test="searchType != null and searchType == 'member_nickname'">
-                            m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
-                        </when>
-                    </choose>
-                </if>
-            </where>
-        )a
-         where a.rnum BETWEEN #{begin} AND #{end};
-    </select>
-
-    <select id="mysearch" parameterType="map" resultMap="map1">
-        SELECT a.*
-        FROM (
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
         FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
         <where>
@@ -166,13 +102,11 @@
                         m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
                 </choose>
-                and p.member_idx = #{member_idx}
             </if>
         </where>
         )a
         where a.rnum BETWEEN #{begin} AND #{end};
     </select>
-
     <select id="getPostIdx" parameterType="String">
         select post_idx
         from post
@@ -180,8 +114,8 @@
     </select>
 
     <insert id="insertComment" parameterType="Map" useGeneratedKeys="true" keyProperty="comment_idx">
-    insert into comment( post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status)
-    values ( #{post_idx}, #{member_idx}, #{comment_content}, now(), now(), 0)
+        insert into comment( post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status)
+        values ( #{post_idx}, #{member_idx}, #{comment_content}, now(), now(), 0)
     </insert>
 
     <select id="getComment" parameterType="String" resultType="toour.post.vo.CommentVO">

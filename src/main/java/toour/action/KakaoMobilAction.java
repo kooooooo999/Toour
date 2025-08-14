@@ -3,6 +3,7 @@ package toour.action;
 import com.mysql.cj.xdevapi.JsonArray;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import toour.tripsuggestion.vo.DataVO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,12 +16,46 @@ import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 
 public class KakaoMobilAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
+        List<DataVO> arList = new ArrayList();
+
         try {
             request.setCharacterEncoding("utf-8");
+
+            StringBuilder jsonDataBuilder = new StringBuilder();
+
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(request.getInputStream()))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    jsonDataBuilder.append(line);
+                }
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            // 이 catch 블록은 reader가 닫히면서 발생하는 예외 처리용
+            // --- AJAX 요청으로부터 JSON 데이터 읽기 끝 ---
+
+            if (jsonDataBuilder.length() > 0) {
+                JSONArray jsonArray = new JSONArray(jsonDataBuilder.toString());
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject jsonObject = jsonArray.getJSONObject(i);
+                    String mapx = jsonObject.getString("mapx");
+                    String mapy = jsonObject.getString("mapy");
+                    DataVO vo = new DataVO();
+                    vo.setMapx(mapx); // DataVO에 setter 메서드가 있어야 합니다.
+                    vo.setMapy(mapy); // DataVO에 setter 메서드가 있어야 합니다.
+                    arList.add(vo);
+                }
+            } else {
+                System.out.println("AJAX 요청 본문에 JSON 데이터가 없습니다.");
+                // 데이터가 없는 경우의 처리 로직 (예: 에러 페이지 또는 메시지 반환)
+                return "errorPage.jsp";
+            }
 
         StringBuffer sb = new StringBuffer();
         String APIkey = "41924af6fe5d95bebf4d8ddf6fca8d8c";
@@ -35,31 +70,46 @@ public class KakaoMobilAction implements Action{
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoOutput(true);
 
-            // 요청 본문 (JSON) 설정
+
+                // 요청 본문 (JSON) 설정
+                DataVO originVO = arList.get(0);
+                DataVO destinationVO = arList.get(arList.size() - 1);
+                String originX = originVO.getMapx();
+                String originY = originVO.getMapy();
+                String destinationX = destinationVO.getMapx();
+                String destinationY = destinationVO.getMapy();
+
+                StringBuilder waypointsSb = new StringBuilder();
+
+                for (int i = 1; i < arList.size() - 1; i++) {
+                    DataVO waypointVO = arList.get(i);
+                    waypointsSb.append("{");
+                    waypointsSb.append("\"x\": \"").append(waypointVO.getMapx()).append("\",");
+                    waypointsSb.append("\"y\": \"").append(waypointVO.getMapy()).append("\"");
+                    waypointsSb.append("}");
+                    // 마지막 경유지가 아니면 쉼표 추가
+                    if (i < arList.size() - 2) {
+                    waypointsSb.append(",");
+                    }
+                }
+                String waypointsJson = waypointsSb.toString();
+
                 sb.append("{");
 
-
                 sb.append("\"origin\": {");
-                sb.append("    \"x\": \"126.9718732\",");
-                sb.append("    \"y\": \"37.556074\",");
+                sb.append("    \"x\": \"").append(originX).append("\",");
+                sb.append("    \"y\": \"").append(originY).append("\",");
                 sb.append("    \"angle\": 270");
                 sb.append("},");
 
                 sb.append("\"destination\": {");
-                sb.append("    \"x\": \"126.964775\",");
-                sb.append("    \"y\": \"37.52989\"");
+                sb.append("    \"x\": \"").append(destinationX).append("\",");
+                sb.append("    \"y\": \"").append(destinationY).append("\"");
                 sb.append("},");
 
 
                 // 경유지 추가할 때마다 waypoints 늘어나게 for문 돌려야 됨
-                sb.append("\"waypoints\": [");
-
-                sb.append("    {");
-                sb.append("        \"x\": 126.9771397,");
-                sb.append("        \"y\": 37.5366059");
-                sb.append("    }");
-
-                sb.append("],");
+                sb.append("\"waypoints\": [").append(waypointsJson).append("],");
 
                 sb.append("\"priority\": \"DISTANCE\",");
                 sb.append("\"car_fuel\": \"GASOLINE\",");
@@ -68,6 +118,7 @@ public class KakaoMobilAction implements Action{
                 sb.append("\"road_details\": false,");
                 sb.append("\"summary\": false");
                 sb.append("}");
+
             // 요청 보내기
             try (OutputStream os = conn.getOutputStream()) {
                 byte[] input = sb.toString().getBytes("utf-8");
