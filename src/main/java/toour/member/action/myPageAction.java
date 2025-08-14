@@ -75,6 +75,7 @@ public class myPageAction implements Action {
             request.setAttribute("myPost_ar",myPost);
 
             //request에 배열 2개 저장해서 마이페이지로 이동
+            request.setAttribute("zzim_ar",zzim_ar);
             request.setAttribute("tour_ar", tour_ar);
             request.setAttribute("course_ar", course_ar);
 

@@ -4,6 +4,9 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
+import toour.member.dao.ZzimDAO;
+import toour.member.vo.MemberVO;
+import toour.member.vo.ZzimVO;
 import toour.tripsuggestion.vo.DataVO;
 
 import javax.servlet.http.HttpServletRequest;
@@ -28,6 +31,28 @@ public class tripDetailsAction implements Action {
         String homepageText = request.getParameter("homepageText");
         DataVO datavo = new DataVO(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, cPage, homepageText, homepageUrl);
         request.setAttribute("detailsAr", datavo);
+
+        //찜 목록에 해당 관광지가 속해 있는지 확인하고 있다면 하트를 채워 놓기 위해 신호를 보내는 곳
+        boolean zzim_state =false;
+        ZzimVO[] zzim_ar=null;
+        if(contentId !=null){
+            Object obj = request.getSession().getAttribute("member");
+            MemberVO mvo= null;
+            if(obj!=null){
+                mvo = (MemberVO) obj;
+                zzim_ar = ZzimDAO.getZzimAr(mvo.getMember_idx());
+                if(zzim_ar!=null) {
+                    for (ZzimVO zvo : zzim_ar) {
+                        if (contentId.equals(zvo.getZzim_content_id())) {
+                            zzim_state = true;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        request.setAttribute("zzim_state",zzim_state);
+        
         //http://apis.data.go.kr/B551011/KorService2/detailIntro2?serviceKey=인증키
         //&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&_type=json&contentTypeId=12&contentId=
         //126128

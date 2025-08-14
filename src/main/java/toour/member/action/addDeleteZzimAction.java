@@ -18,7 +18,7 @@ public class addDeleteZzimAction implements Action {
         if(contentTypeId!=null && contentTypeId.equals("12")){
             zzim_type = "tour";
         }
-        Object obj = request.getSession().getAttribute("memeber");
+        Object obj = request.getSession().getAttribute("member");
         MemberVO mvo = null;
         if(obj !=null){
             mvo = (MemberVO) obj;
@@ -28,12 +28,10 @@ public class addDeleteZzimAction implements Action {
         if(state != null && contentId != null) {
             if (state.equals("add")) {
                 //찜 목록에 추가할 때 여기
-
                 ZzimDAO.addZzim(member_idx, zzim_type, contentId);
             } else {
                 //찜 목록에서 삭제할 때 여기
-
-
+                ZzimDAO.delZzim(member_idx, zzim_type, contentId);
             }
 
         }
