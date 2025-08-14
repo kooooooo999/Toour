@@ -37,9 +37,7 @@
 <%--            <img src="https://via.placeholder.com/600x400/d7e5f0/4e6e8e?text=Gyeongju+Travel+Image" alt="경북 영주 여행 이미지">--%>
         </div>
     </section>
-    <div id="sidoDiv">
     <jsp:include page="./sido.jsp"/>
-    </div>
     <section class="travel-cockcock">
         <div class="container">
             <div class="section-header">

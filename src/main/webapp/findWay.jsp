@@ -14,7 +14,7 @@
         .searchKeyword { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         #destinationKeyword { width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         .search_results { margin-top: 5px; overflow: hidden; text-overflow: ellipsis; }
-        .selected_places { margin-top: 50px; display: inline-block}
+        .selected_places { margin-top: 50px; display: inline-block; }
         .search_results h3, .selected_places h3 { margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .list_item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .list_item:last-child { border-bottom: none; }
@@ -37,8 +37,8 @@
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #course { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #courseList { width: 260px }
+        #course { display: block; width: 260px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
+        #courseList { width: 277.5px; height: 433.97px; overflow-y: auto;}
         #page { position: absolute; bottom: 18px; left: 85px; }
         .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .plusButton {display: inline-block; background-image: url("images/plus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
@@ -68,7 +68,7 @@
                 <button type="button" class="buttonRight detail_btn" onclick="searchplace()">검색</button>
             </div>
 
-            <div class="selected_places">
+            <div id="selected_places" class="selected_places">
                 <h3>여기로 가야지!</h3>
                 <div id="courseList"></div>
             </div>

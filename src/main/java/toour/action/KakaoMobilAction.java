@@ -96,6 +96,7 @@ public class KakaoMobilAction implements Action{
 
                 sb.append("{");
 
+
                 sb.append("\"origin\": {");
                 sb.append("    \"x\": \"").append(originX).append("\",");
                 sb.append("    \"y\": \"").append(originY).append("\",");
@@ -172,8 +173,7 @@ public class KakaoMobilAction implements Action{
                             }
                         }
                     }
-                System.out.println("vertexx: "+vertex_x);
-                System.out.println("vertexy: "+vertex_y);
+
                 request.setAttribute("vertex_x",vertex_x);
                 request.setAttribute("vertex_y",vertex_y);
             } else {
