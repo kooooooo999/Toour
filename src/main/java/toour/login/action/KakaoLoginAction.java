@@ -69,8 +69,10 @@ public class KakaoLoginAction implements Action {
                 System.out.println("kakao member already exist");
                 //기존회원으로 마지막 로그인 날짜만 업데이트
                 try {
-                    MemberDAO.updateLastLogin(member.getMember_idx());
-                    member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                    int cnt = MemberDAO.updateLastLogin(member.getMember_idx());
+                    if (cnt > 0) {
+                        member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);

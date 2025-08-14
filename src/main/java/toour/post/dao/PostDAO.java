@@ -196,6 +196,7 @@ public class PostDAO {
 
 
         int cnt = ss.insert("post.add", map);
+
         // MyBatis가 반환한 객체가 BigInteger 타입일 경우
         Object generatedKey = map.get("post_idx");
 

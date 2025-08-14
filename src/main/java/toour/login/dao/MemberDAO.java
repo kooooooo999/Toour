@@ -37,9 +37,10 @@ public class MemberDAO {
         return mvo;
     }
 
-    public static void updateLastLogin(String member_idx){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        ss.update("member.updateLastLogin", member_idx);
+    public static int  updateLastLogin(String member_idx){
+        try (SqlSession ss = FactoryService.getFactory().openSession(true)) {
+            return ss.update("member.updateLastLogin", member_idx);
+        }
     }
 
 
