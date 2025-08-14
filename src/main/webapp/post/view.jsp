@@ -249,7 +249,7 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
-<c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${sessionScope.member}" var="user"/>
 <c:set var="vo" value="${requestScope.vo}"/>
 <c:set var="member_info" value="${requestScope.member_info}"/>
 
@@ -304,8 +304,8 @@
   </form>
 
       <div class="post-buttons">
-        <c:if test="${not empty sessionScope.user}">
-          <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
+        <c:if test="${not empty sessionScope.member}">
+          <c:if test="${sessionScope.member.member_idx==member_info.member_idx}">
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
@@ -319,11 +319,11 @@
     <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
            onsubmit="return commentData()">
       <div class="comment_container">
-        <c:if test="${empty sessionScope.user}">
+        <c:if test="${empty sessionScope.member}">
           <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
 
         </c:if>
-        <c:if test="${not empty sessionScope.user}">
+        <c:if test="${not empty sessionScope.member}">
         <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
         <input id="comment_btn" type="submit" value="댓글" class="btn-register"/>
         <hr class="comment-line"/>
@@ -334,8 +334,8 @@
             <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
             <input type="hidden" name="cPage" value="${param.cPage}"/>
             <input type="hidden" name="type" value="comment"/>
-            <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
-            <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
+            <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
+            <input type="hidden" name="member_nickname" value="${sessionScope.member.member_nickname}"/>
 
           </div>
         </div>
@@ -356,7 +356,7 @@
       <input type="hidden" name="type" value="del"/>
       <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
       <input type="hidden" name="cPage" value="${param.cPage}"/>
-      <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+      <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
   </div>
@@ -399,7 +399,7 @@
     $("#del_dialog").dialog(option);
   });
 
-  let login = ${sessionScope.user != null};
+  let login = ${sessionScope.memeber != null};
 
   function commentData() {
     let title = $("#comment_content").val();

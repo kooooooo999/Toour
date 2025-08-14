@@ -48,7 +48,6 @@ public class KakaoLoginAction implements Action {
             //db정보랑 대조
 
             MemberVO member = MemberDAO.getKakaoMember("KAKAO", account_email);
-            System.out.println("kakaomember_idx is:"+member.getMember_idx());
 
             if (member == null) {
                 System.out.println("member is null");
@@ -81,12 +80,11 @@ public class KakaoLoginAction implements Action {
             HttpSession session = request.getSession();
             session.setAttribute("accessToken", token);
             session.setAttribute("member", member);
-            session.setAttribute("user", member);
             session.setAttribute("userIdx", member.getMember_idx());
             session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
             System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
-            return "MainIndex/index.jsp";
+            return "gohome";
 
         } catch (Exception e) {
             e.printStackTrace();

@@ -469,7 +469,7 @@
     <%-- 내 정보 섹션 --%>
     <div class="left-info-area">
         <h2>내 정보</h2>
-        <p><strong><c:out value="${sessionScope.user.member_nickname}" /></strong>님, 환영합니다.</p>
+        <p><strong><c:out value="${sessionScope.member.member_nickname}" /></strong>님, 환영합니다.</p>
 
         <a href="#">개인정보 수정</a>
     </div>

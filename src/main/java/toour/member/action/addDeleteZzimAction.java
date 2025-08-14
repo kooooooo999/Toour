@@ -18,7 +18,7 @@ public class addDeleteZzimAction implements Action {
         if(contentTypeId!=null && contentTypeId.equals("12")){
             zzim_type = "tour";
         }
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("memeber");
         MemberVO mvo = null;
         if(obj !=null){
             mvo = (MemberVO) obj;

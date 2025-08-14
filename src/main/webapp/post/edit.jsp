@@ -54,7 +54,7 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
-<c:if test="${empty sessionScope.user}">
+<c:if test="${empty sessionScope.member}">
     <h3>로그인이 필요합니다.</h3>
     <p>
         <a href="Controller?type=moveLogin">로그인</a>
@@ -64,7 +64,7 @@
 </c:if>
 
 
-<c:if test="${not empty sessionScope.user}">
+<c:if test="${not empty sessionScope.member}">
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
     <c:set var="filevo" value="${requestScope.filevo}" scope="page"/>
     <c:set value="${requestScope.cPage}" var="cPage"/>
@@ -84,7 +84,7 @@
             </tr>
             <tr>
                 <th>이름:</th>
-                <td><input type="text" value="${sessionScope.user.member_nickname}"
+                <td><input type="text" value="${sessionScope.member.member_nickname}"
                        name="member_nickname" id="member_nickname" size="12" readonly/></td>
             </tr>
             <tr>
