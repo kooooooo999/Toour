@@ -57,7 +57,7 @@ public class tripDetailsAction implements Action {
         //&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&_type=json&contentTypeId=12&contentId=
         //126128
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailIntro2?");
-        String key = "serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D";
+        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
 
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1");
@@ -68,8 +68,8 @@ public class tripDetailsAction implements Action {
         sb.append("&contentId=");
         sb.append(contentId);
 
-        try{
-            URL url =  new URL(sb.toString());
+        try {
+            URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");
             conn.connect();
@@ -79,18 +79,18 @@ public class tripDetailsAction implements Action {
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> itemList = items.getChildren("item");
-            DataVO[] dvo =  new DataVO[itemList.size()];
+            DataVO[] dvo = new DataVO[itemList.size()];
             int i = 0;
             for (Element item : itemList) {
-                String infocenter =  item.getChildText("infocenter"); //문의안내
-                String parking =   item.getChildText("parking"); //주차시설
-                String restdate =  item.getChildText("restdate"); //쉬는날
-                String usetime =   item.getChildText("usetime"); //이용시간
+                String infocenter = item.getChildText("infocenter"); //문의안내
+                String parking = item.getChildText("parking"); //주차시설
+                String restdate = item.getChildText("restdate"); //쉬는날
+                String usetime = item.getChildText("usetime"); //이용시간
                 DataVO vo = new DataVO(infocenter, parking, restdate, usetime);
                 dvo[i++] = vo;
             }
             request.setAttribute("detailsAr_2", dvo);
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return "tripDetails.jsp";

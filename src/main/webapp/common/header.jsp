@@ -5,9 +5,10 @@
   Time: 오전 9:42
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
+<!DOCTYPE html>
 
 <link rel="stylesheet" href="<c:url value="/css/style.css" />">
 
@@ -45,12 +46,12 @@
             <input id="keyword" type="text" placeholder="어디로 떠나고 싶으신가요?" name="keyword"/>
             <i class="fas fa-search"></i>
         </form>
-        </div>
+    </div>
 
     </div>
-    <nav class = "bar">
+    <nav class="bar">
 
-        <ul class = "menu">
+        <ul class="menu">
             <li class="dropdown">
                 <a href="Controller" class="act">홈</a>
             </li>
@@ -75,8 +76,11 @@
         </ul>
     </nav>
 </header>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js" integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.5/kakao.min.js"
+        integrity="sha384-dok87au0gKqJdxs7msEdBPNnKSRT+/mhTVzq+qOhcL464zXwvcrpjeWvyj1kCdq6"
+        crossorigin="anonymous"></script>
 
 <script>
     // Kakao SDK 안전 초기화 (중복/순서 문제 방지)
@@ -107,10 +111,11 @@
             return;
         }
 
-        Kakao.Auth.logout(function() {
+        Kakao.Auth.logout(function () {
             location.href = 'Controller?type=kakaologout';
         });
     }
+
     $(function () {
         $('#keyword').on('keypress', function (e) { //keydown은 안됨 한박자 늦게 인식
             if (e.key === 'Enter') {

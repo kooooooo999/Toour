@@ -146,7 +146,7 @@
              </div>
           </c:if>
           <c:if test="${not empty Dvo.firstimage}">
-            <img src="${Dvo.firstimage}" class="imageDetails">
+            <img src="${Dvo.firstimage}" class="image">
           </c:if>
       </div>
 
