@@ -190,7 +190,6 @@
     }
   //유효성 검사 통과시 폼제출!
     return true;
-
   }
 </script>
 <c:import url="/common/footer.jsp" />

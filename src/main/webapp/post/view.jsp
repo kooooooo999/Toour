@@ -22,7 +22,6 @@
       border-radius: 8px !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       padding: 0 40px;
-
     }
 
     /* 댓글 폼 영역 */
@@ -56,8 +55,6 @@
       justify-content: flex-end;
       gap: 10px;
     }
-
-
 
     .comment_container textarea{
       width: 100%;
@@ -309,9 +306,27 @@
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
+
+          <!-- 다른 사람 글일 때 신고 버튼 -->
+          <c:if test="${sessionScope.user.member_idx != member_info.member_idx}">
+              <input type="submit" value="신고" onclick="openReportDialog()"/>
+<%--              style="background-color: #f44336" color:white, border:none; padding:6px 12px; border-radius:4px; cursor:pointer;>--%>
+            </form>
+          </c:if>
         </c:if>
+
         <input type="button" value="목록" onclick="goList()"/>
       </div>
+
+  <!-- 신고 팝업 -->
+  <div id="report_dialog" title="게시물 신고">
+    <form id="reportForm" action="ReportServlet" method="post">
+      <p>신고 사유를 입력하세요:</p>
+      <textarea name="reason" id="report_reason" rows="5" style="width:100%; box-sizing:border-box;" required></textarea>
+      <input type="hidden" name="post_id" value="${vo.post_idx}"/>
+      <input type="hidden" name="reporter_id" value="${sessionScope.user.member_idx}"/>
+    </form>
+  </div>
 
   <!--댓글 작성-->
   <div id="comment_form">
@@ -324,7 +339,7 @@
 
         </c:if>
         <c:if test="${not empty sessionScope.user}">
-        <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
+        <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="comment_content"></textarea><br/>
         <input id="comment_btn" type="submit" value="댓글" class="btn-register"/>
         <hr class="comment-line"/>
       </div>
@@ -399,6 +414,36 @@
     $("#del_dialog").dialog(option);
   });
 
+  $(function goReport() {
+    // 신고 팝업 설정
+    $("#report_dialog").dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false,
+      width: 400,
+      buttons: {
+        "신고하기": function () {
+          let reason = $("#report_reason").val().trim();
+          if (reason.length < 1) {
+            alert("신고 사유를 입력하세요.");
+            return;
+          }
+          $("#reportForm").submit();
+        },
+        "취소": function () {
+          $(this).dialog("close");
+        }
+      }
+    });
+  });
+
+  // 신고 팝업 열기 함수
+  function openReportDialog() {
+    $("#report_reason").val(""); // 이전 입력값 초기화
+    $("#report_dialog").dialog("open");
+  }
+
+
   let login = ${sessionScope.user != null};
 
   function commentData() {
@@ -438,7 +483,6 @@
     document.ff.type.value = "edit";
     document.ff.submit();
   }
-
 
   $(function (){
     $("#loginDialog").dialog({

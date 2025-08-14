@@ -139,11 +139,12 @@
 
     .kakao_login_btn {
       display: block;
-      margin-bottom: 5px; /* 카카오와 네이버 버튼 사이 */
+      margin-bottom: 6px; /* 카카오와 네이버 버튼 사이 */
     }
 
-    .naver_id_login {
+    .naver_login_btn {
       height: 47px;
+      display: block;
     }
 
     .login-button {
@@ -205,9 +206,9 @@
   </form>
   <!-- 카카오 로그인 -->
   <div class="social">
-    <a id="kakao_login_btn" href="javascript:loginWithKakao()">
+    <a class="kakao_login_btn" id="kakao_login_btn" href="javascript:loginWithKakao()">
       <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
-           width="190" height="46.72" alt="카카오 로그인 버튼"/>
+           width="190" height="48" alt="카카오 로그인 버튼"/>
     </a>
   </div>
   <!-- 네이버 로그인 버튼 -->
@@ -221,34 +222,31 @@
             + "&redirect_uri=" + redirectURI
             + "&state=" + state;
     session.setAttribute("state", state);
-    System.out.println(apiURL);
+//    System.out.println(apiURL);
   %>
-  <a class="naver_id_login" id="naver_id_login" href="<%=apiURL%>">
-    <img src="src/main/webapp/images/naver_btn.png" width="190" height="46.72" alt="네이버 로그인 버튼" />
+  <a class="naver_login_btn" id="naver_id_login" href="<%=apiURL%>">
+    <img src="<c:url value='/images/naver_btn.png' />" width="190" height="48" alt="네이버 로그인 버튼" />
   </a>
 
   <p id="token-result"></p>
 </div>
 
 
-<%--
-<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
---%>
+<%--<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>--%>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-<div id="naver_id_login"></div>
+<%--<div id="naver_id_login"></div> 이 위치에 네이버 버튼 자동 생성(네이버 javaScript SDK)--%>
 
-<%--여기 부분이 화면을 따로 띄우는 부분--%>
 <!-- 네이버 로그인 초기화 Script -->
 <script type="text/javascript">
   var naver_id_login = new naver_id_login("WqKlg2ns39WEN3SEtV0G", "http://localhost:8080/member/callback.jsp");
   var state = naver_id_login.getUniqState(); // 토큰 담을곳
-  naver_id_login.setButton("green", 3,40);
+  naver_id_login.setState(state);
+  naver_id_login.setPopup(); // 팝업창
   // naver_id_login.setDomain(""); // 서비스 UI
-  naver_id_login.setState(state); //
-  naver_id_login.setPopup();
-  naver_id_login.init_naver_id_login();
+  // naver_id_login.setButton("green", 3,40); // 로그인 버튼 디자인
+  // naver_id_login.init_naver_id_login(); // 로그인 버튼 새로 그리기
 </script>
 
 
@@ -268,33 +266,33 @@
 </script>
 
 
+<%--친구 코드--%>
+<%--<script>--%>
+<%--  // CSRF 방지용 state 토큰 생성 (JavaScript)--%>
+<%--  function generateState() {--%>
+<%--    return [...crypto.getRandomValues(new Uint32Array(4))]--%>
+<%--            .map(num => num.toString(36))--%>
+<%--            .join('');--%>
+<%--  }--%>
 
-<script>
-  // CSRF 방지용 state 토큰 생성 (JavaScript)
-  function generateState() {
-    return [...crypto.getRandomValues(new Uint32Array(4))]
-            .map(num => num.toString(36))
-            .join('');
-  }
+<%--  function initNaverLogin() {--%>
+<%--    var naver_id_login = new naver_id_login(--%>
+<%--            "WqKlg2ns39WEN3SEtV0G", // 클라이언트 ID--%>
+<%--            "http://localhost:8080/member/callback.jsp" // redirect URI--%>
+<%--    );--%>
 
-  function initNaverLogin() {
-    var naver_id_login = new naver_id_login(
-            "WqKlg2ns39WEN3SEtV0G", // 클라이언트 ID
-            "http://localhost:8080/member/callback.jsp" // redirect URI
-    );
+<%--    var state = generateState(); // JS에서 생성--%>
+<%--    sessionStorage.setItem("naver_state", state); // 콜백에서 검증하려면 저장--%>
 
-    var state = generateState(); // JS에서 생성
-    sessionStorage.setItem("naver_state", state); // 콜백에서 검증하려면 저장
+<%--    naver_id_login.setButton("white", 3, 40);--%>
+<%--    naver_id_login.setState(state);--%>
+<%--    naver_id_login.setPopup();--%>
+<%--    naver_id_login.init_naver_id_login();--%>
+<%--  }--%>
 
-    naver_id_login.setButton("white", 3, 40);
-    naver_id_login.setState(state);
-    naver_id_login.setPopup();
-    naver_id_login.init_naver_id_login();
-  }
-
-  // 페이지 로드 시 실행
-  initNaverLogin();
-</script>
+<%--  // 페이지 로드 시 실행--%>
+<%--  initNaverLogin();--%>
+<%--</script>--%>
 
 <!--카카오 로그인 관련-->
 <script>
