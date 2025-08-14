@@ -3,7 +3,38 @@ package toour.tripsuggestion.vo;
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
             cat1, cat2, cat3, contentTypeId,contentId, overview, infocenter, parking, restdate, usetime, cPage
-            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount;
+            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount
+            , distance, schedule, theme;
+
+    public DataVO(String distance, String schedule, String theme){
+        this.distance = distance;
+        this.schedule = schedule;
+        this.theme = theme;
+    }
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
+    public String getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(String schedule) {
+        this.schedule = schedule;
+    }
+
+    public String getTheme() {
+        return theme;
+    }
+
+    public void setTheme(String theme) {
+        this.theme = theme;
+    }
+
     public DataVO() {}
 
     public String getTotalCount() {
