@@ -5,15 +5,22 @@
     <title>👋🏻toour</title>
     <link rel="stylesheet" type="text/css" href="./css/sido.css">
     <style id="style">
+        #totalWrap{
+            width: 1560px;
+            height: auto;
+            margin: auto;
+            padding-right: 200px;
+        }
         #wrap{
             /*border: 1px solid #000;*/
             display: flex;
-            position: relative;
+            width: 1000px;
             height: 600px;
+            margin: auto;
         }
         #city{
             display: inline-block;
-            width: 500px;
+            width: 600px;
             height: 600px;
             /*border: 1px solid #000;*/
             <c:if test="${param.imageChange == null}">
@@ -23,25 +30,29 @@
                 background-image: url("images/${param.imageChange}.png");
             </c:if>
             background-repeat: no-repeat;
-            position: absolute;
-            left: 300px;
+            margin: auto;
+            position: relative;
         }
         #sidoInfo{
             display: inline-block;
             /*border: 1px solid #000;*/
             width: 500px;
             height: 600px;
+        }
+        #cityName{
+            width: 600px;
+            height: 600px;
             position: absolute;
-            left: 880px;
         }
     </style>
 </head>
 <body>
-<article style="height: 600px">
+    <div id="totalWrap">
     <div id="wrap">
         <div id="city">
             <!-- 서울 : 1, 인천 : 2, 대전 : 3, 대구 : 4, 광주 : 5, 부산 : 6, 울산 : 7, 경기 : 31,
             강원 : 32, 충북 : 33, 충남 : 34, 경북 : 35, 경남 : 36, 전북 : 37, 전남 : 38, 제주 : 39 -->
+            <div id="cityName">
             <p class="common gyeonggi">경기</p>
             <a href="javascript:clickSido('31')" class="common gyeonggi">경기</a>
             <p class="common seoul">서울</p>
@@ -74,30 +85,24 @@
             <a href="javascript:clickSido('5')" class="common smallText gwangju">광주</a>
             <p class="common jeju">제주</p>
             <a href="javascript:clickSido('39')" class="common jeju">제주</a>
+            </div>
         </div>
         <div id="sidoInfo"></div>
     </div>
-</article>
+    </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
 
     function clickSido(city) {
-        $.ajax({
-            url: "return.jsp",
-            type: "post",
-            data: {imageChange: city}
-        }).done(function (result){
-            console.log(result)
-            $("#style").html(result);
-        });
 
         $.ajax({
             url: "Controller?type=sido",
             type: "post",
-            data: {areaCode: city}
+            data: {areaCode: city, imageChange: city}
         }).done(function (result){
             $("#sidoInfo").html(result);
         });
+
     }
 
     function selectImage(selectedImg) {

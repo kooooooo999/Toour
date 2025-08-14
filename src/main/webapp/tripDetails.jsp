@@ -77,6 +77,34 @@
     color: #f00;
   }
 
+
+  /* 이미지를 감싸는 부모 컨테이너 */
+  .image-container {
+    width: 500px;
+    height: 250px;
+    position: relative; /* 자식 요소의 위치 기준이 됨 */
+  }
+
+  /* 이미지 스타일 (이미지가 있을 때) */
+  .image-container .image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 컨테이너를 꽉 채우도록 설정 */
+  }
+
+  /* 이미지가 없을 때의 텍스트 스타일 */
+  .image-container .emptyText {
+    width: 100%;
+    height: 100%;
+    background-color: #f0f0f0; /* 배경색 */
+    color: #888; /* 텍스트 색상 */
+    font-size: 24px;
+    font-weight: bold;
+    display: flex; /* Flexbox를 사용하여 내부 요소를 정렬 */
+    justify-content: center; /* 가로 중앙 정렬 */
+    align-items: center; /* 세로 중앙 정렬 */
+  }
+
 </style>
 
 <head>
@@ -111,8 +139,18 @@
         <div id="heartImagedetails">
           <p class="heartIcon" id="heartIcon"><i id="heart" class="fa-regular fa-heart"></i></p>
         </div>
+      <div class="image-container">
+          <c:if test="${empty Dvo.firstimage}">
+             <div class="emptyText">
+               [이미지없음]
+             </div>
+          </c:if>
+          <c:if test="${not empty Dvo.firstimage}">
+            <img src="${Dvo.firstimage}" class="imageDetails">
+          </c:if>
+      </div>
 
-          <img src="${Dvo.firstimage}" class="imageDetails">
+
             <h3 class="infoText">상세정보</h3>
       <p class="lineDetails">
 
@@ -122,7 +160,7 @@
 </div>
 
 <%--지도영역--%>
-<div class="map-container" style="display: flex; justify-content: center; width: 100%;padding-bottom: 40px">
+<div class="map-container">
 <div id="mapDetails">
   <div id="map" style="width: 850px; height: 300px; margin-left: 80px"></div>
 </div>

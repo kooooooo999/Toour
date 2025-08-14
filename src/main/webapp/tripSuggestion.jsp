@@ -96,8 +96,6 @@
               color: #f00;
           }
 
-
-
           /* 이미지를 감싸는 부모 컨테이너 */
           .image-container {
               width: 500px;
@@ -224,7 +222,6 @@
   <%--<i class="fa-solid fa-heart"></i>  꽉찬 하트--%>
   <div id="main">
       <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count" >
-        <c:if test="${count.index < 5}">
           <div id="heartImage">
             <p class="heartIcon"><i class="fa-regular fa-heart" ></i></p>
           </div>
@@ -243,7 +240,6 @@
             <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">${Dvo.addr1}</a></p>
             <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}" data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}" data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}" data-homepageurl="${Dvo.homepageUrl}" data-homepagetext="${Dvo.homepageText}">${Dvo.overview}</a></p>
           </div>
-      </c:if>
     </c:forEach>
   </div>
 
@@ -369,7 +365,7 @@
           $("#"+npage).html(npage);
 
             $.ajax({
-                url: "Controller?type=tripSuggestion",
+                url: "Controller?type=tripSuggestion&pageType=tripUpdate",
                 method: "POST",
                 data: {contentTypeId: contentTypeId , areaCode: areaCode , sigunguCode:sigunguCode,
                     cat1:cat1, cat2:cat2, cat3:cat3, cPage:npage}
@@ -391,7 +387,7 @@
 
       $("#searchBt").on("click",function (){
 
-          document.frm.action = "Controller?type=tripSuggestion";
+          document.frm.action = "Controller?type=tripSuggestion&pageType=trip";
           document.frm.submit();
 /*
           $.ajax({

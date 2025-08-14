@@ -23,13 +23,39 @@
     <!-- 이메일로 회원 정보 받기 -->
     <select id="getE" parameterType="String" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member
-        WHERE member_email = #{email}
+        WHERE member_email = #{member_email} and login_type=#{login_type}
     </select>
 
     <!--회원가입-->
     <insert id="add" parameterType="toour.member.vo.MemberVO">
-        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id)
-        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id})
+        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id,login_type)
+        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id}, #{login_type})
     </insert>
+
+
+        <!--카카오 회원가입-->
+    <insert id="insertMember" parameterType="toour.member.vo.MemberVO" useGeneratedKeys="true" keyProperty="member_idx">
+        INSERT INTO member (
+        login_type, member_nickname, member_email,
+        member_created_at, member_updated_at, member_last_login_at, member_status, member_type, member_warning, )
+        VALUES (
+        #{login_type}, #{member_nickname}, #{member_email},
+        now(), now(), now(), 0, 1, 0 )
+    </insert>
+
+    <!-- 마지막 로그인 시간 업데이트 -->
+    <update id="updateLastLogin" parameterType="String">
+        UPDATE member SET member_last_login_at = NOW() WHERE member_idx = #{member_idx}
+    </update>
+    <!--이게 필요한지는 모르겠음 일단 만들어둠-->
+    <select id="getKakaoLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE login_type = #{login_type} AND member_email = #{member_email}
+    </select>
+
+    <select id="getNaverLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE login_type = 'NAVER' AND member_email = #{member_email}
+    </select>
 
 </mapper>

@@ -10,7 +10,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%--<<html lang="ko">--%>
+<html>
 <%--<head>--%>
 <%--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>--%>
 <%--    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>--%>
@@ -34,7 +34,7 @@
 <%--</body>--%>
 <%--</html>--%>
 
-</head>
+
 <body>
 <%
     int a=0;
@@ -72,7 +72,7 @@
         }
         br.close();
         if (responseCode == 200) {
-            out.println(res.toString());
+            System.out.println(res.toString());
         }
     } catch (Exception e) {
         // Exception 로깅

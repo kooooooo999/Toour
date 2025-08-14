@@ -50,7 +50,7 @@ public class SignUpAction implements Action {
             }
             mvo.setMember_email(u_email + "@"+ u_emailAddr);
             mvo.setMember_salt(salt);
-
+            mvo.setLogin_type("LOCAL");
             
             //데이터베이스에 회원 정보 저장!
             int cnt = MemberDAO.addMem(mvo);

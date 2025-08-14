@@ -310,6 +310,13 @@ select:focus {
     padding-bottom: 10px;
 }
 
-#emptyText{
+.emptyText{
     width: 500px; height: 250px; margin-right: 20px; text-align: center;
+}
+
+#mapDetails{
+    display: flex;
+    flex-direction: column; /* 항목들을 세로로 쌓기 */
+    justify-content: center; /* 수직 중앙 정렬 */
+    align-items: center;
 }

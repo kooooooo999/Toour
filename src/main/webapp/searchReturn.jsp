@@ -7,17 +7,16 @@
     <%-- 주소 있는 결과들만 검색창에 표현 --%>
     <c:if test="${fn:length(vo.addr1) > 0 }">
       <c:if test="${vo.mapy ne '19.6944274800'}">
-        <a href="">
         <div id="places_list">
-          <div>
-            <p class="ellip">${vo.title}</p>
+          <button type="button" class="plusButton" onclick="addList('${vo.title}',${vs.index})"></button>
+          <div style="display: inline-block;">
+            <p class="ellip" style="display: inline-block;">${vo.title}</p>
             <p class="ellip" style="display: block; font-weight: bold; font-size: 10px; color: #6c757d">${vo.addr1}</p>
           </div>
         </div>
           <c:if test="${fn:length(requestScope.resultAr) != (vs.index+1)}">
             <hr style="margin-top: 13px;" color="#eee" size="1px" width="100%"/>
           </c:if>
-        </a>
       </c:if>
     </c:if>
   </c:forEach>
