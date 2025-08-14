@@ -18,7 +18,7 @@ public class myPostAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         //회원 정보 가져오기
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("member");
         MemberVO mvo = null;
         //회원정보 가져오기에 성공하면 형 변환
         if(obj !=null){

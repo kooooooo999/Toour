@@ -157,7 +157,7 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
-<c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${sessionScope.member}" var="user"/>
 <c:set var="vo" value="${requestScope.vo}"/>
 <c:set var="member_info" value="${requestScope.member_info}"/>
 
@@ -226,7 +226,7 @@
             $("#del_dialog").dialog(option);
         });
 
-        let login = ${sessionScope.user != null};
+        let login = ${sessionScope.member != null};
 
         function commentData() {
             let title = $("#comment_content").val();

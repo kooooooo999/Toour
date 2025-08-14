@@ -23,7 +23,7 @@ public class myPostSearchAction implements Action {
             searchValue = request.getParameter("searchValue");
 
         String category_idx = request.getParameter("category_idx");
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("member");
         String nPage = request.getParameter("cPage");
         MemberVO mvo = null;
         if(obj!=null){

@@ -28,6 +28,20 @@ public class PostDAO {
         return cnt;
     }
 
+    // 게시물에서 검색결과 수를 반환
+    public static int getSearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("post.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
     // 내가 쓴 총 게시물에서 검색결과 수를 반환
     public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
