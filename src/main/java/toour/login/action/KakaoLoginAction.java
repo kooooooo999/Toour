@@ -85,7 +85,7 @@ public class KakaoLoginAction implements Action {
             session.setAttribute("userIdx", member.getMember_idx());
             session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
-            session.setMaxInactiveInterval(30*60);
+            session.setMaxInactiveInterval(30*60);// 세션 30분 유지
             //이게 뭐지?
             System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
             return "gohome";

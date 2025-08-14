@@ -6,15 +6,18 @@ import org.apache.ibatis.session.SqlSession;
 
 
 public class MemberDAO {
-    public static int addMem(MemberVO mvo){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt =  ss.insert("member.add",mvo);
-        if(cnt>0)
-            ss.commit();
-        else
-            ss.rollback();
-        ss.close();
-
+    public static int addMem(MemberVO mvo) {
+        int cnt = 0;
+        try (SqlSession ss = FactoryService.getFactory().openSession()) {
+            cnt = ss.insert("member.add", mvo);
+            if (cnt > 0) {
+                ss.commit();
+            } else {
+                ss.rollback();
+            }
+        } catch (Exception e) {
+            e.printStackTrace(); // 로깅 권장
+        }
         return cnt;
     }
     public static MemberVO getMem(String id){

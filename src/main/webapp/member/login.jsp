@@ -212,7 +212,7 @@
   </div>
   <!-- 네이버 로그인 버튼 -->
   <%
-    String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
+    String clientId = "02aFSrv2E53MWqQAERSx";//애플리케이션 클라이언트 아이디값";
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
     SecureRandom random = new SecureRandom();
     String state = new BigInteger(130, random).toString();
@@ -234,15 +234,14 @@
 <%--
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 --%>
-<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
 <div id="naver_id_login"></div>
 
 <%--여기 부분이 화면을 따로 띄우는 부분--%>
 <!-- 네이버 로그인 초기화 Script -->
-<script type="text/javascript">
-  var naver_id_login = new naver_id_login("WqKlg2ns39WEN3SEtV0G", "http://localhost:8080/member/callback.jsp");
+<script type="text/javascript"><!--naver_id_login : client-id-->
+  var naver_id_login = new naver_id_login("02aFSrv2E53MWqQAERSx", "http://localhost:8080/member/callback.jsp");
   var state = naver_id_login.getUniqState(); // 토큰 담을곳
   naver_id_login.setButton("green", 3,40);
   // naver_id_login.setDomain(""); // 서비스 UI
@@ -279,7 +278,7 @@
 
   function initNaverLogin() {
     var naver_id_login = new naver_id_login(
-            "WqKlg2ns39WEN3SEtV0G", // 클라이언트 ID
+            "02aFSrv2E53MWqQAERSx", // 클라이언트 ID
             "http://localhost:8080/member/callback.jsp" // redirect URI
     );
 
