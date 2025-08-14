@@ -41,13 +41,13 @@ public class NoticeSearchAction implements Action {
             System.out.println(ar[0]);
 
             request.setAttribute("page",page);
-            request.setAttribute("ar",ar);
+            request.setAttribute("noticeAr",ar);
             request.setAttribute("category_idx",category_idx);
             request.setAttribute("totalCount",totalCount);
             request.setAttribute("searchType",searchType);
             request.setAttribute("searchValue",searchValue);
             request.setAttribute("nowPage",page.getNowPage());
-            return "noticeList.jsp";
+            return "notice/noticeList.jsp";
         }
     }
 

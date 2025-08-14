@@ -39,7 +39,7 @@
             <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
                 <input type="hidden" name="category_idx" value="2">
                 <select id="searchType" name="searchType">
-                    <option value="post_title"<c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
+                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
                     <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
                     <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
                 </select>

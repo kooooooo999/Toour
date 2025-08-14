@@ -200,8 +200,8 @@
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
             <input type="hidden" name="category_idx" value="1">
             <select id="searchType" name="searchType">
-                <option value="post_title">제목</option>
-                <option value="post_content">내용</option>
+                <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
+                <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
             </select>
             <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
             <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>

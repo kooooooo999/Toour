@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public class NoticeListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String searchType = request.getParameter("searchType");
+        String searchValue = request.getParameter("searchValue");
         String category_idx=request.getParameter("category_idx");
         if(category_idx==null)
             category_idx="1";
-        int totalCount= PostDAO.getTotalCount(category_idx);
+        int totalCount = toour.notice.dao.PostDAO.getSearchTotalCount(searchType,searchValue);
         Paging page = new Paging(10,5);
         page.setTotalCount(totalCount);
 

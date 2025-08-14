@@ -20,6 +20,21 @@ public class PostDAO {
         return cnt;
     }
 
+
+    //마이페이지에서 검색된 총게시물의 수를 반환
+    public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+        map.put("member_idx", member_idx);
+
+        int cnt = ss.selectOne("notice.mySearchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
     //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
