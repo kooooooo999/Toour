@@ -22,7 +22,6 @@
       border-radius: 8px !important;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
       padding: 0 40px;
-
     }
 
     /* 댓글 폼 영역 */
@@ -48,6 +47,13 @@
       gap: 10px;
       width: 100%;
       align-items: flex-start;
+    }
+
+    .btn-register{
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
     }
 
     .comment_container textarea{
@@ -289,9 +295,27 @@
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
+
+          <!-- 다른 사람 글일 때 신고 버튼 -->
+          <c:if test="${sessionScope.user.member_idx != member_info.member_idx}">
+              <input type="submit" value="신고" onclick="openReportDialog()"/>
+<%--              style="background-color: #f44336" color:white, border:none; padding:6px 12px; border-radius:4px; cursor:pointer;>--%>
+            </form>
+          </c:if>
         </c:if>
+
         <input type="button" value="목록" onclick="goList()"/>
       </div>
+
+  <!-- 신고 팝업 -->
+  <div id="report_dialog" title="게시물 신고">
+    <form id="reportForm" action="ReportServlet" method="post">
+      <p>신고 사유를 입력하세요:</p>
+      <textarea name="reason" id="report_reason" rows="5" style="width:100%; box-sizing:border-box;" required></textarea>
+      <input type="hidden" name="post_id" value="${vo.post_idx}"/>
+      <input type="hidden" name="reporter_id" value="${sessionScope.user.member_idx}"/>
+    </form>
+  </div>
 
   <!--댓글 작성-->
   <div id="comment_form">
@@ -386,6 +410,37 @@
   });
 
   let login = ${sessionScope.memeber != null};
+  $(function goReport() {
+    // 신고 팝업 설정
+    $("#report_dialog").dialog({
+      autoOpen: false,
+      modal: true,
+      resizable: false,
+      width: 400,
+      buttons: {
+        "신고하기": function () {
+          let reason = $("#report_reason").val().trim();
+          if (reason.length < 1) {
+            alert("신고 사유를 입력하세요.");
+            return;
+          }
+          $("#reportForm").submit();
+        },
+        "취소": function () {
+          $(this).dialog("close");
+        }
+      }
+    });
+  });
+
+  // 신고 팝업 열기 함수
+  function openReportDialog() {
+    $("#report_reason").val(""); // 이전 입력값 초기화
+    $("#report_dialog").dialog("open");
+  }
+
+
+  let login = ${sessionScope.member != null};
 
   function commentData() {
     let title = $("#comment_content").val();
@@ -424,7 +479,6 @@
     document.ff.type.value = "edit";
     document.ff.submit();
   }
-
 
   $(function (){
     $("#loginDialog").dialog({
