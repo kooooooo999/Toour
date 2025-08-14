@@ -67,7 +67,7 @@
                 <a href="<c:url value="/Controller?type=list" />" class="act">게시판</a>
                 <ul class="submenu">
                     <li><a href="<c:url value="/Controller?type=notice" />" class="act">공지사항</a></li>
-                    <li><a href="#">건의/문의</a></li>
+                    <li><a href="<c:url value="/Controller?type=QnA"/>">건의/문의</a></li>
                     <li><a href="<c:url value="/Controller?type=list" />" class="act">여행후기</a></li>
                 </ul>
             </li>
