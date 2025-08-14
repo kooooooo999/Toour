@@ -5,12 +5,13 @@
 <script>
     console.log(${requestScope.result})
 var linePath = [];
-var points = []; // 지도 범위 재설정할 좌표들 받기
+
 <c:forEach var="vertex" begin="0" end="${fn:length(requestScope.vertex_x)-1}" varStatus="vs">
     <%--    linePath.push(new kakao.maps.LatLng(<%= lats[i] %>, <%= lngs[i] %>));--%>
         linePath.push(new kakao.maps.LatLng(${requestScope.vertex_x[vs.index]},${requestScope.vertex_y[vs.index]}));
         points.push(new kakao.maps.LatLng(${requestScope.vertex_x[vs.index]},${requestScope.vertex_y[vs.index]}));
 </c:forEach>
+
 var polyline = new kakao.maps.Polyline({
     path: linePath,
     strokeWeight: 5,
@@ -28,5 +29,7 @@ var bounds = new kakao.maps.LatLngBounds();
         bounds.extend(points[i]);
     }
 
-map.setBounds(bounds);
+    // 지도 범위 재설정
+    map.setBounds(bounds);
+
 </script>

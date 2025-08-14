@@ -89,9 +89,10 @@ public class KakaoMobilAction implements Action{
                     waypointsSb.append("}");
                     // 마지막 경유지가 아니면 쉼표 추가
                     if (i < arList.size() - 2) {
-                    waypointsSb.append(",");
+                        waypointsSb.append(",");
                     }
                 }
+
                 String waypointsJson = waypointsSb.toString();
 
                 sb.append("{");
@@ -106,7 +107,6 @@ public class KakaoMobilAction implements Action{
                 sb.append("    \"x\": \"").append(destinationX).append("\",");
                 sb.append("    \"y\": \"").append(destinationY).append("\"");
                 sb.append("},");
-
 
                 // 경유지 추가할 때마다 waypoints 늘어나게 for문 돌려야 됨
                 sb.append("\"waypoints\": [").append(waypointsJson).append("],");
@@ -175,6 +175,7 @@ public class KakaoMobilAction implements Action{
 
                 request.setAttribute("vertex_x",vertex_x);
                 request.setAttribute("vertex_y",vertex_y);
+                request.setAttribute("list", arList);
             } else {
                 System.out.println("API 호출 실패. HTTP 응답 코드: " + responseCode);
             }
