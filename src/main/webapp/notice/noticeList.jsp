@@ -165,6 +165,16 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
+
+        #searchValue {
+            height: 38px; /* 버튼과 비슷한 높이 */
+            padding: 6px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
         button[type="submit"]{
             padding: 10px 20px;
             font-size: 14px;
@@ -184,6 +194,24 @@
         #post h1{
             color: #222;
             text-align: center;
+            margin-top: 40px;
+        }
+
+        .totalCount{
+            margin-left: 40px;
+        }
+
+        .search-area{
+            float: right;
+            margin-right: 40px;
+        }
+
+        .totalCount p{
+            font-weight: bold;
+        }
+
+        .totalCount strong{
+            color: #1a73e8;
         }
 
     </style>
@@ -196,6 +224,9 @@
 
 <div id="post">
     <h1>공지사항</h1>
+
+
+
     <div class="search-area">
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
             <input type="hidden" name="category_idx" value="1">
@@ -207,8 +238,16 @@
             <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
         </form>
     </div>
+
+
     <table summary="검색결과 목록">
         <caption>검색결과 목록</caption>
+
+        <c:set var="t" value="${requestScope.totalCount}"/>
+        <div class="totalCount">
+            <p>총 <strong>${t}건</strong></p>
+        </div>
+
         <thead>
             <th>번호</th>
             <th>제목</th>

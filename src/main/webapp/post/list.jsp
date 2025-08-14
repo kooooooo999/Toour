@@ -27,6 +27,33 @@
         #post h1{
             color: #222;
             text-align: center;
+            margin-top: 40px;
+        }
+
+        .totalCount{
+            margin-left: 40px;
+        }
+
+        .search-area{
+            float: right;
+            margin-right: 40px;
+        }
+
+        .totalCount p{
+            font-weight: bold;
+        }
+
+        .totalCount strong{
+            color: #1a73e8;
+        }
+
+        #searchValue {
+            height: 38px; /* 버튼과 비슷한 높이 */
+            padding: 6px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -35,6 +62,7 @@
 
     <div id="post">
         <h1>여행후기</h1>
+
         <div class="search-area">
             <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
                 <input type="hidden" name="category_idx" value="2">
@@ -48,8 +76,15 @@
             </form>
         </div>
 
+
         <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
+
+            <c:set var="t" value="${requestScope.totalCount}"/>
+            <div class="totalCount">
+                <p>총 <strong>${t}건</strong></p>
+            </div>
+
             <thead>
                 <th>번호</th>
                 <th>제목</th>
@@ -57,7 +92,6 @@
                 <th>별점</th>
                 <th>조회수</th>
                 <th>작성일</th>
-
             </thead>
             <tbody>
                 <c:set var="p" value="${requestScope.page}" />
