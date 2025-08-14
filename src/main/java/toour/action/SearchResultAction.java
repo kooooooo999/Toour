@@ -5,7 +5,7 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.search.util.GetAPISearchData;
 import toour.search.vo.SearchDataVO;
-import toour.search.vo.SearchResponseVO;
+import toour.tripsuggestion.vo.DataVO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +19,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class SearchResultAction implements Action{
-    List<SearchResponseVO> srlist = new ArrayList<>();
-    List<SearchResponseVO> courseList = new ArrayList<>();
+    List<DataVO> srlist = new ArrayList<>();
+    List<DataVO> courseList = new ArrayList<>();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
@@ -138,7 +138,7 @@ public class SearchResultAction implements Action{
                     Element items = body.getChild("items");
                     List<Element> item_list = items.getChildren("item");
 
-                    SearchResponseVO[] ar = new SearchResponseVO[item_list.size()];
+                    DataVO[] ar = new DataVO[item_list.size()];
 
                     int i = 0;
 
@@ -177,7 +177,7 @@ public class SearchResultAction implements Action{
 // &MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&contentId=126128&_type=json
 
                         //결과 객체 생성
-                        SearchResponseVO srvo = new SearchResponseVO();
+                        DataVO srvo = new DataVO();
                         srvo.setAddr1(addr1);
                         srvo.setFirstimage(firstimage);
                         srvo.setTitle(title);
@@ -200,8 +200,6 @@ public class SearchResultAction implements Action{
                     e.printStackTrace();
                 }
         }
-
-        System.out.println(viewPath);
 
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키

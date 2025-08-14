@@ -128,7 +128,7 @@ body{
     align-items: center; /* 수평 중앙 정렬 */
     width: 850px;
     height: auto;
-    margin-left: 480px;
+    margin: auto;
 }
 
 #main_2{
