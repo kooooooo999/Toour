@@ -6,6 +6,11 @@
 <mapper namespace="notice">
 
 
+    <resultMap id="map1" type="toour.post.vo.PostVO">
+        <id property="post_idx" column="post_idx"/>
+        <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
+    </resultMap>
+
 
     <!--조회수 증가-->
     <update id="hit" parameterType="String">
@@ -14,7 +19,7 @@
         where post_idx = #{post_idx}
     </update>
     <!-- 총 게시물 수를 반환하는 기능 -->
-        <select id="totalCount" resultType="int" parameterType="String">
+    <select id="totalCount" resultType="int" parameterType="String">
         select count(*) from post
         where post_status = 0 and category_idx = #{category_idx}
     </select>
@@ -27,10 +32,10 @@
         from(
         select * from post
         where post_status = 0
-        and category_idx = 1
+        and category_idx = #{category_idx}
         order by post_idx DESC
         ) a
-        ) c inner join member m on c.member_idx=m.member_idx
+        ) c
         where c.rnum Between #{begin} and #{end}
         order by post_idx desc
     </select>

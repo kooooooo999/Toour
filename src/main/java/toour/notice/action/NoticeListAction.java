@@ -27,7 +27,8 @@ public class NoticeListAction implements Action {
             int nowPage= Integer.parseInt(cPage);
             page.setNowPage(nowPage);
         }
-
+        //페이징 처리 끝
+        //공지사항 리스트 불러오기
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
         
         request.setAttribute("page",page);

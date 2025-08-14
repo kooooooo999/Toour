@@ -23,6 +23,7 @@ public class PostDAO {
     //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
+
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("category_idx",category_idx);
         map.put("begin",begin);

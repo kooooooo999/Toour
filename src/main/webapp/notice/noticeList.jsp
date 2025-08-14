@@ -217,7 +217,7 @@
             <th>작성일</th>
         </thead>
         <tbody>
-        <c:set var="noticeAr" value="${requestScope.noticeAr}" scope=""/>
+        <c:set var="noticeAr" value="${requestScope.noticeAr}" scope="page"/>
         <c:if test="${not empty requestScope.noticeAr}">
             <c:set var="p" value="${requestScope.page}" />
             <c:forEach items="${noticeAr}" var="vo" varStatus="vs">
