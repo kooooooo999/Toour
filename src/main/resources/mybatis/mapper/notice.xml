@@ -19,9 +19,26 @@
         where post_idx = #{post_idx}
     </update>
     <!-- 총 게시물 수를 반환하는 기능 -->
-    <select id="totalCount" resultType="int" parameterType="String">
+    <select id="totalCount" resultType="int">
         select count(*) from post
-        where post_status = 0 and category_idx = #{category_idx}
+        where post_status = 0 and category_idx = 1
+    </select>
+
+    <select id="SearchTotalCount" resultType="int" parameterType="String">
+        select count(*) from post p
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%') and
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%') and
+                    </when>
+                </choose>
+            </if>
+            p.post_status = 0 and p.category_idx = 1
+        </where>
     </select>
 
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
@@ -32,7 +49,7 @@
         from(
         select * from post
         where post_status = 0
-        and category_idx = #{category_idx}
+        and category_idx = 1
         order by post_idx DESC
         ) a
         ) c
@@ -100,11 +117,10 @@
                     <when test="searchType != null and searchType == 'post_content'">
                         p.post_content LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
-                    <when test="searchType != null and searchType == 'member_nickname'">
-                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
-                    </when>
                 </choose>
+                and
             </if>
+             p.category_idx=1
         </where>
         )a
         where a.rnum BETWEEN #{begin} AND #{end};

@@ -288,18 +288,18 @@
             <li class="disable">&lt;</li>
         </c:if>
         <c:if test="${p.startPage >= p.pagePerBlock}">
-            <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+            <li><a href="Controller?type=notice&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
         </c:if>
         <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
             <c:if test="${p.nowPage == vs.index}">
                 <li class="now">${vs.index}</li>
             </c:if>
             <c:if test="${p.nowPage != vs.index}">
-                <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
+                <li><a href="Controller?type=notice&cPage=${vs.index}">${vs.index}</a></li>
             </c:if>
         </c:forEach>
         <c:if test="${p.endPage < p.totalPage}">
-            <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
+            <li><a href="Controller?type=notice&cPage=${p.endPage+1}">&gt;</a></li>
         </c:if>
         <c:if test="${p.endPage >= p.totalPage}">
             <li class="disable">&gt;</li>

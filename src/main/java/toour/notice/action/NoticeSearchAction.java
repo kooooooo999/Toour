@@ -1,8 +1,8 @@
 package toour.notice.action;
 
+import toour.notice.dao.PostDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
-import toour.post.dao.PostDAO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,8 +16,8 @@ public class NoticeSearchAction implements Action {
             String searchValue = request.getParameter("searchValue");
             String category_idx = request.getParameter("category_idx");
             if (category_idx == null)
-                category_idx = "2";
-            int totalCount = PostDAO.getTotalCount(category_idx);
+                category_idx = "1";
+            int totalCount = PostDAO.getSearchTotalCount(searchType,searchValue,category_idx);
 
             Paging page = new Paging(10,5);
 
@@ -35,10 +35,10 @@ public class NoticeSearchAction implements Action {
             PostVO[] ar = PostDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
 
             if(ar!=null &&ar.length>0)
-                System.out.println("검색 결과 첫 번째 항목: " + ar[0]);
+                System.out.println("검색 결과 첫 번째 항목: " + ar[0].getPost_title());
             else
                 System.out.println("검색결과가 없습니다.");
-            System.out.println(ar[0]);
+
 
             request.setAttribute("page",page);
             request.setAttribute("noticeAr",ar);
@@ -47,6 +47,8 @@ public class NoticeSearchAction implements Action {
             request.setAttribute("searchType",searchType);
             request.setAttribute("searchValue",searchValue);
             request.setAttribute("nowPage",page.getNowPage());
+            request.setAttribute("cPage",cPage);
+
             return "notice/noticeList.jsp";
         }
     }

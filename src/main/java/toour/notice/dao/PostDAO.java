@@ -21,17 +21,16 @@ public class PostDAO {
     }
 
 
-    //마이페이지에서 검색된 총게시물의 수를 반환
-    public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
+    public static int getSearchTotalCount(String searchType,String searchValue,String category_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         Map<String, String> map = new HashMap<>();
         if(searchType!=null)
             map.put("searchType", searchType);
         if(searchValue!=null)
             map.put("searchValue", searchValue);
-        map.put("member_idx", member_idx);
+        map.put("category_idx", category_idx);
 
-        int cnt = ss.selectOne("notice.mySearchTotalCount",map);
+        int cnt = ss.selectOne("notice.SearchTotalCount",map);
         ss.close();
         return cnt;
     }
