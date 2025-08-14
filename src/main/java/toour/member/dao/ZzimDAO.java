@@ -12,12 +12,33 @@ public class ZzimDAO {
     public static int addZzim(String member_idx, String zzim_type,String contentId){
         int cnt =0;
         if(contentId!=null){
+            System.out.println("addZzim 함수");
             SqlSession ss = FactoryService.getFactory().openSession();
             Map<String, String> map = new HashMap<>();
             map.put("member_idx", member_idx);
             map.put("zzim_type",zzim_type);
             map.put("zzim_content_id", contentId);
             cnt = ss.insert("zzim.add",map);
+            if(cnt>0)
+                ss.commit();
+            else
+                ss.rollback();
+            ss.close();
+        }
+
+        return cnt;
+    }
+
+    public static int delZzim(String member_idx,String zzim_type, String contentId){
+        int cnt =0;
+        if(contentId!=null){
+            System.out.println("addZzim 함수");
+            SqlSession ss = FactoryService.getFactory().openSession();
+            Map<String, String> map = new HashMap<>();
+            map.put("member_idx", member_idx);
+            map.put("zzim_type",zzim_type);
+            map.put("zzim_content_id", contentId);
+            cnt = ss.delete("zzim.del",map);
             if(cnt>0)
                 ss.commit();
             else

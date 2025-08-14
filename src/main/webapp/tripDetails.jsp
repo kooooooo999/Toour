@@ -137,7 +137,7 @@
         <h1 class="tag">${Dvo.title}</h1>
       <p class="lineDetails">
         <div id="heartImagedetails">
-          <p class="heartIcon" id="heartIcon"><i id="heart" class="fa-regular fa-heart"></i></p>
+  <p class="heartIcon" id="heartIcon"><i id="heart" <c:if test="${!requestScope.zzim_state}">class="fa-regular fa-heart"</c:if> <c:if test="${requestScope.zzim_state}">class="fa-solid fa-heart"</c:if> ></i></p>
         </div>
       <div class="image-container">
           <c:if test="${empty Dvo.firstimage}">
@@ -321,6 +321,8 @@
       position: new kakao.maps.LatLng(${Dvo.mapy}, ${Dvo.mapx}),
       map: map,
     });
+
+
     $("#heartIcon").on("click",function () {
       // Action에서 추가인지 삭제인지 구분하기 위한 값
       let state = null;
@@ -329,7 +331,6 @@
         //빈 하트 눌렀을 때 if
         $("#heart").removeClass("fa-regular fa-heart")
         $("#heart").addClass("fa-solid fa-heart")
-
         //찜 목록에 add해라
         state = "add";
       }else {
