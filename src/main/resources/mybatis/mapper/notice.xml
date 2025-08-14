@@ -5,10 +5,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="notice">
 
-    <resultMap id="map1" type="toour.post.vo.PostVO">
-        <id property="post_idx" column="post_idx"/>
-        <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
-    </resultMap>
+
 
     <!--조회수 증가-->
     <update id="hit" parameterType="String">
@@ -17,20 +14,20 @@
         where post_idx = #{post_idx}
     </update>
     <!-- 총 게시물 수를 반환하는 기능 -->
-    <select id="totalCount" resultType="int" parameterType="String">
+        <select id="totalCount" resultType="int" parameterType="String">
         select count(*) from post
         where post_status = 0 and category_idx = #{category_idx}
     </select>
 
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
 
-    <select id="list" resultMap="map1" parameterType="map">
+    <select id="list" resultType="toour.post.vo.PostVO" parameterType="map">
         select * from(
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
         select * from post
         where post_status = 0
-        and category_idx=1
+        and category_idx = 1
         order by post_idx DESC
         ) a
         ) c inner join member m on c.member_idx=m.member_idx

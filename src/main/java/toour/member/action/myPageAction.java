@@ -25,7 +25,7 @@ public class myPageAction implements Action {
         DataVO[] tour_ar = new DataVO[cnt];
         CourseVO[] course_ar = new CourseVO[cnt];
 
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("member");
         if(obj !=null){
             MemberVO mvo = (MemberVO) obj;
 

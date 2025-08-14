@@ -217,9 +217,10 @@
             <th>작성일</th>
         </thead>
         <tbody>
-        <c:if test="${not empty ar}">
+        <c:set var="noticeAr" value="${requestScope.noticeAr}" scope=""/>
+        <c:if test="${not empty requestScope.noticeAr}">
             <c:set var="p" value="${requestScope.page}" />
-            <c:forEach items="${ar}" var="vo" varStatus="vs">
+            <c:forEach items="${noticeAr}" var="vo" varStatus="vs">
                 <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
                 <tr>
                     <td>${num}</td>
@@ -231,7 +232,7 @@
                             </c:if>
                         </a>
                     </td>
-                    <td>${vo.member_nickname}</td>
+                    <td>관리자</td>
                     <td>${vo.post_views}</td>
                     <td>${vo.post_created_at.substring(0,10)}</td>
                 </tr>

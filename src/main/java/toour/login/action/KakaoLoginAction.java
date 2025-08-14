@@ -86,7 +86,11 @@ public class KakaoLoginAction implements Action {
             session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
             System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
-            return "MainIndex/index.jsp";
+
+            //이게 뭐지?
+            session.setMaxInactiveInterval(30*60);
+
+            return "member/myPage.jsp";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +147,7 @@ public class KakaoLoginAction implements Action {
             }
             System.out.println("토큰 요청 실패 - 응답 코드: " + responseCode);
             System.out.println("에러 응답: " + errorResult);
-            return null;
+            return "error.jsp";//오류페이지 붙이기*******************************
         }
     }
 

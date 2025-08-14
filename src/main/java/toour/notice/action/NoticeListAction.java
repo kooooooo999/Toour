@@ -1,8 +1,8 @@
 package toour.notice.action;
 
+import toour.notice.dao.PostDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
-import toour.post.dao.PostDAO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,12 +29,12 @@ public class NoticeListAction implements Action {
         }
 
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
-
         
         request.setAttribute("page",page);
-        request.setAttribute("ar",ar);
+        request.setAttribute("noticeAr",ar);
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);
+        request.setAttribute("category_idx",category_idx);
         request.setAttribute("nowPage",page.getNowPage());
         return "notice/noticeList.jsp";
     }
