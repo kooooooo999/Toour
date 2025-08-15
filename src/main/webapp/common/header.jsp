@@ -41,7 +41,7 @@
         </div>
     </div>
     <div class="container header-main flex-between">
-        <a href="Controller" class="logo">👋🏻 toour</a>
+        <a href="Controller" class="logo"><span class="logo-emoji" aria-hidden="true">👋🏻</span> toour</a>
         <form id="search_form" accept-charset="UTF-8" method="post">
             <input id="keyword" type="text" placeholder="어디로 떠나고 싶으신가요?" name="keyword"/>
             <i class="fas fa-search"></i>

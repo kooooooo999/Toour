@@ -54,6 +54,41 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+            width: 200px;
+        }
+        
+        #searchType {
+            height: 38px;
+            padding: 6px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        
+        .search-area button {
+            height: 38px;
+            padding: 6px 15px;
+            font-size: 14px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .search-area button:hover {
+            background-color: #1557b0;
+        }
+        
+        .no-result {
+            color: #666;
+            font-size: 16px;
+        }
+        
+        .no-result strong {
+            color: #1a73e8;
         }
     </style>
 </head>
@@ -69,10 +104,11 @@
                 <select id="searchType" name="searchType">
                     <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
                     <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
+                    <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
                     <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
                 </select>
                 <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
+                <button type="submit">검색</button>
             </form>
         </div>
 
@@ -95,26 +131,47 @@
             </thead>
             <tbody>
                 <c:set var="p" value="${requestScope.page}" />
-                <c:forEach items="${requestScope.ar}" var="vo" varStatus="vs">
-                    <c:if test="${not empty vo}">
-                    <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-                    <tr>
-                        <td>${num}</td>
-                        <td style="text-align: left">
-                            <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                    ${vo.post_title}
-                                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                    (<c:out value="${fn:length(vo.c_list)}"/>)
-                                </c:if>
-                            </a>
-                        </td>
-                        <td>${vo.member_nickname}</td>
-                        <td>${vo.post_star}</td>
-                        <td>${vo.post_views}</td>
-                        <td>${vo.post_created_at.substring(0,10)}</td>
-                    </tr>
-                    </c:if>
-                </c:forEach>
+                <c:choose>
+                    <c:when test="${not empty requestScope.ar and fn:length(requestScope.ar) > 0}">
+                        <c:forEach items="${requestScope.ar}" var="vo" varStatus="vs">
+                            <c:if test="${not empty vo}">
+                            <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
+                            <tr>
+                                <td>${num}</td>
+                                <td style="text-align: left">
+                                    <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                                            ${vo.post_title}
+                                        <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
+                                            (<c:out value="${fn:length(vo.c_list)}"/>)
+                                        </c:if>
+                                    </a>
+                                </td>
+                                <td>${vo.member_nickname}</td>
+                                <td>${vo.post_star}</td>
+                                <td>${vo.post_views}</td>
+                                <td>${vo.post_created_at.substring(0,10)}</td>
+                            </tr>
+                            </c:if>
+                        </c:forEach>
+                    </c:when>
+                    <c:otherwise>
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 50px;">
+                                <div class="no-result">
+                                    <c:choose>
+                                        <c:when test="${not empty requestScope.searchValue}">
+                                            <strong>"${requestScope.searchValue}"</strong>에 대한 검색 결과가 없습니다.<br>
+                                            다른 검색어를 입력해보세요.
+                                        </c:when>
+                                        <c:otherwise>
+                                            게시글이 없습니다.
+                                        </c:otherwise>
+                                    </c:choose>
+                                </div>
+                            </td>
+                        </tr>
+                    </c:otherwise>
+                </c:choose>
             </tbody>
         </table>
     </div>
