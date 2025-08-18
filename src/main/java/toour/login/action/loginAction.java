@@ -36,8 +36,8 @@ public class loginAction implements Action {
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         
                         // 로그인이 승인 됐을 때 회원의 코스를 가져와 mvo에 저장
-                        CourseVO[] cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
-                        mvo.setCourselist(cvo_ar);
+                        /*CourseVO[] cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
+                        mvo.setCourselist(cvo_ar);*/
                         request.getSession().setAttribute("user",mvo);
 
                         HttpSession session = request.getSession();
@@ -55,7 +55,7 @@ public class loginAction implements Action {
                             viewPath = "AdminController?type=AdminMain";
                         }
                         else
-                            viewPath = null;
+                            viewPath = "gohome";
 
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
