@@ -1,4 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -49,6 +51,62 @@
             overflow: hidden;
         }
 
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2열 */
+            gap: 20px; /* 카드 사이 간격 */
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            height: 200px;
+        }
+
+        .card2 {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+            height: 200px;
+        }
+
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .card-title small {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .today_visit{
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .today_board{
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .today_warning{
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -64,8 +122,33 @@
 
 <div class="main-content">
     <h1>관리자 페이지</h1>
-    <p>대시보드.</p>
-</div>
 
+
+<div class="dashboard">
+    <div class="card">
+        <div class="card-title">
+            <c:set var="t" value="${requestScope.totalCount}"/>
+            전체 회원 수<br>
+            <small>(전체회원수 / 휴면회원수 / 탈퇴회원수 / 강퇴회원수)</small>
+            <p>${t}</p>
+        </div>
+    </div>
+    <div class="card">
+        <div class="today_visit">
+            오늘 방문자 수
+        </div>
+    </div>
+    <div class="card2">
+        <div class="today_board">
+            오늘 게시글 수
+        </div>
+    </div>
+    <div class="card2">
+        <div class="today_warning">
+            최근 신고 수 (한달)
+        </div>
+    </div>
+</div>
+</div>
 </body>
 </html>
