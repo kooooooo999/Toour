@@ -24,6 +24,7 @@
     <section class="hero-travel-guide container">
         <div class="hero-content-left">
             <small>선비의 발자취를 따라,</small>
+
             <h2>아이와 함께 떠나는<br>경북 영주 여행지 3</h2>
             <p>유유자적 고즈넉한 한옥의 정취를 느끼며 전통문화와 자연을 체험하는 경북 영주 여행 코스</p>
             <a href="#" class="detail-btn">자세히 보기</a>
@@ -58,35 +59,23 @@
 
             <div class="recommend-cards">
                 <div class="card">
-<<<<<<< HEAD
-                    <img src="#" alt="노도(김만중)">
-=======
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=5479400c-1531-4197-a861-0dd37bc1603a" alt="덕가산">
->>>>>>> origin/feature_sebin
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=b2526e1d-56a4-42df-9c98-f8255009c851" alt="해운대">
                     <div class="card-content">
-                        <h4>덕가산<br><small>강원도 영월군</small></h4>
+                        <h4>해운대 달맞이길<br><small>부산시 해운대구</small></h4>
                     </div>
 <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
 
                 <div class="card">
-<<<<<<< HEAD
-                    <img src="#" alt="취한대">
-=======
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=169a3167-0d2a-4bf4-a680-cb8df73bc5c0" alt="백석봉(정선)">
->>>>>>> origin/feature_sebin
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=3d29f393-801a-41dd-8472-a79a01642fce" alt="백석봉(정선)">
                     <div class="card-content">
-                        <h4>백석봉(정선)<br><small>강원도 정선군</small></h4>
+                        <h4>롯데월드<br><small>서울시 송파구</small></h4>
                     </div>
 <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
 
                 <div class="card">
-<<<<<<< HEAD
-                    <img src="#" alt="산의한우마을">
-=======
-                    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDAyMThfMTkw%2FMDAxNzA4MjY1MTgzOTQ0.RqIVGcDhC1X9PLb6Z4pdU-qmIGnL2TG4mMAAyXqvFDog.w8ny-Go8I4pb4N5Tph-YrSs1PwS_Q8oZdkHSYsX8pa8g.JPEG.rtop221%2F%25B7%25CE%25B0%25ED20240218_215307.678.jpg&type=a340" alt="데미샘자연휴양림">
->>>>>>> origin/feature_sebin
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=26eacf69-77ed-4ec7-a659-fe19f39ff7d1" alt="데미샘자연휴양림">
                     <div class="card-content">
                         <h4>데미샘자연휴양림<br><small>전라북도 진안군</small></h4>
                     </div>
@@ -94,13 +83,9 @@
                 </div>
 
                 <div class="card">
-<<<<<<< HEAD
-                    <img src="#" alt="대구 등산">
-=======
-                    <img src="https://search.pstatic.net/common/?src=http%3A%2F%2Fblogfiles.naver.net%2FMjAyNDA4MjFfMjk5%2FMDAxNzI0MTcyMTc3Mzg3.UYaBrb1zmdbf7D1dZGbEMmpxYRpwMkx_4ayoAo4MJ8sg.5GlKf4KjJigUkWl0nXDM7W8Xreb4LDJVNVDnrBVyHI4g.PNG%2F1724167398298.png&type=l340_165" alt="양평 쉬자파크">
->>>>>>> origin/feature_sebin
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=8132ce55-9fbf-4b85-8a8e-b324286393db" alt="내동마을 연꽃단지">
                     <div class="card-content">
-                        <h4>양평 쉬자파크공원<br><small>경기도 양평군</small></h4>
+                        <h4>내동마을 연꽃단지<br><small>경기도 용인시</small></h4>
                     </div>
 <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
                 </div>
@@ -148,11 +133,7 @@
         <div class="healing-carousel-wrapper">
             <div class="healing-card-wrapper">
                 <div class="healing-card">
-<<<<<<< HEAD
-                    <img src="#" alt="경주 풍력발전소">
-=======
                     <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=7266caa0-cb58-48a0-a04b-0dd60ee0ac1c" alt="경주 풍력발전소" />
->>>>>>> origin/feature_sebin
                     <div class="card-content">
                         <h4>차 향 따라 쉬어가는 여름방학 🍧</h4>
                         <p>보성 가족여행 코스 추천</p>
@@ -160,11 +141,7 @@
 
                 </div>
                 <div class="healing-card">
-<<<<<<< HEAD
-                    <img src="#" alt="전남 미식 여행">
-=======
                     <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=89662693-e69e-4c7d-bd6d-b731a04df674" alt="단양 디지털 관광주민증" />
->>>>>>> origin/feature_sebin
                     <div class="card-content">
                         <h4>디지털 관광주민증으로 알뜰하게!</h4>
                         <p>단양에서 즐기는 짜릿한 여름</p>
@@ -172,11 +149,7 @@
 
                 </div>
                 <div class="healing-card">
-<<<<<<< HEAD
-                    <img src="#" alt="서울 걷기 명소">
-=======
                     <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=a483fc35-1ee1-4848-acce-ab9bf19b4819" alt="서울 사진미술관" />
->>>>>>> origin/feature_sebin
                     <div class="card-content">
                         <h4>따끈한 신상 공간,</h4>
                         <p>서울시립 사진미술관 📷</p>
@@ -184,11 +157,7 @@
 
                 </div>
                 <div class="healing-card">
-<<<<<<< HEAD
-                    <img src="#" alt="서울 트리하우스">
-=======
                     <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f60d9fe7-8cf0-496a-be9e-9be868875f95" alt="템플스테이" />
->>>>>>> origin/feature_sebin
                     <div class="card-content">
                         <h4>템플스테이부터 천문대까지!</h4>
                         <p>영월의 여름을 즐기는 법</p>

@@ -164,6 +164,7 @@
                         </when>
                     </choose>
                 </if>
+                and p.category_idx=2
             </where>
         )a
          where a.rnum BETWEEN #{begin} AND #{end};
