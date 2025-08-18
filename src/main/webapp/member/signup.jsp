@@ -463,7 +463,7 @@
             <div class="email-group">
               <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일"/>
               <span class="email-separator">@</span>
-              <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" disabled/>
+              <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력"/>
               <select id="emailAddr" name="emailAddr" class="email-select">
                 <option value="">직접 입력</option>
                 <option value="naver.com">naver.com</option>

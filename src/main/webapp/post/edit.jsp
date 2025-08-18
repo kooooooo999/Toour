@@ -1,4 +1,4 @@
-1 <%@ page import="toour.post.vo.PostVO" %>
+<%@ page import="toour.post.vo.PostVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -54,7 +54,7 @@
 </head>
 <body>
 <c:import url="/common/header.jsp" />
-<c:if test="${empty sessionScope.user}">
+<c:if test="${empty sessionScope.member}">
     <h3>로그인이 필요합니다.</h3>
     <p>
         <a href="Controller?type=moveLogin">로그인</a>
@@ -64,14 +64,14 @@
 </c:if>
 
 
-<c:if test="${not empty sessionScope.user}">
+<c:if test="${not empty sessionScope.member}">
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
     <c:set var="filevo" value="${requestScope.filevo}" scope="page"/>
     <c:set value="${requestScope.cPage}" var="cPage"/>
 
 <div id="post">
     <form name="editForm" action="Controller?type=edit" method="post"
-          encType="multipart/form-data" onsubmit="return sendData()">
+          enctype="multipart/form-data" onsubmit="return sendData()">
         <<input type="hidden" name="category_idx" value="2"/>
         <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
         <input type="hidden" name="cPage" value="${cPage}"/>
@@ -84,7 +84,7 @@
             </tr>
             <tr>
                 <th>이름:</th>
-                <td><input type="text" value="${sessionScope.user.member_nickname}"
+                <td><input type="text" value="${sessionScope.member.member_nickname}"
                        name="member_nickname" id="member_nickname" size="12" readonly/></td>
             </tr>
             <tr>
@@ -100,17 +100,15 @@
                     <c:if test="${not empty requestScope.file}">
                         <%-- Loop through each file in the list --%>
                         <c:forEach var="file" items="${requestScope.file}">
-                            <div>
+                            <div class="file-item">
                                     <%-- Use the 'file' variable from the loop to get each file's data --%>
                                 <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
-                                <label>
-                                    <input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제
-                                </label>
+                                <label><input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제</label>
                             </div>
                         </c:forEach>
                     </c:if>
 
-                    <div>
+                    <div class="file-item">
                         <label for="file">새 파일 첨부:</label>
                         <input type="file" id="file" name="file"/>
                     </div>
@@ -119,9 +117,11 @@
 
             <tr>
                 <td colspan="2">
-                    <input type="submit" value="수정"/>
-                    <input type="button" value="취소" onclick="goBack()"/>
-                    <input type="button" value="목록" onclick="location.href='Controller?type=list'"/>
+                    <div class="post-actions">
+                        <input type="submit" value="수정" class="btn primary"/>
+                        <input type="button" value="취소" onclick="goBack()" class="btn ghost"/>
+                        <input type="button" value="목록" onclick="location.href='Controller?type=list'" class="btn"/>
+                    </div>
                 </td>
             </tr>
             </tbody>

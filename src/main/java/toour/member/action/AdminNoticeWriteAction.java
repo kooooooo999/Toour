@@ -19,7 +19,7 @@ public class AdminNoticeWriteAction implements Action {
         //세션에서 user 받고 그걸 MemberVO로 형변환한뒤 member_idx 받아오기!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
         String viewPath = "MainIndex/index.jsp";
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("member");
 
         if(obj != null){
             //로그인을 했을 때

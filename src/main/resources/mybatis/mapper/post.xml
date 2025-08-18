@@ -28,6 +28,27 @@
         where post_status = 0 and category_idx = 2 and member_idx=#{member_idx}
     </select>
 
+    <!-- 검색 게시물 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from post p
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+                and p.post_status = 0 and p.category_idx = 2
+            </if>
+        </where>
+    </select>
+
     <!-- My Page 검색 게시물 수를 반환하는 기능 -->
     <select id="mySearchTotalCount" resultType="int" parameterType="String">
         select count(*) from post p
@@ -143,6 +164,7 @@
                         </when>
                     </choose>
                 </if>
+                and p.category_idx=2
             </where>
         )a
          where a.rnum BETWEEN #{begin} AND #{end};

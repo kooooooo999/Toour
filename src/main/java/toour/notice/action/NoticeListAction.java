@@ -1,8 +1,8 @@
 package toour.notice.action;
 
+import toour.notice.dao.PostDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
-import toour.post.dao.PostDAO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,10 +11,12 @@ import javax.servlet.http.HttpServletResponse;
 public class NoticeListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String searchType = request.getParameter("searchType");
+        String searchValue = request.getParameter("searchValue");
         String category_idx=request.getParameter("category_idx");
         if(category_idx==null)
             category_idx="1";
-        int totalCount= PostDAO.getTotalCount(category_idx);
+        int totalCount = toour.notice.dao.PostDAO.getSearchTotalCount(searchType,searchValue,category_idx);
         Paging page = new Paging(10,5);
         page.setTotalCount(totalCount);
 
@@ -27,14 +29,15 @@ public class NoticeListAction implements Action {
             int nowPage= Integer.parseInt(cPage);
             page.setNowPage(nowPage);
         }
-
+        //페이징 처리 끝
+        //공지사항 리스트 불러오기
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
 
-        
         request.setAttribute("page",page);
-        request.setAttribute("ar",ar);
+        request.setAttribute("noticeAr",ar);
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);
+        request.setAttribute("category_idx",category_idx);
         request.setAttribute("nowPage",page.getNowPage());
         return "notice/noticeList.jsp";
     }

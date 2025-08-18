@@ -13,13 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 public class loginAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String viewPath=null;
         String u_id =request.getParameter("u_id");
-        if(request.getSession().getAttribute("user")==null){
+        if(request.getSession().getAttribute("member")==null){
 
             //로그인이 안 되어 있을 때
             if(u_id!=null){
@@ -36,9 +37,9 @@ public class loginAction implements Action {
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         
                         // 로그인이 승인 됐을 때 회원의 코스를 가져와 mvo에 저장
-                        CourseVO[] cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
+                        List<CourseVO> cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
                         mvo.setCourselist(cvo_ar);
-                        request.getSession().setAttribute("user",mvo);
+                        request.getSession().setAttribute("member",mvo);
 
                         HttpSession session = request.getSession();
                         System.out.println(mvo.getMember_idx());
@@ -55,7 +56,7 @@ public class loginAction implements Action {
                             viewPath = "AdminController?type=AdminMain";
                         }
                         else
-                            viewPath = "member/myPage.jsp";
+                            viewPath = "gohome";
 
                     }else
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
@@ -69,7 +70,7 @@ public class loginAction implements Action {
         }else {
             //로그아웃 눌렀을 때
             System.out.println("logout");
-            request.getSession().removeAttribute("user");
+            request.getSession().removeAttribute("member");
             request.getSession().invalidate();
             viewPath="MainIndex/index.jsp";
         }

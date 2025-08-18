@@ -8,14 +8,11 @@ import java.util.List;
 
 public class CourseDAO {
 
-    public static CourseVO[] getCourseVO(String member_idx){
-        CourseVO[] cvo_ar = null;
+    public static List<CourseVO> getCourseVO(String member_idx){
+
         SqlSession ss = FactoryService.getFactory().openSession();
         List<CourseVO> cvo_list = ss.selectList("course.get",member_idx);
-        if(cvo_list!=null) {
-            cvo_ar = new CourseVO[cvo_list.size()];
-            cvo_list.toArray(cvo_ar);
-        }
-        return cvo_ar;
+        ss.close();
+        return cvo_list;
     }
 }
