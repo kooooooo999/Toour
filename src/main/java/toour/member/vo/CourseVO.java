@@ -3,7 +3,7 @@ package toour.member.vo;
 public class CourseVO {
     private String course_idx, member_idx, course_name, created_at, updated_at, course_summary;
 
-    CourseInVO[] courseIn_list;
+//    CourseInVO[] courseIn_list;
 
 
     public String getCourse_summary() {
@@ -54,11 +54,4 @@ public class CourseVO {
         this.updated_at = updated_at;
     }
 
-    public CourseInVO[] getCourseIn_list() {
-        return courseIn_list;
-    }
-
-    public void setCourseIn_list(CourseInVO[] courseIn_list) {
-        this.courseIn_list = courseIn_list;
-    }
 }
