@@ -214,6 +214,7 @@
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <style>
         body {
             margin: 0;
@@ -463,29 +464,42 @@
 
 </head>
 <body>
+<c:set var="mvo" value="${sessionScope.member}"/>
 <c:import url="/common/header.jsp" />
 
 <div class="main-container">
     <%-- 내 정보 섹션 --%>
     <div class="left-info-area">
         <h2>내 정보</h2>
-        <p><strong><c:out value="${sessionScope.user.member_nickname}" /></strong>님, 환영합니다.</p>
+        <p><strong><c:out value="${mvo.member_nickname}"/></strong>님, 환영합니다.</p>
 
-        <a href="#">개인정보 수정</a>
+        <a href="javascript:changeMyInfo()">개인정보 수정</a>
     </div>
 
     <%-- 오른쪽 컨텐츠 (2x2 그리드) --%>
     <div class="right-content-area">
         <div class="grid-container">
             <div id="zzim_list" class="listArea">
-                <a href="Controller">찜 목록</a>
+                <a href="Controller">찜 목록 ${fn:length(requestScope.zzim_ar)}</a>
                 <div class="item-grid">
                     <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="#">${dataVO.title}</a>
-                                <img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}">
+                                <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
+                                <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
                                 <p class="overflowHidden">${dataVO.addr1}</p>
+                                <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
+                                    <input type="hidden" name="title" value="${dataVO.title}"/>
+                                    <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
+                                    <input type="hidden" name="overview" value="${dataVO.overview}"/>
+                                    <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
+                                    <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
+                                    <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
+                                    <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
+                                    <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
+                                    <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
+                                    <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
+                                </form>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -517,19 +531,17 @@
             </div>
 
             <div id="post_list" class="listArea">
-                <a href="Controller">내 게시글/ 댓글</a>
+                <a href="Controller">내 게시글</a>
                 <div id="mypost">
                     <div id="post">
                         <div id="search-area">
-                            <form method="post" action="Controller?type=postSearch">
-                                <input type="hidden" name="category_idx" value="2">
-                                <select id="searchType" name="searchType">
-                                    <option value="post_title">제목</option>
-                                    <option value="post_content">내용</option>
-                                </select>
-                                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                                <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
-                            </form>
+                            <input type="hidden" name="category_idx" value="2">
+                            <select id="searchType" name="searchType">
+                                <option value="post_title">제목</option>
+                                <option value="post_content">내용</option>
+                            </select>
+                            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+                            <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
                         </div>
                         <table summary="검색결과 목록">
                             <caption>검색결과 목록</caption>
@@ -596,7 +608,6 @@
                                 <li class="disable">&gt;</li>
                             </c:if>
                         </ol>
-                        <input type="button" value="댓글" class="comment-btn" onclick="javascript:location.href=''">
                     </div>
                 </div>
             </div>
@@ -611,9 +622,100 @@
     </div>
 </div>
 
+
+<div class="MyInfo-container" id="MyInfo-container">
+    <h2>개인정보</h2>
+    <form action="Controller?type=MyInfo" method="post" name="MyInfo_form">
+        <table class="MyInfo-table">
+            <caption class="hidden">개인정보 테이블</caption>
+            <tbody>
+            <tr>
+                <td>ID:</td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-with-message">
+                            <input type="text" id="u_id" name="u_id" class="input-field input-field-full" placeholder="아이디" value="${mvo.member_id}" disabled/>
+                            <div id="id_usable" class="validation-message"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>별명:</td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-with-message">
+                            <input type="text" id="u_nickname" name="u_nickname" class="input-field input-field-full" placeholder="별명" value="${mvo.member_nickname}" disabled/>
+                            <div id="nickname_usable" class="validation-message"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>이름:</td>
+                <td>
+                    <input type="text" id="u_name" name="u_name" class="input-field" placeholder="이름" value="${mvo.member_name}" disabled/>
+                </td>
+            </tr>
+            <tr>
+                <td>이메일:</td>
+                <td>
+                    <div class="input-group">
+                        <div class="email-group">
+                            <c:set var="emailIndex" value="${fn:indexOf(mvo.member_email, '@')}"/>
+                            <c:set var="email1" value="${fn:substring(mvo.member_email,0,emailIndex)}"/>
+                            <c:set var="email2" value="${fn:substring(mvo.member_email,emailIndex+1,fn:length(mvo.member_email))}"/>
+                            <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
+                            <span class="email-separator">@</span>
+                            <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>
+                            <select id="emailAddr" name="emailAddr" class="email-select">
+                                <option value="">직접 입력</option>
+                                <option value="naver.com" <c:if test="${email2.equals('naver.com')}" > selected</c:if> >naver.com</option>
+                                <option value="gmail.com" <c:if test="${email2.equals('gmail.com')}" > selected</c:if> >gmail.com</option>
+                                <option value="daum.net" <c:if test="${email2.equals('daum.com')}" > selected</c:if> >daum.net</option>
+                                <option value="nate.net" <c:if test="${email2.equals('nate.com')}" > selected</c:if> >nate.net</option>
+                            </select>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button" onclick="goChange()" class="">수정하기</button>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+</div>
+
 <c:import url="/common/footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script>
+    $(function (){
+        let option = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "개인정보",
+            resizable: true,
+            height:600,
+            width:830
+        };
+        $("#MyInfo-container").dialog(option);
+
+    });
+
+    //개인정보 수정 버튼을 눌렀을 때
+    function changeMyInfo() {
+        document.getElementById("u_id").disabled = true;
+        document.getElementById("u_nickname").disabled = true;
+        document.getElementById("u_name").disabled = true;
+        document.getElementById("u_email").disabled = true;
+        document.getElementById("u_email2").disabled = true;
+
+        $("#MyInfo-container").dialog("open");
+    }
 
     function mysearch(){
         let searchType = $("#searchType").val().trim();
@@ -647,6 +749,19 @@
         }).done(function (res) {
             $("#mypost").html(res);
         })
+    }
+    
+    function goDetail(index) {
+        document.forms[index+1].submit();
+    }
+
+    //개인정보 수정 dialog에서 수정하기를 눌렀을 때
+    function goChange(){
+        document.getElementById("u_id").disabled = false;
+        document.getElementById("u_nickname").disabled = false;
+        document.getElementById("u_name").disabled = false;
+        document.getElementById("u_email").disabled = false;
+        document.getElementById("u_email2").disabled = false;
     }
 </script>
 </body>

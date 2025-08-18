@@ -24,13 +24,13 @@ public class EditAction implements Action {
         String viewpath = null;
 
         HttpSession session = request.getSession();
-        if(session.getAttribute("user") == null){
+        if(session.getAttribute("member") == null){
             //로그인 안된 상태면
             System.out.println("session nothing");
             return "Controller?type=login";
         }
         //1. 로그인 상태 확인!
-        MemberVO loginMember = (MemberVO)session.getAttribute("user");
+        MemberVO loginMember = (MemberVO)session.getAttribute("member");
 
         System.out.println("loginMember:"+loginMember.getMember_idx());
         if(loginMember == null){

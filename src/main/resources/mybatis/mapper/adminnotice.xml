@@ -28,6 +28,7 @@
         ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
+        ORDER BY c.post_idx DESC
     </select>
 
     <!--게시글 작성 -->

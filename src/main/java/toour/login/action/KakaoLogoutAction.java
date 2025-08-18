@@ -18,7 +18,6 @@ public class KakaoLogoutAction implements Action {
         if(session!=null){
             session.removeAttribute("accessToken");
             session.removeAttribute("member");
-            session.removeAttribute("user");
             session.removeAttribute("userIdx");
             session.removeAttribute("userEmail");
             session.removeAttribute("userNickName");

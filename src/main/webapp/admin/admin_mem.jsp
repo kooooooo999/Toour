@@ -46,6 +46,7 @@
 
     table {
       width: 100%;
+      table-layout: fixed;
       border-collapse: collapse;
       background: #fff;
       border-radius: 6px;
@@ -58,7 +59,7 @@
     }
 
     th {
-      padding: 14px 20px;
+      padding: 6px 20px;
       text-align: left;
       font-weight: 600;
       color: #2c3e50;
@@ -66,7 +67,7 @@
     }
 
     td {
-      padding: 12px 20px;
+      padding: 4px 20px;
       font-size: 13px;
       color: #4a4a4a;
     }
@@ -167,6 +168,18 @@
     #delbutton:hover {
       background-color: #2980b9;
     }
+
+
+     #table thead th:nth-child(1) { width: 80px; }   /* 전체선택 */
+     #table thead th:nth-child(2) { width: 100px; }  /* 회원번호 */
+     #table thead th:nth-child(3) { width: 120px; }  /* 이름 */
+     #table thead th:nth-child(4) { width: 150px; }  /* 아이디 */
+     #table thead th:nth-child(5) { width: 150px; }  /* 별명 */
+     #table thead th:nth-child(6) { width: 100px; }  /* 경고횟수 */
+     #table thead th:nth-child(7) { width: 100px; }
+
+
+
   </style>
 </head>
 <body>
@@ -175,8 +188,6 @@
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
   <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-  <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
-  <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
@@ -224,6 +235,7 @@
       <th>아이디</th>
       <th>별명</th>
       <th>경고횟수</th>
+      <th>상태</th>
     </tr>
     </thead>
 
@@ -264,6 +276,19 @@
               ${vo.member_warning}
           </a>
         </td>
+          <td>
+            <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
+                <c:if test="${vo.member_status == 0 }">
+                  <p style="color: #1a73e8">회원</p>
+                </c:if>
+                <c:if test="${vo.member_status == 1 }">
+                  <p style="color: #e0d000">휴면</p>
+                </c:if>
+                <c:if test="${vo.member_status == 2 }">
+                  <p style="color: red">탈퇴</p>
+                </c:if>
+            </a>
+          </td>
       </tr>
     </c:if>
     </c:forEach>

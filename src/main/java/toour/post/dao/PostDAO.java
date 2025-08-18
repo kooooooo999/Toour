@@ -28,6 +28,20 @@ public class PostDAO {
         return cnt;
     }
 
+    // 게시물에서 검색결과 수를 반환
+    public static int getSearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("post.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
     // 내가 쓴 총 게시물에서 검색결과 수를 반환
     public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -196,6 +210,7 @@ public class PostDAO {
 
 
         int cnt = ss.insert("post.add", map);
+
         // MyBatis가 반환한 객체가 BigInteger 타입일 경우
         Object generatedKey = map.get("post_idx");
 
@@ -310,6 +325,7 @@ public class PostDAO {
         return postIdx;
 
     }
+
     //게시물 멤버idx가져오기
     public static MemberVO getPostMemberIdx(String post_idx){
         System.out.println("here is getPostMemberIdx");
@@ -352,7 +368,15 @@ public class PostDAO {
         return comment;
     }
 
-
-
+//    댓글 신고
+    public static int comment_warning(String comment_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("mem.warning", comment_idx);
+        if(cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+        return cnt;
+        }
 }
 

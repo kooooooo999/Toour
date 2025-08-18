@@ -165,6 +165,16 @@
             cursor: pointer;
             transition: background-color 0.2s ease;
         }
+
+        #searchValue {
+            height: 38px; /* 버튼과 비슷한 높이 */
+            padding: 6px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
         button[type="submit"]{
             padding: 10px 20px;
             font-size: 14px;
@@ -184,6 +194,24 @@
         #post h1{
             color: #222;
             text-align: center;
+            margin-top: 40px;
+        }
+
+        .totalCount{
+            margin-left: 40px;
+        }
+
+        .search-area{
+            float: right;
+            margin-right: 40px;
+        }
+
+        .totalCount p{
+            font-weight: bold;
+        }
+
+        .totalCount strong{
+            color: #1a73e8;
         }
 
     </style>
@@ -196,19 +224,30 @@
 
 <div id="post">
     <h1>공지사항</h1>
+
+
+
     <div class="search-area">
         <form method="post" action="Controller?type=NoticeSearch" onsubmit="return validateForm()">
             <input type="hidden" name="category_idx" value="1">
             <select id="searchType" name="searchType">
-                <option value="post_title">제목</option>
-                <option value="post_content">내용</option>
+                <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
+                <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
             </select>
             <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
             <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
         </form>
     </div>
+
+
     <table summary="검색결과 목록">
         <caption>검색결과 목록</caption>
+
+        <c:set var="t" value="${requestScope.totalCount}"/>
+        <div class="totalCount">
+            <p>총 <strong>${t}건</strong></p>
+        </div>
+
         <thead>
             <th>번호</th>
             <th>제목</th>
@@ -217,9 +256,10 @@
             <th>작성일</th>
         </thead>
         <tbody>
-        <c:if test="${not empty ar}">
+        <c:set var="noticeAr" value="${requestScope.noticeAr}" scope="page"/>
+        <c:if test="${not empty requestScope.noticeAr}">
             <c:set var="p" value="${requestScope.page}" />
-            <c:forEach items="${ar}" var="vo" varStatus="vs">
+            <c:forEach items="${noticeAr}" var="vo" varStatus="vs">
                 <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
                 <tr>
                     <td>${num}</td>
@@ -231,7 +271,7 @@
                             </c:if>
                         </a>
                     </td>
-                    <td>${vo.member_nickname}</td>
+                    <td>관리자</td>
                     <td>${vo.post_views}</td>
                     <td>${vo.post_created_at.substring(0,10)}</td>
                 </tr>
@@ -248,18 +288,18 @@
             <li class="disable">&lt;</li>
         </c:if>
         <c:if test="${p.startPage >= p.pagePerBlock}">
-            <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+            <li><a href="Controller?type=notice&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
         </c:if>
         <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
             <c:if test="${p.nowPage == vs.index}">
                 <li class="now">${vs.index}</li>
             </c:if>
             <c:if test="${p.nowPage != vs.index}">
-                <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
+                <li><a href="Controller?type=notice&cPage=${vs.index}">${vs.index}</a></li>
             </c:if>
         </c:forEach>
         <c:if test="${p.endPage < p.totalPage}">
-            <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
+            <li><a href="Controller?type=notice&cPage=${p.endPage+1}">&gt;</a></li>
         </c:if>
         <c:if test="${p.endPage >= p.totalPage}">
             <li class="disable">&gt;</li>

@@ -166,6 +166,14 @@
       background-color: #2980b9;
     }
 
+    td.no, th.no {
+      width: 100px;
+      text-align: left;
+      padding-left: 20px;
+    }
+
+
+
   </style>
 </head>
 <body>
@@ -175,9 +183,7 @@
   <!-- 메뉴 -->
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost ">📝 게시물 관리</a>
-  <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
-  <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 
@@ -202,10 +208,17 @@
     </div>
 
     <table>
+      <colgroup>
+        <col style="width: 100px">
+        <col style="width: 40%;">
+        <col style="width: 150px;">
+        <col style="width: 100px;">
+        <col style="width: 150px;">
+      </colgroup>
       <%--      <caption>검색결과 목록</caption>--%>
       <thead>
       <tr>
-        <th>번호</th>
+        <th class="no">번호</th>
         <th>제목</th>
         <th>작성자</th>
         <th>조회수</th>
@@ -222,9 +235,9 @@
             <td>
               <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
                   ${vo.post_title}
-                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                  (<c:out value="${fn:length(vo.c_list)}"/>)
-                </c:if>
+<%--                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">--%>
+<%--                  (<c:out value="${fn:length(vo.c_list)}"/>)--%>
+<%--                </c:if>--%>
               </a>
             </td>
             <td>${vo.member_nickname}</td>
