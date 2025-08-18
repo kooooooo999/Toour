@@ -17,22 +17,31 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
   <style type="text/css">
+    /* 여행후기 제목 스타일 */
+    #post h2 {
+      text-align: center;
+      font-size: 26px; /* 제목 크기 설정 */
+      font-weight: bold;
+      padding-top: 35px; /* padding으로 위쪽 공간 확보 */
+      margin-bottom: 20px; /* 아래쪽 여백 추가 */
+      color: #333; /* 색상 설정 */
+    }
     /* 테이블 스타일 */
     #post table {
       width: 100%;
-      max-width: 800px;
-      margin: 20px auto;
+      max-width: 1200px;
+      margin: 30px auto;
       border-collapse: collapse;
       font-size: 14px;
       background-color: #f9f9f9;
     }
 
-    #post table caption {
-      font-size: 20px;
-      font-weight: bold;
-      padding: 10px;
-      text-align: center;
-    }
+    /*#post table caption {*/
+    /*  font-size: 20px;*/
+    /*  font-weight: bold;*/
+    /*  padding: 10px;*/
+    /*  text-align: center;*/
+    /*}*/
 
     #post th {
       background-color: #e0e7f1;
@@ -88,23 +97,26 @@
       background-color: #0056b3;
     }
 
-    #post caption {
-      background-color: #f1f1f1;
-      color: #333;
-      padding: 10px;
-      font-size: 22px;
-      font-weight: bold;
-    }
+    /*#post caption {*/
+    /*  background-color: #f1f1f1;*/
+    /*  color: #333;*/
+    /*  padding: 10px;*/
+    /*  font-size: 22px;*/
+    /*  font-weight: bold;*/
+    /*}*/
 
     #post td img {
       margin-right: 10px;
     }
 
+    /* 제목 입력란 길이 늘리기 */
     #post td input[type="text"] {
-      display: inline-block;
-      width: auto;
-      max-width: 120px;
-      padding: 5px;
+      width: 100%; /* 제목 입력란의 길이를 100%로 늘림 */
+      padding: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      border-radius: 5px;
+      margin-top: 5px;
     }
 
     /* 텍스트 영역 스타일 */
@@ -146,11 +158,12 @@
 <c:if test="${not empty sessionScope.member}">
 
   <div id="post">
+    <h2>여행후기</h2>
     <form action="Controller?type=write" method="post"
           encType="multipart/form-data" onsubmit="return sendData()">
       <input type="hidden" name="category_idx" value="2"/>
       <table summary="게시판 글쓰기">
-        <caption>게시판 글쓰기</caption>
+<%--        <caption>게시판 글쓰기</caption>--%>
         <tbody>
         <tr>
           <th>제목:</th>
@@ -192,7 +205,7 @@
 
     $("#post_content").summernote({
       lang: "ko-KR",
-      height: 300,
+      height: 500,
       callbacks: {
         onImageUpload: function(files, editor){
           // 에디터에 이미지를 추가될 때 수행하는 곳!
@@ -257,7 +270,7 @@
       $("#post_content").focus();
       return false;
     }
-  //유효성 검사 통과시 폼제출!
+    //유효성 검사 통과시 폼제출!
     return true;
   }
 </script>

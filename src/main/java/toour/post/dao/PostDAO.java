@@ -207,8 +207,6 @@ public class PostDAO {
         map.put("category_idx", category_idx);
 
 
-
-
         int cnt = ss.insert("post.add", map);
 
         // MyBatis가 반환한 객체가 BigInteger 타입일 경우
@@ -325,8 +323,7 @@ public class PostDAO {
         return postIdx;
 
     }
-
-    //게시물 멤버idx가져오기
+    //게시물 멤버idx 가져오기
     public static MemberVO getPostMemberIdx(String post_idx){
         System.out.println("here is getPostMemberIdx");
         SqlSession ss = FactoryService.getFactory().openSession();

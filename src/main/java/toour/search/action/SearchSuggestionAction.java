@@ -5,9 +5,8 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
 import toour.search.util.GetAPISearchData;
-import toour.search.vo.SearchResponseVO;
 import toour.search.vo.SearchDataVO;
-import toour.tripsuggestion.vo.DataVO;
+import toour.search.vo.SearchResponseVO;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +16,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.List;
-import java.util.Objects;
 
 public class SearchSuggestionAction implements Action {
 
@@ -53,18 +51,18 @@ public class SearchSuggestionAction implements Action {
 //            viewPath = "tripSuggestion_update.jsp";
 //        }
 
-        if (keyword != null && !keyword.trim().isEmpty()){
-            SearchDataVO[] data = GetAPISearchData.getSearch(request,keyword);
+        if (keyword != null && !keyword.trim().isEmpty()) {
+            SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
             request.setAttribute("data", data);
             viewPath = "APISearchData.jsp";
-        }else{
+        } else {
             viewPath = "APISearchData_update.jsp";
         }
 
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
-        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
+        String key = "serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D";
 
 
         String code = request.getParameter("areaCode");
@@ -90,7 +88,7 @@ public class SearchSuggestionAction implements Action {
             //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
             StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
             sb.append(key);
-            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=" );
+            sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=");
             System.out.println(cPage);
             sb.append(Integer.parseInt(cPage));
             sb.append("&numOfRows=");
@@ -115,7 +113,7 @@ public class SearchSuggestionAction implements Action {
                 sb.append(sigunguCode);
             }
             sb.append("&_type=xml");
-            System.out.println("sb1:"+sb);
+            System.out.println("sb1:" + sb);
             try {
                 URL url1 = new URL(sb.toString());
                 HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -170,7 +168,7 @@ public class SearchSuggestionAction implements Action {
                     StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10");
                     sb2.append("&_type=xml&contentId=");
                     sb2.append(contentid);
-                    System.out.println("sb2:"+sb2);
+                    System.out.println("sb2:" + sb2);
                     // 상세정보용 API 호출도 수행 (중첩 API)
                     URL url2 = new URL(sb2.toString());
                     HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
@@ -187,7 +185,7 @@ public class SearchSuggestionAction implements Action {
                         overview = item2.getChildText("overview");
                     }
                     //결과 객체 생성
-                    SearchResponseVO srvo = new SearchResponseVO(title,addr1,overview,firstimage);
+                    SearchResponseVO srvo = new SearchResponseVO(title, addr1, overview, firstimage);
 
                     page.setTotalCount(Integer.parseInt(totalCountStr));
                     page.setNowPage(Integer.parseInt(cPage));
@@ -202,8 +200,8 @@ public class SearchSuggestionAction implements Action {
                 request.setAttribute("page", page);
                 request.setAttribute("totalCount", totalCountStr);
                 request.setAttribute("cPage", cPage);
-                request.setAttribute("keyword",keyword);
-                request.setAttribute("encodeKeyword",encodedKeyword);
+                request.setAttribute("keyword", keyword);
+                request.setAttribute("encodeKeyword", encodedKeyword);
             } catch (Exception e) {
                 e.printStackTrace();
             }

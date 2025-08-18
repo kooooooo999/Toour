@@ -145,14 +145,13 @@
             text-align: center;
         }
 
-
-        .post-title td {
-            font-size: 20px;
-            font-weight: bold;
-            padding: 20px;
-            background-color: #f9fbfe;
-            text-align: center;
-        }
+    .post-title td {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 20px;
+      background-color: #f9fbfe;
+      text-align: center;
+    }
 
         .post-name th {
             text-align: center;
@@ -223,7 +222,36 @@
             font-weight: bold;
         }
 
-    </style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .paging-area {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    footer {
+      margin-top: 0 !important;
+    }
+
+    #report_dialog{ /* 신고 다이얼로그 */
+      display: none; /* 처음에는 숨김 */
+    }
+
+    .report-emoji {
+      cursor: pointer;
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .report-emoji:hover {
+      transform: scale(1.2);
+    }
+
+
+  </style>
 
 </head>
 <body>
@@ -283,25 +311,26 @@
 
       <div class="post-buttons">
         <c:if test="${not empty sessionScope.member}">
-          <c:if test="${sessionScope.member.member_idx==member_info.member_idx}">
+          <!-- 내가 쓴 글 -->
+          <c:if test="${sessionScope.member.member_idx == member_info.member_idx}">
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
 
-          <!-- 다른 사람 글일 때 신고 버튼 -->
-          <c:if test="${sessionScope.user.member_idx != member_info.member_idx}">
-              <input type="submit" value="신고" onclick="openReportDialog()"/>
-<%--              style="background-color: #f44336" color:white, border:none; padding:6px 12px; border-radius:4px; cursor:pointer;>--%>
-            </form>
+          <!-- 다른 사람이 쓴 글일 때 신고 버튼 -->
+          <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+<%--            <input type="button" value="신고🚨" onclick="openReportDialog()"/>--%>
+            <span class="report-emoji" title="신고하기" onclick="openReportDialog()">🚨</span>
           </c:if>
         </c:if>
+
 
         <input type="button" value="목록" onclick="goList()"/>
       </div>
 
   <!-- 신고 팝업 -->
   <div id="report_dialog" title="게시물 신고">
-    <form id="reportForm" action="ReportServlet" method="post">
+    <form id="reportForm" action="ReportAction" method="post">
       <p>신고 사유를 입력하세요:</p>
       <textarea name="reason" id="report_reason" rows="5" style="width:100%; box-sizing:border-box;" required></textarea>
       <input type="hidden" name="post_id" value="${vo.post_idx}"/>
@@ -369,7 +398,7 @@
                             ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
                         &nbsp;&nbsp; <span class="report-emoji" title="신고하기"
-                                           onclick="warningComment(${cvo.commentidx})">🚨</span>
+                                           onclick="warningComment(${cvo.comment_idx})">🚨</span>
                     </div>
                     <div id="comment_post">
                             ${cvo.comment_content}
@@ -377,7 +406,7 @@
                 </div>
                 <hr/>
             </c:forEach>
-            </c:if>
+        </c:if>
 
             <div id="warning_dialog" title="신고">
                 <form action="Controller" method="post">
@@ -392,27 +421,29 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
-    <script>
-        $(function () {
-            let option = {
-                modal: true,
-                autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
-                resizable: false,
-            };
-
-            $("#del_dialog").dialog(option);
-        });
-
+<script>
+  // 로그인 여부 체크
   let login = ${sessionScope.memeber != null};
+
+  $(function (){
+    let option = {
+      modal: true,
+      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
+      resizable: false,
+    };
+
+    // 삭제 다이얼로그 초기화
+    $("#del_dialog").dialog(option);
+  });
+
+  // 신고 다이얼로그 초기화
   $(function goReport() {
-    // 신고 팝업 설정
     $("#report_dialog").dialog({
-      autoOpen: false,
+      autoOpen: false, // 처음에는 닫혀있음
       modal: true,
       resizable: false,
       width: 400,
@@ -432,48 +463,43 @@
     });
   });
 
-  // 신고 팝업 열기 함수
+  // 신고 다이얼로그 열기 함수
   function openReportDialog() {
     $("#report_reason").val(""); // 이전 입력값 초기화
     $("#report_dialog").dialog("open");
   }
 
-
-  let login = ${sessionScope.member != null};
-
-        function commentData() {
-            let title = $("#comment_content").val();
-            if (title.trim().length < 1) {
-                alert("내용을 입력하세요");
-                $("#comment_content").val("");
-                $("#comment_content").focus();
-                return false;
-            }
+  function commentData() {
+    let title = $("#comment_content").val();
+    if (title.trim().length < 1) {
+      alert("내용을 입력하세요");
+      $("#comment_content").val("");
+      $("#comment_content").focus();
+      return false;
+    }
 
             if (!login) {
                 $("#loginDialog").dialog("open");
                 return false;
             }
 
-            return true;
-        }
+    return true;
+  }
+  function goList() {
+    document.ff.action = "Controller";
+    document.ff.type.value = "list";
+    document.ff.submit();
+  }
 
-        function goList() {
-            document.ff.action = "Controller";
-            document.ff.type.value = "list";
-            document.ff.submit();
-        }
-
-        function goDel() {
-            /*document.ff.action = "Controller";
-            document.ff.type.value = "del"
-            document.ff.submit();*/
-            $("#del_dialog").dialog("open");
-        }
-
-        function del(frm) {
-            frm.submit();
-        }
+  function goDel() {
+    /*document.ff.action = "Controller";
+    document.ff.type.value = "del"
+    document.ff.submit();*/
+    $("#del_dialog").dialog("open");
+  }
+  function del(frm) {
+    frm.submit();
+  }
 
         function goEdit() {
             // ff 폼의 action과 type을 설정
@@ -483,7 +509,7 @@
         }
 
         function warningComment() {
-            $("warning_dialog").dialog("open");
+            $("#warning_dialog").dialog("open");
         }
 
 

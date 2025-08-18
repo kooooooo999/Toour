@@ -43,7 +43,7 @@
             background-color: #286090;
         }
 
-        .courseItems, .courseRestaurant {
+        .courseItems {
             display: flex;
             flex-direction: column; /* 자식 요소들을 수직으로 정렬 */
             align-items: center; /* 수평 중앙 정렬 */
@@ -51,8 +51,8 @@
         }
 
         .courseImgs {
-            width: 800px;
-            height: 450px;
+            width: 100%;
+            height: 100%;
             overflow: hidden; /* 이미지가 컨테이너를 벗어나는 부분을 숨김 */
             display: flex; /* 이미지를 중앙 정렬하기 위해 추가 */
             justify-content: center;
@@ -61,7 +61,7 @@
 
         .course-image {
             width: 800px;
-            height: 100%;
+            height: 600px;
             object-fit: cover; /* 이미지가 컨테이너를 채우도록 확대/축소 */
         }
 
@@ -152,11 +152,15 @@
         /* 이미지를 담는 div의 크기를 고정 */
         .courseImages, .courseImgs {
             width: 100%;
-            height: 230px; /* 원하는 이미지 높이 */
+            height: 400px; /* 원하는 이미지 높이 */
             overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        .r_image {
+            width: 300px;
         }
 
         /* img 태그에 적용되는 스타일: 이 부분이 핵심 */
@@ -188,6 +192,7 @@
             text-align: center;
             padding: 10px;
             box-sizing: border-box;
+            font-size: 20px;
         }
 
         /* 이미지 컨테이너에 마우스를 올렸을 때 오버레이가 나타남 */
@@ -418,15 +423,24 @@
             <div class="courseItem">
                 <div class="courseImages">
                     <c:if test="${not empty r.firstimage}">
-                        <img src="${r.firstimage}" class="image">
+                        <img src="${r.firstimage}" class="r_image">
                     </c:if>
                     <c:if test="${empty r.firstimage}">
                         <div class="emptyText">[이미지없음]</div>
                     </c:if>
                     <div class="image-overlay">
+                        <c:if test="${not empty r.tel}">
                             ${r.tel}
-                        <br/>
+                            <br/>
+                        </c:if>
+                        <c:if test="${empty r.tel}">
+                        </c:if>
+                        <c:if test="${not empty r.addr1}">
                             ${r.addr1}
+                        </c:if>
+                        <c:if test="${empty r.addr1}">
+
+                        </c:if>
                     </div>
                 </div>
                 <p class="courseText">${r.title}</p>
@@ -505,8 +519,6 @@
     // });
 
     $(function () {
-        var restaurantContainer = $('.restaurant-slide-container');
-        initSlide(restaurantContainer);
 
         var accommodationContainer = $('.accommodation-slide-container');
         initSlide(accommodationContainer);

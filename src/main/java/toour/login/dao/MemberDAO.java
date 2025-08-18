@@ -46,6 +46,18 @@ public class MemberDAO {
         }
     }
 
+    public static void updateMyInfo(MemberVO mvo){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("member.changeMyInfo", mvo);
+
+        if(cnt >0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+
+    }
+
 
 
     //카카오 로그인?
