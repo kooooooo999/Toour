@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<mapper namespace="report">
+
+    <insert id="insertReport" parameterType="map">
+        INSERT INTO report (
+        reporter_idx, reported_idx, post_idx,
+        report_content, target_type, report_status, report_created_at )
+        VALUES (
+        #{reporter_idx}, #{reported_idx}, #{post_idx},
+        #{report_content}, #{target_type}, 'PENDING', NOW() )
+    </insert>
+
+</mapper>
