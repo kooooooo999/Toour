@@ -132,4 +132,16 @@
         GROUP BY status
     </select>
 
+
+    <!-- 총 게시물 수를 반환하는 기능 -->
+    <select id="totalCount" resultType="int" parameterType="String">
+        select count(*) from inquiry
+    </select>
+
+    <select id="all" resultType="toour.post.vo.InquiryVO">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at, i.updated_at, i.is_read, m.member_nicnkname
+        from inquiry i inner join member m
+        where i.member_idx = m.member_idx
+        order by i.inquiry_idx desc
+    </select>
 </mapper>

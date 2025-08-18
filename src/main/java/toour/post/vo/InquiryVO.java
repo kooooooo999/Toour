@@ -4,6 +4,12 @@ public class InquiryVO {
 
     private String inquiry_idx, member_idx, category, title, content, file_path, status, created_at, updated_at;
 
+    private String is_read;
+
+    public String getIs_read() {return is_read;}
+
+    public void setIs_read(String is_read) {this.is_read = is_read;}
+
     public String getInquiry_idx() {return inquiry_idx;}
 
     public void setInquiry_idx(String inquiry_idx) {this.inquiry_idx = inquiry_idx;}
