@@ -2,7 +2,11 @@
 <%@ page import="java.net.URL" %>
 <%@ page import="java.net.HttpURLConnection" %>
 <%@ page import="java.io.BufferedReader" %>
-<%@ page import="java.io.InputStreamReader" %><%--
+<%@ page import="java.io.InputStreamReader" %>
+<%@ page import="org.json.JSONObject" %>
+<%@ page import="toour.login.dao.MemberDAO" %>
+<%@ page import="toour.member.vo.MemberVO" %>
+<%@ page import="java.sql.Timestamp" %><%--
   Created by IntelliJ IDEA.
   User: 쌍용교육센터
   Date: 25. 8. 8.
@@ -11,39 +15,26 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
-<%--<head>--%>
-<%--    <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>--%>
-<%--    <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>--%>
-<%--</head>--%>
-
-<%--<body>--%>
-<%--<script type="text/javascript">--%>
-<%--    var naver_id_login = new naver_id_login("WqKlg2ns39WEN3SEtV0G", "http://localhost:8080/Controller?type=moveLogin");--%>
-<%--    // 접근 토큰 값 출력--%>
-<%--    alert(naver_id_login.oauthParams.access_token);--%>
-<%--    // 네이버 사용자 프로필 조회--%>
-<%--    naver_id_login.get_naver_userprofile("naverSignInCallback()");--%>
-<%--    // 네이버 사용자 프로필 조회 이후 프로필 정보를 처리할 callback function--%>
-<%--    function naverSignInCallback() {--%>
-<%--        alert(naver_id_login.getProfileData('email'));--%>
-<%--        alert(naver_id_login.getProfileData('nickname'));--%>
-<%--        alert(naver_id_login.getProfileData('age'));--%>
-<%--    }--%>
-<%--</script>--%>
-
-<%--</body>--%>
-<%--</html>--%>
-
 
 <body>
 <%
     int a=0;
-    String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
-    String clientSecret = "eWWORJKfvA";//애플리케이션 클라이언트 시크릿값";
+    String clientId = "02aFSrv2E53MWqQAERSx";//애플리케이션 클라이언트 아이디값";
+    String clientSecret = "48ZDNX7Aeo";//애플리케이션 클라이언트 시크릿값";
+    //인증코드
     String code = request.getParameter("code");
     String state = (String) request.getSession().getAttribute("state");
     System.out.println("code:"+code);
     System.out.println("state:"+state);
+
+    // CSRF 방지 state 체크
+    String storedState = (String) session.getAttribute("state");
+    if (storedState == null || !storedState.equals(state)) {
+        out.println("잘못된 접근입니다.");
+        return;
+    }
+    //  네이버 OAuth 토큰 요청 URL 생성
+
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
     String apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=authorization_code"
             + "&client_id=" + clientId
@@ -51,33 +42,83 @@
             + "&redirect_uri=" + redirectURI
             + "&code=" + code
             + "&state=" + state;
-    String accessToken = "";
-    String refresh_token = "";
-    try {
+    //토큰 요청
+    URL url = new URL(apiURL);
+    HttpURLConnection con = (HttpURLConnection) url.openConnection();
+    con.setRequestMethod("GET");
+    //응답 읽기
+    BufferedReader br = (con.getResponseCode() == 200)
+            ? new BufferedReader(new InputStreamReader(con.getInputStream()))
+            : new BufferedReader(new InputStreamReader(con.getErrorStream()));
 
-        URL url = new URL(apiURL);
-        HttpURLConnection con = (HttpURLConnection)url.openConnection();
-        con.setRequestMethod("GET");
-        int responseCode = con.getResponseCode();
-        BufferedReader br;
-        if (responseCode == 200) { // 정상 호출
-            br = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        } else {  // 에러 발생
-            br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
-        }
-        String inputLine;
-        StringBuilder res = new StringBuilder();
-        while ((inputLine = br.readLine()) != null) {
-            res.append(inputLine);
-        }
-        br.close();
-        if (responseCode == 200) {
-            System.out.println(res.toString());
-        }
-    } catch (Exception e) {
-        // Exception 로깅
-        e.printStackTrace();
+    String inputLine;
+    StringBuffer res = new StringBuffer();
+    while ((inputLine = br.readLine()) != null) {
+        res.append(inputLine);
     }
+    br.close();
+
+    //JSON 파싱: access_token 추출
+    JSONObject json = new JSONObject(res.toString());
+    String accessToken = json.getString("access_token");
+
+    // 프로필 API 호출
+    String header = "Bearer " + accessToken;
+    String profileURL = "https://openapi.naver.com/v1/nid/me";
+    URL url2 = new URL(profileURL);
+    HttpURLConnection con2 = (HttpURLConnection) url2.openConnection();
+    con2.setRequestMethod("GET");
+    con2.setRequestProperty("Authorization", header);
+
+    //프로필 응답 읽기
+    BufferedReader br2 = new BufferedReader(new InputStreamReader(con2.getInputStream()));
+    StringBuffer profileRes = new StringBuffer();
+    while ((inputLine = br2.readLine()) != null) {
+        profileRes.append(inputLine);
+    }
+    br2.close();
+
+    //JSON 파싱: 사용자 정보 추출
+    JSONObject profileJson = new JSONObject(profileRes.toString());
+    JSONObject responseObj = profileJson.getJSONObject("response");
+
+    String id = responseObj.getString("id");
+    String nickname = responseObj.getString("nickname");
+    String email = responseObj.optString("email");
+
+    // aDB 저장: 이미 존재하면 무시, 없으면 추가
+    MemberVO mvo = MemberDAO.getNaverMember(email); // DB에서 이미 존재하는지 확인
+    if(mvo == null) {
+        // 새 회원이면 MemberVO 생성 후 DB 저장
+        MemberVO newMember = new MemberVO();
+        newMember.setMember_id(null); // 기존 회원 아이디 없음
+        newMember.setMember_nickname(nickname);
+        newMember.setMember_email(email);
+        newMember.setLogin_type("NAVER");   // 로그인 타입
+        newMember.setMember_status("0");    // 상태
+        newMember.setMember_type("1");      // 회원 타입
+        newMember.setMember_password(null); // 비밀번호 없음
+        newMember.setMember_salt(null);     // 솔트 없음
+        newMember.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+
+        MemberDAO.addMem(newMember); // DB 저장
+        mvo = newMember; // 세션용
+    } else {
+        // 기존 회원이면 마지막 로그인 시간 갱신
+        MemberDAO.updateLastLogin(mvo.getMember_idx());
+    }
+
+    // 12. 세션에 로그인 정보 저장
+    session.setAttribute("accessToken", accessToken);
+    session.setAttribute("member", mvo);
+    session.setAttribute("userIdx", mvo.getMember_idx());
+    session.setAttribute("userEmail", mvo.getMember_email());
+    session.setAttribute("userNickName", mvo.getMember_nickname());
+
+    session.setMaxInactiveInterval(30*60); // 세션 30분 유지
+
+    // 13. 메인 페이지로 리다이렉트
+    response.sendRedirect("/member/myPage.jsp");
 %>
 
 </body>

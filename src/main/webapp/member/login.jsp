@@ -213,7 +213,7 @@
   </div>
   <!-- 네이버 로그인 버튼 -->
   <%
-    String clientId = "WqKlg2ns39WEN3SEtV0G";//애플리케이션 클라이언트 아이디값";
+    String clientId = "02aFSrv2E53MWqQAERSx";//애플리케이션 클라이언트 아이디값";
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
     SecureRandom random = new SecureRandom();
     String state = new BigInteger(130, random).toString();
@@ -232,21 +232,22 @@
 </div>
 
 
-<%--<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>--%>
-<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<%--
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+--%>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-<%--<div id="naver_id_login"></div> 이 위치에 네이버 버튼 자동 생성(네이버 javaScript SDK)--%>
+<div id="naver_id_login"></div>
 
 <!-- 네이버 로그인 초기화 Script -->
-<script type="text/javascript">
-  var naver_id_login = new naver_id_login("WqKlg2ns39WEN3SEtV0G", "http://localhost:8080/member/callback.jsp");
+<script type="text/javascript"><!--naver_id_login : client-id-->
+  var naver_id_login = new naver_id_login("02aFSrv2E53MWqQAERSx", "http://localhost:8080/member/callback.jsp");
   var state = naver_id_login.getUniqState(); // 토큰 담을곳
   naver_id_login.setState(state);
   naver_id_login.setPopup(); // 팝업창
   // naver_id_login.setDomain(""); // 서비스 UI
-  // naver_id_login.setButton("green", 3,40); // 로그인 버튼 디자인
-  // naver_id_login.init_naver_id_login(); // 로그인 버튼 새로 그리기
+  naver_id_login.setButton("green", 3,40); // 로그인 버튼 디자인
+  naver_id_login.init_naver_id_login(); // 로그인 버튼 새로 그리기
 </script>
 
 
@@ -266,33 +267,33 @@
 </script>
 
 
-<%--친구 코드--%>
-<%--<script>--%>
-<%--  // CSRF 방지용 state 토큰 생성 (JavaScript)--%>
-<%--  function generateState() {--%>
-<%--    return [...crypto.getRandomValues(new Uint32Array(4))]--%>
-<%--            .map(num => num.toString(36))--%>
-<%--            .join('');--%>
-<%--  }--%>
 
-<%--  function initNaverLogin() {--%>
-<%--    var naver_id_login = new naver_id_login(--%>
-<%--            "WqKlg2ns39WEN3SEtV0G", // 클라이언트 ID--%>
-<%--            "http://localhost:8080/member/callback.jsp" // redirect URI--%>
-<%--    );--%>
+<script>
+  // CSRF 방지용 state 토큰 생성 (JavaScript)
+  function generateState() {
+    return [...crypto.getRandomValues(new Uint32Array(4))]
+            .map(num => num.toString(36))
+            .join('');
+  }
 
-<%--    var state = generateState(); // JS에서 생성--%>
-<%--    sessionStorage.setItem("naver_state", state); // 콜백에서 검증하려면 저장--%>
+  function initNaverLogin() {
+    var naver_id_login = new naver_id_login(
+            "02aFSrv2E53MWqQAERSx", // 클라이언트 ID
+            "http://localhost:8080/member/callback.jsp" // redirect URI
+    );
 
-<%--    naver_id_login.setButton("white", 3, 40);--%>
-<%--    naver_id_login.setState(state);--%>
-<%--    naver_id_login.setPopup();--%>
-<%--    naver_id_login.init_naver_id_login();--%>
-<%--  }--%>
+    var state = generateState(); // JS에서 생성
+    sessionStorage.setItem("naver_state", state); // 콜백에서 검증하려면 저장
 
-<%--  // 페이지 로드 시 실행--%>
-<%--  initNaverLogin();--%>
-<%--</script>--%>
+    naver_id_login.setButton("white", 3, 40);
+    naver_id_login.setState(state);
+    naver_id_login.setPopup();
+    naver_id_login.init_naver_id_login();
+  }
+
+  // 페이지 로드 시 실행
+  initNaverLogin();
+</script>
 
 <!--카카오 로그인 관련-->
 <script>

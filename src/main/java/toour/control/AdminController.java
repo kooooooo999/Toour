@@ -115,7 +115,7 @@ public class AdminController extends HttpServlet {
 
         String viewPath = action.execute(request, response);
 
-        Object obj = request.getSession().getAttribute("user");
+        Object obj = request.getSession().getAttribute("member");
         if (obj != null){
         MemberVO mvo = (MemberVO) obj;;
         String membertype = mvo.getMember_type();

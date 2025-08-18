@@ -66,23 +66,8 @@
       border-radius: 8px;
       resize: none;
       box-sizing: border-box;
-      margin-bottom: 12px;
     }
 
-    .btn-register {
-      padding: 8px 20px;
-      background-color: #222;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.2s;
-    }
-
-    .btn-register:hover {
-      background-color: #444;
-    }
 
     /* 댓글 리스트 영역 */
     .comment_list {
@@ -199,6 +184,25 @@
       margin-top: 40px;
     }
 
+    .comment_button {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    #comment_btn{
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #fff;
+      background-color: #0056b3;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+
     .attachment td {
       background-color: #fefefe;
       padding: 15px;
@@ -212,7 +216,7 @@
       font-size: 12px;
       color: #666;
       float: left;
-      margin-left: 20px;
+      margin-left: 35px;
       margin-top: 10px;
     }
 
@@ -226,27 +230,12 @@
       font-weight: bold;
     }
 
-    #comment_btn {
-      padding: 4px 12px;
-      font-size: 14px;
-      height: 36px;
-      line-height: 1;
-      border: 1px solid #0066cc;
-      background-color: #0066cc;
-      color: white;
-      border-radius: 4px;
-      cursor: pointer;
-    }
-
-
-
-
   </style>
 
 </head>
 <body>
 <c:import url="/common/header.jsp" />
-<c:set value="${sessionScope.user}" var="user"/>
+<c:set value="${sessionScope.member}" var="user"/>
 <c:set var="vo" value="${requestScope.vo}"/>
 <c:set var="member_info" value="${requestScope.member_info}"/>
 
@@ -301,8 +290,8 @@
   </form>
 
       <div class="post-buttons">
-        <c:if test="${not empty sessionScope.user}">
-          <c:if test="${sessionScope.user.member_idx==member_info.member_idx}">
+        <c:if test="${not empty sessionScope.member}">
+          <c:if test="${sessionScope.member.member_idx==member_info.member_idx}">
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
@@ -334,12 +323,12 @@
     <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
            onsubmit="return commentData()">
       <div class="comment_container">
-        <c:if test="${empty sessionScope.user}">
+        <c:if test="${empty sessionScope.member}">
           <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
 
         </c:if>
-        <c:if test="${not empty sessionScope.user}">
-        <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="comment_content"></textarea><br/>
+        <c:if test="${not empty sessionScope.member}">
+        <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
         <input id="comment_btn" type="submit" value="댓글" class="btn-register"/>
         <hr class="comment-line"/>
       </div>
@@ -349,8 +338,8 @@
             <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
             <input type="hidden" name="cPage" value="${param.cPage}"/>
             <input type="hidden" name="type" value="comment"/>
-            <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
-            <input type="hidden" name="member_nickname" value="${sessionScope.user.member_nickname}"/>
+            <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
+            <input type="hidden" name="member_nickname" value="${sessionScope.member.member_nickname}"/>
 
           </div>
         </div>
@@ -371,7 +360,7 @@
       <input type="hidden" name="type" value="del"/>
       <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
       <input type="hidden" name="cPage" value="${param.cPage}"/>
-      <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+      <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
       <button type="button" onclick="del(this.form)">삭제</button>
     </form>
   </div>
@@ -382,13 +371,19 @@
   <c:if test="${not empty requestScope.comment_list}">
     <div class="comment_list">
   <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
+
     <div id="comment_lilist">
       <div id="comment_nickname">
       ${cvo.member_nickname} &nbsp;
         | &nbsp;${cvo.comment_updated_at}
+        &nbsp;&nbsp; <span class="report-emoji" title="신고하기" onclick="warningComment">🚨</span>
+
+
       </div>
+
+
       <div id="comment_post">
-      내용:${cvo.comment_content}
+      ${cvo.comment_content}
       </div>
     </div>
     <hr/>
@@ -414,6 +409,7 @@
     $("#del_dialog").dialog(option);
   });
 
+  let login = ${sessionScope.memeber != null};
   $(function goReport() {
     // 신고 팝업 설정
     $("#report_dialog").dialog({
@@ -444,7 +440,7 @@
   }
 
 
-  let login = ${sessionScope.user != null};
+  let login = ${sessionScope.member != null};
 
   function commentData() {
     let title = $("#comment_content").val();
