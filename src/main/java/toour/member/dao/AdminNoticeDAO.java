@@ -1,6 +1,7 @@
 package toour.member.dao;
 
 import mybatis.service.FactoryService;
+import toour.member.vo.MemberVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
 
@@ -17,13 +18,21 @@ public class AdminNoticeDAO {
         return cnt;
     }
 
-
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         PostVO vo = ss.selectOne("adminnotice.getPost", post_idx);
         ss.close();
         return vo;
+    }
+
+    //게시물 멤버idx가져오기
+    public static MemberVO getNoticeMemberIdx(String post_idx){
+//        System.out.println("here is getPostMemberIdx");
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO postMemberIdx = ss.selectOne("adminnotice.getNoticeMemberIdx",post_idx);
+        ss.close();
+        return postMemberIdx;
     }
 
     public static PostVO[] search(String searchType,String searchValue,int begin,int end){
@@ -140,14 +149,20 @@ public class AdminNoticeDAO {
 
 
 
-    // 수정
-    public static int edit(String post_idx, String category_idx, String post_title, String post_content){
-        Map<String, String> map = new HashMap<>();
 
+    // 수정
+    public static int edit(String post_idx, String post_title, String post_content,
+                           String file_name_stored, String file_name_original, String ip){
+        Map<String, String> map = new HashMap<>();
         map.put("post_idx", post_idx);
-        map.put("category_idx", category_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
+
+        if(file_name_stored != null){
+            map.put("file_name_stored", file_name_stored);
+            map.put("file_name_original", file_name_original);
+        }
+
 
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("adminnotice.edit", map);

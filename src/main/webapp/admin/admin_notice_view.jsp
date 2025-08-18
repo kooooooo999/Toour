@@ -227,7 +227,7 @@
 
   function goList() {
     document.ff.action = "AdminController";
-    document.ff.type.value = "adminpost";
+    document.ff.type.value = "adminnotice";
     document.ff.submit();
   }
 
@@ -237,13 +237,13 @@
 
   function goDel() {
     document.ff.action = "AdminController";
-    document.ff.type.value = "adminpostdel";
+    document.ff.type.value = "adminnoticedel";
     document.ff.submit();
   }
 
   function goEdit() {
     document.ff.action = "AdminController";
-    document.ff.type.value = "adminpostedit";
+    document.ff.type.value = "adminnoticeedit";
     document.ff.submit();
   }
 </script>

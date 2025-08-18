@@ -19,6 +19,32 @@
         WHERE member_type = 1
     </select>
 
+    <select id="MemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 0
+    </select>
+
+    <select id="DormantMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 1
+    </select>
+
+    <select id="DeactivatedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 2
+    </select>
+
+    <select id="BannedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_warning = 3
+    </select>
+
+    <select id="RecentVisitMem" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_last_login_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    </select>
+
+
     <!-- 회원정보 삭제 -->
     <update id="mem_del" parameterType="list">
         UPDATE member
