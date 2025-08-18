@@ -60,14 +60,20 @@
         }
 
         .course-image {
-            width: 100%;
+            width: 800px;
             height: 100%;
             object-fit: cover; /* 이미지가 컨테이너를 채우도록 확대/축소 */
         }
 
-        .courseText {
+        .courseText_1 {
             text-align: center;
             padding: 10px 20px;
+        }
+
+        .courseText_2 {
+            text-align: center;
+            padding: 10px 20px;
+            margin-top: -100px;
         }
 
         /* 이미지가 없을 때의 텍스트 스타일 */
@@ -126,19 +132,167 @@
             /* 다른 스타일은 유지 */
         }
 
-        /* 또는, .courseRestaurant과 #courseAccommodation의 마진을 조절합니다. */
-        .courseRestaurant, #courseAccommodation {
-            margin-top: 10px; /* 위쪽 여백을 줄임 */
-            margin-bottom: 20px; /* 아래쪽 여백을 줄임 */
+        .courseGrid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px;
         }
 
-        /* 식당 정보와 숙박 정보를 동일하게 중앙 정렬하기 위한 스타일 */
-        .courseRestaurant, .courseAccommodationItem {
+        .courseItem {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 30px;
-            /* 추가적인 여백 조절이 필요하면 margin 값을 조정하세요. */
+            text-align: center;
+        }
+
+        /* 이미지를 담는 div의 크기를 고정 */
+        .courseImages, .courseImgs {
+            width: 100%;
+            height: 230px; /* 원하는 이미지 높이 */
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* img 태그에 적용되는 스타일: 이 부분이 핵심 */
+        .courseImages img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 이미지가 작아도 부모를 꽉 채우도록 확대 */
+        }
+
+        .courseText {
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        /* 마우스를 올렸을 때 나타나는 텍스트 컨테이너 */
+        .image-overlay {
+            position: absolute; /* 부모 요소(courseImages)에 상대적 위치 지정 */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* 반투명한 검정 배경 */
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0; /* 평소에는 투명하게 숨김 */
+            transition: opacity 0.3s ease-in-out; /* 부드러운 전환 효과 */
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* 이미지 컨테이너에 마우스를 올렸을 때 오버레이가 나타남 */
+        .courseItem .courseImages:hover .image-overlay,
+        .courseItem .courseImgs:hover .image-overlay {
+            opacity: 1; /* 마우스를 올리면 보이게 함 */
+        }
+
+        /* 기존의 courseText는 그대로 유지 */
+        .courseText {
+            text-align: center;
+            padding: 10px 0;
+            margin: 0;
+        }
+
+        /* 이미지 컨테이너: 마우스 오버레이의 기준이 됨 */
+        .courseItem .courseImages, .courseItem .courseImgs {
+            width: 100%;
+            height: 230px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-sizing: border-box;
+            position: relative; /* 👈 이 속성을 추가해야 합니다. */
+        }
+
+        /* 슬라이드 컨테이너 */
+        .slide-container {
+            position: relative; /* 화살표 버튼의 위치 기준이 됨 */
+            width: 800px; /* 원하는 너비로 설정 (코스상세 이미지와 동일하게) */
+            margin: 0 auto;
+            overflow: hidden; /* 슬라이드 영역을 벗어나는 이미지 숨김 */
+        }
+
+        /* 이미지 목록 (슬라이드 트랙) */
+        .slide-wrapper {
+            display: flex; /* 이미지를 가로로 나열 */
+            transition: transform 0.5s ease-in-out; /* 부드러운 전환 효과 */
+        }
+
+        /* 각 이미지 슬라이드 아이템 */
+        .slide-item {
+            flex-shrink: 0; /* 슬라이드 아이템이 줄어들지 않도록 함 */
+            width: 100%;
+        }
+
+        /* 슬라이드 이미지 */
+        .slide-item img {
+            width: 100%;
+            height: 450px; /* 원하는 높이로 고정 */
+            object-fit: cover; /* 이미지가 컨테이너를 꽉 채우도록 */
+        }
+
+        /* 이미지 없을 때 텍스트 스타일 */
+        .slide-item .emptyText {
+            width: 100%;
+            height: 450px;
+            background-color: #f0f0f0;
+            color: #888;
+            font-size: 24px;
+            font-weight: bold;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* 이전/다음 버튼 */
+        .prev-btn, .next-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent; /* 배경색을 투명하게 만듭니다. */
+            color: white;
+            border: none;
+            padding: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            z-index: 10;
+        }
+
+        .prev-btn {
+            left: 0;
+        }
+
+        .next-btn {
+            right: 0;
+        }
+
+        /* 슬라이드 이미지 아래 정보 표시 영역 */
+        .slide-info {
+            width: 800px;
+            margin: 20px auto;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: flex; /* 자식 요소들을 가로로 정렬 */
+            justify-content: space-around; /* 요소들 사이에 균등한 간격 배분 */
+            align-items: center; /* 세로 중앙 정렬 */
+        }
+
+        .slide-info p {
+            margin: 0;
+            text-align: center;
+            flex-grow: 1; /* 가로 공간을 균등하게 차지하도록 함 */
         }
 
 
@@ -247,106 +401,154 @@
                         </div>
                     </c:if>
                     <c:if test="${not empty Dvo.firstimage}">
-                        <img src="${Dvo.firstimage}" class="imageDetails">
+                        <img src="${Dvo.firstimage}" class="course-image">
                     </c:if>
                 </div>
             </c:if>
         </div>
-        <p class="courseText">${course.subdetailalt}</p>
-        <p class="courseText">${course.subdetailoverview}</p>
+        <p class="courseText_1">${course.subdetailalt}</p>
+        <p class="courseText_1">${course.subdetailoverview}</p>
     </div>
     </c:forEach>
 
     <h3 class="infoText">식당정보</h3>
     <p class="lineDetails">
+    <div class="courseGrid">
         <c:forEach var="r" items="${rSet}" varStatus="count">
-    <div class="courseRestaurant">
-        <div class="courseImgs">
-            <c:if test="${not empty r.firstimage}">
-                <img src="${r.firstimage}" class="image">
-            </c:if>
-            <div class="image-container">
-                <c:if test="${empty r.firstimage}">
-                    <div class="emptyText">
-                        [이미지없음]
+            <div class="courseItem">
+                <div class="courseImages">
+                    <c:if test="${not empty r.firstimage}">
+                        <img src="${r.firstimage}" class="image">
+                    </c:if>
+                    <c:if test="${empty r.firstimage}">
+                        <div class="emptyText">[이미지없음]</div>
+                    </c:if>
+                    <div class="image-overlay">
+                            ${r.tel}
+                        <br/>
+                            ${r.addr1}
                     </div>
-                </c:if>
+                </div>
+                <p class="courseText">${r.title}</p>
             </div>
-        </div>
-        <p class="courseText">${r.title}</p>
+        </c:forEach>
     </div>
-    </c:forEach>
+
 
     <h3 class="infoText">숙박정보</h3>
     <p class="lineDetails">
-
-    <div id="courseAccommodation">
-        <c:forEach var="a" items="${aSet}" varStatus="count">
-            <div id="AccommodationItems">
-                <div class="courseImgs">
+    <div class="slide-container accommodation-slide-container">
+        <div class="slide-wrapper">
+            <c:forEach var="a" items="${aSet}" varStatus="count">
+                <div class="slide-item" data-tel="${a.tel}" data-addr="${a.addr1}">
                     <c:if test="${not empty a.firstimage}">
-                        <img src="${a.firstimage}" class="image">
+                        <img src="${a.firstimage}" alt="${a.title}">
                     </c:if>
-                    <div class="image-container">
-                        <c:if test="${empty a.firstimage}">
-                            <div class="emptyText">
-                                [이미지없음]
-                            </div>
-                        </c:if>
-                    </div>
+                    <c:if test="${empty a.firstimage}">
+                        <div class="emptyText">[이미지없음]</div>
+                    </c:if>
                 </div>
-                <p class="courseText">${a.title}</p>
-            </div>
-        </c:forEach>
-
+            </c:forEach>
+        </div>
+        <button class="prev-btn">❮</button>
+        <button class="next-btn">❯</button>
     </div>
+    <div class="slide-info">
+        <p><strong>전화번호:</strong> <span class="slide-tel"></span></p>
+        <p><strong>주소:</strong> <span class="slide-addr"></span></p>
+    </div>
+</div>
 
 
-    <c:import url="/common/footer.jsp"/>
+<c:import url="/common/footer.jsp"/>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-            integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script type="text/javascript">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script type="text/javascript">
 
-        var coursePoints = [];
-        <c:forEach var="vo" items="${requestScope.couserAr}">
-        var point = {
-            mapx: "${vo.mapx}",
-            mapy: "${vo.mapy}"
-        };
-        coursePoints.push(point);
-        </c:forEach>
+    var coursePoints = [];
+    <c:forEach var="vo" items="${requestScope.couserAr}">
+    var point = {
+        mapx: "${vo.mapx}",
+        mapy: "${vo.mapy}"
+    };
+    coursePoints.push(point);
+    </c:forEach>
 
-        $(function () {
-            $.ajax({
-                url: "Controller?type=findWay",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify(coursePoints)
-            }).done(function (res) {
-                console.log("됐니");
-                $("#resultMap").html(res);
-            });
+    $(function () {
+        $.ajax({
+            url: "Controller?type=findWay",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(coursePoints)
+        }).done(function (res) {
+            console.log("됐니");
+            $("#resultMap").html(res);
         });
+    });
 
-        var mapContainer = document.getElementById('map');
-        var mapOption = {
-            center: new kakao.maps.LatLng(coursePoints[0].mapy, coursePoints[0].mapx),
-            level: 5
-        };
-        var map = new kakao.maps.Map(mapContainer, mapOption);
+    var mapContainer = document.getElementById('map');
+    var mapOption = {
+        center: new kakao.maps.LatLng(coursePoints[0].mapy, coursePoints[0].mapx),
+        level: 5
+    };
+    var map = new kakao.maps.Map(mapContainer, mapOption);
 
-        mapContainer.style.width = '850px';
-        mapContainer.style.height = '300px';
+    mapContainer.style.width = '850px';
+    mapContainer.style.height = '300px';
 
-        <%--var marker = new kakao.maps.Marker({--%>
-        <%--position: new kakao.maps.LatLng(${Cvo.mapy}, ${Cvo.mapx}),--%>
-        <%--map: map,--%>
-        // });
+    <%--var marker = new kakao.maps.Marker({--%>
+    <%--position: new kakao.maps.LatLng(${Cvo.mapy}, ${Cvo.mapx}),--%>
+    <%--map: map,--%>
+    // });
 
+    $(function () {
+        var restaurantContainer = $('.restaurant-slide-container');
+        initSlide(restaurantContainer);
 
-    </script>
+        var accommodationContainer = $('.accommodation-slide-container');
+        initSlide(accommodationContainer);
+
+        function initSlide(container) {
+            var slideWrapper = container.find('.slide-wrapper');
+            var slides = slideWrapper.find('.slide-item');
+            var currentIndex = 0;
+            var slideCount = slides.length;
+            var slideWidth = 800;
+
+            var infoContainer = container.next('.slide-info');
+            var telEl = infoContainer.find('.slide-tel');
+            var addrEl = infoContainer.find('.slide-addr');
+
+            updateInfo(slides.eq(currentIndex), telEl, addrEl);
+
+            container.find('.prev-btn').click(function () {
+                currentIndex = (currentIndex > 0) ? currentIndex - 1 : slideCount - 1;
+                updateSlideAndInfo();
+            });
+
+            container.find('.next-btn').click(function () {
+                currentIndex = (currentIndex < slideCount - 1) ? currentIndex + 1 : 0;
+                updateSlideAndInfo();
+            });
+
+            function updateSlideAndInfo() {
+                slideWrapper.css('transform', 'translateX(' + (-slideWidth * currentIndex) + 'px)');
+                updateInfo(slides.eq(currentIndex), telEl, addrEl);
+            }
+
+            function updateInfo(currentSlide, telEl, addrEl) {
+                var tel = currentSlide.data('tel');
+                var addr = currentSlide.data('addr');
+
+                telEl.text(tel || '[정보없음]');
+                addrEl.text(addr || '[정보없음]');
+            }
+        }
+    });
+
+</script>
 </body>
 </html>

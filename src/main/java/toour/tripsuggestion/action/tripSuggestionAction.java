@@ -124,7 +124,6 @@ public class tripSuggestionAction implements Action {
         sb.append(rows);
         sb.append("&pageNo=");
         sb.append(cPage);
-        System.out.println("body1도 널이라고하네?? " + sb.toString());
         try {
             URL url1 = new URL(sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -148,7 +147,6 @@ public class tripSuggestionAction implements Action {
                 page.setTotalCount(0); // totalCount 태그가 없을 경우 0으로 설정
             }
             page.setNowPage(Integer.parseInt(cPage));
-            System.out.println("totalCount: " + page.getTotalCount());
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
             DataVO[] ar = new DataVO[item_list.size()];
@@ -168,7 +166,6 @@ public class tripSuggestionAction implements Action {
                 StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC");
                 sb2.append("&_type=xml&contentId=");
                 sb2.append(voContentid);
-                System.out.println("body2가 왜 널이느냐: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");

@@ -69,9 +69,12 @@
     background-color: #286090;
   }
 
-  .infocenterText{
-    word-break: break-all;
-  }
+    /* 이미지를 감싸는 부모 컨테이너 */
+    .image-container {
+        width: 500px;
+        height: 250px;
+        position: relative; /* 자식 요소의 위치 기준이 됨 */
+    }
 
   #heartImagedetails>p>i {
     color: #f00;
