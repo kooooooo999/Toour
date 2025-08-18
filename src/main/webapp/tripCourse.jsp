@@ -152,11 +152,69 @@
             justify-content: center; /* 가로 중앙 정렬 */
             align-items: center; /* 세로 중앙 정렬 */
         }
+
+        /* 정렬 버튼 전체를 감싸는 컨테이너 스타일 */
+        .sortingTotal {
+            text-align: center; /* 이 부분이 핵심. 내부 요소를 오른쪽으로 정렬 */
+            margin-top: 25px;
+        }
+
+        .sorting {
+            /* float: right; 제거 */
+            display: inline-flex; /* 버튼을 한 줄에 정렬하고, 콘텐츠 너비만큼만 공간 차지 */
+            align-items: center;
+        }
+
+        /* 각 버튼 스타일 */
+        .sorting button {
+            background-color: transparent; /* 배경 투명 */
+            border: 1px solid #ccc; /* 연한 회색 테두리 */
+            border-radius: 5px; /* 모서리 둥글게 */
+            color: #555; /* 글자색 */
+            padding: 8px 16px; /* 내부 여백 */
+            margin-left: 10px; /* 버튼 간 간격 */
+            cursor: pointer; /* 마우스 오버 시 포인터 변경 */
+            transition: all 0.2s ease-in-out; /* 부드러운 전환 효과 */
+            font-size: 14px;
+        }
+
+        /* 버튼에 마우스 올렸을 때 스타일 */
+        .sorting button:hover {
+            background-color: #f0f0f0; /* 연한 회색 배경 */
+            color: #000;
+        }
+
+        /* 'selected' 속성이 있는 버튼 스타일 (활성화 상태) */
+        .sorting button[selected] {
+            background-color: #007bff; /* 파란색 배경 */
+            border-color: #007bff; /* 파란색 테두리 */
+            color: white; /* 흰색 글자 */
+            font-weight: bold; /* 글자 굵게 */
+        }
     </style>
 </head>
 <body>
 
 <c:import url="/common/header.jsp"/>
+<div class="sortingTotal">
+<span class="sorting">
+<span>
+    <button type="button" name="modifiedDate" id="modifiedDate" value="R" onclick="arrange(this)" selected>
+        최신순
+    </button>
+</span>
+    <span>
+    <button type="button" name="lastest" id="lastest" value="Q" onclick="arrange(this)">
+        수정일순
+    </button>
+</span>
+    <span>
+    <button type="button" name="title" id="title" value="O" onclick="arrange(this)">
+        제목순
+    </button>
+</span>
+</span>
+</div>
 
 <div class="courseGrid">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
@@ -227,6 +285,7 @@
     function movePage(npage) {
         let contentTypeId = $("#contentTypeId").val();
         let currentedPage = $(".current").val();
+        let arrange = $('.sorting button[selected]').val();
         $("#" + currentedPage).removeClass('current');
         $("#" + currentedPage).html("<a href='javascript:movePage(" + currentedPage + ")'>" + currentedPage + "</a>")
 
@@ -237,7 +296,7 @@
         $.ajax({
             url: "Controller?type=tripSuggestion&pageType=courseUpdate",
             method: "POST",
-            data: {contentTypeId: contentTypeId, cPage: npage}
+            data: {contentTypeId: contentTypeId, cPage: npage, arrange: arrange}
         }).done(function (res) {
             $(".courseGrid").html(res);
         });
@@ -349,6 +408,23 @@
         document.body.appendChild(form);
 
         form.submit();
+    }
+
+    function arrange(sort) {
+        //선택된 값 삭제
+        $(".sorting button").removeAttr('selected');
+        //클릭된 버튼 활성화
+        $(sort).attr('selected', '');
+        console.log($(sort).val());
+        let currentedPage = $(".current").val();
+        let sortValue = $(sort).val();
+        $.ajax({
+            url: "Controller?type=tripSuggestion&pageType=courseUpdate",
+            method: "POST",
+            data: {arrange: sortValue, cPage: currentedPage}
+        }).done(function (res) {
+            $(".courseGrid").html(res);
+        });
     }
 
 </script>

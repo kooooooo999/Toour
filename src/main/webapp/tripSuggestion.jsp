@@ -134,7 +134,7 @@
 
 <%--바디 영역--%>
 
-<h2 class="tag">#선택</h2>
+<h2 class="tag">#원하는 컨텐츠와 지역을 선택하세요</h2>
 
 <div id="selectareaCode">
     <form name="frm" method="post">

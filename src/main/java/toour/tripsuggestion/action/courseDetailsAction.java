@@ -127,6 +127,7 @@ public class courseDetailsAction implements Action {
             restaurantSet.addAll(rList);
             List<DataVO> aList = getContenttyIdlist("32", arList.get(arList.size() - 1).getMapx(), arList.get(arList.size() - 1).getMapy(), key, "30000");
             accommodationSet.addAll(aList);
+            System.out.println("Mapx: " + arList.get(0).getMapx());
 
             request.setAttribute("couserAr", arList);
             request.setAttribute("restaurantSet", restaurantSet);
