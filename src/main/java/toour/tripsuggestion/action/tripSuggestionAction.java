@@ -32,6 +32,7 @@ public class tripSuggestionAction implements Action {
         String cat2 = request.getParameter("cat2");
         String cat3 = request.getParameter("cat3");
         String cPage = request.getParameter("cPage");
+        String arrange = request.getParameter("arrange");
 
         System.out.println("pagetype: " + pageType);
         if (cPage == null) {
@@ -63,18 +64,24 @@ public class tripSuggestionAction implements Action {
         if (areaCode == null) {
             areaCode = "1";
         }
+
+        if (arrange == null) {
+            arrange = "R";
+        }
         //공공데이터 openAPI 호출하는 경로
         //serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D
         //완희 서비스키
         //serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D
         //보은언니 서비스키
-        //hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D
+        //serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D
         //세빈 서비스키
-        //%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D
+        //serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D
         //준형님 서비스키
 
+        System.out.println("arrange: " + arrange);
+
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
-        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
+        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
 
 //        String startDate = request.getParameter("startDate");
 //        if (startDate == null) {
@@ -88,7 +95,9 @@ public class tripSuggestionAction implements Action {
 
         //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
         sb.append(key);
-        sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=O&contentTypeId=");
+        sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=");
+        sb.append(arrange);
+        sb.append("&contentTypeId=");
         sb.append(contentTypeid);
         if ("trip".equals(pageType)) {
             //cat1 list
@@ -124,6 +133,7 @@ public class tripSuggestionAction implements Action {
         sb.append(rows);
         sb.append("&pageNo=");
         sb.append(cPage);
+        System.out.println("sb: " + sb.toString());
         try {
             URL url1 = new URL(sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -163,9 +173,10 @@ public class tripSuggestionAction implements Action {
                 String voCat3 = item.getChildText("cat3");
                 String voContentTypeid = item.getChildText("contenttypeid");
                 String voContentid = item.getChildText("contentid");
-                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
                 sb2.append("&_type=xml&contentId=");
                 sb2.append(voContentid);
+                System.out.println("sb2: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");

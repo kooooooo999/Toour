@@ -2,15 +2,100 @@ package toour.tripsuggestion.vo;
 
 public class DataVO {
     private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
-            cat1, cat2, cat3, contentTypeId,contentId, overview, infocenter, parking, restdate, usetime, cPage
-            , homepageUrl, homepageText,subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount
-            , distance, schedule, theme;
+            cat1, cat2, cat3, contentTypeId, contentId, overview, infocenter, parking, restdate, usetime, cPage, homepageUrl, homepageText, subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount, distance, schedule, theme, sidoname;
 
-    public DataVO(String distance, String schedule, String theme){
+    public DataVO(String distance, String schedule, String theme) {
         this.distance = distance;
         this.schedule = schedule;
         this.theme = theme;
     }
+
+    public DataVO() {
+    }
+
+    public DataVO(String title, String addr1, String overview, String firstimage, String mapx, String mapy, String homepageUrl, String homepageText, String totalCount) {
+        this.title = title;
+        this.addr1 = addr1;
+        this.overview = overview;
+        this.firstimage = firstimage;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.homepageUrl = homepageUrl;
+        this.homepageText = homepageText;
+        this.totalCount = totalCount;
+    }
+
+    public DataVO(String subcontentid, String subdetailalt, String subdetailimg, String subdetailoverview, String subname, String mapx, String mapy, String totalCount) {
+        this.subcontentid = subcontentid;
+        this.subdetailalt = subdetailalt;
+        this.subdetailimg = subdetailimg;
+        this.subdetailoverview = subdetailoverview;
+        this.subname = subname;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.totalCount = totalCount;
+    }
+
+    public DataVO(String infocenter, String parking, String restdate, String usetime) {
+        this.infocenter = infocenter;
+        this.parking = parking;
+        this.restdate = restdate;
+        this.usetime = usetime;
+    }
+
+    public DataVO(String title, String addr1, String overview, String firstimage, String mapx, String mapy, String contentTypeId, String contentId, String cPage, String homepageText, String homepageUrl) {
+        this.title = title;
+        this.addr1 = addr1;
+        this.overview = overview;
+        this.firstimage = firstimage;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.contentTypeId = contentTypeId;
+        this.contentId = contentId;
+        this.cPage = cPage;
+        this.homepageUrl = homepageUrl;
+        this.homepageText = homepageText;
+    }
+
+    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String eventstartdate, String eventenddate, String tel, String contentTypeId, String contentId, String overview) {
+        this.title = title;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.addr1 = addr1;
+        this.addr2 = addr2;
+        this.firstimage = firstimage;
+        this.firstimage2 = firstimage2;
+        this.eventstartdate = eventstartdate;
+        this.eventenddate = eventenddate;
+        this.tel = tel;
+        this.overview = overview;
+        this.contentTypeId = contentTypeId;
+        this.contentId = contentId;
+    }
+
+    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String tel, String contentTypeId, String contentId, String overview, String homepageText, String homepageUrl) {
+        this.title = title;
+        this.mapx = mapx;
+        this.mapy = mapy;
+        this.addr1 = addr1;
+        this.addr2 = addr2;
+        this.firstimage = firstimage;
+        this.tel = tel;
+        this.contentTypeId = contentTypeId;
+        this.contentId = contentId;
+        this.overview = overview;
+        this.homepageText = homepageText;
+        this.homepageUrl = homepageUrl;
+    }
+
+    public String getSidoname() {
+        return sidoname;
+    }
+
+    public void setSidoname(String sidoname) {
+        this.sidoname = sidoname;
+    }
+
     public String getDistance() {
         return distance;
     }
@@ -34,8 +119,6 @@ public class DataVO {
     public void setTheme(String theme) {
         this.theme = theme;
     }
-
-    public DataVO() {}
 
     public String getTotalCount() {
         return totalCount;
@@ -85,28 +168,6 @@ public class DataVO {
         this.subname = subname;
     }
 
-    public DataVO(String title,String addr1,String overview,String firstimage,String mapx,String mapy,String homepageUrl,String homepageText, String totalCount){
-        this.title = title;
-        this.addr1 = addr1;
-        this.overview = overview;
-        this.firstimage = firstimage;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.homepageUrl = homepageUrl;
-        this.homepageText = homepageText;
-        this.totalCount = totalCount;
-    }
-
-    public DataVO(String subcontentid, String subdetailalt, String subdetailimg, String subdetailoverview, String subname, String mapx, String mapy, String totalCount) {
-        this.subcontentid = subcontentid;
-        this.subdetailalt = subdetailalt;
-        this.subdetailimg = subdetailimg;
-        this.subdetailoverview = subdetailoverview;
-        this.subname = subname;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.totalCount = totalCount;
-    }
     public String getInfocenter() {
         return infocenter;
     }
@@ -161,56 +222,6 @@ public class DataVO {
 
     public void setHomepageText(String homepageText) {
         this.homepageText = homepageText;
-    }
-
-    public DataVO(String infocenter, String parking, String restdate, String usetime){
-        this.infocenter = infocenter;
-        this.parking = parking;
-        this.restdate = restdate;
-        this.usetime = usetime;
-    }
-
-    public DataVO(String title, String addr1, String overview, String firstimage, String mapx, String mapy, String contentTypeId, String contentId, String cPage, String homepageText, String homepageUrl) {
-        this.title = title;
-        this.addr1 = addr1;
-        this.overview = overview;
-        this.firstimage = firstimage;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.contentTypeId = contentTypeId;
-        this.contentId = contentId;
-        this.cPage = cPage;
-        this.homepageUrl = homepageUrl;
-        this.homepageText = homepageText;
-    }
-    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String firstimage2, String eventstartdate, String eventenddate, String tel, String contentTypeId, String contentId, String overview){
-        this.title = title;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.addr1 = addr1;
-        this.addr2 = addr2;
-        this.firstimage = firstimage;
-        this.firstimage2 = firstimage2;
-        this.eventstartdate = eventstartdate;
-        this.eventenddate = eventenddate;
-        this.tel = tel;
-        this.overview = overview;
-        this.contentTypeId = contentTypeId;
-        this.contentId = contentId;
-    }
-    public DataVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String tel, String contentTypeId, String contentId, String overview, String homepageText, String homepageUrl) {
-        this.title = title;
-        this.mapx = mapx;
-        this.mapy = mapy;
-        this.addr1 = addr1;
-        this.addr2 = addr2;
-        this.firstimage = firstimage;
-        this.tel = tel;
-        this.contentTypeId = contentTypeId;
-        this.contentId = contentId;
-        this.overview = overview;
-        this.homepageText = homepageText;
-        this.homepageUrl = homepageUrl;
     }
 
     public String getContentId() {

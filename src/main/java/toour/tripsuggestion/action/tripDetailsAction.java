@@ -33,15 +33,15 @@ public class tripDetailsAction implements Action {
         request.setAttribute("detailsAr", datavo);
 
         //찜 목록에 해당 관광지가 속해 있는지 확인하고 있다면 하트를 채워 놓기 위해 신호를 보내는 곳
-        boolean zzim_state =false;
-        ZzimVO[] zzim_ar=null;
-        if(contentId !=null){
+        boolean zzim_state = false;
+        ZzimVO[] zzim_ar = null;
+        if (contentId != null) {
             Object obj = request.getSession().getAttribute("member");
-            MemberVO mvo= null;
-            if(obj!=null){
+            MemberVO mvo = null;
+            if (obj != null) {
                 mvo = (MemberVO) obj;
                 zzim_ar = ZzimDAO.getZzimAr(mvo.getMember_idx());
-                if(zzim_ar!=null) {
+                if (zzim_ar != null) {
                     for (ZzimVO zvo : zzim_ar) {
                         if (contentId.equals(zvo.getZzim_content_id())) {
                             zzim_state = true;
@@ -51,13 +51,13 @@ public class tripDetailsAction implements Action {
                 }
             }
         }
-        request.setAttribute("zzim_state",zzim_state);
-        
+        request.setAttribute("zzim_state", zzim_state);
+
         //http://apis.data.go.kr/B551011/KorService2/detailIntro2?serviceKey=인증키
         //&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&_type=json&contentTypeId=12&contentId=
         //126128
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailIntro2?");
-        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
+        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
 
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1");

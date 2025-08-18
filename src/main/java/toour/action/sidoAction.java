@@ -9,8 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.List;
 
 public class sidoAction implements Action {
@@ -22,6 +20,10 @@ public class sidoAction implements Action {
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
         String key = "serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D";
+        String sidoName = request.getParameter("sidoName");
+        DataVO dataVO = new DataVO();
+        dataVO.setSidoname(sidoName);
+        request.setAttribute("sidodata", dataVO);
         String areaCode = null;
         String code = request.getParameter("areaCode");
         if (code == null) {
@@ -44,7 +46,7 @@ public class sidoAction implements Action {
         sb.append(areaCode);
         sb.append("&_type=xml&numOfRows=4&pageNo=");
         sb.append(cPage);
-        //System.out.println(sb.toString());
+        System.out.println("sido sb:" + sb.toString());
 
         try {
             URL url = new URL(sb.toString());
@@ -63,13 +65,17 @@ public class sidoAction implements Action {
                 String title = item.getChildText("title"); //자식 태그 안의 문자열
                 String addr1 = item.getChildText("addr1");
                 String firstimage = item.getChildText("firstimage");
-                String contentId = item.getChildText("contentId");
+                String contentId = item.getChildText("contentid");
+                String mapx = item.getChildText("mapx");
+                String mapy = item.getChildText("mapy");
 
                 DataVO vo = new DataVO();
                 vo.setTitle(title);
                 vo.setAddr1(addr1);
                 vo.setFirstimage(firstimage);
                 vo.setContentId(contentId);
+                vo.setMapx(mapx);
+                vo.setMapy(mapy);
                 ar[i++] = vo;
             }
             request.setAttribute("ar2", ar);
