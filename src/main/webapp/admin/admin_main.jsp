@@ -1,4 +1,6 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html>
@@ -62,6 +64,7 @@
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
+            height: 200px;
         }
 
         .card2 {
@@ -70,6 +73,7 @@
             padding: 20px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             text-align: center;
+            height: 200px;
         }
 
         .card-title {
@@ -118,13 +122,15 @@
 
 <div class="main-content">
     <h1>관리자 페이지</h1>
-</div>
+
 
 <div class="dashboard">
     <div class="card">
         <div class="card-title">
+            <c:set var="t" value="${requestScope.totalCount}"/>
             전체 회원 수<br>
             <small>(전체회원수 / 휴면회원수 / 탈퇴회원수 / 강퇴회원수)</small>
+            <p>${t}</p>
         </div>
     </div>
     <div class="card">
@@ -142,7 +148,7 @@
             최근 신고 수 (한달)
         </div>
     </div>
-
+</div>
 </div>
 </body>
 </html>
