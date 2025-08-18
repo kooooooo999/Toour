@@ -381,7 +381,7 @@
             </c:if>
         </c:forEach>
     </div>
-    <%--지도영역--%>
+    <%--    지도영역--%>
     <div class="map-container">
         <div id="mapDetails" style="padding: 30px 30px;margin-left: -80px">
             <div id="map" style="width: 850px; height: 300px; margin-left: 80px; "></div>
@@ -395,24 +395,22 @@
         <c:forEach var="course" items="${Cvo}" varStatus="status">
     <div class="courseItems">
         <div class="courseImgs">
-            <c:if test="${not empty course.subdetailimg}">
-                <img src="${course.subdetailimg}" class="course-image">
+            <c:if test="${not empty course.firstimage}">
+                <img src="${course.firstimage}" class="course-image">
             </c:if>
-            <c:if test="${empty course.subdetailimg}">
+            <c:if test="${empty course.firstimage}">
                 <div class="image-container">
-                    <c:if test="${empty Dvo.firstimage}">
-                        <div class="emptyText">
-                            [이미지없음]
-                        </div>
-                    </c:if>
-                    <c:if test="${not empty Dvo.firstimage}">
-                        <img src="${Dvo.firstimage}" class="course-image">
-                    </c:if>
+                        <%--                    <c:if test="${empty Dvo.firstimage}">--%>
+                    <div class="emptyText">
+                        [이미지없음]
+                    </div>
+                        <%--                    </c:if>--%>
                 </div>
             </c:if>
         </div>
-        <p class="courseText_1">${course.subdetailalt}</p>
-        <p class="courseText_1">${course.subdetailoverview}</p>
+            <%--    a태그 새창으로 뜨게 다시 하쟈~~~~~~~ 까먹지 말고 if문도 적어라 --%>
+        <p class="courseText_1"><a href="${course.homepageUrl}"> ${course.title}</a></p>
+        <p class="courseText_1">${course.overview}</p>
     </div>
     </c:forEach>
 

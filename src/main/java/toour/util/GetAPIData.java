@@ -237,6 +237,8 @@ public class GetAPIData {
             sb.append("&mapY=");
             sb.append(mapy);
 
+            System.out.println("location: " + sb.toString());
+
             URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");
