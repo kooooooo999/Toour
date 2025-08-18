@@ -398,7 +398,7 @@
                             ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
                         &nbsp;&nbsp; <span class="report-emoji" title="신고하기"
-                                           onclick="warningComment(${cvo.commentidx})">🚨</span>
+                                           onclick="warningComment(${cvo.comment_idx})">🚨</span>
                     </div>
                     <div id="comment_post">
                             ${cvo.comment_content}
@@ -406,7 +406,7 @@
                 </div>
                 <hr/>
             </c:forEach>
-            </c:if>
+        </c:if>
 
             <div id="warning_dialog" title="신고">
                 <form action="Controller" method="post">
@@ -509,7 +509,7 @@
         }
 
         function warningComment() {
-            $("warning_dialog").dialog("open");
+            $("#warning_dialog").dialog("open");
         }
 
 

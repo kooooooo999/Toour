@@ -153,7 +153,7 @@
                             <tr>
                                 <td>${num}</td>
                                 <td style="text-align: left">
-                                    <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                                    <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${p.nowPage}">
                                             ${vo.post_title}
                                         <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
                                             (<c:out value="${fn:length(vo.c_list)}"/>)

@@ -59,9 +59,7 @@ public class ViewAction implements Action {
             if (fileList != null) {
                 request.setAttribute("fileList", fileList);
             }
-        }else {
-            return "error.jsp";//오류페이지로 보내기 여기는 고쳐야할 부분~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-            }
+        }
 
         System.out.println(vo.getPost_idx());
         // 검색된 vo가 처음으로 읽은 게시물인지 판단
@@ -70,6 +68,10 @@ public class ViewAction implements Action {
             readList.add(post_idx);
         }
         CommentVO[] comment_list =PostDAO.getCommentList(post_idx);
+        if (comment_list == null) {
+            comment_list = new CommentVO[0]; // null 대신 빈 배열
+        }
+        System.out.println("comment_list.length"+comment_list.length);
         request.setAttribute("comment_list", comment_list);
         request.setAttribute("vo", vo);
 
