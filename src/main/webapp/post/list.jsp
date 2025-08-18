@@ -27,6 +27,33 @@
         #post h1{
             color: #222;
             text-align: center;
+            margin-top: 40px;
+        }
+
+        .totalCount{
+            margin-left: 40px;
+        }
+
+        .search-area{
+            float: right;
+            margin-right: 40px;
+        }
+
+        .totalCount p{
+            font-weight: bold;
+        }
+
+        .totalCount strong{
+            color: #1a73e8;
+        }
+
+        #searchValue {
+            height: 38px; /* 버튼과 비슷한 높이 */
+            padding: 6px 10px;
+            font-size: 14px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
         }
     </style>
 </head>
@@ -35,21 +62,29 @@
 
     <div id="post">
         <h1>여행후기</h1>
+
         <div class="search-area">
             <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
                 <input type="hidden" name="category_idx" value="2">
                 <select id="searchType" name="searchType">
-                    <option value="post_title">제목</option>
-                    <option value="post_content">내용</option>
-                    <option value="member_nickname">글쓴이</option>
+                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
+                    <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
+                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
                 </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
                 <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
             </form>
         </div>
 
+
         <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
+
+            <c:set var="t" value="${requestScope.totalCount}"/>
+            <div class="totalCount">
+                <p>총 <strong>${t}건</strong></p>
+            </div>
+
             <thead>
                 <th>번호</th>
                 <th>제목</th>
@@ -57,7 +92,6 @@
                 <th>별점</th>
                 <th>조회수</th>
                 <th>작성일</th>
-
             </thead>
             <tbody>
                 <c:set var="p" value="${requestScope.page}" />
@@ -92,18 +126,18 @@
                 <li class="disable">&lt;</li>
             </c:if>
             <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="Controller?type=list&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
             </c:if>
             <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
                 <c:if test="${p.nowPage == vs.index}">
                     <li class="now">${vs.index}</li>
                 </c:if>
                 <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
+                    <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
                 </c:if>
             </c:forEach>
             <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="Controller?type=list&cPage=${p.endPage+1}">&gt;</a></li>
+                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
             </c:if>
             <c:if test="${p.endPage >= p.totalPage}">
                 <li class="disable">&gt;</li>

@@ -20,9 +20,24 @@ public class PostDAO {
         return cnt;
     }
 
+
+    public static int getSearchTotalCount(String searchType,String searchValue,String category_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+        map.put("category_idx", category_idx);
+
+        int cnt = ss.selectOne("notice.SearchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
     //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
+
         Map<String,Object> map = new HashMap<String,Object>();
         map.put("category_idx",category_idx);
         map.put("begin",begin);

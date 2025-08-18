@@ -48,7 +48,6 @@ public class KakaoLoginAction implements Action {
             //db정보랑 대조
 
             MemberVO member = MemberDAO.getKakaoMember("KAKAO", account_email);
-            System.out.println("kakaomember_idx is:"+member.getMember_idx());
 
             if (member == null) {
                 System.out.println("member is null");
@@ -69,8 +68,10 @@ public class KakaoLoginAction implements Action {
                 System.out.println("kakao member already exist");
                 //기존회원으로 마지막 로그인 날짜만 업데이트
                 try {
-                    MemberDAO.updateLastLogin(member.getMember_idx());
-                    member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                    int cnt = MemberDAO.updateLastLogin(member.getMember_idx());
+                    if (cnt > 0) {
+                        member.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     throw new RuntimeException(e);
@@ -81,12 +82,13 @@ public class KakaoLoginAction implements Action {
             HttpSession session = request.getSession();
             session.setAttribute("accessToken", token);
             session.setAttribute("member", member);
-            session.setAttribute("user", member);
             session.setAttribute("userIdx", member.getMember_idx());
             session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
+            session.setMaxInactiveInterval(30*60);// 세션 30분 유지
+            //이게 뭐지?
             System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
-            return "MainIndex/index.jsp";
+            return "gohome";
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -143,7 +145,7 @@ public class KakaoLoginAction implements Action {
             }
             System.out.println("토큰 요청 실패 - 응답 코드: " + responseCode);
             System.out.println("에러 응답: " + errorResult);
-            return null;
+            return null;//오류페이지******************************************
         }
     }
 

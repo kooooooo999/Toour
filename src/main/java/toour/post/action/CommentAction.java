@@ -19,11 +19,11 @@ public class CommentAction implements Action {
         String enc_type =request.getContentType();
 
         HttpSession session=request.getSession();
-        if(session.getAttribute("user")==null){
+        if(session.getAttribute("member")==null){
             System.out.println("comment session nothing");
             return "Controller?type=moveLogin";
         }
-        MemberVO loginMember=(MemberVO)session.getAttribute("user");
+        MemberVO loginMember=(MemberVO)session.getAttribute("member");
         System.out.println("CommentLoginMember:"+loginMember);
         if(loginMember==null){
             return "Controller?type=moveLogin";

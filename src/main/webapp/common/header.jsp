@@ -37,7 +37,7 @@
             </c:if>
 
             <a href="Controller?type=mypage">마이 페이지</a>
-            <a href="Controller?type=login&u_id=kikiki5555&u_pw=kikiki5555!">고객센터</a>
+            <a href="Controller?type=login&u_id=dkdlel123&u_pw=qlalfqjsgh@123">고객센터</a>
         </div>
     </div>
     <div class="container header-main flex-between">
@@ -68,7 +68,7 @@
                 <a href="<c:url value="/Controller?type=list" />" class="act">게시판</a>
                 <ul class="submenu">
                     <li><a href="<c:url value="/Controller?type=notice" />" class="act">공지사항</a></li>
-                    <li><a href="#">건의/문의</a></li>
+                    <li><a href="<c:url value="/Controller?type=QnA"/>">건의/문의</a></li>
                     <li><a href="<c:url value="/Controller?type=list" />" class="act">여행후기</a></li>
                 </ul>
             </li>

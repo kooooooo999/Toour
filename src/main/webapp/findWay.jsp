@@ -14,7 +14,7 @@
         .searchKeyword { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         #destinationKeyword { width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         .search_results { margin-top: 5px; overflow: hidden; text-overflow: ellipsis; }
-        .selected_places { margin-top: 50px; display: inline-block}
+        .selected_places { margin-top: 50px; display: inline-block; }
         .search_results h3, .selected_places h3 { margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .list_item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .list_item:last-child { border-bottom: none; }
@@ -24,7 +24,8 @@
         .selected_list_item .number { font-weight: bold; font-size: 1.2em; color: #555; width: 25px; text-align: center; }
         .selected_list_item .place-info { flex-grow: 1; margin-left: 10px; }
         #findWayBox { margin: 10px auto; }
-        .buttonRight { position: absolute; right: 0; width: 60px; padding: 3px 10px; margin-top: 5px; }
+        .buttonRight { display: inline-block; position: absolute; right: 0; width: 60px; padding: 3px 10px; margin-top: 5px; }
+        .button2 { display: inline-block; }
         #searchBox { width: 300px; padding-top: 26px; position: relative; }
         #searchBox2 { width: 300px; position: relative; }
         .hide { display: none }
@@ -33,16 +34,18 @@
         #resultOpen { position: absolute; right: 10px; top: 5px; padding: 2px 7px; }
         .marginAuto { margin: 0 auto; }
         .marginTop55 { margin-top: 55px; }
-        #findButton { width: 260px; height: 30px; margin: auto; position: absolute; bottom: 20px; }
+        #findButton { width: max-content; height: 30px; position: absolute; right: 0 }
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #course { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #courseList { width: 260px }
-        #page { position: absolute; bottom: 18px; left: 85px; }
+        #course { display: block; width: 260px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
+        #courseList { width: 277.5px; height: 433.97px; overflow-y: auto;}
+        #page { margin: auto; margin-top: 23px; }
         .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .plusButton {display: inline-block; background-image: url("images/plus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
         .minusButton {display: inline-block; background-image: url("images/minus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
+        #buttonWrap { position: relative; height: 30px; margin-top: 20px; }
+        #saveButton { }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -68,13 +71,16 @@
                 <button type="button" class="buttonRight detail_btn" onclick="searchplace()">검색</button>
             </div>
 
-            <div class="selected_places">
+            <div id="selected_places" class="selected_places">
                 <h3>여기로 가야지!</h3>
                 <div id="courseList"></div>
             </div>
 
-            <div  id="findButton" class="search_container">
-                <button type="button" class="buttonRight detail_btn" onclick="findWay()">길찾기</button>
+            <div id="buttonWrap">
+                <div  id="findButton" class="search_container">
+                    <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="saveCourse()">저장</button>
+                </div>
             </div>
 
         </div>
@@ -104,9 +110,6 @@
     // 지도 생성
     var map = new kakao.maps.Map(mapContainer, mapOption);
 
-    // vo에 저장된 mapx, mapy 값 얻어내야 함
-    <c:set var="ar" value="${requestScope.resultAr}"/>
-
     // 마커가 표시될 위치
     <%--var markerPosition  = new kakao.maps.LatLng(&lt;%&ndash;${vo.}&ndash;%&gt;, 126.570667);--%>
 
@@ -124,16 +127,6 @@
 
     // 장소 검색 객체
     var ps = new kakao.maps.services.Places();
-
-    function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
-        $.ajax({
-            url: "Controller?type=findWay",
-            type: "post",
-        }).done(function (res) {
-            console.log(res);
-            $("#test").html(res);
-        });
-    }
 
     // 검색어로 장소 찾기
     function searchplace() {
@@ -155,6 +148,11 @@
         });
 
         $("#searchBox2").show();
+    }
+
+    // 코스 DB에 저장
+    function saveCourse() {
+
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
@@ -219,6 +217,60 @@
             markers[i].setMap(null);
         }
         markers = [];
+    }
+
+    let cnt12 =0;
+    function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
+        if(cnt12 >0){
+            polyline.setMap(null);
+        }
+        cnt12++;
+        removeMarker();
+
+        $.ajax({
+            url: "Controller?type=findWay",
+            type: "post",
+            contentType: "application/json",
+            data: JSON.stringify(coursePoints)
+        }).done(function (res) {
+            console.log(res);
+            $("#test").html(res);
+        });
+
+        // 버튼을 클릭하면 아래 배열의 좌표들이 모두 보이게 지도 범위를 재설정
+        var i, marker;
+
+
+        for (i = 0; i < points.length; i++) {
+
+            // 배열의 좌표들이 잘 보이게 마커를 지도에 추가합니다
+            marker = addMarker(points[i], i);
+            markers.push(marker);
+
+        }
+        // 지도 범위 재설정
+        map.setBounds(bounds);
+
+        function addMarker(position, idx, title) {
+            var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
+                imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
+                imgOptions =  {
+                    spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
+                    spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
+                    offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+                },
+                markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
+                marker = new kakao.maps.Marker({
+                    position: position, // 마커의 위치
+                    image: markerImage
+                });
+
+            marker.setMap(map); // 지도 위에 마커를 표출합니다
+            markers.push(marker);  // 배열에 생성된 마커를 추가합니다
+
+            return marker;
+        }
+
     }
 
 </script>

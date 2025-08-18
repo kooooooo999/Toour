@@ -175,9 +175,7 @@
   <!-- 메뉴 -->
   <a href="AdminController">🏠 HOME</a>
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost ">📝 게시물 관리</a>
-  <a href="product_list.jsp?category=sp003">🍽 관광지/맛집 관리</a>
-  <a href="product_list.jsp?category=sp003">🗺 관광코스 관리</a>
+  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
 </div>
 

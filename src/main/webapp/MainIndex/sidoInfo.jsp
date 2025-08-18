@@ -8,23 +8,30 @@
 <html>
 <head>
   <style>
-    #wrap{
-        /*border: 1px solid #000;*/
-        display: flex;
-        position: relative;
+    #city{
+        display: inline-block;
+        width: 600px;
         height: 600px;
+        /*border: 1px solid #000;*/
+        <c:if test="${param.imageChange == null}">
+            background-image: url("images/total.png");
+        </c:if>
+        <c:if test="${param.imageChange ne null}">
+            background-image: url("images/${param.imageChange}.png");
+        </c:if>
+        background-repeat: no-repeat;
+        margin: auto;
+        position: relative;
     }
     #box{
       display: grid;
       grid-template-columns: 280px 280px;
-      gap: 20px;
-      width: 600px;
-      margin: auto;
+      gap: 30px;
+      width: 500px;
+      margin-left: 50px;
+      padding-top: 25px;
       /*border: 1px solid #4a545e;
       border-collapse: collapse;*/
-      position: absolute;
-      left: 880px;
-      top: 50px;
     }
     #column{
         width: 250px;
@@ -33,26 +40,23 @@
       width: 250px;
       height: 150px;
     }
+    .ellip{ margin-top: 10px; font-weight: bold; display: inline-block; width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   </style>
 </head>
 <body>
 <%--바디 영역--%>
-<div id="wrap">
     <div id="box">
-      <c:forEach var="vo" items="${requestScope.ar2}" varStatus="vs">
-          <c:if test="${vs.index < 4}">
-            <c:if test="${fn:length(vo.firstimage) > 0}">
-            <div id="column">
+        <c:forEach var="vo" items="${requestScope.ar2}" varStatus="vs">
+            <c:if test="${vs.index < 4}">
+                <c:if test="${fn:length(vo.firstimage) > 0}">   <div id="column">
                     <img id="image" src="${vo.firstimage}"
                         onerror="this.src='images/noImage.png'"/>
-                    <p>${vo.addr1}</p>
-                    <a href="#">${vo.title}</a>
-            </div>
+                    <p class="ellip">${vo.addr1}</p>
+                    <a href="#" class="ellip">${vo.title}</a>
+                </div>
+                </c:if>
             </c:if>
-          </c:if>
-      </c:forEach>
+        </c:forEach>
     </div>
-</div>
-
 </body>
 </html>
