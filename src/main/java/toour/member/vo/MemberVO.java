@@ -9,6 +9,16 @@ public class MemberVO {
             member_id, member_warning, login_type;
     // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt
 
+    private String post_idx;
+
+    public String getPost_idx() {
+        return post_idx;
+    }
+
+    public void setPost_idx(String post_idx) {
+        this.post_idx = post_idx;
+    }
+
     public String getLogin_type() {return login_type;}
 
     public void setLogin_type(String login_type) {this.login_type = login_type;}

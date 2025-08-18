@@ -36,11 +36,11 @@
         values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), now())
     </insert>
 
-    <!-- 게시글 보기 -->
-    <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p
-        LEFT OUTER join file f on p.post_idx = f.post_idx
-        WHERE p.post_idx = #{post_idx}
+    <!--게시글 보기(회원정보 불러오기)-->
+    <select id="getPostMember" parameterType="String" resultType="toour.member.vo.MemberVO">
+        select *
+        from post p inner join member m
+        where p.member_idx=m.member_idx and p.post_idx = #{post_idx}
     </select>
 
     <!-- 게시글 삭제 -->

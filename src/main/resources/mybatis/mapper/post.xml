@@ -22,6 +22,13 @@
         where post_status = 0 and category_idx = #{category_idx}
     </select>
 
+<!--    최근 게시글 수 반환 -->
+
+    <select id="RecentVisitMem" resultType="int">
+        SELECT COUNT(*) FROM post
+        WHERE category_idx = 2 and post_created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    </select>
+
     <!-- My Page 총 게시물 수를 반환하는 기능 -->
     <select id="myTotalCount" resultType="int" parameterType="String">
         select count(*) from post

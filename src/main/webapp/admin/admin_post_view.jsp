@@ -153,9 +153,11 @@
 </div>
 
 <div class="main-content">
-  <h1>관리자 페이지</h1>
+  <h1>관리자 페이지 - 게시글 보기</h1>
 
   <c:set var="vo" value="${requestScope.vo}"/>
+  <c:set var="pvo" value="${requestScope.postvo}"/>
+
 
   <div id="post">
     <form method="post">
@@ -163,24 +165,24 @@
         <tbody>
         <tr>
           <th>제목:</th>
-          <td>${vo.post_title}</td>
+          <td>${pvo.post_title}</td>
         </tr>
 
         <tr>
           <th>첨부파일:</th>
           <td><a href="#">
-            ${vo.file_name_original}
+            ${pvo.file_name_original}
           </a></td>
         </tr>
 
         <tr>
-          <th>이름:</th>
-          <td>관리자</td>
+          <th>별명:</th>
+          <td>${vo.member_nickname}</td>
         </tr>
 
         <tr>
           <th>내용:</th>
-          <td>${vo.post_content}</td>
+          <td>${pvo.post_content}</td>
         </tr>
 
         <tr>
