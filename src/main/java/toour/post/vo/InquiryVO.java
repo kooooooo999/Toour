@@ -6,6 +6,22 @@ public class InquiryVO {
 
     private String is_read;
 
+    public String getStatusColor() {
+        return statusColor;
+    }
+
+    public void setStatusColor(String statusColor) {
+        this.statusColor = statusColor;
+    }
+
+    private String statusColor;
+
+    public String getMember_nickname() {return member_nickname;}
+
+    public void setMember_nickname(String member_nickname) {this.member_nickname = member_nickname;}
+
+    private String member_nickname;
+
     public String getIs_read() {return is_read;}
 
     public void setIs_read(String is_read) {this.is_read = is_read;}

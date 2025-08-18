@@ -28,7 +28,19 @@ public class AdminDAO {
         return ar;
 
     }
+    //한달내의 문의사항 보기
+    public static InquiryVO[] OneMonthQnAList(){
+        InquiryVO[] ar = null;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<InquiryVO> list = ss.selectList("inquiry.oneMonthInquiry");
+        if(list.size()>0&&list!=null){
+            ar = new InquiryVO[list.size()];
+            list.toArray(ar);
+        }
+        ss.close();
+        return ar;
 
+    }
 
     //문의사항 답변상태 업데이트
 

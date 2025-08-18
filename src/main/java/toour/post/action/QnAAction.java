@@ -53,7 +53,7 @@ public class QnAAction implements Action {
                 String category = mr.getParameter("category");
                 String title = mr.getParameter("title");
                 String content = mr.getParameter("content");
-                String status = "대기중"; // 기본 상태
+                String status = "대기"; // 기본 상태
                 
                 // 파일 처리
                 String file_path = null;

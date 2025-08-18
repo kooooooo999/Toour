@@ -223,4 +223,5 @@
         WHERE c.post_idx = #{post_idx}
         ORDER BY c.comment_created_at ASC
     </select>
+
 </mapper>

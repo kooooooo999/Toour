@@ -62,6 +62,6 @@ public class InquiryViewAction implements Action {
         // request에 데이터 저장
         request.setAttribute("inquiry", inquiry);
         
-        return "/post/inquiryView.jsp";
+        return "post/inquiryView.jsp";
     }
 }

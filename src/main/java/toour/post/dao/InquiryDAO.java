@@ -2,6 +2,7 @@ package toour.post.dao;
 
 import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.InquiryVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +19,7 @@ public class InquiryDAO {
         map.put("title", title);
         map.put("content", content);
         map.put("file_path", file_path);
-        map.put("status", status);
+        map.put("status", "대기");
 
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.insert("Inquiry.insertInquiry", map);
@@ -33,10 +34,24 @@ public class InquiryDAO {
         return cnt;
     }
 
+    public static InquiryVO[] getByMember_idx(String member_idx) {
+        InquiryVO[] ar = null;
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<InquiryVO> list =ss.selectList("Inquiry.selectByMember", member_idx);
+        if (list != null && list.size() > 0) {
+            ar = new InquiryVO[list.size()];
+            ar = list.toArray(ar);
+
+        }
+        return  ar;
+    }
+
     // 문의 목록 조회 (페이징)
-    public static List<Map<String, Object>> getInquiryList(String member_idx, String category, 
-                                                          String searchType, String searchValue, 
-                                                          int begin, int end) {
+    public static InquiryVO[] getInquiryList(String member_idx, String category,
+                                           String searchType, String searchValue,
+                                           int begin, int end) {
+        InquiryVO[] ar=null;
         Map<String, Object> map = new HashMap<>();
         if (member_idx != null && !member_idx.isEmpty()) {
             map.put("member_idx", member_idx);
@@ -52,10 +67,14 @@ public class InquiryDAO {
         map.put("end", end);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<Map<String, Object>> list = ss.selectList("Inquiry.getInquiryList", map);
+        List<InquiryVO> list = ss.selectList("Inquiry.getInquiryList", map);
+        if(list.size()>0&&list!=null){
+            ar=new InquiryVO[list.size()];
+            list.toArray(ar);
+        }
         ss.close();
         
-        return list;
+        return ar;
     }
 
     // 문의 상세 조회 (본인 확인 포함)
@@ -177,4 +196,22 @@ public class InquiryDAO {
         ss.close();
         return statusCount;
     }
+
+    public static int getSearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+
+        Map<String, Object> map = new HashMap<>();
+        if (searchType != null && !searchType.isEmpty()) {
+            map.put("searchType", searchType);
+        }
+        if (searchValue != null && !searchValue.isEmpty()) {
+            map.put("searchValue", searchValue);
+        }
+
+      int cnt  = ss.selectOne("Inquiry.getSearchTotalCount", map);
+        ss.close();
+        return cnt;
+
+    }
+
 }

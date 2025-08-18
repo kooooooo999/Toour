@@ -27,7 +27,7 @@ public class AdminMainAction implements Action {
 
         request.setAttribute("count", count);
 
-        InquiryVO[] ar = AdminDAO.QnAList();
+        InquiryVO[] ar = AdminDAO.OneMonthQnAList();
 
         request.setAttribute("ar", ar);
 

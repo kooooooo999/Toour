@@ -3,6 +3,7 @@ package toour.post.action;
 import toour.action.Action;
 import toour.post.dao.InquiryDAO;
 import toour.member.vo.MemberVO;
+import toour.post.vo.InquiryVO;
 import toour.util.Paging;
 
 import javax.servlet.ServletException;
@@ -31,26 +32,31 @@ public class InquiryListAction implements Action {
         }
         
         String member_idx = loginMember.getMember_idx();
-        
-        // 페이징 처리
-        String cPage = request.getParameter("cPage");
-        if (cPage == null) {
-            cPage = "1";
-        }
-        
-        int nowPage = Integer.parseInt(cPage);
-        int numPerPage = 10; // 한 페이지당 보여줄 문의 수
-        int totalRecord = InquiryDAO.getTotalCount(member_idx, null, null, null);
-        
-        Paging page = new Paging(numPerPage, 5);
-        page.setTotalCount(totalRecord);
-        page.setNowPage(nowPage);
-        
         // 검색 조건
         String searchType = request.getParameter("searchType");
         String searchValue = request.getParameter("searchValue");
         String category = request.getParameter("category");
-        
+
+        // 페이징 처리
+        int totalRecord = InquiryDAO.getTotalCount(member_idx, null, null, null);
+
+        Paging page = new Paging(10, 5);
+        page.setTotalCount(totalRecord);
+
+        String cPage = request.getParameter("cPage");
+        System.out.println("cPage"+cPage);
+        if (cPage == null||cPage.equals("")) {
+            page.setNowPage(1);
+        }
+        else{
+            int nowPage= Integer.parseInt(cPage);
+            page.setNowPage(nowPage);
+        }
+
+        if (cPage == null) {cPage = "1";}
+        int nowPage = (cPage != null) ? Integer.parseInt(cPage) : 1;
+
+
         // 검색 조건이 있는 경우 전체 개수 다시 계산
         if ((searchType != null && !searchType.isEmpty()) || 
             (searchValue != null && !searchValue.isEmpty()) ||
@@ -63,30 +69,35 @@ public class InquiryListAction implements Action {
         int begin = page.getBegin();
         int end = page.getEnd();
         
-        List<Map<String, Object>> inquiryList = InquiryDAO.getInquiryList(
-            member_idx, category, searchType, searchValue, begin, end);
+        InquiryVO[] inquiryList = InquiryDAO.getByMember_idx(member_idx);
+
         
         // 상태별 색상 매핑
-        for (Map<String, Object> inquiry : inquiryList) {
-            String status = (String) inquiry.get("status");
-            if ("대기중".equals(status)) {
-                inquiry.put("statusColor", "warning");
+        for (InquiryVO inquiry : inquiryList) {
+            String status = (String) inquiry.getStatus();
+            if ("대기".equals(status)) {
+                inquiry.setStatusColor("warning");
             } else if ("답변완료".equals(status)) {
-                inquiry.put("statusColor", "success");
+                inquiry.setStatusColor("success");
             } else if ("처리중".equals(status)) {
-                inquiry.put("statusColor", "info");
+                inquiry.setStatusColor("info");
             } else {
-                inquiry.put("statusColor", "secondary");
+                inquiry.setStatusColor("secondary");
             }
         }
-        
+        System.out.println("inquiryAction inquiryList.length: "+inquiryList.length);
         // request에 데이터 저장
+        request.setAttribute("QnAcPage", cPage);
         request.setAttribute("inquiryList", inquiryList);
-        request.setAttribute("page", page);
-        request.setAttribute("searchType", searchType);
-        request.setAttribute("searchValue", searchValue);
+        request.setAttribute("QnAPage", page);
+        request.setAttribute("QnAsearchType", searchType);
+        request.setAttribute("QnAsearchValue", searchValue);
         request.setAttribute("category", category);
-        
-        return "/post/inquiryList.jsp";
+        request.setAttribute("QnAtotalCount",totalRecord);
+        request.setAttribute("QnAnowPage",page.getNowPage());
+
+
+
+        return "post/inquiryList.jsp";
     }
 }
