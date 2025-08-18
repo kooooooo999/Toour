@@ -96,7 +96,7 @@
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="saveCourse()">추가</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">추가</button>
                 </div>
             </div>
         </div>
@@ -173,7 +173,7 @@
     }
 
     // 코스 DB에 저장
-    function saveCourse() {
+    function addCourse() {
         console.log($("#date").val());
 
     }

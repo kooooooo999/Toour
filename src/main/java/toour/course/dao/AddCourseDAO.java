@@ -7,6 +7,7 @@ import toour.member.vo.CourseVO;
 import java.util.List;
 
 public class AddCourseDAO {
+
     public static CourseVO[] searchCourse(String member_idx) {
         CourseVO[] course_ar = null;
         SqlSession ss = FactoryService.getFactory().openSession();
