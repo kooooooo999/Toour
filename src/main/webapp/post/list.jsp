@@ -55,6 +55,21 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .paging-area {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        footer {
+            margin-top: 0 !important;
+        }
+
     </style>
 </head>
 <body>
@@ -76,15 +91,14 @@
             </form>
         </div>
 
+        <c:set var="t" value="${requestScope.totalCount}"/>
+
+        <div class="totalCount">
+            <p>총 <strong>${t}건</strong></p>
+        </div>
 
         <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
-
-            <c:set var="t" value="${requestScope.totalCount}"/>
-            <div class="totalCount">
-                <p>총 <strong>${t}건</strong></p>
-            </div>
-
             <thead>
                 <th>번호</th>
                 <th>제목</th>
@@ -145,6 +159,8 @@
         </ol>
         <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
     </div>
+<c:import url="/common/footer.jsp" />
+
 </body>
 
 <script>
@@ -159,9 +175,6 @@
         }
         return true;
     }
-
-
 </script>
-<c:import url="/common/footer.jsp" />
 
 </html>

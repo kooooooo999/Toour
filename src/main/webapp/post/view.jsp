@@ -151,8 +151,6 @@
       text-align: center;
       }
 
-
-
     .post-title td {
       font-size: 20px;
       font-weight: bold;
@@ -230,6 +228,35 @@
       font-weight: bold;
     }
 
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    .paging-area {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    footer {
+      margin-top: 0 !important;
+    }
+
+    #report_dialog{ /* 신고 다이얼로그 */
+      display: none; /* 처음에는 숨김 */
+    }
+
+    .report-emoji {
+      cursor: pointer;
+      font-size: 18px;
+      transition: transform 0.2s;
+    }
+
+    .report-emoji:hover {
+      transform: scale(1.2);
+    }
+
+
   </style>
 
 </head>
@@ -291,25 +318,26 @@
 
       <div class="post-buttons">
         <c:if test="${not empty sessionScope.member}">
-          <c:if test="${sessionScope.member.member_idx==member_info.member_idx}">
+          <!-- 내가 쓴 글 -->
+          <c:if test="${sessionScope.member.member_idx == member_info.member_idx}">
             <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="goDel()"/>
           </c:if>
 
-          <!-- 다른 사람 글일 때 신고 버튼 -->
-          <c:if test="${sessionScope.user.member_idx != member_info.member_idx}">
-              <input type="submit" value="신고" onclick="openReportDialog()"/>
-<%--              style="background-color: #f44336" color:white, border:none; padding:6px 12px; border-radius:4px; cursor:pointer;>--%>
-            </form>
+          <!-- 다른 사람이 쓴 글일 때 신고 버튼 -->
+          <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+<%--            <input type="button" value="신고🚨" onclick="openReportDialog()"/>--%>
+            <span class="report-emoji" title="신고하기" onclick="openReportDialog()">🚨</span>
           </c:if>
         </c:if>
+
 
         <input type="button" value="목록" onclick="goList()"/>
       </div>
 
   <!-- 신고 팝업 -->
   <div id="report_dialog" title="게시물 신고">
-    <form id="reportForm" action="ReportServlet" method="post">
+    <form id="reportForm" action="ReportAction" method="post">
       <p>신고 사유를 입력하세요:</p>
       <textarea name="reason" id="report_reason" rows="5" style="width:100%; box-sizing:border-box;" required></textarea>
       <input type="hidden" name="post_id" value="${vo.post_idx}"/>
@@ -395,10 +423,13 @@
 </div>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
 <script>
+  // 로그인 여부 체크
+  let login = ${sessionScope.memeber != null};
+
   $(function (){
     let option = {
       modal: true,
@@ -406,14 +437,14 @@
       resizable: false,
     };
 
+    // 삭제 다이얼로그 초기화
     $("#del_dialog").dialog(option);
   });
 
-  let login = ${sessionScope.memeber != null};
+  // 신고 다이얼로그 초기화
   $(function goReport() {
-    // 신고 팝업 설정
     $("#report_dialog").dialog({
-      autoOpen: false,
+      autoOpen: false, // 처음에는 닫혀있음
       modal: true,
       resizable: false,
       width: 400,
@@ -433,14 +464,11 @@
     });
   });
 
-  // 신고 팝업 열기 함수
+  // 신고 다이얼로그 열기 함수
   function openReportDialog() {
     $("#report_reason").val(""); // 이전 입력값 초기화
     $("#report_dialog").dialog("open");
   }
-
-
-  let login = ${sessionScope.member != null};
 
   function commentData() {
     let title = $("#comment_content").val();
@@ -463,6 +491,7 @@
     document.ff.type.value = "list";
     document.ff.submit();
   }
+
   function goDel() {
     /*document.ff.action = "Controller";
     document.ff.type.value = "del"
