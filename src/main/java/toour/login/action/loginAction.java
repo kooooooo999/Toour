@@ -37,8 +37,8 @@ public class loginAction implements Action {
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         
                         // 로그인이 승인 됐을 때 회원의 코스를 가져와 mvo에 저장
-                        List<CourseVO> cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
-                        mvo.setCourselist(cvo_ar);
+                        /*List<CourseVO> cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
+                        mvo.setCourselist(cvo_ar);*/
                         request.getSession().setAttribute("member",mvo);
 
                         HttpSession session = request.getSession();

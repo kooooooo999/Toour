@@ -96,12 +96,16 @@
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">추가</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse(this)">추가</button>
                 </div>
             </div>
         </div>
 
-        <dialog id="memberCourse"></dialog>
+        <dialog id="memberCourse">
+            <c:forEach items="${requestScope.course_ar}" var="ar" varStatus="vs">
+                <a href="">${ar.course_name}</a>
+            </c:forEach>
+        </dialog>
 
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
@@ -150,6 +154,19 @@
     // 장소 검색 객체
     var ps = new kakao.maps.services.Places();
 
+    $(function () {
+        let option = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "나의 코스",
+            resizable: true,
+            height:300,
+            width:300,
+            position: {my: "center",at: "center",of: document.getElementById("#map") }
+
+        };
+        $("#memberCourse").dialog(option);
+    })
     // 검색어로 장소 찾기
     function searchplace() {
 
@@ -175,7 +192,7 @@
     // 코스 DB에 저장
     function addCourse() {
         console.log($("#date").val());
-
+        $("#memberCourse").dialog("open");
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
