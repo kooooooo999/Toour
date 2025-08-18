@@ -3,6 +3,7 @@ package toour.member.vo;
 public class CourseVO {
     private String course_idx, member_idx, course_name, created_at, updated_at, course_summary;
 
+    //CourseDataVO[]로 바꾸자!!
 //    CourseInVO[] courseIn_list;
 
 
@@ -53,5 +54,6 @@ public class CourseVO {
     public void setUpdated_at(String updated_at) {
         this.updated_at = updated_at;
     }
+
 
 }

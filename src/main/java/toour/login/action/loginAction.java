@@ -26,19 +26,25 @@ public class loginAction implements Action {
             if(u_id!=null){
                 //로그인 성공
                 //요청으로부터 id를 잘받아옴
+                System.out.println("u_id:"+u_id);
                 MemberVO mvo = MemberDAO.getMem(u_id);
                 if(mvo!=null){
                     //입력한 id가 db에 있을때
                     String u_pw = request.getParameter("u_pw");
                     String salt = mvo.getMember_salt();
                     String hash_pw =Hash.getHash(salt+u_pw);
+                    System.out.println("salt:"+salt);
+                    System.out.println("PW:"+u_pw);
+                    System.out.println("hash_pw:"+hash_pw);
+                    System.out.println("mvo.getMember_password():"+mvo.getMember_password());
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
                         
                         // 로그인이 승인 됐을 때 회원의 코스를 가져와 mvo에 저장
-                        List<CourseVO> cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
-                        mvo.setCourselist(cvo_ar);
+                        //임시 막아둠
+//                        List<CourseVO> cvo_ar = CourseDAO.getCourseVO(mvo.getMember_idx());
+//                        mvo.setCourselist(cvo_ar);
                         request.getSession().setAttribute("member",mvo);
 
                         HttpSession session = request.getSession();

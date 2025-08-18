@@ -114,7 +114,7 @@ public class Controller extends HttpServlet {
         //viewPath가 null이면 현재 컨트롤러를 sendRedirect로
         // 다시 호출되도록 한다.
         if(viewPath != null){
-            if (viewPath.equals("gohome")) {
+            if(viewPath.equals("gohome")){
                 response.sendRedirect("Controller");
             }else {
                 // forward로 이동~~~~~~~~~!
