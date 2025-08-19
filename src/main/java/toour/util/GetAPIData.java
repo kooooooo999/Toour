@@ -11,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class GetAPIData {
     public static LoCatVO[] getSigungu(HttpServletRequest request, String areaCode) {
@@ -218,6 +220,86 @@ public class GetAPIData {
                 dvo = vo;
 
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return dvo;
+    }
+
+
+    public static DataVO getDataVO_detail(String contentId) {
+        DataVO dvo = null;
+        try {
+            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId=" + contentId);
+            HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
+            conn1.setRequestProperty("Content-Type", "application/xml");
+            conn1.connect();
+            SAXBuilder builder = new SAXBuilder();
+            Document doc = builder.build(conn1.getInputStream());
+            Element root = doc.getRootElement();
+            Element body = root.getChild("body");
+            Element items = body.getChild("items");
+            List<Element> item_list = items.getChildren("item");
+            DataVO[] ar = new DataVO[item_list.size()];
+            int i = 0;
+            for (Element item : item_list) {
+                String title = item.getChildText("title"); //자식 태그 안의 문자열
+                String mapx = item.getChildText("mapx").trim();
+                String mapy = item.getChildText("mapy").trim();
+                String addr1 = item.getChildText("addr1");
+                String firstimage = item.getChildText("firstimage");
+                String tel = item.getChildText("tel");
+                String voCat1 = item.getChildText("cat1");
+                String voCat2 = item.getChildText("cat2");
+                String voCat3 = item.getChildText("cat3");
+                String voContentTypeid = item.getChildText("contenttypeid");
+                String voContentid = item.getChildText("contentid");
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+                sb2.append("&_type=xml&contentId=");
+                sb2.append(voContentid);
+                System.out.println("sb2: " + sb2.toString());
+                URL url2 = new URL(sb2.toString());
+                HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
+                conn2.setRequestProperty("Content-Type", "application/xml");
+                conn2.connect();
+                SAXBuilder builder2 = new SAXBuilder();
+                Document doc2 = builder2.build(conn2.getInputStream());
+                Element root2 = doc2.getRootElement();
+                Element body2 = root2.getChild("body");
+                Element items2 = body2.getChild("items");
+                List<Element> item_list2 = items2.getChildren("item");
+                String overview = null;
+                String homepage = null;
+                String homepageUrl = null;
+                String homepageText = null;
+                String addr2 = null;
+                for (Element item2 : item_list2) {
+                    overview = item2.getChildText("overview");
+                    addr2 = item2.getChildText("addr2");
+                    homepage = item2.getChildText("homepage");
+                    if (homepage != null && homepage.contains("<a href")) {
+                        // URL 추출
+                        Pattern urlPattern = Pattern.compile("href=['\"]([^'\"]+)['\"]");
+                        Matcher urlMatcher = urlPattern.matcher(homepage);
+                        if (urlMatcher.find()) {
+                            homepageUrl = urlMatcher.group(1);
+                        }
+
+                        // 텍스트 추출
+                        Pattern textPattern = Pattern.compile(">(.+?)</a>");
+                        Matcher textMatcher = textPattern.matcher(homepage);
+                        if (textMatcher.find()) {
+                            homepageText = textMatcher.group(1);
+                        }
+                    } else {
+                        // HTML 태그가 없는 경우 그대로 사용
+                        homepageUrl = homepage;
+                        homepageText = homepage;
+                    }
+                }
+                dvo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, tel, voContentTypeid, voContentid, overview, homepageText, homepageUrl);
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }

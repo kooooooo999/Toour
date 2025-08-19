@@ -243,9 +243,6 @@
 <%--<i class="fa-solid fa-heart"></i>  꽉찬 하트--%>
 <div id="main">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
-        <div id="heartImage">
-            <p class="heartIcon"><i class="fa-regular fa-heart"></i></p>
-        </div>
         <div class="image-container">
             <c:if test="${empty Dvo.firstimage}">
                 <div class="emptyText">

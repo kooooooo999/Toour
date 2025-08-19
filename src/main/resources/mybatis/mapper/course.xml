@@ -20,7 +20,7 @@
     </select>
 
     <select id="getCourseDate" parameterType="String" resultMap="Map2">
-        SELECT * FROM course
+        SELECT * FROM courseDate
         WHERE course_idx = #{course_idx}
     </select>
 
@@ -30,8 +30,4 @@
         WHERE courseDate_idx = #{courseDate_idx}
     </select>
 
-    <select id="searchCourse" parameterType="String" resultType="toour.member.vo.CourseVO">
-        SELECT * FROM course
-        WHERE member_idx = #{member_idx}
-    </select>
 </mapper>

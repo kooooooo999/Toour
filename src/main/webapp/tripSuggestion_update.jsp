@@ -4,11 +4,6 @@
   <div id="main_2">
       <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
           <c:if test="${count.index < 5}">
-              <div id="heartImage">
-                  <p class="heartIcon">
-                      <i class="fa-regular fa-heart" ></i>
-                  </p>
-              </div>
               <c:if test="${empty Dvo.firstimage}">
                   <p class="emptyText">[이미지없음]</p>
               </c:if>
