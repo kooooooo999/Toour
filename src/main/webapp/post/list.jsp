@@ -4,9 +4,9 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <style>
         #post {
             max-width: 1400px;

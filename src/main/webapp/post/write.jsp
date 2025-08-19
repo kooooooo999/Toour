@@ -9,11 +9,8 @@
   <!-- 외부 CSS연결 -->
   <link rel="stylesheet" href="<c:url value="/css/post.css" />">
   <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-
   <link rel="stylesheet" href="../css/summernote-lite.css"/>
-
   <link rel="stylesheet" href="<c:url value="/css/header.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
   <style type="text/css">
@@ -166,7 +163,6 @@
   </p>
 </c:if>
 
-
 <c:if test="${not empty sessionScope.member}">
 
   <div id="post">
@@ -287,11 +283,11 @@
           // 이미지를 Cloudinary로 업로드
           var data = new FormData();
           data.append("file", files[0]); // 업로드된 파일 추가
-          data.append("upload_preset", "toour_upload"); // Cloudinary 업로드 프리셋
+          data.append("upload_preset", "testtest"); // Cloudinary 업로드 프리셋
 
           // 비동기식 이미지 업로드
           $.ajax({
-            url: 'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+            url: 'https://api.cloudinary.com/v1_1/dqkajtq62/image/upload',
             method: 'POST',
             data: data,
             contentType: false,

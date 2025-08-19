@@ -28,18 +28,25 @@
             background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
-            padding: 40px;
+            margin: 0;
+            padding: 0;
         }
 
-        /* 게시판 컨테이너 */
+        header, footer {
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
         #post {
+            /* 기존 속성 유지 + 내부 여백만 컨테이너에 한정 */
             max-width: 1600px;
             margin: 0 auto;
+            padding: 0 20px; /* 필요 시 조절 */
             background-color: #fff;
             border: 1px solid #dee2e6;
             border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            overflow-x: auto;
         }
 
         /* 테이블 공통 스타일 */
@@ -212,6 +219,15 @@
 
         .totalCount strong{
             color: #1a73e8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            margin-top: 0 !important;
         }
 
     </style>
