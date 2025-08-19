@@ -39,6 +39,20 @@
             padding:4px 10px;
         }
 
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        .paging-area {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        footer {
+            margin-top: 0 !important;
+        }
+
         .no {width:15%}
         .subject {width:30%}
         .writer {width:20%}

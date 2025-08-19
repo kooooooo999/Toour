@@ -28,6 +28,7 @@
         ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
+        ORDER BY c.post_idx DESC
     </select>
 
     <!--게시글 작성 -->
@@ -38,8 +39,16 @@
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p inner join file f on p.post_idx = f.post_idx
-        WHERE p.post_idx = #{post_idx}
+        SELECT  * FROM post p inner join file f
+        WHERE p.post_idx = #{post_idx} and post_status=0
+        group by p.post_idx
+    </select>
+
+    <!--게시글 보기(회원정보 불러오기)-->
+    <select id="getPostMember" parameterType="String" resultType="toour.member.vo.MemberVO">
+        select *
+        from post p inner join member m
+        where p.member_idx=m.member_idx and p.post_idx = #{post_idx}
     </select>
 
     <!-- 게시글 삭제 -->
@@ -59,12 +68,12 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post
+        UPDATE post p
         <trim prefix="SET" suffixOverrides=",">
-            post_title = #{post_title},
-            post_content = #{post_content},
+            p.post_title = #{post_title},
+            p.post_content = #{post_content}
         </trim>
-        WHERE post_idx = #{post_idx}
+        WHERE p.post_idx = #{post_idx}
     </update>
 
     <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->

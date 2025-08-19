@@ -473,7 +473,7 @@
         <h2>내 정보</h2>
         <p><strong><c:out value="${mvo.member_nickname}"/></strong>님, 환영합니다.</p>
 
-        <a href="javascript:changeMyInfo()">개인정보 수정</a>
+        <a href="javascript:changeMyInfo()">개인정보 확인</a>
     </div>
 
     <%-- 오른쪽 컨텐츠 (2x2 그리드) --%>
@@ -613,7 +613,7 @@
             </div>
 
             <div id="suggest_list" class="listArea">
-                <a href="Controller">건의사항</a>
+                <a href="Controller?type=QnA">건의사항</a>
                 <div style="padding: 20px; text-align: center;">
                     건의사항 관련 내용이 들어갈 자리입니다.
                 </div>
@@ -625,7 +625,7 @@
 
 <div class="MyInfo-container" id="MyInfo-container">
     <h2>개인정보</h2>
-    <form action="Controller?type=MyInfo" method="post" name="MyInfo_form">
+    <form action="Controller?type=myInfo" method="post" name="MyInfo_form">
         <table class="MyInfo-table">
             <caption class="hidden">개인정보 테이블</caption>
             <tbody>
@@ -640,6 +640,29 @@
                     </div>
                 </td>
             </tr>
+            <tr id="pw" hidden="hidden">
+                <td>PW:</td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-with-message">
+                            <input type="password" id="u_pw" name="u_pw" class="input-field input-field-full" placeholder="비밀번호" />
+                            <div id="pw_usable" class="validation-message"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr id="re-pw" hidden="hidden">
+                <td>RE-PW:</td>
+                <td>
+                    <div class="input-group">
+                        <div class="input-with-message">
+                            <input type="password" id="u_repw" name="u_repw" class="input-field input-field-full" placeholder="비밀번호 확인"/>
+                            <div id="repw_usable" class="validation-message"></div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
             <tr>
                 <td>별명:</td>
                 <td>
@@ -679,7 +702,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            <tr id="revision_btn">
                 <td colspan="2">
                     <button type="button" onclick="goChange()" class="">수정하기</button>
                 </td>
@@ -687,6 +710,24 @@
             </tbody>
         </table>
     </form>
+</div>
+
+<div id="matchPassword_dialog">
+    <table>
+        <tr>
+            <td>비밀번호 확인:</td>
+            <td>
+                <div class="input-group">
+                    <div class="input-with-message">
+                        <input type="password" id="match_pw" name="match_pw" class="input-field input-field-full" placeholder="비밀번호" />
+                    </div>
+                </div>
+            </td>
+        </tr>
+        <tr>
+            <td colspan='2'> <button type='button' onClick='matchPW()' className=''>확인</button>
+        </tr>
+    </table>
 </div>
 
 <c:import url="/common/footer.jsp" />
@@ -702,22 +743,30 @@
             height:600,
             width:830
         };
-        $("#MyInfo-container").dialog(option);
+        let option2 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "비밀번호 확인",
+            resizable: true,
+            height:200,
+            width:400
+        };
 
+        $("#MyInfo-container").dialog(option);
+        $("#matchPassword_dialog").dialog(option2);
+
+
+        $("#emailAddr").change(function () {
+            $("#u_email2").val("");
+        })
     });
 
-    //개인정보 수정 버튼을 눌렀을 때
+    //[개인정보 확인] 버튼을 눌렀을 때
     function changeMyInfo() {
-        document.getElementById("u_id").disabled = true;
-        document.getElementById("u_nickname").disabled = true;
-        document.getElementById("u_name").disabled = true;
-        document.getElementById("u_email").disabled = true;
-        document.getElementById("u_email2").disabled = true;
-
-        $("#MyInfo-container").dialog("open");
+        $("#matchPassword_dialog").dialog("open");
     }
 
-    function mysearch(){
+    function mysearch() {
         let searchType = $("#searchType").val().trim();
         let searchValue = $("#searchValue").val().trim();
             $.ajax({
@@ -755,13 +804,183 @@
         document.forms[index+1].submit();
     }
 
-    //개인정보 수정 dialog에서 수정하기를 눌렀을 때
+    //개인정보 확인 dialog에서 [수정하기]를 눌렀을 때
     function goChange(){
-        document.getElementById("u_id").disabled = false;
+        // document.getElementById("u_id").disabled = false;
         document.getElementById("u_nickname").disabled = false;
-        document.getElementById("u_name").disabled = false;
-        document.getElementById("u_email").disabled = false;
-        document.getElementById("u_email2").disabled = false;
+        // document.getElementById("u_name").disabled = false;
+        // document.getElementById("u_email").disabled = false;
+        // document.getElementById("u_email2").disabled = false;
+
+        $("#pw").removeAttr("hidden");
+        $("#re-pw").removeAttr("hidden");
+
+        $("#revision_btn").html(
+            "<td colspan='2'> <button type='button' onClick='saveMyInfo()' className=''>변경</button> <button type='button' onClick='cancelMyInfo()' className=''>취소</button> </td>"
+        )
+
+    }
+
+    //개인정보 확인 dialog에서 정보 수정 후 [변경]을 눌렀을 때
+    function saveMyInfo() {
+        let u_nickname = $("#u_nickname").val();
+        let pw = $("#u_pw").val();
+        let re_pw = $("#u_repw").val();
+
+        let chk =0;
+        //비밀번호 검사
+        if(pw.trim().length<1&&re_pw.trim().length<1){
+            //둘 다 입력 안 했을 때
+        }else {
+            // 둘 중 하나에라도 뭔가 입력했을 때
+
+            //조건 1. 둘 다 입력양식에 만족했는가
+            //조건 2. 둘의 값이 동일한가
+            if ($("#pw_usable").hasClass("success")) {
+                if ($("#repw_usable").hasClass("success")) {
+
+                } else {
+                    chk=chk+1;
+                }
+            } else {
+                chk=chk+1;
+            }
+
+        }
+
+        //별명 검사
+        if ($("#nickname_usable").hasClass("error")) {
+            chk=chk+1;
+        }
+
+        console.log(chk);
+        //여기선 아니고 Action에서 꼭 hash해서 비밀번호를 저장할 수 있도록 하자!
+        if (chk == 0){
+            console.log("chk==0");
+            $.ajax({
+                url: "Controller?type=myInfo",
+                type: "post",
+                data: {u_pw: pw, u_nickname: u_nickname}
+            })
+            $("#MyInfo-container").dialog("close");
+            document.location.href ="Controller?type=mypage"
+        }
+        else
+            alert("입력 양식을 모두 충족해주세요.")
+
+
+    }
+
+    //개인정보 확인 dialog에서 정보 수정 도중 [취소] 버튼을 눌렀을 때
+    function cancelMyInfo() {
+        $("#MyInfo-container").dialog("close");
+    }
+
+
+
+    // 비밀번호 확인 창에서 [확인] 버튼을 눌렀을 때
+    function matchPW() {
+        let u_pw = $("#match_pw").val().trim();
+        
+        if(u_pw==""||u_pw.length<1)
+            alert("비밀번호를 입력해주세요")
+        else {
+            $.ajax({
+                url:"Controller?type=matchpw",
+                data:{u_pw:u_pw},
+                type:"POST"
+            }).done(function (res){
+                console.log(res);
+               if(res.trim()=="<p>true</p>"){
+                   document.getElementById("u_id").disabled = true;
+                   document.getElementById("u_nickname").disabled = true;
+                   document.getElementById("u_name").disabled = true;
+                   document.getElementById("u_email").disabled = true;
+                   document.getElementById("u_email2").disabled = true;
+
+                   //[수정하기] 버튼을 눌렀다가 다시 [개인정보 확인] 버튼을 눌렀을 때 초기화 용도
+                   $("#pw").attr("hidden",true);
+                   $("#re-pw").attr("hidden",true);
+                   $("#revision_btn").html(
+                       "<td colspan='2'> <button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
+                   )
+
+                   $("#matchPassword_dialog").dialog("close");
+                   $("#MyInfo-container").dialog("open");
+               }else
+                   alert("비밀번호가 틀렸습니다.")
+            });
+        }
+        
+    }
+
+    $("#u_pw").keyup(function (){
+        const u_pw_t = $(this).val().trim();
+        if (u_pw_t.length > 0) {
+            $.ajax({
+                url: "Controller?type=chkpw",
+                type: "post",
+                data:{ u_pw: u_pw_t }
+            }).done(function (res) {
+                updateValidationMessage("#pw_usable", res);
+            });
+        } else {
+            $("#pw_usable").html("");
+        }
+        // 비밀번호 확인 필드도 같이 검사
+        $("#u_repw").trigger('keyup');
+    });
+
+    // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때
+    $("#u_repw").keyup(function (){
+        const u_pw_v = $("#u_pw").val().trim();
+        const u_repw_v = $(this).val().trim();
+
+        const $repw_usable = $("#repw_usable");
+        $repw_usable.removeClass('success error');
+
+        if (u_pw_v.length > 0 && u_repw_v.length > 0) {
+            if (u_pw_v === u_repw_v) {
+                $repw_usable.addClass('success').text("비밀번호가 일치합니다.");
+            } else {
+                $repw_usable.addClass('error').html("비밀번호와 동일하게 입력해주세요.<input type='hidden' class='disable_check'>");
+            }
+        } else {
+            $repw_usable.html("");
+        }
+    });
+
+
+    // 별명 창에 타이핑을 쳤을 때
+    $("#u_nickname").keyup(function (){
+        const u_nickname_t = $(this).val().trim();
+        if (u_nickname_t.length > 0) {
+            $.ajax({
+                url: "Controller?type=chknickname",
+                type: "post",
+                data:{ u_nickname: u_nickname_t }
+            }).done(function (res) {
+                updateValidationMessage("#nickname_usable", res);
+                if(u_nickname_t == "${sessionScope.member.member_nickname}"){
+                    $("#nickname_usable").removeClass("success error");
+                    $("#nickname_usable").addClass("success").html("");
+                }
+            });
+        } else {
+            $("#nickname_usable").html("");
+        }
+    });
+
+    function updateValidationMessage(targetId, res) {
+        const $target = $(targetId);
+        $target.removeClass('success error');
+        if (res.includes("가능")) {
+            $target.addClass('success').html(res);
+        } else if (res.length > 0) {
+            $target.addClass('error').html(res + "<input type='hidden' class='disable_check'>");
+        } else {
+            $target.html('');
+        }
     }
 </script>
 </body>

@@ -16,9 +16,34 @@
     <!--총 사용자 수를 반환하는 기능 -->
     <select id="totalMemCount" resultType="int">
         SELECT COUNT(*) FROM member
-        WHERE member_status = 0
-        AND member_type = 1
+        WHERE member_type = 1
     </select>
+
+    <select id="MemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 0
+    </select>
+
+    <select id="DormantMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 1
+    </select>
+
+    <select id="DeactivatedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 2
+    </select>
+
+    <select id="BannedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_warning = 3
+    </select>
+
+    <select id="RecentVisitMem" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_last_login_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    </select>
+
 
     <!-- 회원정보 삭제 -->
     <update id="mem_del" parameterType="list">
@@ -37,8 +62,7 @@
         SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum, a.*
         FROM(
         SELECT * FROM member
-        WHERE member_status = 0 <!--삭제되지않은 글-->
-        AND member_type = 1
+        WHERE member_type = 1
         ORDER BY member_idx DESC
         ) a
         ) c WHERE c.rnum BETWEEN #{begin} AND #{end}
@@ -93,4 +117,12 @@
         )a
         where a.rnum BETWEEN #{begin} AND #{end};
     </select>
+
+    <!--신고 횟수 증가-->
+    <update id="warning" parameterType="String">
+        UPDATE member m
+        INNER JOIN comment c ON m.member_idx = c.member_idx
+        SET member_warning = member_warning + 1
+        WHERE comment_idx = #{comment_idx}
+    </update>
 </mapper>

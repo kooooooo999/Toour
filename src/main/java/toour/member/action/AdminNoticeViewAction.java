@@ -1,6 +1,7 @@
 package toour.member.action;
 
 import toour.member.dao.AdminNoticeDAO;
+import toour.member.vo.MemberVO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
 
@@ -24,7 +25,7 @@ public class AdminNoticeViewAction implements Action {
         }else
             list = (ArrayList<PostVO>) obj; // 형변환
 
-        PostVO vo = AdminNoticeDAO.getPost(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
+        MemberVO vo = AdminNoticeDAO.getNoticeMemberIdx(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
 //        System.out.println(vo.getPost_idx());
 //       if(vo == null){
 //            System.out.println("vo가 존재하지 않습니다.");

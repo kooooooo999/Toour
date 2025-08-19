@@ -1,6 +1,7 @@
 package toour.member.dao;
 
 import mybatis.service.FactoryService;
+import toour.member.vo.MemberVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
 
@@ -17,13 +18,22 @@ public class AdminPostDAO {
         return cnt;
     }
 
-
-    // 기본키(고유번호)를 인자로 하여 게시물 가져오기
-    public static PostVO getPost(String post_idx){
+    // 일주일동안 게시글 수를 반환
+    public static int getRecentPost(String category_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
-        PostVO vo = ss.selectOne("adminpost.getPost", post_idx);
+        int cnt = ss.selectOne("post.RecentVisitMem",category_idx);
         ss.close();
-        return vo;
+        return cnt;
+    }
+
+
+    //게시물 멤버idx가져오기
+    public static MemberVO getPostMemberIdx(String post_idx){
+//        System.out.println("here is getPostMemberIdx");
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemberVO postMemberIdx = ss.selectOne("adminpost.getPostMember",post_idx);
+        ss.close();
+        return postMemberIdx;
     }
 
 

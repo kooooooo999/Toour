@@ -18,6 +18,47 @@ public class AdminMemberDAO {
         return cnt;
     }
 
+//    회원수 가지고 오기
+    public static int MemCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("mem.MemCount");
+        ss.close();
+        return cnt;
+    }
+
+//    휴면회원수 가지고 오기
+    public static int DormantMemCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("mem.DormantMemCount");
+        ss.close();
+        return cnt;
+    }
+
+//    탈퇴회원수 가지고 오기
+    public static int DeactivatedMemCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("mem.DeactivatedMemCount");
+        ss.close();
+        return cnt;
+    }
+//강퇴회원수 가지고 오기
+    public static int BannedMemCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("mem.BannedMemCount");
+        ss.close();
+        return cnt;
+    }
+
+//    일주일치 방문자 수 구하기
+    public static int RecentVisitMem(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("mem.RecentVisitMem");
+        ss.close();
+        return cnt;
+    }
+
+
+
     public static MemberVO[] getmemList(int begin, int end) {
         MemberVO[] ar = null;
         Map<String,Object> map = new HashMap<String,Object>();

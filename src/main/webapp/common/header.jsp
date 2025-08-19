@@ -37,11 +37,11 @@
             </c:if>
 
             <a href="Controller?type=mypage">마이 페이지</a>
-            <a href="Controller?type=login&u_id=dkdlel123&u_pw=qlalfqjsgh@123">고객센터</a>
+            <a href="Controller?type=QnA">고객센터</a>
         </div>
     </div>
     <div class="container header-main flex-between">
-        <a href="Controller" class="logo">👋🏻 toour</a>
+        <a href="Controller" class="logo"><span class="logo-emoji" aria-hidden="true">👋🏻</span> toour</a>
         <form id="search_form" accept-charset="UTF-8" method="post">
             <input id="keyword" type="text" placeholder="어디로 떠나고 싶으신가요?" name="keyword"/>
             <i class="fas fa-search"></i>

@@ -14,7 +14,7 @@
         .searchKeyword { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         #destinationKeyword { width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
         .search_results { margin-top: 5px; overflow: hidden; text-overflow: ellipsis; }
-        .selected_places { margin-top: 50px; display: inline-block; }
+        .selected_places { margin-top: 50px; display: inline-block; height: 500px; }
         .search_results h3, .selected_places h3 { margin-top: 0; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
         .list_item { display: flex; justify-content: space-between; align-items: center; padding: 10px; border-bottom: 1px solid #eee; }
         .list_item:last-child { border-bottom: none; }
@@ -26,8 +26,8 @@
         #findWayBox { margin: 10px auto; }
         .buttonRight { display: inline-block; position: absolute; right: 0; width: 60px; padding: 3px 10px; margin-top: 5px; }
         .button2 { display: inline-block; }
-        #searchBox { width: 300px; padding-top: 26px; position: relative; }
-        #searchBox2 { width: 300px; position: relative; }
+        #searchBox { width: 300px; height: 756px; padding-top: 26px; position: relative; }
+        #searchBox2 { width: 300px; height: 756px; position: relative; }
         .hide { display: none }
         .show { display: block }
         #resultButton { position: absolute; right: 10px; top: 5px; padding: 2px 7px; }
@@ -39,13 +39,17 @@
         .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
         #course { display: block; width: 260px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #courseList { width: 277.5px; height: 433.97px; overflow-y: auto;}
+        #courseList { width: 277.5px; height: 420px; overflow-y: auto; margin-top: 10px; }
         #page { margin: auto; margin-top: 23px; }
         .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .plusButton {display: inline-block; background-image: url("images/plus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
         .minusButton {display: inline-block; background-image: url("images/minus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
-        #buttonWrap { position: relative; height: 30px; margin-top: 20px; }
+        #buttonWrap { position: relative; height: 30px; margin-top: 30px; bottom: 20px }
         #saveButton { }
+        #showDate { width: 315px; height: 280px; }
+        #datepickerDiv { width: 100%; height: 280px; }
+        #chooseDate { position: absolute; right: 20px; }
+        #date { width: 200px; height: 25px; display: inline-block; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -73,17 +77,31 @@
 
             <div id="selected_places" class="selected_places">
                 <h3>여기로 가야지!</h3>
+                <div>
+                     <p style="display: inline-block">날짜 : </p>
+                    <input type="date" id="date"/>
+                </div>
+                <%--<input type="text" id="testDate"/>
+                <button type="button" class="detail_btn buttonRight" id="chooseDate" onclick="showDate()">날짜</button>
+                &lt;%&ndash; 사용자가 여행 언제갈지 선택할 수 있는 달력 표시 &ndash;%&gt;
+                <div id="showDate" class="hide">
+                    <div id="datepickerDiv" class="hide">
+                        <div id="datepicker"></div>
+                        <button type="button" style="font-size: 11px; display: inline-block" class="hide buttonRight detail_btn" id="saveDate" onclick="chooseDate()">선택</button>
+                    </div>
+                </div>--%>
                 <div id="courseList"></div>
             </div>
 
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="saveCourse()">저장</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">추가</button>
                 </div>
             </div>
-
         </div>
+
+        <dialog id="memberCourse"></dialog>
 
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
@@ -99,7 +117,11 @@
 
 <div id="test"></div>
 
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script type="text/javascript">
     /*지도 표시 부분*/
     var mapContainer = document.getElementById('map');
@@ -151,7 +173,8 @@
     }
 
     // 코스 DB에 저장
-    function saveCourse() {
+    function addCourse() {
+        console.log($("#date").val());
 
     }
 
@@ -218,6 +241,24 @@
         }
         markers = [];
     }
+    // 달력 창 열기
+
+   /* var appendText = $("#datepicker").datepicker( "option", "appendText" );
+
+    function showDate() {
+        $("#showDate").dialog({
+            position: {my: "left top",at: "right bottom", of: document.getElementById("chooseDate")}
+        });
+        $("#datepickerDiv").show();
+        $("#datepicker").datepicker();
+        $("#saveDate").show();
+    }
+
+    // 달력 창에서 날짜 선택
+    function chooseDate() {
+        console.log(appendText);
+        $("#testDate").datepicker({ appendText: "yyyy-mm-dd" });
+    }*/
 
     let cnt12 =0;
     function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출

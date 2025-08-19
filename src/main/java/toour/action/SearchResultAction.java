@@ -183,6 +183,8 @@ public class SearchResultAction implements Action{
                         srvo.setTitle(title);
                         srvo.setMapx(mapx);
                         srvo.setMapy(mapy);
+                        srvo.setContentId(contentid);
+                        srvo.setContentTypeId(contenttypeid);
 
                         page.setTotalCount(Integer.parseInt(totalCountStr));
                         page.setNowPage(Integer.parseInt(cPage));

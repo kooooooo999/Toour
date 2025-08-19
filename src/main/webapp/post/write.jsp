@@ -17,41 +17,122 @@
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
   <style type="text/css">
+    /* 여행후기 제목 스타일 */
+    #post h2 {
+      text-align: center;
+      font-size: 26px; /* 제목 크기 설정 */
+      font-weight: bold;
+      padding-top: 35px; /* padding으로 위쪽 공간 확보 */
+      margin-bottom: 20px; /* 아래쪽 여백 추가 */
+      color: #333; /* 색상 설정 */
+    }
+    /* 테이블 스타일 */
     #post table {
-      width:580px;
-      margin-left:10px;
-      border:1px solid black;
-      border-collapse:collapse;
-      font-size:14px;
-
+      width: 100%;
+      max-width: 1200px;
+      margin: 30px auto;
+      border-collapse: collapse;
+      font-size: 14px;
+      background-color: #f9f9f9;
     }
 
-    #post table caption {
-      font-size:20px;
-      font-weight:bold;
-      margin-bottom:10px;
+    /*#post table caption {*/
+    /*  font-size: 20px;*/
+    /*  font-weight: bold;*/
+    /*  padding: 10px;*/
+    /*  text-align: center;*/
+    /*}*/
+
+    #post th {
+      background-color: #e0e7f1;
+      padding: 10px;
+      text-align: left; /* 제목을 왼쪽 정렬 */
     }
 
-    #post table th {
-      text-align:center;
-      border:1px solid black;
-      padding:4px 10px;
+    #post td {
+      padding: 10px;
+      text-align: left; /* 입력란과 내용 왼쪽 정렬 */
     }
 
-    #post table td {
-      text-align:left;
-      border:1px solid black;
-      padding:4px 10px;
+    #post td input[type="text"],
+    #post td input[type="password"],
+    #post td input[type="file"],
+    #post td textarea {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      border-radius: 5px;
+      margin-top: 5px;
     }
 
-    .no {width:15%}
-    .subject {width:30%}
-    .writer {width:20%}
-    .reg {width:20%}
-    .hit {width:15%}
-    .title{background:lightsteelblue}
+    #post td input[type="text"]:focus,
+    #post td input[type="password"]:focus,
+    #post td textarea:focus {
+      outline: none;
+      border-color: #007bff;
+    }
 
-    .odd {background:silver}
+    #post td input[type="file"] {
+      width: auto;
+      border: none; /* border를 제거 */
+    }
+
+    #post input[type="submit"],
+    #post input[type="reset"],
+    #post input[type="button"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    #post input[type="submit"]:hover,
+    #post input[type="reset"]:hover,
+    #post input[type="button"]:hover {
+      background-color: #0056b3;
+    }
+
+    /*#post caption {*/
+    /*  background-color: #f1f1f1;*/
+    /*  color: #333;*/
+    /*  padding: 10px;*/
+    /*  font-size: 22px;*/
+    /*  font-weight: bold;*/
+    /*}*/
+
+    #post td img {
+      margin-right: 10px;
+    }
+
+    /* 제목 입력란 길이 늘리기 */
+    #post td input[type="text"] {
+      width: 100%; /* 제목 입력란의 길이를 100%로 늘림 */
+      padding: 8px;
+      border: 1px solid #ccc;
+      font-size: 14px;
+      border-radius: 5px;
+      margin-top: 5px;
+    }
+
+    /* 텍스트 영역 스타일 */
+    #post td textarea {
+      height: 150px;
+      resize: vertical;
+    }
+
+    /* 글쓰기 버튼의 배치 */
+    #post td input[type="submit"],
+    #post td input[type="reset"],
+    #post td input[type="button"] {
+      display: inline-block;
+      margin-top: 15px;
+    }
+
 
 
   </style>
@@ -77,11 +158,12 @@
 <c:if test="${not empty sessionScope.member}">
 
   <div id="post">
+    <h2>여행후기</h2>
     <form action="Controller?type=write" method="post"
           encType="multipart/form-data" onsubmit="return sendData()">
       <input type="hidden" name="category_idx" value="2"/>
       <table summary="게시판 글쓰기">
-        <caption>게시판 글쓰기</caption>
+<%--        <caption>게시판 글쓰기</caption>--%>
         <tbody>
         <tr>
           <th>제목:</th>
@@ -123,7 +205,7 @@
 
     $("#post_content").summernote({
       lang: "ko-KR",
-      height: 300,
+      height: 500,
       callbacks: {
         onImageUpload: function(files, editor){
           // 에디터에 이미지를 추가될 때 수행하는 곳!
@@ -188,7 +270,7 @@
       $("#post_content").focus();
       return false;
     }
-  //유효성 검사 통과시 폼제출!
+    //유효성 검사 통과시 폼제출!
     return true;
   }
 </script>
