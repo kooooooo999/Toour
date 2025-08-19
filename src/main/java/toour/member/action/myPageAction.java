@@ -53,11 +53,12 @@ public class myPageAction implements Action {
                 }//for문 끝
             }
 
-            if(mvo.getCourselist()!=null) {
+            List<CourseVO> cvo_list = CourseDAO.getCourseVOList(mvo.getMember_idx());
+            if(cvo_list!=null) {
                 //회원의 코스를 4개만 가져옴
                 for (int i = 0; i < cnt; i++) {
-                    if (i < mvo.getCourselist().size()) {
-                        course_ar[i] = mvo.getCourselist().get(i);
+                    if (i < cvo_list.size()) {
+                        course_ar[i] = cvo_list.get(i);
                     } else
                         break;
                 }

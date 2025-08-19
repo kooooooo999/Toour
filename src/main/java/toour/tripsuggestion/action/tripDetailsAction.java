@@ -30,6 +30,7 @@ public class tripDetailsAction implements Action {
         String homepageUrl = request.getParameter("homepageUrl");
         String homepageText = request.getParameter("homepageText");
         DataVO datavo = new DataVO(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, cPage, homepageText, homepageUrl);
+
         request.setAttribute("detailsAr", datavo);
 
         //찜 목록에 해당 관광지가 속해 있는지 확인하고 있다면 하트를 채워 놓기 위해 신호를 보내는 곳
@@ -89,6 +90,7 @@ public class tripDetailsAction implements Action {
                 DataVO vo = new DataVO(infocenter, parking, restdate, usetime);
                 dvo[i++] = vo;
             }
+            System.out.println("dvo[0]:"+dvo[0]);
             request.setAttribute("detailsAr_2", dvo);
         } catch (Exception e) {
             e.printStackTrace();

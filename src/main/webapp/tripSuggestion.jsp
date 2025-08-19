@@ -243,9 +243,6 @@
 <%--<i class="fa-solid fa-heart"></i>  꽉찬 하트--%>
 <div id="main">
     <c:forEach var="Dvo" items="${requestScope.dataAr}" varStatus="count">
-        <div id="heartImage">
-            <p class="heartIcon"><i class="fa-regular fa-heart"></i></p>
-        </div>
         <div class="image-container">
             <c:if test="${empty Dvo.firstimage}">
                 <div class="emptyText">
@@ -261,17 +258,17 @@
                                 data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                 data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                 data-homepageurl="${Dvo.homepageUrl}"
-                                data-homepagetext="${Dvo.homepageText}">${Dvo.title}</a></p>
+                                data-homepagetext="${Dvo.homepageText}" data-contenttypeid="${Dvo.contentTypeId}">${Dvo.title}</a></p>
             <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}"
                                 data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                 data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                 data-homepageurl="${Dvo.homepageUrl}"
-                                data-homepagetext="${Dvo.homepageText}">${Dvo.addr1}</a></p>
+                                data-homepagetext="${Dvo.homepageText}" data-contenttypeid="${Dvo.contentTypeId}">${Dvo.addr1}</a></p>
             <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}"
                                    data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                    data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                    data-homepageurl="${Dvo.homepageUrl}"
-                                   data-homepagetext="${Dvo.homepageText}">${Dvo.overview}</a></p>
+                                   data-homepagetext="${Dvo.homepageText}" data-contenttypeid="${Dvo.contentTypeId}">${Dvo.overview}</a></p>
         </div>
     </c:forEach>
 </div>
@@ -448,7 +445,7 @@
             let firstimage = $(this).data('firstimage');
             let mapx = $(this).data('mapx');
             let mapy = $(this).data('mapy');
-            let contentTypeId = $("#contentTypeId").val();
+            let contentTypeId = $(this).data('contenttypeid');
             let contentId = $(this).data('contentid');
             let homepageUrl = $(this).data('homepageurl');
             let homepageText = $(this).data('homepagetext');
