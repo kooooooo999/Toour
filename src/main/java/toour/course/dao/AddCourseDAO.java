@@ -11,7 +11,7 @@ public class AddCourseDAO {
     public static CourseVO[] searchCourse(String member_idx) {
         CourseVO[] course_ar = null;
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<CourseVO> list = ss.selectList("course.searchCourse", member_idx);
+        List<CourseVO> list = ss.selectList("course.get", member_idx);
         if (list != null) {
             course_ar = new CourseVO[list.size()];
             list.toArray(course_ar);

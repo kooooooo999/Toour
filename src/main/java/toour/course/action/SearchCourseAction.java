@@ -28,6 +28,6 @@ public class SearchCourseAction implements Action {
         request.setAttribute("course_ar", course_ar);
         request.setAttribute("member_idx", member_idx);
 
-        return "findWay.jsp";
+        return "courseListReturn.jsp";
     }
 }

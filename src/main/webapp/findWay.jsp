@@ -50,9 +50,11 @@
         #datepickerDiv { width: 100%; height: 280px; }
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 200px; height: 25px; display: inline-block; }
+        .buttonBottom { position: absolute; bottom: 10px; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=LIBRARY"></script>
 </head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,16 +98,12 @@
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse(this)">추가</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">코스 추가</button>
                 </div>
             </div>
         </div>
 
-        <dialog id="memberCourse">
-            <c:forEach items="${requestScope.course_ar}" var="ar" varStatus="vs">
-                <a href="">${ar.course_name}</a>
-            </c:forEach>
-        </dialog>
+        <div id="memberCourse" class="hide" style="position: relative;"></div>
 
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
@@ -162,7 +160,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: {my: "center",at: "center",of: document.getElementById("#map") }
+            position: { my: "center", at: "center top: -300", of: window }
 
         };
         $("#memberCourse").dialog(option);
@@ -189,10 +187,40 @@
         $("#searchBox2").show();
     }
 
-    // 코스 DB에 저장
+    // 코스 DB에서 불러오기
     function addCourse() {
-        console.log($("#date").val());
+        let date = $("#date").val();
+
+        console.log(date);
+
+        $.ajax({
+            url: "Controller?type=searchCourse",
+            method: "post",
+            data: { date: date }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        });
         $("#memberCourse").dialog("open");
+    }
+
+    // DB에서 해당 코스에 있는 날짜별 코스 가져오기
+    function courseDate(course_idx) {
+        console.log(course_idx);
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        })
+    }
+
+    // 여행 리스트 창에서 '여행 추가' 버튼 누르면 DB course에 여행 목록 추가
+    function addCourseList(member_idx) {
+        console.log(member_idx);
+
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
@@ -277,12 +305,12 @@
         $("#testDate").datepicker({ appendText: "yyyy-mm-dd" });
     }*/
 
-    let cnt12 =0;
+    let cnt123 =0;
     function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
-        if(cnt12 >0){
+        if(cnt123 >0){
             polyline.setMap(null);
         }
-        cnt12++;
+        cnt123++;
         removeMarker();
 
         $.ajax({
@@ -291,7 +319,7 @@
             contentType: "application/json",
             data: JSON.stringify(coursePoints)
         }).done(function (res) {
-            console.log(res);
+            // console.log(res);
             $("#test").html(res);
         });
 

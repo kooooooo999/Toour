@@ -1,10 +1,12 @@
 package toour.member.vo;
 
+import toour.member.vo.CourseDateVO;
+
 public class CourseVO {
     private String course_idx, member_idx, course_name, created_at, updated_at, course_summary;
 
-    //CourseDataVO[]로 바꾸자!!
-//    CourseInVO[] courseIn_list;
+
+    CourseDateVO[] courseDate_list;
 
 
     public String getCourse_summary() {
@@ -55,5 +57,12 @@ public class CourseVO {
         this.updated_at = updated_at;
     }
 
+    public CourseDateVO[] getCourseDate_list() {
+        return courseDate_list;
+    }
+
+    public void setCourseDate_list(CourseDateVO[] courseDate_list) {
+        this.courseDate_list = courseDate_list;
+    }
 
 }
