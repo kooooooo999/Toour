@@ -36,6 +36,13 @@
         values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), now())
     </insert>
 
+    <!-- 게시글 보기 -->
+    <select id="getPost" parameterType="String" resultMap="map1">
+        SELECT  * FROM post p
+        left join file f ON p.post_idx = f.post_idx
+        WHERE p.post_idx = #{post_idx}
+    </select>
+
     <!--게시글 보기(회원정보 불러오기)-->
     <select id="getPostMember" parameterType="String" resultType="toour.member.vo.MemberVO">
         select *

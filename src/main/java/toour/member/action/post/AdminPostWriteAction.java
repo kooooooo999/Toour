@@ -11,6 +11,7 @@ import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.File;
 
 public class AdminPostWriteAction implements Action {
@@ -43,10 +44,15 @@ public class AdminPostWriteAction implements Action {
 
                 //나머지 파라미터들 얻기(post_title, member_idx, post_content)
                 String post_title = mr.getParameter("post_title");
-                //박준형 시작
+
+                HttpSession session=request.getSession();
+                MemberVO loginMember=(MemberVO)session.getAttribute("member");
+                String member_idx = String.valueOf(loginMember.getMember_idx());
+
+//                //박준형 시작
 //                String member_idx= mr.getParameter("member_idx");
-                String member_idx= "3";
-                //박준형 끝
+//                String member_idx= "3";
+//                //박준형 끝
 
                 String post_idx = null;
 

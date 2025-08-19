@@ -253,7 +253,7 @@
           </td>
         <td class="no">
         <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-            ${vo.member_idx} >_<
+            ${vo.member_idx}
           </a>
         </td>
         <td>
