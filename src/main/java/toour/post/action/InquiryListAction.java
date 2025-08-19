@@ -40,7 +40,7 @@ public class InquiryListAction implements Action {
         // 페이징 처리
         int totalRecord = InquiryDAO.getTotalCount(member_idx, null, null, null);
 
-        Paging page = new Paging(10, 5);
+        Paging page = new Paging(5, 5);
         page.setTotalCount(totalRecord);
 
         String cPage = request.getParameter("cPage");
@@ -98,6 +98,6 @@ public class InquiryListAction implements Action {
 
 
 
-        return "post/inquiryList.jsp";
+        return "member/myPage.jsp";
     }
 }

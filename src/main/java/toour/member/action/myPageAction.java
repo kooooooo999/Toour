@@ -70,6 +70,8 @@ public class myPageAction implements Action {
             page.setTotalCount(PostDAO.getMyTotalCount(mvo.getMember_idx()));
             page.setNowPage(1);
 
+
+
             //request에 page 값 저장
             request.setAttribute("page",page);
             request.setAttribute("myPost_ar",myPost);

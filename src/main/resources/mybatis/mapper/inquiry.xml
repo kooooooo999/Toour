@@ -174,7 +174,7 @@
                     <when test="category != null and category == '기타'">
                         i.category = #{category} and
                     </when>
-                    <when test="category null">
+                    <when test="category == null or category == ''">
 
                     </when>
                 </choose>

@@ -208,7 +208,7 @@ public class InquiryDAO {
             map.put("searchValue", searchValue);
         }
 
-      int cnt  = ss.selectOne("Inquiry.getSearchTotalCount", map);
+      int cnt  = ss.selectOne("Inquiry.searchTotalCount", map);
         ss.close();
         return cnt;
 

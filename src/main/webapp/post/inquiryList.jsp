@@ -146,17 +146,16 @@
 <body>
 
 <div class="container">
-    <h2>내 문의 목록</h2>
-    
-
+<%--
 
     <!-- 검색 폼 -->
     <div class="search-form">
-        <form method="get" action="Controller?type=inquirySearch" onsubmit="return validateForm()">
+        <form method="post" action="Controller" onsubmit="return validateForm()">
+            <input type="hidden" name="type" value="inquirySearch">
             <c:set var="category" value="${empty param.category ? '' : param.category}" />
 
             <select id="category" name="category">
-                <option value="" >전체 유형</option>
+                <option value="" >전체유형</option>
                 <option value="계정관리" >계정관리</option>
                 <option value="서비스이용">서비스이용</option>
                 <option value="기술지원" >기술지원</option>
@@ -177,6 +176,7 @@
             <a href="Controller?type=inquiryList" class="btn btn-success">전체보기</a>
         </form>
     </div>
+--%>
 
     <!-- 문의 목록 테이블 -->
     <table class="inquiry-table">
@@ -281,8 +281,6 @@
         <a href="Controller?type=QnA" class="btn btn-success">새 문의 작성</a>
     </div>
 </div>
-<c:import url="/common/footer.jsp" />
-
 </body>
 
 

@@ -615,7 +615,7 @@
             <div id="suggest_list" class="listArea">
                 <a href="Controller?type=QnA">건의사항</a>
                 <div style="padding: 20px; text-align: center;">
-                    건의사항 관련 내용이 들어갈 자리입니다.
+                    <c:import url="/post/inquiryList.jsp" />
                 </div>
             </div>
         </div>
