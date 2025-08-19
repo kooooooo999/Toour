@@ -261,7 +261,8 @@
                                 data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                 data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                 data-homepageurl="${Dvo.homepageUrl}"
-                                data-homepagetext="${Dvo.homepageText}">${Dvo.title}</a></p>
+                                data-homepagetext="${Dvo.homepageText}"
+                                data-contenttypeid="${Dvo.contentTypeId}">${Dvo.title}</a></p>
             <p class="addr1"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}"
                                 data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                 data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
@@ -448,7 +449,7 @@
             let firstimage = $(this).data('firstimage');
             let mapx = $(this).data('mapx');
             let mapy = $(this).data('mapy');
-            let contentTypeId = $("#contentTypeId").val();
+            let contentTypeId = $(this).data('contenttypeid');
             let contentId = $(this).data('contentid');
             let homepageUrl = $(this).data('homepageurl');
             let homepageText = $(this).data('homepagetext');

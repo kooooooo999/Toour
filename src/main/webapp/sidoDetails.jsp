@@ -199,7 +199,7 @@
         <li>
             <strong><span>■ 상세주소</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.addr1 or not empty Dvo.addr2}">
                     <span>${Dvo.addr1} ${Dvo.addr2}</span>
                 </c:when>
                 <c:otherwise>
@@ -210,7 +210,7 @@
         <li>
             <strong><span>■ 주차시설</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.parking}">
                     <span>${Dvo.parking}</span>
                 </c:when>
                 <c:otherwise>
@@ -221,7 +221,7 @@
         <li>
             <strong><span>■ 이용시간</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.usetime}">
                     <span>${Dvo.usetime}</span>
                 </c:when>
                 <c:otherwise>
@@ -232,7 +232,7 @@
         <li>
             <strong><span>■ 쉬는날</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.restdate}">
                     <span>${Dvo.restdate}</span>
                 </c:when>
                 <c:otherwise>
@@ -243,8 +243,9 @@
         <li>
             <strong><span>■ 홈페이지</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
-                    <span><a href="${Dvo.homepageUrl}">${Dvo.homepageText}</a></span>
+                <c:when test="${not empty Dvo.homepageUrl}">
+                    <span><a href="${Dvo.homepageUrl}" target="_blank"
+                             rel="noopener noreferrer">${Dvo.homepageText}</a></span>
                 </c:when>
                 <c:otherwise>
                     <span>[정보없음]</span>

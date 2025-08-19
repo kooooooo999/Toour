@@ -17,6 +17,7 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
         }
+
         table {
             width: 100%;
             border-collapse: collapse !important;
@@ -24,26 +25,26 @@
             min-width: 800px; /* 테이블이 너무 작아지는 것 방지 */
         }
 
-        #post h1{
+        #post h1 {
             color: #222;
             text-align: center;
             margin-top: 40px;
         }
 
-        .totalCount{
+        .totalCount {
             margin-left: 40px;
         }
 
-        .search-area{
+        .search-area {
             float: right;
             margin-right: 40px;
         }
 
-        .totalCount p{
+        .totalCount p {
             font-weight: bold;
         }
 
-        .totalCount strong{
+        .totalCount strong {
             color: #1a73e8;
         }
 
@@ -56,7 +57,7 @@
             box-sizing: border-box;
             width: 200px;
         }
-        
+
         #searchType {
             height: 38px;
             padding: 6px 10px;
@@ -65,7 +66,7 @@
             border-radius: 4px;
             margin-right: 5px;
         }
-        
+
         .search-area button {
             height: 38px;
             padding: 6px 15px;
@@ -77,16 +78,16 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .search-area button:hover {
             background-color: #1557b0;
         }
-        
+
         .no-result {
             color: #666;
             font-size: 16px;
         }
-        
+
         .no-result strong {
             color: #1a73e8;
         }
@@ -108,115 +109,130 @@
     </style>
 </head>
 <body>
-<c:import url="/common/header.jsp" />
+<c:import url="/common/header.jsp"/>
 
-    <div id="post">
-        <h1>여행후기</h1>
+<div id="post">
+    <h1>여행후기</h1>
+    <div class="search-area">
+        <input style="margin-bottom: 10px; margin-left: 342px" type="button" value="글쓰기"
+               onclick="javascript:location.href='Controller?type=write'">
+        <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
+            <input type="hidden" name="category_idx" value="2">
+            <select id="searchType" name="searchType">
+                <option value="post_title"
+                        <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목
+                </option>
+                <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>
+                    내용
+                </option>
+                <option value="title_content"
+                        <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용
+                </option>
+                <option value="member_nickname"
+                        <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이
+                </option>
+            </select>
+            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"
+                   <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
+            <button type="submit">검색</button>
+        </form>
+    </div>
 
-        <div class="search-area">
-            <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
-                <input type="hidden" name="category_idx" value="2">
-                <select id="searchType" name="searchType">
-                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
-                    <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
-                    <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
-                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                <button type="submit">검색</button>
-            </form>
-        </div>
+    <c:set var="t" value="${requestScope.totalCount}"/>
 
-        <c:set var="t" value="${requestScope.totalCount}"/>
+    <div class="totalCount">
+        <p>총 <strong>${t}건</strong></p>
+    </div>
 
-        <div class="totalCount">
-            <p>총 <strong>${t}건</strong></p>
-        </div>
-
-        <table summary="검색결과 목록">
-            <caption>검색결과 목록</caption>
-            <thead>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>별점</th>
-                <th>조회수</th>
-                <th>작성일</th>
-            </thead>
-            <tbody>
-                <c:set var="p" value="${requestScope.page}" />
-                <c:choose>
-                    <c:when test="${not empty requestScope.ar and fn:length(requestScope.ar) > 0}">
-                        <c:forEach items="${requestScope.ar}" var="vo" varStatus="vs">
-                            <c:if test="${not empty vo}">
-                            <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-                            <tr>
-                                <td>${num}</td>
-                                <td style="text-align: left">
-                                    <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                            ${vo.post_title}
-                                        <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                            (<c:out value="${fn:length(vo.c_list)}"/>)
-                                        </c:if>
-                                    </a>
-                                </td>
-                                <td>${vo.member_nickname}</td>
-                                <td>${vo.post_star}</td>
-                                <td>${vo.post_views}</td>
-                                <td>${vo.post_created_at.substring(0,10)}</td>
-                            </tr>
-                            </c:if>
-                        </c:forEach>
-                    </c:when>
-                    <c:otherwise>
+    <table summary="검색결과 목록">
+        <caption>검색결과 목록</caption>
+        <thead>
+        <th>번호</th>
+        <th>제목</th>
+        <th>작성자</th>
+        <th>별점</th>
+        <th>조회수</th>
+        <th>작성일</th>
+        </thead>
+        <tbody>
+        <c:set var="p" value="${requestScope.page}"/>
+        <c:choose>
+            <c:when test="${not empty requestScope.ar and fn:length(requestScope.ar) > 0}">
+                <c:forEach items="${requestScope.ar}" var="vo" varStatus="vs">
+                    <c:if test="${not empty vo}">
+                        <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
                         <tr>
-                            <td colspan="6" style="text-align: center; padding: 50px;">
-                                <div class="no-result">
-                                    <c:choose>
-                                        <c:when test="${not empty requestScope.searchValue}">
-                                            <strong>"${requestScope.searchValue}"</strong>에 대한 검색 결과가 없습니다.<br>
-                                            다른 검색어를 입력해보세요.
-                                        </c:when>
-                                        <c:otherwise>
-                                            게시글이 없습니다.
-                                        </c:otherwise>
-                                    </c:choose>
-                                </div>
+                            <td>${num}</td>
+                            <td style="text-align: left">
+                                <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                                        ${vo.post_title}
+                                    <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
+                                        (<c:out value="${fn:length(vo.c_list)}"/>)
+                                    </c:if>
+                                </a>
                             </td>
+                            <td>${vo.member_nickname}</td>
+                            <td>${vo.post_star}</td>
+                            <td>${vo.post_views}</td>
+                            <td>${vo.post_created_at.substring(0,10)}</td>
                         </tr>
-                    </c:otherwise>
-                </c:choose>
-            </tbody>
-        </table>
-    </div>
+                    </c:if>
+                </c:forEach>
+            </c:when>
+            <c:otherwise>
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 50px;">
+                        <div class="no-result">
+                            <c:choose>
+                                <c:when test="${not empty requestScope.searchValue}">
+                                    <strong>"${requestScope.searchValue}"</strong>에 대한 검색 결과가 없습니다.<br>
+                                    다른 검색어를 입력해보세요.
+                                </c:when>
+                                <c:otherwise>
+                                    게시글이 없습니다.
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </td>
+                </tr>
+            </c:otherwise>
+        </c:choose>
+        </tbody>
+    </table>
+</div>
 
-    <div class="paging-area">
-        <ol class="paging">
-            <c:set var="p" value="${requestScope.page}" />
-            <c:if test="${p.startPage < p.pagePerBlock}">
-                <li class="disable">&lt;</li>
+<div class="paging-area">
+    <ol class="paging">
+        <c:set var="p" value="${requestScope.page}"/>
+        <c:if test="${p.startPage < p.pagePerBlock}">
+            <li class="disable">&lt;</li>
+        </c:if>
+        <c:if test="${p.startPage >= p.pagePerBlock}">
+            <li>
+                <a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a>
+            </li>
+        </c:if>
+        <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+            <c:if test="${p.nowPage == vs.index}">
+                <li class="now">${vs.index}</li>
             </c:if>
-            <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
+            <c:if test="${p.nowPage != vs.index}">
+                <li>
+                    <a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a>
+                </li>
             </c:if>
-            <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                <c:if test="${p.nowPage == vs.index}">
-                    <li class="now">${vs.index}</li>
-                </c:if>
-                <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
-                </c:if>
-            </c:forEach>
-            <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
-            </c:if>
-            <c:if test="${p.endPage >= p.totalPage}">
-                <li class="disable">&gt;</li>
-            </c:if>
-        </ol>
-        <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
-    </div>
-<c:import url="/common/footer.jsp" />
+        </c:forEach>
+        <c:if test="${p.endPage < p.totalPage}">
+            <li>
+                <a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a>
+            </li>
+        </c:if>
+        <c:if test="${p.endPage >= p.totalPage}">
+            <li class="disable">&gt;</li>
+        </c:if>
+    </ol>
+</div>
+<c:import url="/common/footer.jsp"/>
 
 </body>
 
@@ -224,9 +240,10 @@
     <%--
     검색 내용 유효성 검사
     --%>
+
     function validateForm() {
         let searchValue = document.getElementById('searchValue').value;
-        if(searchValue.trim() === '' ){
+        if (searchValue.trim() === '') {
             alert('검색 내용을 입력하세요');
             return false;
         }

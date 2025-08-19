@@ -2,8 +2,8 @@ package toour.member.action;
 
 import toour.action.Action;
 import toour.member.dao.AdminMemberDAO;
-import toour.util.Paging;
 import toour.member.vo.MemberVO;
+import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,9 +27,9 @@ public class MemListAction implements Action {
 
         //현재 페이지 값을 파라미터로 받는다.
         String cPage = request.getParameter("cPage");
-        if(cPage == null || cPage.equals("") || cPage.equals("null")){
+        if (cPage == null || cPage.equals("") || cPage.equals("null")) {
             page.setNowPage(1);
-        }else{
+        } else {
             int nowPage = Integer.parseInt(cPage); //"2" -> 2
             page.setNowPage(nowPage);
             //게시물을 추출할 때 사용되는 begin과 end가 구해지고,
@@ -38,7 +38,6 @@ public class MemListAction implements Action {
 
         //DAO를 호출하여 원하는 게시글 목록을 받아야 한다.
         MemberVO[] ar = AdminMemberDAO.getmemList(page.getBegin(), page.getEnd());
-        System.out.println(totalCount);
         // JSP에서 표현하기 위해서 request에 저장!
 //        System.out.println(ar.length);
 //        System.out.println(ar[1].getMember_password());
