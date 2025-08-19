@@ -109,7 +109,16 @@ public class Controller extends HttpServlet {
         // 원하는 객체를 얻어내자!
         Action action = actionMap.get(type);
 
-        String viewPath = action.execute(request, response);
+        String viewPath =null;
+        if (action != null) {
+            // action이 있으면 execute 메서드 호출
+            viewPath = action.execute(request, response);
+
+        } else {
+            // action이 없다면 기본 처리나 에러 처리
+            response.sendError(HttpServletResponse.SC_NOT_FOUND, "Action not found");
+        }
+
 
         //viewPath가 null이면 현재 컨트롤러를 sendRedirect로
         // 다시 호출되도록 한다.

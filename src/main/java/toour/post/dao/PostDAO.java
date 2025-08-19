@@ -352,7 +352,7 @@ public class PostDAO {
         ss.close();
         return cnt;
     }
-
+    //댓글 불러오는 로직
     public static CommentVO[] getCommentList(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         CommentVO[] comment =null;
