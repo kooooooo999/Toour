@@ -40,6 +40,9 @@ public class SearchResultAction implements Action{
         String addTitle = request.getParameter("title"); // 코스 짜는 창에 넣을 때 넘어오는 title 이름
         String removeTitle = request.getParameter("removeTitle"); // 코스 짜는 창에서 목록 삭제할 때 넘어오는 title
 
+        // 요청시 contentType을 얻어낸다. get방식은 null값
+        String enc_type = request.getContentType();
+
         String index = request.getParameter("index");
         int index1 = 0;
         if (index != null) {
@@ -54,158 +57,165 @@ public class SearchResultAction implements Action{
         }
         System.out.println(keyword);
 
-        if(addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
-
-            courseList.add(srlist.get(index1));
-
-            request.setAttribute("courseList", courseList);
-            request.setAttribute("addTitle", addTitle);
-
+        if (enc_type == null) {
+            courseList.clear();
             viewPath = "addList.jsp";
-
-        } else if (removeTitle != null && !removeTitle.trim().isEmpty() && addTitle == null) {
-            System.out.println(removeTitle);
-            courseList.remove(index1);
-
-            request.setAttribute("courseList", courseList);
-
-            viewPath = "addList.jsp";
+            System.out.println("enc_type :" + enc_type);
         } else {
+            System.out.println("enc_type :" + enc_type);
+            if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
 
-            System.out.println(keyword);
-            SearchDataVO[] data = GetAPISearchData.getSearch(request,keyword);
-            request.setAttribute("data", data);
-            viewPath = "searchReturn.jsp";
+                courseList.add(srlist.get(index1));
 
-            String code = request.getParameter("areaCode");
-            if (code == null) {
-                areaCode = "0";
-                if (areaCode == null) {
-                    areaCode = "1";
-                }
+                request.setAttribute("courseList", courseList);
+                request.setAttribute("addTitle", addTitle);
 
-                if (cPage == null) {
-                    cPage = "1";
-                }
+                viewPath = "addList.jsp";
+
+            } else if (removeTitle != null && !removeTitle.trim().isEmpty() && addTitle == null) {
+                System.out.println(removeTitle);
+                courseList.remove(index1);
+
+                request.setAttribute("courseList", courseList);
+
+                viewPath = "addList.jsp";
+            } else {
+
+                System.out.println(keyword);
+                SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
+                request.setAttribute("data", data);
+                viewPath = "searchReturn.jsp";
+
+                String code = request.getParameter("areaCode");
+                if (code == null) {
+                    areaCode = "0";
+                    if (areaCode == null) {
+                        areaCode = "1";
+                    }
+
+                    if (cPage == null) {
+                        cPage = "1";
+                    }
 //          https://apis.data.go.kr/B551011/KorService2/searchKeyword2?serviceKey=서비스인증키
 //          &MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&keyword=시장&
 //          cat1=A04&cat2=A0401&cat3=A04010100&arrange=C&areaCode=39&sigunguCode=3&_type=json
 //          &lDongRegnCd=50&lDongSignguCd=130&lclsSystm1=SH&lclsSystm2=SH06&lclsSystm3=SH060100
 
-                //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
+                    //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
 
-                //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
-                StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
-                sb.append(key);
-                sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=");
-                sb.append(cPage);
-                sb.append("&numOfRows=");
-                sb.append("7");
-                sb.append("&keyword=");
-                sb.append(encodedKeyword);
-                if (cat1 != null && !cat1.equals("0")) {//0이 전부를 뜻함
-                    sb.append("&cat1=");//자연/인문~
-                    sb.append(cat1);
-                    if (cat2 != null && !cat2.equals("0")) {
-                        sb.append("&cat2=");//자연에서는 자연관광w/관광자원
-                        sb.append(cat2);//인문에서는 역사 휴양 어쩌고 많음
-                        if (cat3 != null && !cat3.equals("0")) {
-                            sb.append("&cat3=");
-                            sb.append(cat3);
+                    //세빈 변경 (공공 API 요청 URL 구성 (searchKeyword2))
+                    StringBuilder sb = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?");
+                    sb.append(key);
+                    sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=");
+                    sb.append(cPage);
+                    sb.append("&numOfRows=");
+                    sb.append("7");
+                    sb.append("&keyword=");
+                    sb.append(encodedKeyword);
+                    if (cat1 != null && !cat1.equals("0")) {//0이 전부를 뜻함
+                        sb.append("&cat1=");//자연/인문~
+                        sb.append(cat1);
+                        if (cat2 != null && !cat2.equals("0")) {
+                            sb.append("&cat2=");//자연에서는 자연관광w/관광자원
+                            sb.append(cat2);//인문에서는 역사 휴양 어쩌고 많음
+                            if (cat3 != null && !cat3.equals("0")) {
+                                sb.append("&cat3=");
+                                sb.append(cat3);
+                            }
                         }
                     }
-                }
-                sb.append("&arrange=A");
-                if (sigunguCode != null && !sigunguCode.equals("0")) {
-                    sb.append("&sigunguCode=");
-                    sb.append(sigunguCode);
-                }
-                sb.append("&_type=xml");
-                System.out.println("sb1:"+sb);
-                try {
-                    URL url1 = new URL(sb.toString());
-                    HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
-                    conn1.setRequestProperty("Content-Type", "application/xml");
-                    conn1.connect();
-                    SAXBuilder builder = new SAXBuilder();
-                    Document doc = builder.build(conn1.getInputStream());
-                    Element root = doc.getRootElement();
-                    Element body = root.getChild("body");
+                    sb.append("&arrange=A");
+                    if (sigunguCode != null && !sigunguCode.equals("0")) {
+                        sb.append("&sigunguCode=");
+                        sb.append(sigunguCode);
+                    }
+                    sb.append("&_type=xml");
+                    System.out.println("sb1:" + sb);
+                    try {
+                        URL url1 = new URL(sb.toString());
+                        HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
+                        conn1.setRequestProperty("Content-Type", "application/xml");
+                        conn1.connect();
+                        SAXBuilder builder = new SAXBuilder();
+                        Document doc = builder.build(conn1.getInputStream());
+                        Element root = doc.getRootElement();
+                        Element body = root.getChild("body");
 
-                    Element totalCount = body.getChild("totalCount");
-                    String totalCountStr = totalCount.getText();
+                        Element totalCount = body.getChild("totalCount");
+                        String totalCountStr = totalCount.getText();
 
-                    Element items = body.getChild("items");
-                    List<Element> item_list = items.getChildren("item");
+                        Element items = body.getChild("items");
+                        List<Element> item_list = items.getChildren("item");
 
-                    DataVO[] ar = new DataVO[item_list.size()];
+                        DataVO[] ar = new DataVO[item_list.size()];
 
-                    int i = 0;
+                        int i = 0;
 
-                    srlist.clear();
-                    //응답 메시지
-                    for (Element item : item_list) {
-                        String addr1 = item.getChildText("addr1");
-                        String addr2 = item.getChildText("addr2");
-                        String zipcode = item.getChildText("zipcode");
-                        String voCat1 = item.getChildText("cat1");
-                        String voCat2 = item.getChildText("cat2");
-                        String voCat3 = item.getChildText("cat3");
-                        String contentid = item.getChildText("contentid");
-                        String contenttypeid = item.getChildText("contenttypeid");
-                        String createdtime = item.getChildText("createdtime");
-                        String firstimage = item.getChildText("firstimage");
-                        System.out.println(firstimage);
-                        if (Objects.equals(firstimage, ""))
-                            firstimage = "./css/images/noImages.png";
-                        String firstimage2 = item.getChildText("firstimage2");
-                        String cpyrhtDivCd = item.getChildText("cpyrhtDivCd");
-                        String mapx = item.getChildText("mapx");
-                        String mapy = item.getChildText("mapy");
-                        String mlevel = item.getChildText("mlevel");
-                        String modifiedtime = item.getChildText("modifiedtime");
-                        String sigungucode = item.getChildText("sigungucode");
-                        String tel = item.getChildText("tel");
-                        String title = item.getChildText("title"); //자식 태그 안의 문자열
-                        String lDongRegnCd = item.getChildText("lDongRegnCd");
-                        String lDongSignguCd = item.getChildText("lDongSignguCd");
-                        String lclsSystm1 = item.getChildText("lclsSystm1");
-                        String lclsSystm2 = item.getChildText("lclsSystm2");
-                        String lclsSystm3 = item.getChildText("lclsSystm3");
+                        srlist.clear();
+                        //응답 메시지
+                        for (Element item : item_list) {
+                            String addr1 = item.getChildText("addr1");
+                            String addr2 = item.getChildText("addr2");
+                            String zipcode = item.getChildText("zipcode");
+                            String voCat1 = item.getChildText("cat1");
+                            String voCat2 = item.getChildText("cat2");
+                            String voCat3 = item.getChildText("cat3");
+                            String contentid = item.getChildText("contentid");
+                            String contenttypeid = item.getChildText("contenttypeid");
+                            String createdtime = item.getChildText("createdtime");
+                            String firstimage = item.getChildText("firstimage");
+                            System.out.println(firstimage);
+                            if (Objects.equals(firstimage, ""))
+                                firstimage = "./css/images/noImages.png";
+                            String firstimage2 = item.getChildText("firstimage2");
+                            String cpyrhtDivCd = item.getChildText("cpyrhtDivCd");
+                            String mapx = item.getChildText("mapx");
+                            String mapy = item.getChildText("mapy");
+                            String mlevel = item.getChildText("mlevel");
+                            String modifiedtime = item.getChildText("modifiedtime");
+                            String sigungucode = item.getChildText("sigungucode");
+                            String tel = item.getChildText("tel");
+                            String title = item.getChildText("title"); //자식 태그 안의 문자열
+                            String lDongRegnCd = item.getChildText("lDongRegnCd");
+                            String lDongSignguCd = item.getChildText("lDongSignguCd");
+                            String lclsSystm1 = item.getChildText("lclsSystm1");
+                            String lclsSystm2 = item.getChildText("lclsSystm2");
+                            String lclsSystm3 = item.getChildText("lclsSystm3");
 
 //https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=인증키
 // &MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&contentId=126128&_type=json
 
-                        //결과 객체 생성
-                        DataVO srvo = new DataVO();
-                        srvo.setAddr1(addr1);
-                        srvo.setFirstimage(firstimage);
-                        srvo.setTitle(title);
-                        srvo.setMapx(mapx);
-                        srvo.setMapy(mapy);
-                        srvo.setContentId(contentid);
-                        srvo.setContentTypeId(contenttypeid);
+                            //결과 객체 생성
+                            DataVO srvo = new DataVO();
+                            srvo.setAddr1(addr1);
+                            srvo.setFirstimage(firstimage);
+                            srvo.setTitle(title);
+                            srvo.setMapx(mapx);
+                            srvo.setMapy(mapy);
+                            srvo.setContentId(contentid);
+                            srvo.setContentTypeId(contenttypeid);
 
-                        page.setTotalCount(Integer.parseInt(totalCountStr));
-                        page.setNowPage(Integer.parseInt(cPage));
+                            page.setTotalCount(Integer.parseInt(totalCountStr));
+                            page.setNowPage(Integer.parseInt(cPage));
 
 
-                        ar[i++] = srvo;
+                            ar[i++] = srvo;
 
-                        srlist.add(srvo);
+                            srlist.add(srvo);
+                        }
+                        // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
+                        request.setAttribute("resultAr", ar);
+                        request.setAttribute("mapPage", page);
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                    // 최종적으로 배열을 dataAr 라는 이름으로 JSP에 전달
-                    request.setAttribute("resultAr", ar);
-                    request.setAttribute("mapPage", page);
-
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-        }
 
-        //공공데이터 openAPI 호출하는 경로
-        //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
+                //공공데이터 openAPI 호출하는 경로
+                //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
+            }
         }
         return viewPath;
     }

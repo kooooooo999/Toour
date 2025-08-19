@@ -50,7 +50,7 @@
         #datepickerDiv { width: 100%; height: 280px; }
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 200px; height: 25px; display: inline-block; }
-        .buttonBottom { position: absolute; bottom: 10px; }
+        .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px;}
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -103,7 +103,14 @@
             </div>
         </div>
 
-        <div id="memberCourse" class="hide" style="position: relative;"></div>
+        <div id="memberCourse" class="hide" style="position: relative;">
+            <div id="addCourseTitle" class="hide">
+                <p>여행 제목 : <input type="text" style="width: 100px; height: 30px;" id="courseTitle"/></p>
+                <p>여행 설명 : <input type="text" style="width: 150px; height: 150px;" id="courseSummary"/></p>
+                <button type="button" id="cancelCourseList"  style="font-size: 12px; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse()">취소</button>
+                <button type="button" id="addCourseList"  style="font-size: 12px;" class="buttonRight detail_btn" onclick="addCourseList()">추가</button>
+            </div>
+        </div>
 
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
@@ -111,7 +118,7 @@
             </div>
         </div>
 
-        <div class="map_container">
+        <div id="map_container" class="map_container">
             <div id="map"></div>
         </div>
     </div>
@@ -160,11 +167,34 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "center", at: "center top: -300", of: window }
-
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
         };
         $("#memberCourse").dialog(option);
+
+        let option2 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "여행 추가",
+            resizable: true,
+            height:340,
+            width:200,
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
+        };
+        $("#addCourseTitle").dialog(option2);
+
+        $(document).ready(function () {
+            $(document).on('keydown', function () {
+                console.log("b");
+                if (event.key == 'F4') {
+                    console.log("a");
+                    document.location.href="Controller?type=searchResult"
+                }
+            })
+        })
+
     })
+
+
     // 검색어로 장소 찾기
     function searchplace() {
 
@@ -202,6 +232,7 @@
             $("#memberCourse").html(res);
         });
         $("#memberCourse").dialog("open");
+        $("#addCourseTitle").dialog("close");
     }
 
     // DB에서 해당 코스에 있는 날짜별 코스 가져오기
@@ -217,10 +248,28 @@
         })
     }
 
-    // 여행 리스트 창에서 '여행 추가' 버튼 누르면 DB course에 여행 목록 추가
-    function addCourseList(member_idx) {
-        console.log(member_idx);
+    // 여행 리스트 창에서 '여행 추가' 버튼 누르면 여행 제목 설정 할 창 띄우기
+    function openCourseList() {
+        $("#addCourseTitle").dialog("open");
+        $("#memberCourse").dialog("close");
+    }
 
+    // 여행 제목 정하는 창에서 '추가' 버튼 누르면 DB의 course에 여행 목록 추가
+    function addCourseList() {
+        let member_idx = $("#member_idx").val().trim();
+        let course_name = $("#courseTitle").val().trim();
+        let course_summary = $("#courseSummary").val().trim();
+
+        $.ajax({
+            url: "Controller?type=addCourseList",
+            method: "post",
+            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary }
+        }).done(function (res) {
+            $("#memberCourse").html(res);
+        })
+
+        $("#addCourseTitle").dialog("close");
+        $("#memberCourse").dialog("open");
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드

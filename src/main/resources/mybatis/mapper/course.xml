@@ -33,5 +33,8 @@
         WHERE member_idx = #{member_idx}
     </select>
 
-    <insert id="addCourse"
+    <insert id="addCourse" parameterType="Map">
+        insert into course ( member_idx, course_name, created_at, course_summary )
+        values ( #{member_idx}, #{course_name}, now(), #{course_summary} )
+    </insert>
 </mapper>

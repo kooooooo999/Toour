@@ -5,4 +5,7 @@
   <p><a href="">${ar.date_title}(${ar.date})</a></p>
   <hr/>
 </c:forEach>
-<button type="button" id="addCourseDate" style="font-size: 12px" class="buttonRight detail_btn buttonBottom" onclick="addCourseDate()">추가</button>
+<div style="display: flex;" class="buttonBottom">
+<button type="button" id="backCourseList" style="font-size: 12px; display: inline-block;" class="buttonRight detail_btn" onclick="addCourse()">뒤로</button>
+<button type="button" id="addCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="openDateTitle()">추가</button>
+</div>
