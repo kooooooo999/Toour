@@ -4,12 +4,12 @@ body {
     background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
-    padding: 40px;
+    /* padding 제거! */
 }
 
 /* 게시판 컨테이너 */
 #post {
-    max-width: 1200px;
+    max-width: 1400px !important;
     margin: 0 auto;
     background-color: #fff;
     border: 1px solid #dee2e6;
