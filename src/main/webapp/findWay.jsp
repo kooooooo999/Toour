@@ -50,9 +50,11 @@
         #datepickerDiv { width: 100%; height: 280px; }
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 200px; height: 25px; display: inline-block; }
+        .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px;}
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
+    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=LIBRARY"></script>
 </head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,12 +98,19 @@
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">추가</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">코스 추가</button>
                 </div>
             </div>
         </div>
 
-        <dialog id="memberCourse"></dialog>
+        <div id="memberCourse" class="hide" style="position: relative;">
+            <div id="addCourseTitle" class="hide">
+                <p>여행 제목 : <input type="text" style="width: 100px; height: 30px;" id="courseTitle"/></p>
+                <p>여행 설명 : <input type="text" style="width: 150px; height: 150px;" id="courseSummary"/></p>
+                <button type="button" id="cancelCourseList"  style="font-size: 12px; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse()">취소</button>
+                <button type="button" id="addCourseList"  style="font-size: 12px;" class="buttonRight detail_btn" onclick="addCourseList()">추가</button>
+            </div>
+        </div>
 
         <div id="searchBox2" class="left_panel hide">
             <button type="button" id="resultButton" class="closeopen_btn" onclick="closeResults()">&lt;&lt;</button>
@@ -109,7 +118,7 @@
             </div>
         </div>
 
-        <div class="map_container">
+        <div id="map_container" class="map_container">
             <div id="map"></div>
         </div>
     </div>
@@ -150,6 +159,42 @@
     // 장소 검색 객체
     var ps = new kakao.maps.services.Places();
 
+    $(function () {
+        let option = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "나의 코스",
+            resizable: true,
+            height:300,
+            width:300,
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
+        };
+        $("#memberCourse").dialog(option);
+
+        let option2 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "여행 추가",
+            resizable: true,
+            height:340,
+            width:200,
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
+        };
+        $("#addCourseTitle").dialog(option2);
+
+        $(document).ready(function () {
+            $(document).on('keydown', function () {
+                console.log("b");
+                if (event.key == 'F4') {
+                    console.log("a");
+                    document.location.href="Controller?type=searchResult"
+                }
+            })
+        })
+
+    })
+
+
     // 검색어로 장소 찾기
     function searchplace() {
 
@@ -172,10 +217,59 @@
         $("#searchBox2").show();
     }
 
-    // 코스 DB에 저장
+    // 코스 DB에서 불러오기
     function addCourse() {
-        console.log($("#date").val());
+        let date = $("#date").val();
 
+        console.log(date);
+
+        $.ajax({
+            url: "Controller?type=searchCourse",
+            method: "post",
+            data: { date: date }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        });
+        $("#memberCourse").dialog("open");
+        $("#addCourseTitle").dialog("close");
+    }
+
+    // DB에서 해당 코스에 있는 날짜별 코스 가져오기
+    function courseDate(course_idx) {
+        console.log(course_idx);
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        })
+    }
+
+    // 여행 리스트 창에서 '여행 추가' 버튼 누르면 여행 제목 설정 할 창 띄우기
+    function openCourseList() {
+        $("#addCourseTitle").dialog("open");
+        $("#memberCourse").dialog("close");
+    }
+
+    // 여행 제목 정하는 창에서 '추가' 버튼 누르면 DB의 course에 여행 목록 추가
+    function addCourseList() {
+        let member_idx = $("#member_idx").val().trim();
+        let course_name = $("#courseTitle").val().trim();
+        let course_summary = $("#courseSummary").val().trim();
+
+        $.ajax({
+            url: "Controller?type=addCourseList",
+            method: "post",
+            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary }
+        }).done(function (res) {
+            $("#memberCourse").html(res);
+        })
+
+        $("#addCourseTitle").dialog("close");
+        $("#memberCourse").dialog("open");
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
@@ -260,12 +354,12 @@
         $("#testDate").datepicker({ appendText: "yyyy-mm-dd" });
     }*/
 
-    let cnt12 =0;
+    let cnt123 =0;
     function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
-        if(cnt12 >0){
+        if(cnt123 >0){
             polyline.setMap(null);
         }
-        cnt12++;
+        cnt123++;
         removeMarker();
 
         $.ajax({
@@ -274,7 +368,7 @@
             contentType: "application/json",
             data: JSON.stringify(coursePoints)
         }).done(function (res) {
-            console.log(res);
+            // console.log(res);
             $("#test").html(res);
         });
 
