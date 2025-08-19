@@ -51,7 +51,7 @@ public class WriteAction implements Action {
             viewPath = "post/write.jsp";
             //post 방식(form submit)
         }else if(enc_type.startsWith("multipart")){
-            // GET 방식 (form)
+            // post 방식 (form)
             // 여기는 write.jsp에서 내용을 입력한 후 [보내기] 버튼을
             // 클릭했을 때 수행하는 곳
             // 첨부파일을 받아서 bbs_upload라는 폴더에 저장해야 합니다.
