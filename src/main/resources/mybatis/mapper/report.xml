@@ -1,14 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="report">
-
-    <insert id="insertReport" parameterType="map">
+    <!--게시글 신고 등록-->
+    <insert id="insertWriteReport" parameterType="map">
         INSERT INTO report (
         reporter_idx, reported_idx, post_idx,
         report_content, target_type, report_status, report_created_at )
         VALUES (
         #{reporter_idx}, #{reported_idx}, #{post_idx},
-        #{report_content}, #{target_type}, 'PENDING', NOW() )
+        #{report_content}, 'POST', 0, NOW() )
     </insert>
+
+    <!--댓글 신고 등록-->
+    <insert id="insertCommentReport" parameterType="map">
+        INSERT INTO report (
+        reporter_idx, reported_idx, post_idx,
+        report_content, target_type, report_status, report_created_at )
+        VALUES (
+        #{reporter_idx}, #{reported_idx}, #{post_idx},
+        #{report_content}, 'COMMENT', 0, NOW() )
+    </insert>
+    <!--이건 관리자용 목록 가져오기-->
+    <select id="getReportList" resultType="toour.post.vo.ReportVO">
+        SELECT r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+
+        reporter.member_idx AS reporter_idx,
+        reporter.member_nickname AS reporter_nickname,
+
+        reported.member_idx AS reported_idx,
+        reported.member_nickname AS reported_nickname
+
+        FROM report r
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+    </select>
+
+
 
 </mapper>

@@ -26,5 +26,6 @@
         <mapper resource="mybatis/mapper/zzim.xml"/>
         <mapper resource="mybatis/mapper/course.xml"/>
         <mapper resource="mybatis/mapper/inquiry.xml"/>
+        <mapper resource="mybatis/mapper/report.xml"/>
     </mappers>
 </configuration>
