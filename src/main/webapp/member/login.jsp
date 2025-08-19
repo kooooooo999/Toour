@@ -184,7 +184,7 @@
 <body>
 
 <div class="login-container">
-  <h2 onclick="javascript:document.location.href='Controller?type=login&u_id=dkdlel123&u_pw=qlalfqjsgh@1234'">로그인</h2>
+  <h2 >로그인</h2>
   <form action="Controller?type=login" method="post" name="login_form">
     <table class="login-table">
       <caption class="hidden">로그인 테이블</caption>
