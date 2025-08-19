@@ -22,6 +22,8 @@ public class AdminNoticeDAO {
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         PostVO vo = ss.selectOne("adminnotice.getPost", post_idx);
+        System.out.println("vo"+vo);
+
         ss.close();
         return vo;
     }
@@ -30,7 +32,8 @@ public class AdminNoticeDAO {
     public static MemberVO getNoticeMemberIdx(String post_idx){
 //        System.out.println("here is getPostMemberIdx");
         SqlSession ss = FactoryService.getFactory().openSession();
-        MemberVO postMemberIdx = ss.selectOne("adminnotice.getNoticeMemberIdx",post_idx);
+        MemberVO postMemberIdx = ss.selectOne("adminnotice.getPostMember",post_idx);
+        System.out.println("getNoticeMemberIdx 결과: " + postMemberIdx);
         ss.close();
         return postMemberIdx;
     }

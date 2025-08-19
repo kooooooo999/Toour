@@ -14,7 +14,6 @@
       display: flex;
       background-color: #f4f6f8;
     }
-
     .sidebar {
       width: 220px;
       background-color: #2c3e50;
@@ -24,7 +23,6 @@
       color: white;
       height: 100vh;
     }
-
     .sidebar a {
       text-decoration: none;
       color: white;
@@ -32,16 +30,13 @@
       border-bottom: 1px solid #34495e;
       transition: background-color 0.3s;
     }
-
     .sidebar a:hover {
       background-color: #34495e;
     }
-
     .main-content {
       flex: 1;
       padding: 40px;
     }
-
     table {
       width: 100%;
       border-collapse: collapse;
@@ -49,12 +44,10 @@
       border-radius: 6px;
       overflow: hidden;
     }
-
     thead {
       background-color: #fafafa;
       border-bottom: 2px solid #e1e4e8;
     }
-
     th {
       padding: 14px 20px;
       text-align: left;
@@ -62,13 +55,11 @@
       color: #2c3e50;
       font-size: 14px;
     }
-
     td {
       padding: 12px 20px;
       font-size: 13px;
       color: #4a4a4a;
     }
-
     td a {
       display: block;
       width: 100%;
@@ -76,30 +67,24 @@
       color: #34495e;
       text-decoration: none;
     }
-
     td a:hover {
       color: #1a73e8;
     }
-
     tbody tr:nth-child(even) {
       background-color: #f9fbfc;
     }
-
     tbody tr:hover {
       background-color: #e6f0ff;
     }
-
     td.no, th.no {
       width: 50px;
       text-align: center;
     }
-
     .pagination {
       margin: 20px auto;
       text-align: center;
       width: 100%;
     }
-
     .pagination a, .pagination span {
       display: inline-block;
       margin: 0 6px;
@@ -110,19 +95,16 @@
       border-radius: 4px;
       border: 1px solid transparent;
     }
-
     .pagination a:hover {
       background-color: #e7f0ff;
       border-color: #3498db;
     }
-
     .pagination .current {
       font-weight: 700;
       background-color: #3498db;
       color: white;
       border-color: #3498db;
     }
-
     .search-area {
       background: #fff;
       padding: 20px;
@@ -133,13 +115,11 @@
       gap: 10px;
       align-items: center;
     }
-
     .search-area form {
       display: flex;
       gap: 10px;
       align-items: center;
     }
-
     .search-area select,
     .search-area input[type="text"],
     .search-area button,
@@ -153,27 +133,16 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-
     .search-area button,
     #writebutton {
       background-color: #3498db;
       color: white;
       border: none;
     }
-
     .search-area button:hover,
     #writebutton:hover {
       background-color: #2980b9;
     }
-
-    td.no, th.no {
-      width: 100px;
-      text-align: left;
-      padding-left: 20px;
-    }
-
-
-
   </style>
 </head>
 <body>
@@ -209,11 +178,12 @@
 
     <table>
       <colgroup>
-        <col style="width: 100px">
-        <col style="width: 40%;">
-        <col style="width: 150px;">
-        <col style="width: 100px;">
-        <col style="width: 150px;">
+        <col style="width: 80px">
+        <col style="width: 150px">
+        <col style="width: 120px;">
+        <col style="width: 120px;">
+        <col style="width: 120px;">
+        <col style="width: 120px;">
       </colgroup>
       <%--      <caption>검색결과 목록</caption>--%>
       <thead>
@@ -223,6 +193,8 @@
         <th>작성자</th>
         <th>조회수</th>
         <th>작성일</th>
+        <th>상태</th>
+
       </tr>
       </thead>
       <tbody>
@@ -240,10 +212,34 @@
 <%--                </c:if>--%>
               </a>
             </td>
-            <td>${vo.member_nickname}</td>
-            <td>${vo.post_views}</td>
-            <td>${vo.post_created_at.substring(0,10)}</td>
-          </tr>
+
+            <td>
+              <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                ${vo.member_nickname}
+            </td>
+
+            <td>
+              <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                ${vo.post_views}
+            </td>
+
+            <td>
+              <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
+                ${vo.post_created_at.substring(0,10)}
+            </td>
+
+          <td>
+            <a href="AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}">
+            <c:if test="${vo.post_status == 0 }">
+              <p style="color: #1a73e8">정상</p>
+            </c:if>
+            <c:if test="${vo.post_status == 2 }">
+              <p style="color: #e0d000">숨김</p>
+            </c:if>
+            <c:if test="${vo.post_status == 1 }">
+              <p style="color: red">삭제</p>
+            </c:if>
+          </td>
         </c:forEach>
       </c:if>
       </tbody>

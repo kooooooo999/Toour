@@ -58,6 +58,20 @@ public class MemberDAO {
 
     }
 
+    public static void updateMemInfo(MemberVO mvo){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("member.updateMemInfo", mvo);
+
+        if(cnt >0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+
+    }
+
+
+
 
 
     //카카오 로그인?

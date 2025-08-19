@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 
+
 <!DOCTYPE html>
 <html>
 <meta charset="UTF-8">
@@ -136,10 +137,11 @@
   }
 
   #table thead th:nth-child(1) { width: 80px; }
-  #table thead th:nth-child(2) { width: 100px; }
+  #table thead th:nth-child(2) { width: 50%; }
   #table thead th:nth-child(3) { width: 120px; }
   #table thead th:nth-child(4) { width: 150px; }
   #table thead th:nth-child(5) { width: 150px; }
+  #table thead th:nth-child(6) { width: 80px; }
 
 </style>
 
@@ -153,11 +155,13 @@
 </div>
 
 <div class="main-content">
-  <h1>관리자 페이지 - 게시글 보기</h1>
+  <h1>게시물 관리 - 게시글 보기</h1>
 
   <c:set var="vo" value="${requestScope.vo}"/>
-  <c:set var="pvo" value="${requestScope.postvo}"/>
+  <c:set var="pvo" value="${requestScope.pvo}"/>
 
+<%--<p>pvo 객체: ${pvo}</p>--%>
+<%--  <p>파일명: ${pvo.file_name_original}</p>--%>
 
   <div id="post">
     <form method="post">
@@ -171,7 +175,12 @@
         <tr>
           <th>첨부파일:</th>
           <td><a href="#">
-            ${pvo.file_name_original}
+            <c:if test="${empty pvo.file_name_original}">
+              첨부파일 없음
+            </c:if>
+            <c:if test="${not empty pvo.file_name_original}">
+              ${pvo.file_name_original}
+            </c:if>
           </a></td>
         </tr>
 
@@ -187,7 +196,6 @@
 
         <tr>
           <td colspan="2">
-            <input type="button" value="수정" onclick="goEdit()"/>
             <input type="button" value="삭제" onclick="openDel()"/>
             <input type="button" value="목록" onclick="goList()"/>
           </td>
