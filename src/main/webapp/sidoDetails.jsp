@@ -340,33 +340,33 @@
     });
 
 
-    $("#heartIcon").on("click", function () {
-        // Action에서 추가인지 삭제인지 구분하기 위한 값
-        let state = null;
+    <%--$("#heartIcon").on("click", function () {--%>
+    <%--    // Action에서 추가인지 삭제인지 구분하기 위한 값--%>
+    <%--    let state = null;--%>
 
-        if ($("#heart").hasClass("fa-regular fa-heart")) {
-            //빈 하트 눌렀을 때 if
-            $("#heart").removeClass("fa-regular fa-heart")
-            $("#heart").addClass("fa-solid fa-heart")
-            //찜 목록에 add해라
-            state = "add";
-        } else {
-            // 꽉 찬 하트를 눌렀을 때 else
-            $("#heart").removeClass("fa-solid fa-heart")
-            $("#heart").addClass("fa-regular fa-heart")
+    <%--    if ($("#heart").hasClass("fa-regular fa-heart")) {--%>
+    <%--        //빈 하트 눌렀을 때 if--%>
+    <%--        $("#heart").removeClass("fa-regular fa-heart")--%>
+    <%--        $("#heart").addClass("fa-solid fa-heart")--%>
+    <%--        //찜 목록에 add해라--%>
+    <%--        state = "add";--%>
+    <%--    } else {--%>
+    <%--        // 꽉 찬 하트를 눌렀을 때 else--%>
+    <%--        $("#heart").removeClass("fa-solid fa-heart")--%>
+    <%--        $("#heart").addClass("fa-regular fa-heart")--%>
 
-            //찜 목록에 delete해라
-            state = "delete";
-        }
+    <%--        //찜 목록에 delete해라--%>
+    <%--        state = "delete";--%>
+    <%--    }--%>
 
-        //Action만 가서 해당 회원의 찜목록에 저장
-        $.ajax({
-            url: "Controller?type=addDeleteZzim",
-            type: "POST",
-            data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}
-        })
+    <%--    //Action만 가서 해당 회원의 찜목록에 저장--%>
+    <%--    $.ajax({--%>
+    <%--        url: "Controller?type=addDeleteZzim",--%>
+    <%--        type: "POST",--%>
+    <%--        data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}--%>
+    <%--    })--%>
 
-    })
+    <%--})--%>
 </script>
 
 </body>
