@@ -17,10 +17,10 @@
     <!--댓글 신고 등록-->
     <insert id="insertCommentReport" parameterType="map">
         INSERT INTO report (
-        reporter_idx, reported_idx, post_idx,
+        reporter_idx, reported_idx, post_idx, comment_idx,
         report_content, target_type, report_status, report_created_at )
         VALUES (
-        #{reporter_idx}, #{reported_idx}, #{post_idx},
+        #{reporter_idx}, #{reported_idx}, #{post_idx}, #{comment_idx},
         #{report_content}, 'COMMENT', 0, NOW() )
     </insert>
     <!--이건 관리자용 목록 가져오기-->
