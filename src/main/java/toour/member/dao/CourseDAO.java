@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CourseDAO {
 
-    public static List<CourseVO> getCourseVO(String member_idx){
+    public static List<CourseVO> getCourseVOList(String member_idx){
 
         SqlSession ss = FactoryService.getFactory().openSession();
         List<CourseVO> cvo_list = ss.selectList("course.get",member_idx);

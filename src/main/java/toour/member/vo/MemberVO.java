@@ -26,7 +26,7 @@ public class MemberVO {
     // 내가 저장한 찜 목록저장소
     private List<ZzimVO> zzimlist;
 
-    private List<CourseVO> courselist;
+
 
     public List<ZzimVO> getZzimlist() {
         return zzimlist;
@@ -36,13 +36,6 @@ public class MemberVO {
         this.zzimlist = zzimlist;
     }
 
-    public List<CourseVO> getCourselist() {
-        return courselist;
-    }
-
-    public void setCourselist(List<CourseVO> courselist) {
-        this.courselist = courselist;
-    }
 
     public String getMember_idx() {
         return member_idx;}
