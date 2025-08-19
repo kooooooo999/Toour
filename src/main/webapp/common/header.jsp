@@ -31,7 +31,7 @@
                     </c:when>
 
                     <c:when test="${sessionScope.member.login_type=='NAVER'}">
-                        <a href="Controller?type=logout">로그아웃</a>
+                        <a href="Controller?type=naverlogout">로그아웃</a>
                     </c:when>
                 </c:choose>
             </c:if>

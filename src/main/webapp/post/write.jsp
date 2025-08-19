@@ -133,7 +133,19 @@
       margin-top: 15px;
     }
 
+    body {
+      margin: 0;
+      padding: 0;
+    }
 
+    .paging-area {
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    footer {
+      margin-top: 0 !important;
+    }
 
   </style>
   <script type="text/javascript">
@@ -200,59 +212,107 @@
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <script>
-  $(function (){
+  // $(function (){
+  //
+  //   $("#post_content").summernote({
+  //     lang: "ko-KR",
+  //     height: 500,
+  //     callbacks: {
+  //       onImageUpload: function(files, editor){
+  //         // 에디터에 이미지를 추가될 때 수행하는 곳!
+  //         // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
+  //         for(let i=0; i<files.length; i++)
+  //           sendImg(files[i], editor);
+  //         //console.log(files.length);
+  //       },
+  //       onImageUploadError: function(msg) {
+  //         console.error('이미지 업로드 오류:', msg);
+  //         alert('이미지 업로드에 실패했습니다: ' + msg);
+  //       }
+  //     }
+  //   });
+  //
+  // });
+  //
+  // function resetForm() {
+  //   // form 필드 초기화
+  //   document.forms[0].reset();
+  //   // summernote 에디터 내용 초기화
+  //   $('#post_content').summernote('reset');
+  // }
+  //
+  // function sendImg(file, editor) {
+  //   //서버로 비동기식 통신을 수행하기 위해 준비한다.
+  //   // 이미지를 서버로 보내기위해 폼객체를 생성하자!
+  //   let frm = new FormData();
+  //
+  //   // 서버로 보낼 이미지파일을 폼객체에 파라미터로 지정
+  //   frm.append("upload", file);
+  //
+  //   //비동기식 통신
+  //   $.ajax({
+  //     url: "Controller?type=saveImg",
+  //     data: frm,
+  //     type: "post",
+  //     contentType: false,
+  //     processData: false,
+  //     dataType: "json"
+  //   }).done(function(res) {
+  //     // $("#post_content").summernote("editor.insertImage", res.img_url);
+  //     //클라이언트에서 삽입하는 이미지 URL을 절대경로로 보정
+  //     let imgURL = res.img_url;
+  //
+  //     if (!imgURL.startsWith("http")) {
+  //       imgURL = window.location.origin + imgURL;
+  //     }
+  //     $("#post_content").summernote("editor.insertImage", imgURL);
+  //
+  //   }).fail(function(xhr, status, error) {
+  //     console.error('이미지 업로드 실패:', xhr.responseText);
+  //     alert('이미지 업로드에 실패했습니다: ' + error);
+  //   });
+  // }
 
-    $("#post_content").summernote({
-      lang: "ko-KR",
-      height: 500,
+  $(document).ready(function() {
+    // Summernote 에디터 초기화
+    $('#post_content').summernote({
+      height: 300, // 에디터 높이 설정
+      lang: 'ko-KR', // 한국어 설정
       callbacks: {
-        onImageUpload: function(files, editor){
-          // 에디터에 이미지를 추가될 때 수행하는 곳!
-          // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
-          for(let i=0; i<files.length; i++)
-            sendImg(files[i], editor);
-          //console.log(files.length);
-        },
-        onImageUploadError: function(msg) {
-          console.error('이미지 업로드 오류:', msg);
-          alert('이미지 업로드에 실패했습니다: ' + msg);
+        // 이미지 업로드 처리
+        onImageUpload: function(files) {
+          // 이미지를 Cloudinary로 업로드
+          var data = new FormData();
+          data.append("file", files[0]); // 업로드된 파일 추가
+          data.append("upload_preset", "toour_upload"); // Cloudinary 업로드 프리셋
+
+          // 비동기식 이미지 업로드
+          $.ajax({
+            url: 'https://api.cloudinary.com/v1_1/your_cloud_name/image/upload',
+            method: 'POST',
+            data: data,
+            contentType: false,
+            processData: false,
+            success: function(response) {
+              // 업로드된 이미지 URL
+              var imageUrl = response.secure_url;
+
+              // 에디터에 이미지 삽입
+              $('#post_content').summernote('insertImage', imageUrl);
+            },
+            error: function(xhr, status, error) {
+              console.error('이미지 업로드 실패:', error);
+              alert('이미지 업로드에 실패했습니다.');
+            }
+          });
         }
       }
     });
-
   });
 
-  function resetForm() {
-    // form 필드 초기화
-    document.forms[0].reset();
-    // summernote 에디터 내용 초기화
-    $('#post_content').summernote('reset');
-  }
-
-  function sendImg(file, editor) {
-    //서버로 비동기식 통신을 수행하기 위해 준비한다.
-    // 이미지를 서버로 보내기위해 폼객체를 생성하자!
-    let frm = new FormData();
-
-    // 서버로 보낼 이미지파일을 폼객체에 파라미터로 지정
-    frm.append("upload", file);
-
-    //비동기식 통신
-    $.ajax({
-      url: "Controller?type=saveImg",
-      data: frm,
-      type: "post",
-      contentType: false,
-      processData: false,
-      dataType: "json"
-    }).done(function(res) {
-      $("#post_content").summernote("editor.insertImage", res.img_url);
-    }).fail(function(xhr, status, error) {
-      console.error('이미지 업로드 실패:', xhr.responseText);
-      alert('이미지 업로드에 실패했습니다: ' + error);
-    });
-  }
   function sendData(){
 
     let title = $("#post_title").val();

@@ -296,7 +296,9 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="20" height="20" alt="첨부파일">
                 <c:forEach var="file" items="${requestScope.fileList}">
                     <div>
-                        <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
+                        <a href="Controller?type=download&fileName=${file.file_name_stored}" target="_blank">다운로드</a>
+                                ${file.file_name_original} 다운로드
+                        </a>
                     </div>
                 </c:forEach>
             </c:if>
@@ -343,16 +345,15 @@
   <!--댓글 작성-->
   <div id="comment_form">
     <h3>댓글</h3>
-    <form  encType="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form"
-           onsubmit="return commentData()">
+    <form enctype="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form" onsubmit="return commentData()">
       <div class="comment_container">
         <c:if test="${empty sessionScope.member}">
           <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
 
         </c:if>
         <c:if test="${not empty sessionScope.member}">
-        <textarea id="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content"></textarea><br/>
-        <input id="comment_btn" type="submit" value="댓글" class="btn-register"/>
+          <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
+        <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
         <hr class="comment-line"/>
       </div>
       </c:if>
@@ -393,9 +394,9 @@
 
         <c:if test="${not empty requestScope.comment_list}">
         <div class="comment_list">
+            <!-- 댓글이 위에서 아래로 출력됨 -->
             <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
-
-                <div id="comment_lilist">
+                <div id="comment_list">
                     <div id="comment_nickname">
                             ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
@@ -476,22 +477,19 @@
     $("#report_dialog").dialog("open");
   }
 
+  // 댓글
   function commentData() {
-    let title = $("#comment_content").val();
-    if (title.trim().length < 1) {
-      alert("내용을 입력하세요");
-      $("#comment_content").val("");
-      $("#comment_content").focus();
-      return false;
-    }
+      let title = $("#comment_content").val();
+      if (title.trim().length < 1) {
+          alert("내용을 입력하세요");
+          $("#comment_content").val("");
+          $("#comment_content").focus();
+          return false;
+      }
 
-            if (!login) {
-                $("#loginDialog").dialog("open");
-                return false;
-            }
-
-    return true;
+      return true;
   }
+
   function goList() {
     document.ff.action = "Controller";
     document.ff.type.value = "list";

@@ -47,6 +47,6 @@ public class NaverLogoutAction implements Action {
         }
 
         // 6. 로그아웃 후 이동할 페이지 경로 반환 (main.jsp 등)
-        return "redirect:/MainIndex/index.jsp";
+        return "MainIndex/index.jsp";
     }
 }
