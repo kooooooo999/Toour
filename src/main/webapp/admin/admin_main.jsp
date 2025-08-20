@@ -27,17 +27,7 @@
             height: 100vh;
         }
 
-        .sidebar a {
-            text-decoration: none;
-            color: white;
-            padding: 12px 10px;
-            border-bottom: 1px solid #34495e;
-            transition: background-color 0.3s;
-        }
 
-        .sidebar a:hover {
-            background-color: #34495e;
-        }
 
 
         .main-content {
@@ -137,14 +127,7 @@
 </head>
 <body>
 
-<div class="sidebar">
-    <!-- 메뉴 -->
-    <a href="AdminController">🏠 HOME</a>
-    <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-    <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-    <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-    <a href="AdminController?type=adminInquiry&pageType=inquiry">📬문의사항 관리</a>
-</div>
+<c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content">
     <h1>관리자 페이지</h1>
