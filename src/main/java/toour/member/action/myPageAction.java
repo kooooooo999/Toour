@@ -37,13 +37,13 @@ public class myPageAction implements Action {
                 for (ZzimVO zvo : zzim_ar) {
                     String zzimType = zvo.getZzim_type();
                     // 관광지를 담는 배열에 최대 4개만 담는 문장
-                    if (zzimType.equals("tour")) {
+
                         if (tour_cnt < cnt) {
                             tour_ar[tour_cnt] = GetAPIData.getDataVO(zvo.getZzim_content_id());
                             tour_cnt++;
                             System.out.println("tour_cnt:" + tour_cnt);
                         }
-                    }
+
 
                     // 둘 다 4가 되었다면 그것은 두 배열이 완성되었으므로 for문 종료
                     if (tour_cnt >= cnt && course_cnt >= cnt) {

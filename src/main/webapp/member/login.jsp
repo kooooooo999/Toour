@@ -192,11 +192,11 @@
       <caption class="hidden">로그인 테이블</caption>
       <tbody>
       <tr>
-        <td>ID:</td>
+        <td onclick="javascript:document.location.href='Controller?type=login&u_id=dkdlel123&u_pw=qlalfqjsgh@123'">ID:</td>
         <td><input type="text" id="u_id" name="u_id" value="${param.u_id}" class="input-field" placeholder="아이디" onkeydown="if(event.key=='Enter') sendForm(this.form)"/></td>
       </tr>
       <tr>
-        <td>PW:</td>
+        <td onclick="javascript:document.location.href='Controller?type=login&u_id=lllkkkjjj&u_pw=lllkkkjjj!1'">PW:</td>
         <td><input type="password" id="u_pw" name="u_pw" value="${param.u_pw}" class="input-field" placeholder="비밀번호"  onkeydown="if(event.key=='Enter') sendForm(this.form)"/></td>
       </tr>
       </tbody>

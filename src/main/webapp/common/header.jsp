@@ -59,7 +59,7 @@
                 <a href="Controller?type=tripSuggestion&pageType=trip" class="act">관광지</a>
             </li>
             <li class="dropdown">
-                <a href="Controller?type=GoWay" class="act">나만의 코스</a>
+                <a href="javascript:goWay()" class="act">나만의 코스</a>
             </li>
             <li class="dropdown">
                 <a href="Controller?type=tripSuggestion&pageType=course" class="act">추천코스</a>
@@ -131,6 +131,15 @@
             }
         });
     });
+
+    function goWay() {
+        console.log("gd")
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'Controller?type=GoWay';
+        document.body.appendChild(form);
+        form.submit();
+    }
 
 
 </script>

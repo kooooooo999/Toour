@@ -40,8 +40,6 @@ public class SearchResultAction implements Action{
         String addTitle = request.getParameter("title"); // 코스 짜는 창에 넣을 때 넘어오는 title 이름
         String removeTitle = request.getParameter("removeTitle"); // 코스 짜는 창에서 목록 삭제할 때 넘어오는 title
 
-        // 요청시 contentType을 얻어낸다. get방식은 null값
-        String enc_type = request.getContentType();
 
         String index = request.getParameter("index");
         int index1 = 0;
@@ -49,20 +47,29 @@ public class SearchResultAction implements Action{
             index1 = Integer.valueOf(index); // 넘어오는 index 값
         }
         String keyword = request.getParameter("keyword"); //키워드
-        String encodedKeyword;
-        try {
-            encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        String encodedKeyword =null;
+        if(keyword != null) {
+            try {
+                encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(keyword);
         }
-        System.out.println(keyword);
+        Object obj =request.getAttribute("F5");
+        String f5 = null;
+        if(obj!=null){
+            f5 = String.valueOf(obj);
+        }
 
-        if (enc_type == null) {
+        if (f5 != null) {
+            //나만의 코스를 눌렀을 때 혹은 F5로 새로고침을 했을 경우
             courseList.clear();
-            viewPath = "addList.jsp";
-            System.out.println("enc_type :" + enc_type);
+            viewPath = "findWay.jsp";
+            System.out.println("f5 : "+f5 );
         } else {
-            System.out.println("enc_type :" + enc_type);
+            // 코스에 관광지를 추가하거나 삭제 했을 경우 , [+] or [-]
+            System.out.println("f5 : null" );
             if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
 
                 courseList.add(srlist.get(index1));
@@ -217,6 +224,7 @@ public class SearchResultAction implements Action{
 
             }
         }
+        System.out.println("viewPath1:"+viewPath);
         return viewPath;
     }
 
