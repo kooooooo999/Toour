@@ -214,16 +214,25 @@ public class InquiryDAO {
 
     }
 
-    public static InquiryVO[] getMyInquiryList(String member_idx){
-        InquiryVO[] ar=null;
-        Map<String, String> map = new HashMap<>();
+    public static InquiryVO[] getMyInquiryList(String member_idx, int nowPage, int numPerPage) {
+        InquiryVO[] ar = null;
+
+        // MariaDB용: OFFSET = (현재페이지 - 1) * 페이지당 게시물 수
+        int offset = (nowPage - 1) * numPerPage;
+
+        Map<String, Object> map = new HashMap<>();
         map.put("member_idx", member_idx);
+        map.put("numPerPage", numPerPage); // LIMIT
+        map.put("offset", offset);         // OFFSET
+
         SqlSession ss = FactoryService.getFactory().openSession();
         List<InquiryVO> list = ss.selectList("Inquiry.getMyInquiryList", map);
-        if(list!=null&&list.size()>0){
-            ar=list.toArray(new InquiryVO[list.size()]);
 
+        if (list != null && !list.isEmpty()) {
+            ar = new InquiryVO[list.size()];
+            list.toArray(ar);
         }
+
         ss.close();
         return ar;
     }

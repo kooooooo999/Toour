@@ -1,178 +1,108 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: kke33
-  Date: 25. 8. 19.
-  Time: 오후 5:21
-  To change this template use File | Settings | File Templates.
---%>
-
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:if test="${requestScope.searchValue eq null}">
-    <div id="inquiry">
-        <div id="search-area">
-            <form method="post" action="Controller?type=inquirySearch">
-                <select id="searchType" name="searchType">
-                    <option value="post_title">제목</option>
-                    <option value="post_content">내용</option>
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
-            </form>
-        </div>
-        <table summary="검색결과 목록">
-            <caption>검색결과 목록</caption>
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
+<div style="padding: 20px; text-align: center;">
+    <div class="container" id="inquiry-container">
+
+
+        <!-- 문의 목록 테이블 -->
+        <table class="inquiry-table">
+            <caption>문의 목록 테이블</caption>
+
             <thead>
             <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>별점</th>
-                <th>조회수</th>
-                <th>작성일</th>
+                <th width="10%">번호</th>
+                <th width="15%">유형</th>
+                <th width="30%">제목</th>
+                <th width="15%">상태</th>
+                <th width="15%">작성일</th>
+                <th width="15%">관리</th>
             </tr>
             </thead>
             <tbody>
-            <c:if test="${not empty requestScope.myPost_ar}">
-                <c:set var="p" value="${requestScope.page}" />
-                <c:forEach items="${requestScope.myPost_ar}" var="vo" varStatus="vs">
-                    <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
+            <c:set var="p2" value="${requestScope.InquiryPage}" />
+            <c:set var="inquiryList" value="${requestScope.myInquiry_ar}"/>
+            <c:choose>
+                <c:when test="${not empty inquiryList and fn:length(inquiryList) > 0}">
+                    <c:forEach items="${inquiryList}" var="ivo" varStatus="vs">
+                        <c:if test="${not empty ivo}">
+                            <c:set var="num2" value="${p2.totalCount -((p2.nowPage-1)*p2.numPerPage+vs.index)}"/>
+                            <tr>
+                                <td>${num2}</td>
+                                <td>${ivo.category}</td>
+                                <td style="text-align: left">
+                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}&cPage=${p2.nowPage}">
+                                            ${ivo.title}
+                                    </a>
+                                </td>
+
+                                <td><span class="status-badge status-${ivo.statusColor}">${ivo.status}</span></td>
+                                <td>${ivo.created_at.substring( 0, 10)}</td>
+                                <td>
+                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}" class="btn btn-primary">보기</a>
+                                </td>
+                            </tr>
+                        </c:if>
+                    </c:forEach>
+                </c:when>
+
+                <c:otherwise>
                     <tr>
-                        <td>${num}</td>
-                        <td style="text-align: left">
-                            <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                    ${vo.post_title}
-                                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                    (<c:out value="${fn:length(vo.c_list)}"/>)
-                                </c:if>
-                            </a>
+                        <td colspan="6" class="no-data" style="text-align: center; padding: 50px;">
+                            <div class="no-result">
+                                <c:choose>
+                                    <c:when test="${not empty requestScope.myInquiry_ar}">
+
+                                    </c:when>
+                                    <c:otherwise> 등록된 문의가 없습니다</c:otherwise>
+                                </c:choose>
+                            </div>
                         </td>
-                        <td>${vo.member_nickname}</td>
-                        <td>${vo.post_star}</td>
-                        <td>${vo.post_views}</td>
-                        <td>${vo.post_created_at.substring(0,10)}</td>
                     </tr>
-                </c:forEach>
-            </c:if>
-            <c:if test="${empty requestScope.myPost_ar}">
-                <tr><td colspan="6">작성한 게시글이 없습니다.</td></tr>
-            </c:if>
+                </c:otherwise>
+            </c:choose>
             </tbody>
         </table>
-    </div>
 
-    <div class="paging-area">
-        <ol class="paging">
-            <c:set var="p" value="${requestScope.page}" />
-            <c:if test="${p.startPage < p.pagePerBlock}">
-                <li class="disable">&lt;</li>
-            </c:if>
-            <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="javascript:movePage(${p.startPage-p.pagePerBlock})">&lt;</a></li>
-            </c:if>
-            <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                <c:if test="${p.nowPage == vs.index}">
-                    <li class="now">${vs.index}</li>
+        <!-- 페이징 -->
+
+
+        <div class="paging-area">
+            <ol class="paging">
+                <!-- 이전 블록 이동 불가 -->
+                <c:if test="${p2.startPage < p2.pagePerBlock}">
+                    <li class="disable">&lt;</li>
                 </c:if>
-                <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="javascript:movePage(${vs.index})">${vs.index}</a></li>
+
+                <!-- 이전 블록 이동 -->
+                <c:if test="${p2.startPage >= p2.pagePerBlock}">
+                    <li><a href="javascript:moveInquiryPage(${p2.startPage - p2.pagePerBlock})">&lt;</a></li>
                 </c:if>
-            </c:forEach>
-            <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="javascript:movePage(${p.endPage+1})">&gt;</a></li>
-            </c:if>
-            <c:if test="${p.endPage >= p.totalPage}">
-                <li class="disable">&gt;</li>
-            </c:if>
-        </ol>
-        <input type="button" value="댓글" class="comment-btn" onclick="javascript:location.href=''">
-    </div>
-</c:if>
 
+                <!-- 페이지 번호 -->
+                <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
+                    <c:if test="${p2.nowPage == i}">
+                        <li class="now">${i}</li>
+                    </c:if>
+                    <c:if test="${p2.nowPage != i}">
+                        <li><a href="javascript:moveInquiryPage(${i})">${i}</a></li>
+                    </c:if>
+                </c:forEach>
 
+                <!-- 다음 블록 이동 -->
+                <c:if test="${p2.endPage < p2.totalPage}">
+                    <li><a href="javascript:moveInquiryPage(${p2.endPage + 1})">&gt;</a></li>
+                </c:if>
 
+                <!-- 다음 블록 이동 불가 -->
+                <c:if test="${p2.endPage >= p2.totalPage}">
+                    <li class="disable">&gt;</li>
+                </c:if>
 
-<c:if test="${requestScope.searchValue ne null}">
-
-    <div id="post">
-        <div id="search-area">
-            <form method="post" action="Controller?type=postSearch">
-                <input type="hidden" name="searchTypeHidden" value="${requestScope.searchType}">
-                <input type="hidden" name="searchValueHidden" value="${requestScope.searchValue}">
-
-                <select id="searchType" name="searchType">
-                    <option value="post_title" <c:if test="${requestScope.searchType== 'post_title'}">selected </c:if> >제목</option>
-                    <option value="post_content" <c:if test="${requestScope.searchType== 'post_content'}">selected </c:if> >내용</option>
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" value="${requestScope.searchValue}"/>
-                <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
-            </form>
+            </ol>
         </div>
-        <table summary="검색결과 목록">
-            <caption>검색결과 목록</caption>
-            <thead>
-            <tr>
-                <th>번호</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>별점</th>
-                <th>조회수</th>
-                <th>작성일</th>
-            </tr>
-            </thead>
-            <tbody>
-            <c:if test="${not empty requestScope.myPost_ar}">
-                <c:set var="p" value="${requestScope.page}" />
-                <c:forEach items="${requestScope.myPost_ar}" var="vo" varStatus="vs">
-                    <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-                    <tr>
-                        <td>${num}</td>
-                        <td style="text-align: left">
-                            <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                    ${vo.post_title}
-                                <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                    (<c:out value="${fn:length(vo.c_list)}"/>)
-                                </c:if>
-                            </a>
-                        </td>
-                        <td>${vo.member_nickname}</td>
-                        <td>${vo.post_star}</td>
-                        <td>${vo.post_views}</td>
-                        <td>${vo.post_created_at.substring(0,10)}</td>
-                    </tr>
-                </c:forEach>
-            </c:if>
-            <c:if test="${empty requestScope.myPost_ar}">
-                <tr><td colspan="6">작성한 게시글이 없습니다.</td></tr>
-            </c:if>
-            </tbody>
-        </table>
-    </div>
 
-    <div class="paging-area">
-        <ol class="paging">
-            <c:set var="p" value="${requestScope.page}" />
-            <c:if test="${p.startPage < p.pagePerBlock}">
-                <li class="disable">&lt;</li>
-            </c:if>
-            <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="javascript:moveSearchPage(${p.startPage-p.pagePerBlock})">&lt;</a></li>
-            </c:if>
-            <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                <c:if test="${p.nowPage == vs.index}">
-                    <li class="now">${vs.index}</li>
-                </c:if>
-                <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="javascript:moveSearchPage(${vs.index})">${vs.index}</a></li>
-                </c:if>
-            </c:forEach>
-            <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="javascript:moveSearchPage(${p.endPage+1})">&gt;</a></li>
-            </c:if>
-            <c:if test="${p.endPage >= p.totalPage}">
-                <li class="disable">&gt;</li>
-            </c:if>
-        </ol>
     </div>
-</c:if>
+</div>
