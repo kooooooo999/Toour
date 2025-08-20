@@ -41,13 +41,13 @@ public class InquirySearchAction implements Action{
             System.out.println("검색결과가 없습니다.");
         }
 
-        request.setAttribute("page",page);
-        request.setAttribute("ar",ar);
+        request.setAttribute("inquiryPage",page);
+        request.setAttribute("inquiryAr",ar);
         request.setAttribute("category",category);
-        request.setAttribute("totalCount",totalCount);
-        request.setAttribute("searchType",searchType);
-        request.setAttribute("searchValue",searchValue);
-        request.setAttribute("nowPage",page.getNowPage());
+        request.setAttribute("inquiryTotalCount",totalCount);
+        request.setAttribute("inquirySearchType",searchType);
+        request.setAttribute("inquirySearchValue",searchValue);
+        request.setAttribute("inquiryNowPage",page.getNowPage());
 
         return "member/myPage.jsp";
     }
