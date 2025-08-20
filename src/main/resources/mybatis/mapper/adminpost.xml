@@ -123,4 +123,16 @@
         where a.rnum BETWEEN #{begin} AND #{end};
     </select>
 
+    <!-- 총 게시글 수 막대그래프용 (post 테이블에서 게시글만 가져와서 최근 7일 집계) -->
+    <select id="selectWeeklyPostCount" resultType="map">
+        SELECT DATE(post_created_at) AS post_day,
+                COUNT(*) AS cnt
+        FROM post
+        WHERE category_idx = 2
+            AND post_created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(post_created_at)
+        ORDER BY post_day;
+
+    </select>
+
 </mapper>
