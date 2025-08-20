@@ -134,15 +134,31 @@
 
 
     <!-- 총 게시물 수를 반환하는 기능 -->
-    <select id="totalCount" resultType="int">
+    <select id="totalCount" parameterType="Map" resultType="int">
         select count(*) from inquiry
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
     </select>
 
-    <select id="all" resultType="toour.post.vo.InquiryVO" parameterType="Map">
+    <select id="allSearchtype" resultType="toour.post.vo.InquiryVO" parameterType="Map">
         select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at,
-        i.updated_at, i.is_read, m.member_nickname
+        i.updated_at, i.is_read, i.answer_content, m.member_nickname
         from inquiry i inner join member m
         on i.member_idx = m.member_idx
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
         order by i.inquiry_idx desc
         LIMIT #{begin}, #{numPerPage}
         <!-- 페이징을 위한 LIMIT -->

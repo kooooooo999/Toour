@@ -28,6 +28,8 @@ public class adminInquiryAction implements Action {
             String file = request.getParameter("file");
             String created = request.getParameter("created");
             String content = request.getParameter("content");
+            String answerValue = request.getParameter("answer");
+
             InquiryVO inquiryVO = new InquiryVO();
             inquiryVO.setInquiry_idx(idx);
             inquiryVO.setCategory(category);
@@ -37,6 +39,7 @@ public class adminInquiryAction implements Action {
             inquiryVO.setCreated_at(created);
             inquiryVO.setContent(content);
             inquiryVO.setFile_path(file);
+            inquiryVO.setAnswer_content(answerValue);
             request.setAttribute("reqInquiry", inquiryVO);
 
             String answer = request.getParameter("answer");
@@ -69,29 +72,32 @@ public class adminInquiryAction implements Action {
             }
 
         }
-        //문의 테이블 총 수 가져옴
-        int cnt = InquiryDAO.getInquiryTotalCount();
+        String searchType = request.getParameter("searchType");
+        String searchStatus = request.getParameter("searchStatus");
+        System.out.println("searchStatus:" + searchStatus);
+        int cnt = InquiryDAO.getInquiryTotalCount(searchType, searchStatus);
+        System.out.println("cnt:" + cnt);
         //Page 생성
         Paging page = new Paging(10, 5);
-        page.setTotalCount(cnt);
+        if (cnt > 0) {
+            page.setTotalCount(cnt);
+        } else {
+            page.setTotalCount(1);
+        }
+
         String cPage = request.getParameter("cPage");
         if (cPage == null || cPage.isEmpty() || cPage.equals("null")) {
             page.setNowPage(1);
         } else {
             int nowPage = Integer.parseInt(cPage); //"2" -> 2
             page.setNowPage(nowPage);
-            //게시물을 추출할 때 사용되는 begin과 end가 구해지고,
-            //startPage와 endPage도 같이 구해졌다.
         }
 
         //table에 표현될 DB 데이터 값 가져옴, Paging의 begin은 1부터 시작, DB는 0부터 계산하기에 -1 해줘야함
-        InquiryVO[] IvoArr = InquiryDAO.getInquiryTotaldata(page.getBegin() - 1, page.getNumPerPage());
+        InquiryVO[] IvoArr = InquiryDAO.getInquiryTotaldata(page.getBegin() - 1, page.getNumPerPage(), searchType, searchStatus);
         //searchType을 받아 DB 데이터 값 가져옴
-        String searchType = request.getParameter("searchType");
-        InquiryVO[] cateAr = InquiryDAO.searchCategorydata(searchType);
         request.setAttribute("page", page);
         request.setAttribute("IvoArr", IvoArr);
-        request.setAttribute("cateAr", cateAr);
 
         return viewPath;
     }

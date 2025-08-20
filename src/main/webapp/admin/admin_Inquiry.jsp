@@ -220,6 +220,7 @@
 <div class="main-content" id="post">
     <h1>문의사항 관리</h1>
     <c:set var="requestsearchType" value="${param.searchType}"/>
+    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
     <div class="search-area">
         <form method="post" action="AdminController?type=adminInquiry">
             <select id="searchType" name="searchType">
@@ -231,6 +232,14 @@
                 <option value="기술지원" <c:if test="${requestsearchType == '기술지원'}">selected</c:if>>기술 지원</option>
                 <option value="버그신고" <c:if test="${requestsearchType == '버그신고'}">selected</c:if>>버그 신고</option>
                 <option value="기타" <c:if test="${requestsearchType == '기타'}">selected</c:if>>기타</option>
+            </select>
+            <select id="searchStatus" name="searchStatus">
+                <option value="">
+                    --답변 상태 선택해주세요--
+                </option>
+                <option value="답변완료" <c:if test="${requestsearchStatus == '답변완료'}">selected</c:if>>답변완료</option>
+                <option value="대기" <c:if test="${requestsearchStatus == '대기'}">selected</c:if>>대기</option>
+                <option value="삭제" <c:if test="${requestsearchStatus == '삭제'}">selected</c:if>>삭제</option>
             </select>
         </form>
     </div>
@@ -248,45 +257,26 @@
                 <th>작성일</th>
                 </thead>
                 <tbody>
-                <%--                inquiry_idx, member_idx, category, title, content, file_path, status, created_at, updated_at--%>
                 <c:set var="p" value="${requestScope.page}" scope="page"/>
-                <c:set var="category" value="${requestScope.cateAr}"/>
-                <c:if test="${empty category}">
-                    <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
-                        <tr class="data-inquiry" data-idx="${Ivo.inquiry_idx}" data-category="${Ivo.category}"
-                            data-title="${Ivo.title}"
-                            data-nickname="${Ivo.member_nickname}"
-                            data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
-                            data-file="${Ivo.file_path}">
-                            <td>${Ivo.inquiry_idx}</td>
-                            <td>${Ivo.category}</td>
-                            <td>${Ivo.title}</td>
-                            <td>${Ivo.member_nickname}</td>
-                            <td>${Ivo.status}</td>
-                            <td>${Ivo.created_at}</td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${not empty category}">
-                    <c:forEach var="cat" items="${category}" varStatus="count">
-                        <tr class="data-inquiry" data-idx="${cat.inquiry_idx}" data-category="${cat.category}"
-                            data-title="${cat.title}"
-                            data-nickname="${cat.member_nickname}"
-                            data-status="${cat.status}" data-created="${cat.created_at}" data-content="${cat.content}">
-                            <td>${cat.inquiry_idx}</td>
-                            <td>${cat.category}</td>
-                            <td>${cat.title}</td>
-                            <td>${cat.member_nickname}</td>
-                            <td>${cat.status}</td>
-                            <td>${cat.created_at}</td>
-                        </tr>
-                    </c:forEach>
-                </c:if>
+                <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
+                    <tr class="data-inquiry" data-idx="${Ivo.inquiry_idx}" data-category="${Ivo.category}"
+                        data-title="${Ivo.title}"
+                        data-nickname="${Ivo.member_nickname}"
+                        data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
+                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}">
+                        <td>${Ivo.inquiry_idx}</td>
+                        <td>${Ivo.category}</td>
+                        <td>${Ivo.title}</td>
+                        <td>${Ivo.member_nickname}</td>
+                        <td>${Ivo.status}</td>
+                        <td>${Ivo.created_at}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
             <div class="pagination">
                 <c:if test="${p.startPage > 1}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}">&lt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
                 </c:if>
 
                 <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
@@ -296,13 +286,13 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}">${vs.index}</a>
+                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">${vs.index}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
 
                 <c:if test="${p.endPage < p.totalPage}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}">&gt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">&gt;</a>
                 </c:if>
             </div>
 
@@ -318,6 +308,10 @@
             document.forms[0].submit();
         });
 
+        $("#searchStatus").change(function () {
+            document.forms[0].submit();
+        });
+
         $(document).ready(function () { //보안을 위해 거쳐서 이동
             $(document).on('click', '.data-inquiry', function () {
                 let idx = $(this).data('idx');
@@ -328,6 +322,7 @@
                 let created = $(this).data('created');
                 let content = $(this).data('content');
                 let file = $(this).data('file')
+                let answer = $(this).data('answer');
 
                 $.ajax({
                     url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
@@ -340,7 +335,8 @@
                         status: status,
                         created: created,
                         content: content,
-                        file: file
+                        file: file,
+                        answer: answer
                     }
                 }).done(function (res) {
                     console.log("됐냐");

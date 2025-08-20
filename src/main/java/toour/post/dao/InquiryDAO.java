@@ -218,12 +218,20 @@ public class InquiryDAO {
 
     }
 
-    public static InquiryVO[] getInquiryTotaldata(int begin, int numPerPage) {
+    public static InquiryVO[] getInquiryTotaldata(int begin, int numPerPage, String searchType, String searchStatus) {
         SqlSession ss = FactoryService.getFactory().openSession();
         Map<String, Object> map = new HashMap<>();
+        if (searchType != null && searchType.isEmpty()) {
+            searchType = null;
+        }
+        if (searchStatus != null && searchStatus.isEmpty()) {
+            searchStatus = null;
+        }
         map.put("begin", begin);
         map.put("numPerPage", numPerPage);
-        List<InquiryVO> Ivo = ss.selectList("Inquiry.all", map);
+        map.put("searchType", searchType);
+        map.put("searchStatus", searchStatus);
+        List<InquiryVO> Ivo = ss.selectList("Inquiry.allSearchtype", map);
         InquiryVO[] IvoArr = new InquiryVO[Ivo.size()];
         if (Ivo.size() > 0 && Ivo != null) {
             Ivo.toArray(IvoArr);
@@ -233,35 +241,19 @@ public class InquiryDAO {
         return IvoArr;
     }
 
-    public static int getInquiryTotalCount() {
+    public static int getInquiryTotalCount(String searchType, String searchStatus) {
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.selectOne("Inquiry.totalCount");
-        if (cnt > 0) {
-            ss.commit();
-            ss.close();
-        } else {
-            ss.rollback();
+        if (searchType != null && searchType.isEmpty()) {
+            searchType = null;
         }
-        return cnt;
-    }
-
-    public static InquiryVO[] searchCategorydata(String searchType) {
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<InquiryVO> Ivo = ss.selectList("Inquiry.searchCategory", searchType);
-        InquiryVO[] IvoArr = new InquiryVO[Ivo.size()];
-        if (Ivo.size() > 0 && Ivo != null) {
-            Ivo.toArray(IvoArr);
+        if (searchStatus != null && searchStatus.isEmpty()) {
+            searchStatus = null;
         }
-        ss.close();
-
-        return IvoArr;
-    }
-
-    public static String searchContent(String inquiry_idx) {
-        SqlSession ss = FactoryService.getFactory().openSession();
-        String content = ss.selectOne("Inquiry.searchContent", inquiry_idx);
-        ss.close();
-        return content;
+        Map<String, Object> map = new HashMap<>();
+        map.put("searchType", searchType);
+        map.put("searchStatus", searchStatus);
+        int ressultCount = ss.selectOne("Inquiry.totalCount", map);
+        return ressultCount;
     }
 
 }

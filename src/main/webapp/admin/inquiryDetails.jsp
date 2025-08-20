@@ -279,7 +279,7 @@
                 click: function () {
                     // 폼 제출 로직 (실제 DB 저장)
                     $.ajax({
-                        url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
+                        url: "AdminController?type=adminInquiry&pageType=inquiryDetails&answer=1",
                         method: "POST",
                         data: {idx: ${Ivo.inquiry_idx}, status: '${Ivo.status}', answer_content: answerContent}, // 폼의 모든 입력 데이터를 직렬화하여 전송
                         success: function (response) {
