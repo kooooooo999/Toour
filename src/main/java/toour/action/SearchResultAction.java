@@ -3,6 +3,7 @@ package toour.action;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
+import toour.member.vo.MemberVO;
 import toour.search.util.GetAPISearchData;
 import toour.search.vo.SearchDataVO;
 import toour.tripsuggestion.vo.DataVO;
@@ -24,6 +25,12 @@ public class SearchResultAction implements Action{
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+
+        MemberVO mvo = null;
+        Object obj = request.getSession().getAttribute("member");
+        if (obj != null) {
+            mvo = (MemberVO) obj;
+        }
 
         String viewPath = null;
         String contentTypeid = request.getParameter("contentTypeId"); //관광타입ID (12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점)
@@ -58,6 +65,7 @@ public class SearchResultAction implements Action{
         System.out.println(keyword);
 
         if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
+            // + 버튼 눌렀을 때 수행
 
             courseList.add(srlist.get(index1));
 
@@ -67,6 +75,8 @@ public class SearchResultAction implements Action{
             viewPath = "addList.jsp";
 
         } else if (removeTitle != null && !removeTitle.trim().isEmpty() && addTitle == null) {
+            // - 버튼 눌렀을 때 수행
+
             System.out.println(removeTitle);
             courseList.remove(index1);
 
@@ -74,6 +84,7 @@ public class SearchResultAction implements Action{
 
             viewPath = "addList.jsp";
         } else {
+            // 검색창에 검색했을 때 수행
 
             System.out.println(keyword);
             SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
@@ -211,6 +222,7 @@ public class SearchResultAction implements Action{
 
         }
 
+        mvo.setCourseList(courseList);
         return viewPath;
     }
 
