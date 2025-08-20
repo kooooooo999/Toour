@@ -1,10 +1,12 @@
 package toour.post.dao;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.ReportVO;
 
 public class ReportDAO {
     // 신고 등록 (DB 저장)
@@ -52,4 +54,25 @@ public class ReportDAO {
         ss.close();
         return cnt;
     }
+    //모든 신고목록 가져오기
+    public static ReportVO[] getReport() {
+        ReportVO[] reportVO = null;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<ReportVO> list = ss.selectList("report.getReportList");
+        if (list != null && list.size() > 0) {
+            reportVO = new ReportVO[list.size()];
+            list.toArray(reportVO);
+        }
+        return  reportVO;
+    }
+
+    //모든 신고글 수 가져오기
+    public static int getReportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.ReportCountAll");
+        ss.close();
+        return cnt;
+    }
+
+
 }

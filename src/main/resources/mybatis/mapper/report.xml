@@ -37,6 +37,10 @@
         LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
         LEFT JOIN member reported ON r.reported_idx = reported.member_idx
     </select>
+    <!--신고글 수 전체-->
+    <select id="ReportCountAll" resultType="int">
+        select count(*) from report
+    </select>
 
 
 

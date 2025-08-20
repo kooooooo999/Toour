@@ -145,12 +145,7 @@
 
 <body>
 
-<div class="sidebar">
-  <a href="AdminController">🏠 HOME</a>
-  <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-</div>
+<c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content">
   <h1>공지사항 관리 - 공지사항 보기</h1>
