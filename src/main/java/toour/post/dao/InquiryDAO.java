@@ -92,7 +92,10 @@ public class InquiryDAO {
     // 문의 상세 조회 (관리자용 - 모든 문의 조회 가능)
     public static Map<String, Object> getInquiryDetail(String inquiry_idx) {
         SqlSession ss = FactoryService.getFactory().openSession();
-        Map<String, Object> inquiry = ss.selectOne("Inquiry.getInquiryDetail", inquiry_idx);
+        Map<String, Object> map = new HashMap<>();
+        map.put("inquiry_idx", inquiry_idx);
+        Map<String, Object> inquiry = ss.selectOne("Inquiry.getInquiryDetail", map);
+        System.out.println("content===" + inquiry.get("answer_content"));
         ss.close();
         return inquiry;
     }
@@ -122,13 +125,14 @@ public class InquiryDAO {
     }
 
     // 문의 상태 변경 (관리자용)
-    public static int updateInquiryStatus(String inquiry_idx, String status) {
+    public static int updateInquirydata(String inquiry_idx, String status, String answer_content) {
         Map<String, Object> map = new HashMap<>();
         map.put("inquiry_idx", inquiry_idx);
         map.put("status", status);
+        map.put("answer_content", answer_content);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("Inquiry.updateInquiryStatus", map);
+        int cnt = ss.update("Inquiry.updateInquirydata", map);
 
         if (cnt > 0) {
             ss.commit();
@@ -251,6 +255,13 @@ public class InquiryDAO {
         ss.close();
 
         return IvoArr;
+    }
+
+    public static String searchContent(String inquiry_idx) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        String content = ss.selectOne("Inquiry.searchContent", inquiry_idx);
+        ss.close();
+        return content;
     }
 
 }

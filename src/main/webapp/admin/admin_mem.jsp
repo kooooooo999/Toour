@@ -23,7 +23,7 @@
             flex-direction: column;
             padding: 20px;
             color: white;
-            height: 100vh;
+            height: auto;
         }
 
         .sidebar a {
