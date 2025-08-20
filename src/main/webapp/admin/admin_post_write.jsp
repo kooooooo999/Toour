@@ -146,6 +146,7 @@
     <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
     <a href="AdminController?type=adminpost">📝 게시물 관리</a>
     <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
+    <button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
 </div>
 
 <div class="main-content">

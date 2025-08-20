@@ -176,10 +176,12 @@
   <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
   <a href="AdminController?type=adminpost">📝 게시물 관리</a>
   <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
+  <button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
 </div>
 
 <div class="main-content">
   <h1>공지사항 관리</h1>
+
 
   <div id="post">
     <div class="search-area">
@@ -193,9 +195,14 @@
 
         <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
         <button type="submit">검색</button>
-
       </form>
       <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
+    </div>
+
+    <c:set var="t" value="${requestScope.totalCount}"/>
+
+    <div class="totalCount">
+      <p>총 <strong>${t}</strong>건</p>
     </div>
 
     <table>

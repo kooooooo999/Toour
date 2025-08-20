@@ -44,6 +44,7 @@ public class MemListAction implements Action {
 //        System.out.println(ar[1].getMember_password());
         request.setAttribute("ar", ar);
         request.setAttribute("page", page);
+        request.setAttribute("totalCount", totalCount);
         request.setAttribute("nowPage", page.getNowPage());
 
         return "admin/admin_mem.jsp";
