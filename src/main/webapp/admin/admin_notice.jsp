@@ -224,22 +224,28 @@
 <div class="main-content">
     <h1>공지사항 관리</h1>
 
-    <div id="post">
-        <div class="search-area">
-            <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
-                <input type="hidden" name="category_idx" value="1">
-                <select id="searchType" name="searchType">
-                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
-                    <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
-                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
 
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                <button type="submit">검색</button>
-            </form>
-            <input type="button" id="writebutton" value="글쓰기"
-                   onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
-        </div>
+  <div id="post">
+    <div class="search-area">
+      <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
+        <input type="hidden" name="category_idx" value="1">
+        <select id="searchType" name="searchType">
+          <option value="post_title">제목</option>
+          <option value="post_content">내용</option>
+          <option value="member_nickname">글쓴이</option>
+        </select>
+
+        <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+        <button type="submit">검색</button>
+      </form>
+      <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
+    </div>
+
+    <c:set var="t" value="${requestScope.totalCount}"/>
+
+    <div class="totalCount">
+      <p>총 <strong>${t}</strong>건</p>
+    </div>
 
         <table>
             <%--      <caption>검색결과 목록</caption>--%>

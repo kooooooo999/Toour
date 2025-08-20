@@ -330,9 +330,6 @@
 
 <%--바디 영역--%>
 
-  <li>
-    <button type="button">검색</button>
-  </li>
 
 
 <div id="searchwrap">
@@ -340,11 +337,6 @@
         <div class="card-container">
           <div class="image-container">
         <c:if test="${count.index < 5}">
-          <div id="heartImage">
-            <p class="heartIcon">
-            <i class="fa-solid fa-heart"></i>
-            </p>
-          </div>
         <span>
           <c:choose>
           <c:when test="${empty Dvo.firstimage}">
@@ -356,8 +348,8 @@
           </c:choose>
         </span>
           <div class="text ellipsis" id="searchText">
-            <p class="searchTitle"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.title}</a></p>
-            <p class="searchAddr1"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">[${Dvo.addr1}]</a></p>
+            <p class="searchTitle"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}','${Dvo.mapx}','${Dvo.mapy}', '${Dvo.contenttypeid}', '${Dvo.contentid}')">${Dvo.title}</a></p>
+            <p class="searchAddr1"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}','${Dvo.mapx}','${Dvo.mapy}', '${Dvo.contenttypeid}', '${Dvo.contentid}')">[${Dvo.addr1}]</a></p>
             <%--<p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>--%>
           </div>
         </c:if>
@@ -441,19 +433,8 @@ console.log(keyword);
 
 
 
-  $(document).ready(function() { //보안을 위해 거쳐서 이동
-    $('.data-link').on('click', function(e) {
-      e.preventDefault(); // a태그 href 링크 이동 방지
-      let title = $(this).data('title');
-      let addr1 = $(this).data('addr1');
-      let overview = $(this).data('overview');
-      let firstimage = $(this).data('firstimage');
-      // let mapx = $(this).data('mapx');
-      // let mapy = $(this).data('mapy');
-      submitData(title, addr1, overview, firstimage);
-    });
-  });
-  function submitData(title, addr1, overview, firstimage){
+
+  function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId){
     let form = document.createElement('form');
     form.method = 'POST';
     form.action = 'Controller?type=tripDetails';
@@ -478,10 +459,34 @@ console.log(keyword);
     firstimageInput.name = 'firstimage';
     firstimageInput.value = firstimage;
 
+    let mapxInput = document.createElement('input');
+    mapxInput.type = 'hidden';
+    mapxInput.name = 'mapx';
+    mapxInput.value = mapx;
+
+    let mapyInput = document.createElement('input');
+    mapyInput.type = 'hidden';
+    mapyInput.name = 'mapy';
+    mapyInput.value = mapy;
+
+    let contentTypeIdInput = document.createElement('input');
+    contentTypeIdInput.type = 'hidden';
+    contentTypeIdInput.name = 'contentTypeId';
+    contentTypeIdInput.value = contentTypeId;
+    console.log("contentTypeId:"+contentTypeId);
+    let contentIdInput = document.createElement('input');
+    contentIdInput.type = 'hidden';
+    contentIdInput.name = 'contentId';
+    contentIdInput.value = contentId;
+
     form.appendChild(titleInput);
     form.appendChild(addr1Input);
     form.appendChild(overviewInput);
     form.appendChild(firstimageInput);
+    form.appendChild(mapxInput);
+    form.appendChild(mapyInput);
+    form.appendChild(contentTypeIdInput);
+    form.appendChild(contentIdInput);
 
     document.body.appendChild(form);
     form.submit();

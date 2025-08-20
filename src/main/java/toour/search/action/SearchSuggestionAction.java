@@ -52,7 +52,7 @@ public class SearchSuggestionAction implements Action {
 //        }
 
         if (keyword != null && !keyword.trim().isEmpty()) {
-            SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
+            SearchDataVO[] data = GetAPISearchData.getSearch(request, encodedKeyword);
             request.setAttribute("data", data);
             viewPath = "APISearchData.jsp";
         } else {
@@ -92,26 +92,10 @@ public class SearchSuggestionAction implements Action {
             System.out.println(cPage);
             sb.append(Integer.parseInt(cPage));
             sb.append("&numOfRows=");
-            sb.append("10");
+            sb.append("5");
             sb.append("&keyword=");
             sb.append(encodedKeyword);
-            if (cat1 != null && !cat1.equals("0")) {//0이 전부를 뜻함
-                sb.append("&cat1=");//자연/인문~
-                sb.append(cat1);
-                if (cat2 != null && !cat2.equals("0")) {
-                    sb.append("&cat2=");//자연에서는 자연관광w/관광자원
-                    sb.append(cat2);//인문에서는 역사 휴양 어쩌고 많음
-                    if (cat3 != null && !cat3.equals("0")) {
-                        sb.append("&cat3=");
-                        sb.append(cat3);
-                    }
-                }
-            }
             sb.append("&arrange=A");
-            if (sigunguCode != null && !sigunguCode.equals("0")) {
-                sb.append("&sigunguCode=");
-                sb.append(sigunguCode);
-            }
             sb.append("&_type=xml");
             System.out.println("sb1:" + sb);
             try {
@@ -185,7 +169,7 @@ public class SearchSuggestionAction implements Action {
                         overview = item2.getChildText("overview");
                     }
                     //결과 객체 생성
-                    SearchResponseVO srvo = new SearchResponseVO(title, addr1, overview, firstimage);
+                    SearchResponseVO srvo = new SearchResponseVO(title, mapx, mapy, addr1, addr2, firstimage, tel, contenttypeid, contentid, overview);
 
                     page.setTotalCount(Integer.parseInt(totalCountStr));
                     page.setNowPage(Integer.parseInt(cPage));

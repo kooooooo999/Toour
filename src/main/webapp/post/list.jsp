@@ -132,7 +132,7 @@
         <c:set var="t" value="${requestScope.totalCount}"/>
 
         <div class="totalCount">
-            <p>총 <strong>${t}건</strong></p>
+            <p>총 <strong>${t}</strong>건</p>
         </div>
 
         <table summary="검색결과 목록">

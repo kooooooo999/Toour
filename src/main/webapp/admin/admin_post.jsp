@@ -193,6 +193,7 @@
 <body>
 
 <c:import url="/common/adminSidebar.jsp"/>
+<button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
 
 
 <div class="main-content">
@@ -212,6 +213,12 @@
         <button type="submit">검색</button>
       </form>
       <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminpostwrite'">
+    </div>
+
+    <c:set var="t" value="${requestScope.totalCount}"/>
+
+    <div class="totalCount">
+      <p>총 <strong>${t}</strong>건</p>
     </div>
 
     <table>
