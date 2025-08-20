@@ -193,7 +193,6 @@
 <body>
 
 <c:import url="/common/adminSidebar.jsp"/>
-<button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
 
 
 <div class="main-content">
