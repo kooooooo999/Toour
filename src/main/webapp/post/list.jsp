@@ -56,7 +56,7 @@
             box-sizing: border-box;
             width: 200px;
         }
-        
+
         #searchType {
             height: 38px;
             padding: 6px 10px;
@@ -65,7 +65,7 @@
             border-radius: 4px;
             margin-right: 5px;
         }
-        
+
         .search-area button {
             height: 38px;
             padding: 6px 15px;
@@ -77,16 +77,16 @@
             cursor: pointer;
             transition: background-color 0.3s;
         }
-        
+
         .search-area button:hover {
             background-color: #1557b0;
         }
-        
+
         .no-result {
             color: #666;
             font-size: 16px;
         }
-        
+
         .no-result strong {
             color: #1a73e8;
         }
@@ -110,30 +110,48 @@
 <body>
 <c:import url="/common/header.jsp" />
 
-    <div id="post">
-        <h1>여행후기</h1>
+<div id="post">
+    <h1>여행후기</h1>
 
-        <div class="search-area">
-            <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
-                <input type="hidden" name="category_idx" value="2">
-                <select id="searchType" name="searchType">
-                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
-                    <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
-                    <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
-                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
-                </select>
-                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                <button type="submit">검색</button>
-            </form>
+    <div class="post-header-container">
+        <div class="sort-count-area">
+            <div class="sort-area">
+                <form method="get" action="Controller">
+                    <input type="hidden" name="type" value="list">
+                    <input type="hidden" name="page" value="1">
+                    <label for="sortSelect">정렬:</label>
+                    <select id="sortSelect" name="sort" onchange="this.form.submit()">
+                        <option value="latest" <c:if test="${sort eq 'latest'}">selected</c:if>>최신순</option>
+                        <option value="likes" <c:if test="${sort eq 'likes'}">selected</c:if>>추천순</option>
+                        <option value="popular" <c:if test="${sort eq 'popular'}">selected</c:if>>인기순</option>
+                    </select>
+                </form>
+            </div>
+            <div class="totalCount">
+                <p>총 <strong>${requestScope.totalCount}건</strong></p>
+            </div>
         </div>
 
-        <c:set var="t" value="${requestScope.totalCount}"/>
-
-        <div class="totalCount">
-            <p>총 <strong>${t}건</strong></p>
+        <div class="search-write-area">
+            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
+            <div class="search-area">
+                <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
+                    <input type="hidden" name="category_idx" value="2">
+                    <select id="searchType" name="searchType">
+                        <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if>>제목</option>
+                        <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
+                        <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
+                        <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
+                    </select>
+                    <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
+                    <button type="submit">검색</button>
+                </form>
+            </div>
         </div>
+    </div>
 
-        <table summary="검색결과 목록">
+    <c:set var="t" value="${requestScope.totalCount}"/>
+    <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
             <thead>
                 <th>번호</th>
@@ -190,32 +208,47 @@
         </table>
     </div>
 
-    <div class="paging-area">
-        <ol class="paging">
-            <c:set var="p" value="${requestScope.page}" />
-            <c:if test="${p.startPage < p.pagePerBlock}">
+<div class="paging-area">
+    <ol class="paging">
+        <c:set var="p" value="${requestScope.page}" />
+        <c:set var="baseParams" value="type=${requestScope.searchValue ne null ? 'postSearch' : 'list'}&sort=${sort}" />
+
+        <%-- '이전' 화살표 --%>
+        <c:choose>
+            <c:when test="${p.startPage <= p.pagePerBlock}">
                 <li class="disable">&lt;</li>
-            </c:if>
-            <c:if test="${p.startPage >= p.pagePerBlock}">
-                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
-            </c:if>
-            <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                <c:if test="${p.nowPage == vs.index}">
-                    <li class="now">${vs.index}</li>
-                </c:if>
-                <c:if test="${p.nowPage != vs.index}">
-                    <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
-                </c:if>
-            </c:forEach>
-            <c:if test="${p.endPage < p.totalPage}">
-                <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">postSearch</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
-            </c:if>
-            <c:if test="${p.endPage >= p.totalPage}">
+            </c:when>
+            <c:otherwise>
+                <li><a href="Controller?${baseParams}&cPage=${p.startPage - p.pagePerBlock}">&lt;</a></li>
+            </c:otherwise>
+        </c:choose>
+
+
+    <%-- 페이지 번호 --%>
+        <c:forEach begin="${p.startPage}" end="${p.endPage}" var="pageIndex">
+            <c:choose>
+                <c:when test="${p.nowPage == pageIndex}">
+                    <li class="now">${pageIndex}</li>
+                </c:when>
+                <c:otherwise>
+                    <li><a href="Controller?${baseParams}&cPage=${pageIndex}">${pageIndex}</a></li>
+                </c:otherwise>
+            </c:choose>
+        </c:forEach>
+
+        <%-- '다음' 화살표 --%>
+        <%-- '다음' 화살표 --%>
+        <c:choose>
+            <c:when test="${p.endPage >= p.totalPage}">
                 <li class="disable">&gt;</li>
-            </c:if>
-        </ol>
-        <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
-    </div>
+            </c:when>
+            <c:otherwise>
+                <li><a href="Controller?${baseParams}&cPage=${p.endPage + 1}">&gt;</a></li>
+            </c:otherwise>
+        </c:choose>
+    </ol>
+</div>
+
 <c:import url="/common/footer.jsp" />
 
 </body>

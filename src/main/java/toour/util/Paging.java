@@ -95,7 +95,7 @@ public class Paging {
     }
 
     public int getBegin() {
-        return begin;
+         return (nowPage - 1) * numPerPage + 1;
     }
 
     public void setBegin(int begin) {

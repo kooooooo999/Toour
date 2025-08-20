@@ -27,5 +27,6 @@
         <mapper resource="mybatis/mapper/course.xml"/>
         <mapper resource="mybatis/mapper/inquiry.xml"/>
         <mapper resource="mybatis/mapper/report.xml"/>
+        <mapper resource="mybatis/mapper/recommend.xml"/>
     </mappers>
 </configuration>

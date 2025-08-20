@@ -7,38 +7,58 @@ import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class ListAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
+        String cPageParam = request.getParameter("cPage");
+        int cPage = 1;
+        try {
+            cPage = Integer.parseInt(cPageParam);
+            if (cPage < 1) cPage = 1; // 음수나 0 방지
+        } catch (NumberFormatException e) {
+            cPage = 1;
+        }
+
+        Paging paging = new Paging(10, 5);
         String category_idx = request.getParameter("category_idx");
-        if (category_idx == null)
-            category_idx = "2";//
-        String member_idx = request.getParameter("member_idx");
+        if (category_idx == null) category_idx = "2";
+
         int totalCount = PostDAO.getTotalCount(category_idx);
+        paging.setTotalCount(totalCount);
 
-        Paging page = new Paging(10,5);
+        paging.setNowPage(cPage);
 
-        page.setTotalCount(totalCount);
+        int begin = paging.getBegin();
+        int numPerPage = paging.getNumPerPage(); // getEnd() 대신 개수로 사용
+        if (begin < 1) begin = 1;
 
-        String cPage = request.getParameter("cPage");
 
-        if (cPage == null||cPage.equals("")) {
-            page.setNowPage(1);
+        String sort = request.getParameter("sort"); // "latest", "likes", "popular"
+        List<PostVO> posts = null;
+
+        switch (sort != null ? sort : "latest") {
+            case "likes":
+                posts = PostDAO.getPostsByLikes(paging);
+                break;
+            case "popular":
+                posts = PostDAO.getPostsByPopularity(paging);
+                break;
+            case "latest":
+                PostVO[] arr = PostDAO.getList(category_idx, paging.getBegin(), paging.getBegin() + paging.getNumPerPage() - 1);
+                posts = arr != null ? Arrays.asList(arr) : new ArrayList<>();
+                break;
         }
-        else{
-            int nowPage= Integer.parseInt(cPage);
-            page.setNowPage(nowPage);
-        }
 
-        PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
+        request.setAttribute("ar", posts);
+        request.setAttribute("page", paging);
+        request.setAttribute("sort", sort != null ? sort : "latest");
+        request.setAttribute("nowPage", paging.getNowPage());
+        request.setAttribute("totalCount", totalCount);
 
-
-        request.setAttribute("page",page);
-        request.setAttribute("ar",ar);
-        request.setAttribute("totalCount",totalCount);
-        request.setAttribute("cPage",cPage);
-        request.setAttribute("nowPage",page.getNowPage());
         return "post/list.jsp";
     }
 }
