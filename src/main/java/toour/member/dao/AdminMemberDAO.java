@@ -26,6 +26,8 @@ public class AdminMemberDAO {
         return cnt;
     }
 
+
+
 //    휴면회원수 가지고 오기
     public static int DormantMemCount(){
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -129,6 +131,20 @@ public class AdminMemberDAO {
         return cnt;
     }
 
+    // 게시물에서 검색결과 수를 반환
+    public static int getSearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("mem.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
     //회원정보 검색
     public static MemberVO[] search(String searchType, String searchValue, int begin, int end){
         MemberVO[] ar = null;
@@ -137,8 +153,8 @@ public class AdminMemberDAO {
             map.put("searchType", searchType);
         if(searchValue!=null)
             map.put("searchValue", searchValue);
-        map.put("begin",1);
-        map.put("end",5);
+        map.put("begin",begin);
+        map.put("end",end);
 
 //        System.out.println(searchType);
 //        System.out.println(searchValue);

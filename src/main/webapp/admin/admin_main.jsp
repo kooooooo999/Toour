@@ -40,6 +40,13 @@
         }
 
 
+        h1.page-title {
+            font-size: 32px;
+            font-weight: bold;
+            color: #000000;
+            margin-bottom: 30px;
+        }
+
         .main-content {
             flex: 1;
             padding: 40px;
@@ -55,9 +62,14 @@
 
         .dashboard {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* 2열 */
-            gap: 20px; /* 카드 사이 간격 */
-            padding: 20px;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
         }
 
         .card {
@@ -97,9 +109,33 @@
         }
 
         .today_visit {
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* 가운데 정렬 */
+            justify-content: center;
+            height: 100%; /* 카드 높이 기준으로 가운데 정렬 */
+        }
+
+
+
+        .today_visit h3 {
             font-size: 18px;
+            margin: 0 0 10px;
+            color: #333;
+        }
+
+        .today_visit p {
+            font-size: 24px;
             font-weight: bold;
-            color: #2c3e50;
+            color: #1a73e8;
+            margin: 10px 0 0;
+        }
+
+
+        .visit-icon {
+            font-size: 20px;
+            margin-right: 8px;
+            color: #4caf50;
         }
 
         .today_board {
@@ -133,6 +169,30 @@
             text-indent: -9999px;
         }
 
+
+        .today_warning h3 {
+            margin-top: 0;
+            font-size: 18px;
+            color: #333;
+        }
+
+        .report-summary {
+            margin: 10px 0;
+            line-height: 1.6;
+            font-size: 15px;
+            color: #555;
+        }
+
+        .report-summary strong {
+            color: #1a73e8;
+        }
+
+        .report-alert {
+            color: red;
+            font-weight: bold;
+        }
+
+
     </style>
 </head>
 <body>
@@ -147,7 +207,7 @@
 </div>
 
 <div class="main-content">
-    <h1>관리자 페이지</h1>
+    <h1 class="page-title">관리자 페이지</h1>
 
 
     <div class="dashboard">
@@ -222,24 +282,51 @@
             </div>
         </div>
 
+
+        <div class="card-group">
         <div class="card">
             <div class="today_visit">
-                최근 방문자 수(일주일)
-                <p>${requestScope.RecentVisitMem}</p>
+                <h3><span class="visit-icon">👥</span>최근 7일간 방문자 통계</h3>
+                <p>방문자 수: ${requestScope.RecentVisitMem}명</p>
             </div>
         </div>
-        <div class="card2">
-            <div class="today_board">
-                최근 게시글 수(일주일)
-                <p>${requestScope.getRecentPost}</p>
-            </div>
-        </div>
-        <div class="card2">
+
+        <div class="card">
             <div class="today_warning">
-                최근 신고 수 (한달)
+                <h3>📊 최근 30일간 신고 통계</h3>
+
+                <div class="report-summary">
+                    총 신고 수: <strong>${requestScope.ReportCount}</strong><br/>
+                    게시글 신고 수: <strong>${requestScope.PostreportCount}</strong><br/>
+                    댓글 신고 수: <strong>${requestScope.CommentreportCount}</strong>
+                </div>
+
+                <div class="report-summary">
+                    미처리된 신고 수:
+                    <c:choose>
+                        <c:when test="${requestScope.UnprocessedreportCount > 0}">
+                            <span class="report-alert">${requestScope.UnprocessedreportCount}건 ⚠️</span>
+                        </c:when>
+                        <c:otherwise>
+                            <strong>${requestScope.UnprocessedreportCount}건</strong>
+                        </c:otherwise>
+                    </c:choose><br/>
+
+                    처리된 신고 수: <strong>${requestScope.processedreportCount}건</strong>
+                </div>
             </div>
+
+
         </div>
+
+            <div class="card2">
+                <div class="today_board">
+                    최근 게시글 수(일주일)
+                    <p>${requestScope.getRecentPost}</p>
+                </div>
+            </div>
     </div>
+</div>
 </div>
 
 </body>

@@ -30,4 +30,49 @@ public class ReportDAO {
         ss.close();
         return cnt;
     }
+
+    //    신고수 가지고 오기
+    public static int reportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.reportCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    게시물 신고수 가지고 오기
+    public static int PostreportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.PostreportCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    댓글 신고수 가지고 오기
+    public static int CommentreportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.CommentreportCount");
+        ss.close();
+        return cnt;
+    }
+
+//    미처리된 신고수 가지고 오기
+    public static int UnprocessedreportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.UnprocessedreportCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    처리된 신고수 가지고 오기
+    public static int processedreportCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.processedreportCount");
+        ss.close();
+        return cnt;
+    }
+
+
+
+
+
 }

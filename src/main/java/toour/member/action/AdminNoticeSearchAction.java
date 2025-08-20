@@ -1,5 +1,6 @@
 package toour.member.action;
 
+import toour.member.dao.AdminNoticeDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
 import toour.post.dao.PostDAO;
@@ -17,7 +18,7 @@ public class AdminNoticeSearchAction implements Action {
         String category_idx = request.getParameter("category_idx");
         if (category_idx == null)
             category_idx = "1";
-        int totalCount = PostDAO.getTotalCount(category_idx);
+        int totalCount = AdminNoticeDAO.getSearchTotalCount(searchType,searchValue);
 
         Paging page = new Paging(10,5);
 
@@ -32,13 +33,13 @@ public class AdminNoticeSearchAction implements Action {
             page.setNowPage(nowPage);
         }
 
-        PostVO[] ar = PostDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
+        PostVO[] ar = AdminNoticeDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
 
         if(ar!=null &&ar.length>0)
             System.out.println("검색 결과 첫 번째 항목: " + ar[0]);
         else
             System.out.println("검색결과가 없습니다.");
-        System.out.println(ar[0]);
+//        System.out.println(ar[0]);
 
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);

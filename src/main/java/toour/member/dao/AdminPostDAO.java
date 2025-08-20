@@ -49,6 +49,20 @@ public class AdminPostDAO {
         return postMemberIdx;
     }
 
+    // 게시물에서 검색결과 수를 반환
+    public static int getSearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("adminpost.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
 
     public static PostVO[] search(String searchType,String searchValue,int begin,int end){
         PostVO[] ar = null;
