@@ -16,6 +16,7 @@ public class AdminPostViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
+        System.out.println("post_idx: " + post_idx);
         HttpSession session = request.getSession();
 //        System.out.println("post_idx:"+post_idx);
         Object obj = session.getAttribute("read_list");
@@ -26,14 +27,31 @@ public class AdminPostViewAction implements Action {
         }else
             list = (ArrayList<PostVO>) obj; // 형변환
 
+
         MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
+        PostVO pvo = AdminPostDAO.getPost(post_idx);
+
 //        System.out.println(vo.getPost_idx());
 //       if(vo == null){
 //            System.out.println("vo가 존재하지 않습니다.");
 //        }
+
+        if(pvo != null){
+            System.out.println("pvo가 널이 아니다");
+        }
+
         request.setAttribute("vo", vo);
+        request.setAttribute("pvo", pvo);
+
+
+        if(pvo != null){
+            System.out.println("후::::: pvo가 널이 아니다");
+        }
+
+
+
 //        System.out.println("vo"+vo.getCategory_idx());
 
-        return "admin/admin_notice_view.jsp";
+        return "admin/admin_post_view.jsp";
     }
 }

@@ -153,9 +153,11 @@
 </div>
 
 <div class="main-content">
-  <h1>관리자 페이지</h1>
+  <h1>공지사항 관리 - 공지사항 보기</h1>
+
 
   <c:set var="vo" value="${requestScope.vo}"/>
+  <c:set var="pvo" value="${requestScope.pvo}"/>
 
   <div id="post">
     <form method="post">
@@ -163,13 +165,18 @@
         <tbody>
         <tr>
           <th>제목:</th>
-          <td>${vo.post_title}</td>
+          <td>${pvo.post_title}</td>
         </tr>
 
         <tr>
           <th>첨부파일:</th>
           <td><a href="#">
-            ${vo.file_name_original}
+            <c:if test="${empty pvo.file_name_original}">
+              첨부파일 없음
+            </c:if>
+            <c:if test="${not empty pvo.file_name_original}">
+            ${pvo.file_name_original}
+            </c:if>
           </a></td>
         </tr>
 
@@ -180,7 +187,7 @@
 
         <tr>
           <th>내용:</th>
-          <td>${vo.post_content}</td>
+          <td>${pvo.post_content}</td>
         </tr>
 
         <tr>

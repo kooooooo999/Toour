@@ -16,14 +16,14 @@
         SET hit = hit + 1
         where post_idx = #{post_idx}
     </update>
+
     <!-- 총 게시물 수를 반환하는 기능 -->
     <select id="totalCount" resultType="int" parameterType="String">
         select count(*) from post
         where post_status = 0 and category_idx = #{category_idx}
     </select>
 
-<!--    최근 게시글 수 반환 -->
-
+    <!-- 최근 게시글 수 반환 -->
     <select id="RecentVisitMem" resultType="int">
         SELECT COUNT(*) FROM post
         WHERE category_idx = 2 and post_created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
@@ -80,7 +80,6 @@
     </select>
 
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
-
     <select id="list" resultMap="map1" parameterType="map">
         select * from(
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
@@ -228,7 +227,7 @@
         FROM comment c
         JOIN member m ON c.member_idx = m.member_idx
         WHERE c.post_idx = #{post_idx}
-        ORDER BY c.comment_created_at ASC
+        ORDER BY c.comment_created_at DESC
     </select>
 
 </mapper>

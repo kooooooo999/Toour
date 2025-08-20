@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static toour.util.GetAPIData.getContenttyIdlist;
 
@@ -57,7 +59,6 @@ public class courseDetailsAction implements Action {
         sb3.append(contentTypeId);
         sb3.append("&contentId=");
         sb3.append(contentId);
-
         try {
             URL url1 = new URL(sb1.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -104,8 +105,9 @@ public class courseDetailsAction implements Action {
                 String subdetailoverview = item1.getChildText("subdetailoverview");
                 String subname = item1.getChildText("subname");
                 //좌표 얻기
-                StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
+                StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
                 sb2.append(subcontentid);
+                System.out.println("sb2: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
@@ -119,7 +121,44 @@ public class courseDetailsAction implements Action {
                 for (Element item2 : itemList2) {
                     String mapx2 = item2.getChildText("mapx");
                     String mapy2 = item2.getChildText("mapy");
-                    DataVO vo = new DataVO(subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, mapx2, mapy2, totalCountStr);
+                    String firstimage2 = item2.getChildText("firstimage");
+                    String overview2 = item2.getChildText("overview");
+                    String title2 = item2.getChildText("title");
+                    String homepage2 = null;
+                    String homepageUrl2 = null;
+                    String homepageText2 = null;
+                    homepage2 = item2.getChildText("homepage");
+                    if (homepage2 != null && homepage2.contains("<a href")) {
+                        // URL 추출
+                        Pattern urlPattern = Pattern.compile("href=['\"]([^'\"]+)['\"]");
+                        Matcher urlMatcher = urlPattern.matcher(homepage2);
+                        if (urlMatcher.find()) {
+                            homepageUrl2 = urlMatcher.group(1);
+                        }
+
+                        // 텍스트 추출
+                        Pattern textPattern = Pattern.compile(">(.+?)</a>");
+                        Matcher textMatcher = textPattern.matcher(homepage2);
+                        if (textMatcher.find()) {
+                            homepageText2 = textMatcher.group(1);
+                        }
+                    } else {
+                        // HTML 태그가 없는 경우 그대로 사용
+                        homepageUrl2 = homepage2;
+                        homepageText2 = homepage2;
+                    }
+                    DataVO vo = new DataVO();
+                    vo.setMapx(mapx2);
+                    vo.setMapy(mapy2);
+                    vo.setFirstimage(firstimage2);
+                    vo.setOverview(overview2);
+                    vo.setTitle(title2);
+                    vo.setSubdetailalt(subdetailalt);
+                    vo.setSubdetailimg(subdetailimg);
+                    vo.setSubdetailoverview(subdetailoverview);
+                    vo.setSubname(subname);
+                    vo.setHomepageText(homepageText2);
+                    vo.setHomepageUrl(homepageUrl2);
                     arList.add(vo);
                 }
             }
@@ -127,7 +166,6 @@ public class courseDetailsAction implements Action {
             restaurantSet.addAll(rList);
             List<DataVO> aList = getContenttyIdlist("32", arList.get(arList.size() - 1).getMapx(), arList.get(arList.size() - 1).getMapy(), key, "30000");
             accommodationSet.addAll(aList);
-            System.out.println("Mapx: " + arList.get(0).getMapx());
 
             request.setAttribute("couserAr", arList);
             request.setAttribute("restaurantSet", restaurantSet);

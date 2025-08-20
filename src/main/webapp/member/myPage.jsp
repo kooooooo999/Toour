@@ -480,7 +480,7 @@
     <div class="right-content-area">
         <div class="grid-container">
             <div id="zzim_list" class="listArea">
-                <a href="Controller">찜 목록 ${fn:length(requestScope.zzim_ar)}</a>
+                <a href="Controller?type=myZzimlist">찜 목록 ${fn:length(requestScope.zzim_ar)}</a>
                 <div class="item-grid">
                     <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
@@ -763,6 +763,7 @@
 
     //[개인정보 확인] 버튼을 눌렀을 때
     function changeMyInfo() {
+        $("#match_pw").val("");
         $("#matchPassword_dialog").dialog("open");
     }
 

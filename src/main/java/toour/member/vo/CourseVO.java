@@ -1,7 +1,5 @@
 package toour.member.vo;
 
-import toour.member.vo.CourseDateVO;
-
 public class CourseVO {
     private String course_idx, member_idx, course_name, created_at, updated_at, course_summary;
 
@@ -64,5 +62,4 @@ public class CourseVO {
     public void setCourseDate_list(CourseDateVO[] courseDate_list) {
         this.courseDate_list = courseDate_list;
     }
-
 }

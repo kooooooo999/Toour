@@ -381,7 +381,7 @@
             </c:if>
         </c:forEach>
     </div>
-    <%--지도영역--%>
+    <%--    지도영역--%>
     <div class="map-container">
         <div id="mapDetails" style="padding: 30px 30px;margin-left: -80px">
             <div id="map" style="width: 850px; height: 300px; margin-left: 80px; "></div>
@@ -395,24 +395,24 @@
         <c:forEach var="course" items="${Cvo}" varStatus="status">
     <div class="courseItems">
         <div class="courseImgs">
-            <c:if test="${not empty course.subdetailimg}">
-                <img src="${course.subdetailimg}" class="course-image">
+            <c:if test="${not empty course.firstimage}">
+                <img src="${course.firstimage}" class="course-image">
             </c:if>
-            <c:if test="${empty course.subdetailimg}">
+            <c:if test="${empty course.firstimage}">
                 <div class="image-container">
-                    <c:if test="${empty Dvo.firstimage}">
-                        <div class="emptyText">
-                            [이미지없음]
-                        </div>
-                    </c:if>
-                    <c:if test="${not empty Dvo.firstimage}">
-                        <img src="${Dvo.firstimage}" class="course-image">
-                    </c:if>
+                        <%--                    <c:if test="${empty Dvo.firstimage}">--%>
+                    <div class="emptyText">
+                        [이미지없음]
+                    </div>
+                        <%--                    </c:if>--%>
                 </div>
             </c:if>
         </div>
-        <p class="courseText_1">${course.subdetailalt}</p>
-        <p class="courseText_1">${course.subdetailoverview}</p>
+            <%-- target:클릭 시 브라우저에서 새로운 탭 또는 창/noopener:새 창이 window.opener 속성을 통해 원래 창에 접근하는 것을 방지
+             noreferrer:원래 페이지의 주소 정보를 보호--%>
+        <p class="courseText_1"><a href="${course.homepageUrl}" target="_blank"
+                                   rel="noopener noreferrer"> ${course.title}</a></p>
+        <p class="courseText_1">${course.overview}</p>
     </div>
     </c:forEach>
 

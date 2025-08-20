@@ -18,6 +18,7 @@
       font-family: 'Noto Sans KR', sans-serif;
       display: flex;
       background-color: #f4f6f8;
+      font-size: 14px;
     }
 
     .sidebar {
@@ -44,25 +45,103 @@
 
     .main-content {
       flex: 1;
-      padding: 40px;
+      padding: 40px 50px;
+      background-color: white;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      border-radius: 6px;
+      margin: 20px;
+      max-width: 900px;
     }
 
     table {
       width: 100%;
-      border-collapse: collapse;
-      background: #fff;
-      border-radius: 6px;
-      overflow: hidden;
+      border-collapse: separate;
+      background: none;
+    }
+
+    h1.page-title {
+      font-size: 32px;
+      font-weight: bold;
+      color: #000000;
+      margin-bottom: 30px;
+    }
+
+    table caption {
+      font-weight: 600;
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #000000;
+      text-align: left;
+    }
+
+    th {
+      width: 100px;
+      text-align: left;
+      vertical-align: top;
+      padding: 10px 15px 10px 0;
+      font-weight: 600;
+      color: #333;
+    }
+
+    td {
+      padding: 8px 15px;
+      background: #f9fafb;
+      border-radius: 5px;
+    }
+
+    input[type="text"], textarea, input[type="file"] {
+      width: 100%;
+      padding: 8px 12px;
+      font-size: 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      box-sizing: border-box;
+      font-family: 'Noto Sans KR', sans-serif;
+      resize: vertical;
     }
 
     input[readonly] {
-      background-color: #e0e0e0;
-      color: #555555;
-      border: 1px solid #ccc;
-      font-weight: bold;
-      padding: 5px 8px;
-      border-radius: 4px;
+      background-color: #e2e8f0;
+      cursor: not-allowed;
     }
+
+    input[type="button"], input[type="reset"] {
+      background-color: #2563eb;
+      border: none;
+      color: white;
+      font-weight: 600;
+      padding: 8px 18px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-right: 10px;
+      font-size: 14px;
+      transition: background-color 0.3s;
+    }
+
+    input[type="button"]:hover, input[type="reset"]:hover {
+      background-color: #1d4ed8;
+    }
+
+    input[type="reset"] {
+      background-color: #64748b;
+    }
+
+    input[type="reset"]:hover {
+      background-color: #4b5563;
+    }
+
+    #post_content {
+      min-height: 300px;
+      font-size: 14px;
+    }
+
+    .t_bold {
+      font-weight: bold;
+      margin-top: 8px;
+      display: block;
+      color: #333;
+    }
+
   </style>
 </head>
 <body>

@@ -199,7 +199,7 @@
         <li>
             <strong><span>■ 상세주소</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.addr1 or not empty Dvo.addr2}">
                     <span>${Dvo.addr1} ${Dvo.addr2}</span>
                 </c:when>
                 <c:otherwise>
@@ -210,7 +210,7 @@
         <li>
             <strong><span>■ 주차시설</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.parking}">
                     <span>${Dvo.parking}</span>
                 </c:when>
                 <c:otherwise>
@@ -221,7 +221,7 @@
         <li>
             <strong><span>■ 이용시간</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.usetime}">
                     <span>${Dvo.usetime}</span>
                 </c:when>
                 <c:otherwise>
@@ -232,7 +232,7 @@
         <li>
             <strong><span>■ 쉬는날</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
+                <c:when test="${not empty Dvo.restdate}">
                     <span>${Dvo.restdate}</span>
                 </c:when>
                 <c:otherwise>
@@ -243,8 +243,9 @@
         <li>
             <strong><span>■ 홈페이지</span></strong>
             <c:choose>
-                <c:when test="${not empty Dvo.infocenter}">
-                    <span><a href="${Dvo.homepageUrl}">${Dvo.homepageText}</a></span>
+                <c:when test="${not empty Dvo.homepageUrl}">
+                    <span><a href="${Dvo.homepageUrl}" target="_blank"
+                             rel="noopener noreferrer">${Dvo.homepageText}</a></span>
                 </c:when>
                 <c:otherwise>
                     <span>[정보없음]</span>
@@ -340,33 +341,33 @@
     });
 
 
-    $("#heartIcon").on("click", function () {
-        // Action에서 추가인지 삭제인지 구분하기 위한 값
-        let state = null;
+    <%--$("#heartIcon").on("click", function () {--%>
+    <%--    // Action에서 추가인지 삭제인지 구분하기 위한 값--%>
+    <%--    let state = null;--%>
 
-        if ($("#heart").hasClass("fa-regular fa-heart")) {
-            //빈 하트 눌렀을 때 if
-            $("#heart").removeClass("fa-regular fa-heart")
-            $("#heart").addClass("fa-solid fa-heart")
-            //찜 목록에 add해라
-            state = "add";
-        } else {
-            // 꽉 찬 하트를 눌렀을 때 else
-            $("#heart").removeClass("fa-solid fa-heart")
-            $("#heart").addClass("fa-regular fa-heart")
+    <%--    if ($("#heart").hasClass("fa-regular fa-heart")) {--%>
+    <%--        //빈 하트 눌렀을 때 if--%>
+    <%--        $("#heart").removeClass("fa-regular fa-heart")--%>
+    <%--        $("#heart").addClass("fa-solid fa-heart")--%>
+    <%--        //찜 목록에 add해라--%>
+    <%--        state = "add";--%>
+    <%--    } else {--%>
+    <%--        // 꽉 찬 하트를 눌렀을 때 else--%>
+    <%--        $("#heart").removeClass("fa-solid fa-heart")--%>
+    <%--        $("#heart").addClass("fa-regular fa-heart")--%>
 
-            //찜 목록에 delete해라
-            state = "delete";
-        }
+    <%--        //찜 목록에 delete해라--%>
+    <%--        state = "delete";--%>
+    <%--    }--%>
 
-        //Action만 가서 해당 회원의 찜목록에 저장
-        $.ajax({
-            url: "Controller?type=addDeleteZzim",
-            type: "POST",
-            data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}
-        })
+    <%--    //Action만 가서 해당 회원의 찜목록에 저장--%>
+    <%--    $.ajax({--%>
+    <%--        url: "Controller?type=addDeleteZzim",--%>
+    <%--        type: "POST",--%>
+    <%--        data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}--%>
+    <%--    })--%>
 
-    })
+    <%--})--%>
 </script>
 
 </body>

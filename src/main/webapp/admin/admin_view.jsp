@@ -209,64 +209,112 @@
 <div class="main-content">
 
   <h1>회원정보 관리</h1>
-  <div class="form-container">
-      <form id = "editform" name="editform" action="AdminController" method="post">
-        <input type="hidden" name="type" value="adminmemedit">
-        <input type="hidden" name="member_idx" value="${vo.member_idx}">
-        <input type="hidden" name="cPage" value="${param.cPage}">
-
-      <div class="form-group">
-        <label for="name">이름</label>
-        <input type="text" id="name" name="member_name" value="${vo.member_name}">
-      </div>
-
-      <div class="form-group">
-        <label for="id">아이디</label>
-        <input type="text" id="id" name="member_id" value="${vo.member_id}" readonly>
-      </div>
-
-      <div class="form-group">
-        <label for="pw">비밀번호</label>
-        <input type="password" id="pw" name="member_password" value="${vo.member_password}" readonly>
-      </div>
-
-      <div class="form-group">
-        <label for="nickname">별명</label>
-        <input type="text" id="nickname" name="member_nickname" value="${vo.member_nickname}">
-      </div>
-
-      <div class="form-group">
-        <label for="email">이메일</label>
-        <input type="text" id="email" name="member_email" value="${vo.member_email}">
-      </div>
-
-      <div class="form-group">
-        <label for="email">경고횟수</label>
-        <input type="text" id="warning" name="member_warning" value="${vo.member_warning}">
-      </div>
-
-      <div class="form-actions">
-        <input type="button" value="수정" onclick="openEdit()"/>
-        <input type="button" value="목록" onclick="location.href='AdminController?type=adminmemlist'">
-      </div>
-    </form>
-
-    <form name="ff" method="post">
-      <input type="hidden" name="type"/>
-      <input type="hidden" name="member_idx" value="${vo.member_idx}"/>
-      <input type="hidden" name="cPage" value="${param.cPage}"/>
-    </form>
-
-
-    <!-- 수정 다이얼로그 -->
-    <div id = "edit_dialog" title = "수정하시겠습니까?">
-        <div class="button-group">
-        <button type="button" onclick="goEdit(this.form)">수정</button>
-        <button type="button" id = "member_edit_cancel">취소</button>
-        </div>
+    <div class="MyInfo-container" id="MyInfo-container">
+        <form action="AdminController?type=AdminmemInfo" method="post" name="MyInfo_form">
+            <input type="hidden" id="member_idx" name="member_idx" value="${vo.member_idx}" />
+            <table class="MyInfo-table">
+<%--                <caption class="hidden">개인정보 테이블</caption>--%>
+                <tbody>
+                <tr>
+                    <td>ID:</td>
+                    <td>
+                        <div class="input-group">
+                            <div class="input-with-message">
+                                <input type="text" id="u_id" name="u_id" class="input-field input-field-full" placeholder="아이디" value="${vo.member_id}" disabled/>
+                                <div id="id_usable" class="validation-message"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+<%--                <tr id="pw" hidden="hidden">--%>
+<%--                    <td>PW:</td>--%>
+<%--                    <td>--%>
+<%--                        <div class="input-group">--%>
+<%--                            <div class="input-with-message">--%>
+<%--                                <input type="password" id="u_pw" name="u_pw" class="input-field input-field-full" placeholder="비밀번호" />--%>
+<%--                                <div id="pw_usable" class="validation-message"></div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
+<%--                <tr id="re-pw" hidden="hidden">--%>
+<%--                    <td>RE-PW:</td>--%>
+<%--                    <td>--%>
+<%--                        <div class="input-group">--%>
+<%--                            <div class="input-with-message">--%>
+<%--                                <input type="password" id="u_repw" name="u_repw" class="input-field input-field-full" placeholder="비밀번호 확인"/>--%>
+<%--                                <div id="repw_usable" class="validation-message"></div>--%>
+<%--                            </div>--%>
+<%--                        </div>--%>
+<%--                    </td>--%>
+<%--                </tr>--%>
+<%--                <tr>--%>
+                <tr>
+                    <td>별명:</td>
+                    <td>
+                        <div class="input-group">
+                            <div class="input-with-message">
+                                <input type="text" id="u_nickname" name="u_nickname" class="input-field input-field-full" placeholder="별명" value="${vo.member_nickname}" disabled/>
+                                <div id="nickname_usable" class="validation-message"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>이름:</td>
+                    <td>
+                        <input type="text" id="u_name" name="u_name" class="input-field" placeholder="이름" value="${vo.member_name}" disabled/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>이메일:</td>
+                    <td>
+                        <div class="input-group">
+                            <div class="email-group">
+                                <c:set var="emailIndex" value="${fn:indexOf(vo.member_email, '@')}"/>
+                                <c:set var="email1" value="${fn:substring(vo.member_email,0,emailIndex)}"/>
+                                <c:set var="email2" value="${fn:substring(vo.member_email,emailIndex+1,fn:length(vo.member_email))}"/>
+                                <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
+                                <span class="email-separator">@</span>
+                                <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>
+                                <select id="emailAddr" name="emailAddr" class="email-select" onchange="changeemail2(this)">
+                                    <option value="">직접 입력</option>
+                                    <option value="naver.com" <c:if test="${email2.equals('naver.com')}" > selected</c:if> >naver.com</option>
+                                    <option value="gmail.com" <c:if test="${email2.equals('gmail.com')}" > selected</c:if> >gmail.com</option>
+                                    <option value="daum.com" <c:if test="${email2.equals('daum.com')}" > selected</c:if> >daum.com</option>
+                                    <option value="nate.com" <c:if test="${email2.equals('nate.com')}" > selected</c:if> >nate.com</option>
+                                </select>
+                            </div>
+                            <div style="display: flex; align-items: center; margin-top: 5px;">
+                                <button type="button" id="chkEmail" class="action-button">중복 검사</button>
+                                <div id="email_usable" class="validation-message" style="margin-left: 10px;"></div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>경고횟수:</td>
+                    <td>
+                        <input type="text" id="u_warning" name="u_warning" class="input-field" placeholder="경고횟수" value="현재 경고횟수:${vo.member_warning}" disabled/>
+                        <p>변경할 경고횟수:</p>
+                        <select id="warning" name="warning" class="warning" disabled>
+                            <option value="">직접 입력</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr id="revision_btn">
+                    <td colspan="2">
+                        <button type="button" onclick="goChange()" class="">수정하기</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
-  </div>
-</div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
         crossorigin="anonymous"></script>
@@ -274,39 +322,183 @@
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
 <script>
-  $(function (){
-    let option = {
-      modal: true,
-      autoOpen: false,
-      resizable: false,
-    };
-    $("#edit_dialog").dialog(option);
-  })
+    // $(function (){
+    //     $("#emailAddr").change(function () {
+    //         $("#u_email2").val("");
+    //     })
+    // });
 
-    function openEdit(){
-      $("#edit_dialog").dialog("open");
+
+    //개인정보 확인 dialog에서 [수정하기]를 눌렀을 때
+    function goChange(){
+        // document.getElementById("u_id").disabled = false;
+        document.getElementById("u_nickname").disabled = false;
+        document.getElementById("u_name").disabled = false;
+        document.getElementById("u_email").disabled = false;
+        document.getElementById("u_email2").disabled = false;
+        document.getElementById("u_warning").disabled = false;
+        document.getElementById("warning").disabled = false;
+
+        $("#pw").removeAttr("hidden");
+        $("#re-pw").removeAttr("hidden");
+
+        $("#revision_btn").html(
+            "<button type='button' onClick='saveMemInfo()'>변경</button> <button type='button' onClick='cancelMyInfo()'>취소</button>"
+        )
+
     }
 
-    $("#member_edit_cancel").click(function (){
-      $("#edit_dialog").dialog("close");
-    })
+    //개인정보 확인 dialog에서 정보 수정 후 [변경]을 눌렀을 때
+    function saveMemInfo() {
+        let member_idx = $("#member_idx").val();
+        console.log(member_idx);
+        let u_nickname = $("#u_nickname").val().trim();
+        let u_name = $("#u_name").val().trim();
+        let u_email = $("#u_email").val().trim();
+        let u_email2 = $("#u_email2").val().trim();
+        let u_warning = $("#warning").val();
+
+        let chk = 0;
+
+        // 별명 검사
+        if ($("#nickname_usable").hasClass("error")) {
+            chk++;
+        }
+
+        if (chk === 0) {
+            // 데이터 준비
+            const formData = {
+                member_idx: member_idx,   // 추가
+                u_nickname: u_nickname,
+                u_name: u_name,
+                u_email: u_email,
+                u_email2: u_email2,
+                u_warning: u_warning
+            };
+
+            console.log("전송 데이터:", formData);
+
+            $.ajax({
+                url: "AdminController?type=adminmeminfo",
+                type: "POST",
+                data: formData,
+                success: function (res) {
+                    alert("회원 정보가 성공적으로 변경되었습니다.");
+                    location.href = "AdminController?type=adminmemlist";
+                },
+                error: function () {
+                    alert("저장 중 오류가 발생했습니다.");
+                }
+            });
+        } else {
+            alert("입력 양식을 모두 충족해주세요.");
+        }
+    }
 
 
-  function goEdit(){
-    if($("#name").val().trim().length<1){
-      alert("제목을 입력하세요");
-      $("#name").val("")
-      $("#name").focus()
-      return
+
+
+    // 별명 창에 타이핑을 쳤을 때
+    $("#u_nickname").keyup(function (){
+        const u_nickname_t = $(this).val().trim();
+        if (u_nickname_t.length > 0) {
+            $.ajax({
+                url: "Controller?type=chknickname",
+                type: "post",
+                data:{ u_nickname: u_nickname_t }
+            }).done(function (res) {
+                updateValidationMessage("#nickname_usable", res);
+                if(u_nickname_t == "${sessionScope.member.member_nickname}"){
+                    $("#nickname_usable").removeClass("success error");
+                    $("#nickname_usable").addClass("success").html("");
+                }
+            });
+        } else {
+            $("#nickname_usable").html("");
+        }
+    });
+
+    function updateValidationMessage(targetId, res) {
+        const $target = $(targetId);
+        $target.removeClass('success error');
+        if (res.includes("가능")) {
+            $target.addClass('success').html(res);
+        } else if (res.length > 0) {
+            $target.addClass('error').html(res + "<input type='hidden' class='disable_check'>");
+        } else {
+            $target.html('');
+        }
     }
-    else {
-      document.editform.action = "AdminController";
-      document.editform.type.value = "adminmemedit";
-      document.editform.submit();
+
+
+    function changeemail2(select){
+        let email = document.getElementById("u_email2");
+        let changeemail = select.value;
+
+        if(changeemail === ""){
+            email.value = "";
+            email.disabled = false;
+            email.focus();
+        }
+        else {
+            email.value = changeemail;
+            email.disabled = true;
+        }
+
     }
-  }
+
+    // 이메일 주소 선택했을 때
+    $("#emailAddr").change(function (){
+        const emailAddr_v = $(this).val().trim();
+        const $u_email2 = $("#u_email2");
+        if(emailAddr_v.length > 0) {
+            $u_email2.val("");
+            $u_email2.prop('disabled', true);
+        } else {
+            $u_email2.prop('disabled', false);
+        }
+        // 이메일 정보 변경 시 중복 검사 메시지 초기화
+        $("#email_usable").html("<span class='error'>중복 검사 버튼을 눌러주세요</span><input type='hidden' class='disable_check'>");
+    });
+
+    // 이메일 중복 검사 버튼을 눌렀을 때
+    $("#chkEmail").click(function (){
+        const u_email_t = $("#u_email").val().trim();
+        let emailAddr = $("#emailAddr").val();
+
+        if(emailAddr.length == 0){
+            emailAddr = $("#u_email2").val().trim();
+        }
+
+        if (u_email_t.length > 0 && emailAddr.length > 0) {
+            $.ajax({
+                url: "Controller?type=chkemail",
+                type: "post",
+                data:{ u_email: u_email_t, emailAddr: emailAddr }
+            }).done(function (res) {
+                updateValidationMessage("#email_usable", res);
+            });
+        } else {
+            $("#email_usable").html("<span class='error'>이메일을 모두 입력해주세요</span><input type='hidden' class='disable_check'>");
+        }
+    });
+
+    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비
+    $("#u_email, #u_email2").keyup(function (){
+        $("#email_usable").html("<span class='error'>중복 검사 버튼을 눌러주세요</span><input type='hidden' class='disable_check'>");
+    });
+
+
+    //개인정보 확인 dialog에서 정보 수정 도중 [취소] 버튼을 눌렀을 때
+    function cancelMyInfo() {
+        console.log("1231654");
+        document.location.href = "AdminController?type=adminmemlist";
+    }
+
+
+
 
 </script>
-
+</div>
 </body>
 </html>

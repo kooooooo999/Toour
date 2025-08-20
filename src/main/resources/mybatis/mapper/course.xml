@@ -3,6 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="course">
+
     <resultMap id="Map2" type="toour.member.vo.CourseDateVO">
         <id property="courseDate_idx" column="courseDate_idx"/>
         <collection property="courseIn_list" ofType="toour.member.vo.CourseInVO" select="course.getCourseIn" column="courseDate_idx"/>
@@ -23,18 +24,10 @@
         WHERE course_idx = #{course_idx}
     </select>
 
+
     <select id="getCourseIn" parameterType="String" resultType="toour.member.vo.CourseInVO">
         SELECT * FROM courseIn
         WHERE courseDate_idx = #{courseDate_idx}
     </select>
 
-    <select id="searchCourse" parameterType="String" resultType="toour.member.vo.CourseVO">
-        SELECT * FROM course
-        WHERE member_idx = #{member_idx}
-    </select>
-
-    <insert id="addCourse" parameterType="Map">
-        insert into course ( member_idx, course_name, created_at, course_summary )
-        values ( #{member_idx}, #{course_name}, now(), #{course_summary} )
-    </insert>
 </mapper>

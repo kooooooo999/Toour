@@ -191,13 +191,27 @@
             color: white; /* 흰색 글자 */
             font-weight: bold; /* 글자 굵게 */
         }
+
+        .totalcount {
+            padding-right: 780px;
+            font-weight: bold;
+        }
+
+        #totalcnt {
+            color: #007bff;
+        }
     </style>
 </head>
 <body>
 
 <c:import url="/common/header.jsp"/>
+<c:set var="p" value="${requestScope.page}"/>
+
 <div class="sortingTotal">
 <span class="sorting">
+    <span class="totalcount">
+    <p>총 : <strong id="totalcnt">${p.totalCount}</strong>건</p>
+    </span>
 <span>
     <button type="button" name="modifiedDate" id="modifiedDate" value="R" onclick="arrange(this)" selected>
         최신순

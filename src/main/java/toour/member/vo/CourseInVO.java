@@ -34,4 +34,6 @@ public class CourseInVO {
     public void setContentTypeId(String contentTypeId) {
         this.contentTypeId = contentTypeId;
     }
+
+
 }

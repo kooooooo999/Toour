@@ -1,42 +1,144 @@
-<%@ page import="toour.post.vo.PostVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+
 <!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Insert title here</title>
+    <!-- 외부 CSS연결 -->
+    <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="../css/summernote-lite.css"/>
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-    <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
     <style type="text/css">
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        #post h2 {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            padding-top: 35px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
         #post table {
-            width:580px;
-            margin-left:10px;
-            border:1px solid black;
-            border-collapse:collapse;
-            font-size:14px;
+            width: 100%;
+            max-width: 1200px;
+            margin: 30px auto;
+            border-collapse: collapse;
+            font-size: 14px;
+            background-color: #f9f9f9;
         }
 
-        #post table caption {
-            font-size:20px;
-            font-weight:bold;
-            margin-bottom:10px;
+        #post th {
+            background-color: #e0e7f1;
+            padding: 10px;
+            text-align: left;
         }
 
-        #post table th {
-            text-align:center;
-            border:1px solid black;
-            padding:4px 10px;
+        #post td {
+            padding: 10px;
+            text-align: left;
         }
 
-        #post table td {
-            text-align:left;
-            border:1px solid black;
-            padding:4px 10px;
+        #post td input[type="text"],
+        #post td input[type="password"],
+        #post td input[type="file"],
+        #post td textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+
+        /* 텍스트 영역 스타일 */
+        #post td textarea {
+            height: 150px;
+            resize: vertical;
+        }
+
+        #post td input[type="file"] {
+            width: auto;
+            border: none;
+        }
+
+        #post input[type="submit"],
+        #post input[type="reset"],
+        #post input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        #post_content{
+          height: 500px;
+        }
+
+        #post input[type="submit"]:hover,
+        #post input[type="reset"]:hover,
+        #post input[type="button"]:hover {
+            background-color: #0056b3;
+        }
+
+        #post td img {
+            margin-right: 10px;
+        }
+
+        .paging-area {
+            margin-bottom: 0 !important;
+            padding-bottom: 0 !important;
+        }
+
+        footer {
+            margin-top: 0 !important;
+        }
+
+        .file-item {
+            margin: 5px 0;
+        }
+
+        .file-item a {
+            font-size: 14px;
+            color: #007bff;
+        }
+
+        .file-item label {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+        .post-actions {
+            text-align: right;
+            margin-top: 20px;
+        }
+
+        .post-actions input[type="submit"],
+        .post-actions input[type="button"] {
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+
+        .post-actions input[type="submit"]:hover,
+        .post-actions input[type="button"]:hover {
+            background-color: #0056b3;
         }
 
         body {
@@ -53,21 +155,13 @@
             margin-top: 0 !important;
         }
 
-        .no {width:15%}
-        .subject {width:30%}
-        .writer {width:20%}
-        .reg {width:20%}
-        .hit {width:15%}
-        .title{background:lightsteelblue}
-
-        .odd {background:silver}
-        .t_bold{ font-weight: bold; color: #007bff; }
-
     </style>
 
 </head>
 <body>
+
 <c:import url="/common/header.jsp" />
+
 <c:if test="${empty sessionScope.member}">
     <h3>로그인이 필요합니다.</h3>
     <p>
@@ -77,97 +171,90 @@
     </p>
 </c:if>
 
-
 <c:if test="${not empty sessionScope.member}">
-<c:set var="vo" value="${requestScope.vo}" scope="page"/>
+    <c:set var="vo" value="${requestScope.vo}" scope="page"/>
     <c:set var="filevo" value="${requestScope.filevo}" scope="page"/>
     <c:set value="${requestScope.cPage}" var="cPage"/>
 
-<div id="post">
-    <form name="editForm" action="Controller?type=edit" method="post"
-          enctype="multipart/form-data" onsubmit="return sendData()">
-        <<input type="hidden" name="category_idx" value="2"/>
-        <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
-        <input type="hidden" name="cPage" value="${cPage}"/>
-        <table>
-            <caption>게시판 수정</caption>
-            <tbody>
-            <tr>
-                <th>제목:</th>
-                <td><input type="text" name="post_title" id="post_title" size="45" value="${vo.post_title}"/></td>
-            </tr>
-            <tr>
-                <th>이름:</th>
-                <td><input type="text" value="${sessionScope.member.member_nickname}"
-                       name="member_nickname" id="member_nickname" size="12" readonly/></td>
-            </tr>
-            <tr>
-                <th>내용:</th>
-                <td><textarea name="post_content" cols="50" id="post_content" rows="8">${vo.post_content}</textarea></td>
+    <div id="post">
+        <h2>게시글 수정</h2>
+        <form name="editForm" action="Controller?type=edit" method="post"
+              enctype="multipart/form-data" onsubmit="return sendData()">
+            <input type="hidden" name="category_idx" value="2"/>
+            <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+            <input type="hidden" name="cPage" value="${cPage}"/>
+            <table>
+                <caption>게시판 수정</caption>
+                <tbody>
+                <tr>
+                    <th>제목:</th>
+                    <td><input type="text" name="post_title" id="post_title" size="45" value="${vo.post_title}"/></td>
+                </tr>
+                <tr>
+                    <th>이름:</th>
+                    <td><input type="text" value="${sessionScope.member.member_nickname}"
+                               name="member_nickname" id="member_nickname" size="12" readonly/></td>
+                </tr>
+                <tr>
+                    <th>내용:</th>
+                    <td><textarea name="post_content" cols="50" id="post_content" rows="8">${vo.post_content}</textarea></td>
+                </tr>
 
-            </tr>
+                <tr>
+                    <th>첨부파일:</th>
+                    <td>
+                        <c:if test="${not empty requestScope.file}">
+                            <c:forEach var="file" items="${requestScope.file}">
+                                <div class="file-item">
+                                    <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
+                                    <label><input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제</label>
+                                </div>
+                            </c:forEach>
+                        </c:if>
 
-            <tr>
-                <th>첨부파일:</th>
-                <td>
-                        <%-- Check if a list of files exists --%>
-                    <c:if test="${not empty requestScope.file}">
-                        <%-- Loop through each file in the list --%>
-                        <c:forEach var="file" items="${requestScope.file}">
-                            <div class="file-item">
-                                    <%-- Use the 'file' variable from the loop to get each file's data --%>
-                                <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
-                                <label><input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제</label>
-                            </div>
-                        </c:forEach>
-                    </c:if>
+                        <div class="file-item">
+                            <label for="file">새 파일 첨부:</label>
+                            <input type="file" id="file" name="file"/>
+                        </div>
+                    </td>
+                </tr>
 
-                    <div class="file-item">
-                        <label for="file">새 파일 첨부:</label>
-                        <input type="file" id="file" name="file"/>
-                    </div>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="2">
-                    <div class="post-actions">
-                        <input type="submit" value="수정" class="btn primary"/>
-                        <input type="button" value="취소" onclick="goBack()" class="btn ghost"/>
-                        <input type="button" value="목록" onclick="location.href='Controller?type=list'" class="btn"/>
-                    </div>
-                </td>
-            </tr>
-            </tbody>
-        </table>
-    </form>
-</div>
+                <tr>
+                    <td colspan="2">
+                        <div class="post-actions">
+                            <input type="submit" value="수정" class="btn primary"/>
+                            <input type="button" value="취소" onclick="goBack()" class="btn ghost"/>
+                            <input type="button" value="목록" onclick="location.href='Controller?type=list'" class="btn"/>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </form>
+    </div>
 </c:if>
-<c:import url="/common/footer.jsp" />
 
+<c:import url="/common/footer.jsp" />
 
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
 <script>
     $(function (){
-
         $("#post_content").summernote({
             lang: "ko-KR",
             height: 300,
             callbacks: {
                 onImageUpload: function(files, editor){
-                    // 에디터에 이미지를 추가될 때 수행하는 곳!
-                    // 이미지는 여러 개 추가할 수 있으므로 files는 배열이다.
+                    // 이미지를 서버에 업로드
                     for(let i=0; i<files.length; i++)
                         sendImg(files[i], editor);
                 }
             }
         });
-
     });
 
-        function sendData() {
+    function sendData() {
         let title = $("#post_title").val();
         if (title.trim().length < 1) {
             alert("제목을 입력하세요");
@@ -185,18 +272,12 @@
         }
         //유효성 검사 통과시 폼제출!
         return true;
-        }
-
+    }
 
     function sendImg(file, editor) {
-        //서버로 비동기식 통신을 수행하기 위해 준비한다.
-        // 이미지를 서버로 보내기위해 폼객체를 생성하자!
         let frm = new FormData();
-
-        // 서버로 보낼 이미지파일을 폼객체에 파라미터로 지정
         frm.append("upload", file);
 
-        //비동기식 통신
         $.ajax({
             url: "Controller?type=saveImg",
             data: frm,
@@ -204,7 +285,7 @@
             contentType: false,
             processData: false,
             dataType: "json"
-        }).done(function (res){
+        }).done(function(res){
             $("#post_content").summernote("editor.insertImage", res.img_url);
         });
     }
@@ -218,16 +299,3 @@
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-

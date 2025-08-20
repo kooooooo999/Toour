@@ -21,6 +21,8 @@
             border: 1px solid #dee2e6;
             border-radius: 8px !important;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
+
         }
 
 
@@ -145,6 +147,14 @@
             margin-left: 140px;
         }
 
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            margin-top: 0 !important;
+        }
 
         /*.attachment:hover {*/
         /*    border-bottom: 2px solid #333;*/
