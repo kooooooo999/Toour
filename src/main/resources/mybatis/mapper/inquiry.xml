@@ -11,6 +11,22 @@
         VALUES (#{member_idx}, #{category}, #{title}, #{content}, #{file_path}, #{status}, NOW(), NOW())
     </insert>
 
+    <!--문의목록 보기(마이페이지용)-->
+    <select id="getMyInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
+        FROM inquiry i
+        LEFT JOIN member m ON  i.member_idx = m.member_idx
+        where i.member_idx = #{member_idx}
+    </select>
+    <!--문의목록 수(마이페이지용)-->
+    <select id="getMyInquiryListCount" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM inquiry i LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.status != '삭제' and i.member_idx = #{member_idx}
+    </select>
+
     <!-- 문의 목록 조회 (페이징) -->
     <select id="getInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
         SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content, 

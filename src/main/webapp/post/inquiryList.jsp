@@ -198,18 +198,18 @@
             </tr>
         </thead>
         <tbody>
-        <c:set var="p" value="${requestScope.QnAPage}" />
+        <c:set var="p2" value="${requestScope.QnAPage}" />
         <c:set var="inquiryList" value="${requestScope.inquiryList}" scope="page"/>
         <c:choose>
             <c:when test="${not empty inquiryList and fn:length(requestScope.inquiryList) > 0}">
                 <c:forEach items="${inquiryList}" var="vo" varStatus="vs">
                     <c:if test="${not empty vo}">
-                    <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
+                    <c:set var="num" value="${p2.totalCount -((p2.nowPage-1)*p2.numPerPage+vs.index)}"/>
                         <tr>
                             <td>${num}</td>
                             <td>${vo.category}</td>
                             <td style="text-align: left">
-                                <a href="Controller?type=inquiryView&inquiry_idx=${vo.inquiry_idx}&cPage=${p.nowPage}">
+                                <a href="Controller?type=inquiryView&inquiry_idx=${vo.inquiry_idx}&cPage=${p2.nowPage}">
                                         ${vo.title}
                                 </a>
                             </td>
@@ -253,25 +253,25 @@
     <div class="paging-area">
     <ol class="paging">
         <!--이전이나 다음 블록으로 이동 불가-->
-    <c:if test="${p.startPage < p.pagePerBlock}">
+    <c:if test="${p2.startPage < p2.pagePerBlock}">
         <li class="disable">&lt;</li>
     </c:if>
         <!--이전이나 다음 블록으로 이동-->
-    <c:if test="${p.startPage >= p.pagePerBlock}">
-        <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">inquiryList</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
+    <c:if test="${p2.startPage >= p2.pagePerBlock}">
+        <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">inquiryList</c:if><c:if test="${requestScope.searchValue eq null}">list</c:if>&cPage=${p2.startPage-p2.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
     </c:if>
-    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-        <c:if test="${p.nowPage == vs.index}">
+    <c:forEach begin="${p2.startPage}" end="${p2.endPage}" varStatus="vs">
+        <c:if test="${p2.nowPage == vs.index}">
             <li class="now">${vs.index}</li>
         </c:if>
-        <c:if test="${p.nowPage != vs.index}">
+        <c:if test="${p2.nowPage != vs.index}">
             <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">inquiryList</c:if><c:if test="${requestScope.searchValue eq null}">inquiryList</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
         </c:if>
     </c:forEach>
-    <c:if test="${p.endPage < p.totalPage}">
-        <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">inquiryList</c:if><c:if test="${requestScope.searchValue eq null}">inquiryList</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
+    <c:if test="${p2.endPage < p2.totalPage}">
+        <li><a href="Controller?type=<c:if test="${requestScope.searchValue ne null}">inquiryList</c:if><c:if test="${requestScope.searchValue eq null}">inquiryList</c:if>&cPage=${p2.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
     </c:if>
-    <c:if test="${p.endPage >= p.totalPage}">
+    <c:if test="${p2.endPage >= p2.totalPage}">
         <li class="disable">&gt;</li>
     </c:if>
     </ol>

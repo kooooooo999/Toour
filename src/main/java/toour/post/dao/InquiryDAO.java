@@ -214,4 +214,25 @@ public class InquiryDAO {
 
     }
 
+    public static InquiryVO[] getMyInquiryList(String member_idx){
+        InquiryVO[] ar=null;
+        Map<String, String> map = new HashMap<>();
+        map.put("member_idx", member_idx);
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<InquiryVO> list = ss.selectList("Inquiry.getMyInquiryList", map);
+        if(list!=null&&list.size()>0){
+            ar=list.toArray(new InquiryVO[list.size()]);
+
+        }
+        ss.close();
+        return ar;
+    }
+    public static int getMyInquiryListCount(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt =ss.selectOne("Inquiry.getMyInquiryListCount", member_idx);
+
+        ss.close();
+        return cnt;
+    }
+
 }

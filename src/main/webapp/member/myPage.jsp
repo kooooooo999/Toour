@@ -371,6 +371,13 @@
             min-width: 700px; /* 테이블 최소 너비 확장 */
             font-size: 1em; /* 테이블 폰트 사이즈 확장 */
         }
+        .inquiry-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            min-width: 700px; /* 테이블 최소 너비 확장 */
+            font-size: 1em; /* 테이블 폰트 사이즈 확장 */
+        }
 
         #post th, #post td {
             padding: 12px; /* 테이블 셀 패딩 확장 */
@@ -550,7 +557,6 @@
                                 <th>번호</th>
                                 <th>제목</th>
                                 <th>작성자</th>
-                                <th>별점</th>
                                 <th>조회수</th>
                                 <th>작성일</th>
                             </tr>
@@ -571,7 +577,6 @@
                                             </a>
                                         </td>
                                         <td>${vo.member_nickname}</td>
-                                        <td>${vo.post_star}</td>
                                         <td>${vo.post_views}</td>
                                         <td>${vo.post_created_at.substring(0,10)}</td>
                                     </tr>
@@ -612,10 +617,138 @@
                 </div>
             </div>
 
-            <div id="suggest_list" class="listArea">
+            <div id="suggest_list" class="listArea"><c:set var="t" value="${requestScope.QnAtotalCount}"/>
+
                 <a href="Controller?type=QnA">건의사항</a>
                 <div style="padding: 20px; text-align: center;">
-                    <c:import url="/post/inquiryList.jsp" />
+                    <div class="container">
+                        <%--
+
+                            <!-- 검색 폼 -->
+                            <div class="search-form">
+                                <form method="post" action="Controller" onsubmit="return validateForm()">
+                                    <input type="hidden" name="type" value="inquirySearch">
+                                    <c:set var="category" value="${empty param.category ? '' : param.category}" />
+
+                                    <select id="category" name="category">
+                                        <option value="" >전체유형</option>
+                                        <option value="계정관리" >계정관리</option>
+                                        <option value="서비스이용">서비스이용</option>
+                                        <option value="기술지원" >기술지원</option>
+                                        <option value="버그신고" >버그신고</option>
+                                        <option value="기타" >기타</option>
+                                    </select>
+
+                                    <select name="searchType" id="searchType">
+                                        <option value="">검색 조건</option>
+                                        <option value="title" <c:if test="${param.searchType eq 'title'}">selected</c:if>>제목</option>
+                                        <option value="content" <c:if test="${param.searchType eq 'content'}">selected</c:if>>내용</option>
+                                    </select>
+
+                                    <input type="text" name="searchValue" placeholder="검색어를 입력하세요" id="searchValue"
+                                           value="${param.searchValue}">
+
+                                    <button type="submit">검색</button>
+                                    <a href="Controller?type=inquiryList" class="btn btn-success">전체보기</a>
+                                </form>
+                            </div>
+                        --%>
+
+                        <!-- 문의 목록 테이블 -->
+                        <table class="inquiry-table">
+                            <caption>문의 목록 테이블</caption>
+
+                            <thead>
+                            <tr>
+                                <th width="10%">번호</th>
+                                <th width="15%">유형</th>
+                                <th width="30%">제목</th>
+                                <th width="15%">상태</th>
+                                <th width="15%">작성일</th>
+                                <th width="15%">관리</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:set var="p2" value="${requestScope.InquiryPage}" />
+                            <c:set var="inquiryList" value="${requestScope.myInquiryList}" scope="page"/>
+                            <c:choose>
+                                <c:when test="${not empty inquiryList and fn:length(inquiryList) > 0}">
+                                    <c:forEach items="${inquiryList}" var="ivo" varStatus="vs">
+                                        <c:if test="${not empty ivo}">
+                                            <c:set var="num2" value="${p2.totalCount -((p2.nowPage-1)*p2.numPerPage+vs.index)}"/>
+                                            <tr>
+                                                <td>${num2}</td>
+                                                <td>${ivo.category}</td>
+                                                <td style="text-align: left">
+                                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}&cPage=${requestScope.QnAcPage}">
+                                                            ${ivo.title}
+                                                    </a>
+                                                </td>
+
+                                                <td><span class="status-badge status-${ivo.statusColor}">${ivo.status}</span></td>
+                                                <td>${ivo.created_at.substring( 0, 10)}</td>
+                                                <td>
+                                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}" class="btn btn-primary">보기</a>
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:when>
+
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="6" class="no-data" style="text-align: center; padding: 50px;">
+                                            <div class="no-result">
+                                                <c:choose>
+                                                    <c:when test="${not empty requestScope.QnAsearchValue}">
+                                                        <label>"${requestScope.QnAsearchValue}"</label>에 대한 검색 결과가 없습니다.<br>
+                                                        다른 검색어를 입력해보세요.
+                                                    </c:when>
+                                                    <c:otherwise> 등록된 문의가 없습니다</c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징 -->
+
+
+                        <div class="paging-area">
+                            <ol class="paging">
+                                <!--이전이나 다음 블록으로 이동 불가-->
+                                <c:if test="${p2.startPage < p2.pagePerBlock}">
+                                    <li class="disable">&lt;</li>
+                                </c:if>
+                                <!--이전이나 다음 블록으로 이동-->
+                                <c:if test="${p2.startPage >= p2.pagePerBlock}">
+                                    <li><a href="Controller?type=inquiryList&cPage=${p2.startPage-p2.pagePerBlock}">&lt;</a></li>
+                                </c:if>
+                                <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
+                                    <c:if test="${p2.nowPage == i}">
+                                        <li class="now">${i}</li>
+                                    </c:if>
+                                    <c:if test="${p2.nowPage != i}">
+                                        <li><a href="Controller?type=inquiryList&cPage=${i}">${i}</a></li>
+                                    </c:if>
+                                </c:forEach>
+                                <c:if test="${p2.endPage < p2.totalPage}">
+                                    <li><a href="Controller?type=inquiryList&cPage=${p2.endPage+1}">&gt;</a></li>
+                                </c:if>
+                                <c:if test="${p2.endPage >= p2.totalPage}">
+                                    <li class="disable">&gt;</li>
+                                </c:if>
+                            </ol>
+                        </div>
+
+                    </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -797,6 +930,13 @@
             data:{nPage:nPage , totalCount:${requestScope.page.totalCount}}
         }).done(function (res) {
             $("#mypost").html(res);
+        })
+    }
+    function moveInquiryPage(nPage) {
+        $.ajax({
+            url:"Controller?type=myinquiry",
+            type:"POST",
+            data:{nPage:nPage, totalcount:${requestScope.}}
         })
     }
     

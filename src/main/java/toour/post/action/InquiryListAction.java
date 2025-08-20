@@ -88,8 +88,8 @@ public class InquiryListAction implements Action {
         System.out.println("inquiryAction inquiryList.length: "+inquiryList.length);
         // request에 데이터 저장
         request.setAttribute("QnAcPage", cPage);
-        request.setAttribute("inquiryList", inquiryList);
-        request.setAttribute("QnAPage", page);
+        request.setAttribute("myInquiryList", inquiryList);
+        request.setAttribute("InquiryPage", page);
         request.setAttribute("QnAsearchType", searchType);
         request.setAttribute("QnAsearchValue", searchValue);
         request.setAttribute("category", category);
