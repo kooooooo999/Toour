@@ -88,6 +88,33 @@
         WHERE member_idx = #{member_idx}
     </update>
 
+    <!-- 검색 멤버 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from member
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'member_id'">
+                        member_id LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_name'">
+                        member_name LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_warning'">
+                        member_warning = #{searchValue}
+                    </when>
+                </choose>
+                AND member_type = 1
+            </if>
+        </where>
+    </select>
+
+
+
+
     <!-- 회원정보 검색 -->
     <select id="mem_search" parameterType="map" resultType="toour.member.vo.MemberVO">
         SELECT *
@@ -107,7 +134,7 @@
                         member_nickname LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
                     <when test="searchType != null and searchType == 'member_warning'">
-                        member_warning LIKE CONCAT('%', #{searchValue}, '%')
+                        member_warning = #{searchValue}
                     </when>
                 </choose>
 <!--            </if>-->

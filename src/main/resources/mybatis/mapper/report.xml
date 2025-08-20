@@ -44,4 +44,38 @@
 
 
 
+    <!-- 신고수 가지고 오기 -->
+    <select id="reportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 미처리된 신고수 가지고 오기 -->
+    <select id="UnprocessedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 0
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 처리된 신고수 가지고 오기 -->
+    <select id="processedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 1
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 게시물신고수 가지고 오기 -->
+    <select id="PostreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'POST'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 댓글 신고수 가지고 오기 -->
+    <select id="CommentreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'COMMENT'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
 </mapper>

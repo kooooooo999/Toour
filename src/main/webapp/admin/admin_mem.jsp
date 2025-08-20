@@ -38,6 +38,7 @@
             background-color: #34495e;
         }
 
+
         .main-content {
             flex: 1;
             padding: 40px;
@@ -204,6 +205,53 @@
         }
 
 
+        .paging-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .paging {
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .paging li {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .paging li a,
+        .paging li.now,
+        .paging li.disable {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #3498db;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .paging li a:hover {
+            background-color: #e7f0ff;
+            border-color: #3498db;
+        }
+
+        .paging li.now {
+            font-weight: 700;
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .paging li.disable {
+            color: #ccc;
+            cursor: default;
+        }
+
+
+
     </style>
 </head>
 <body>
@@ -219,21 +267,19 @@
 <div class="main-content" id="post">
     <h1>회원정보 관리</h1>
 
+        <div class="search-area">
+            <form method="post" action="AdminController?type=adminmemsearch" onsubmit="return validateForm()">
+<%--                <input type="hidden" name="category_idx" value="2">--%>
+                <select id="searchType" name="searchType">
+                    <option value="member_name" <c:if test="${requestScope.searchType eq 'member_name'}">selected</c:if> >이름</option>
+                    <option value="member_id" <c:if test="${requestScope.searchType eq 'member_id'}">selected</c:if>>아이디</option>
+                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>별명</option>
+                    <option value="member_warning" <c:if test="${requestScope.searchType eq 'member_warning'}">selected</c:if>>경고횟수</option>
+                </select>
+                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
+                <button type="submit">검색</button>
+            </form>
 
-    <div class="search-area">
-        <form method="post" action="AdminController?type=adminmemsearch" onsubmit="return validateForm()">
-            <select id="searchType" name="searchType">
-                <option value="member_name">이름</option>
-                <option value="member_id">아이디</option>
-                <option value="member_nickname">별명</option>
-                <option value="member_warning">경고횟수</option>
-            </select>
-            <label for="searchValue"></label><input type="text" id="searchValue" placeholder="검색내용을 입력해주세요"
-                                                    name="searchValue"/>
-            <i class="fas fa-search">
-                <button type="submit" class="fas">검색</button>
-            </i>
-        </form>
 
         <form id="delform" method="post" action="AdminController?type=adminmemdel">
             <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
@@ -245,6 +291,9 @@
                     <button type="button" id="member_del_cancel">취소</button>
                 </div>
             </div>
+        </form>
+        </div>
+
 
             <%--      <%--%>
             <%--        String searchType = request.getParameter("searchType");--%>
@@ -252,7 +301,6 @@
             <%--      %>--%>
             <%--      <p>searchType: <%= searchType %></p>--%>
             <%--      <p>searchValue: <%= searchValue %></p>--%>
-    </div>
 
     <table id="table">
         <thead>
@@ -280,7 +328,7 @@
                     </td>
                     <td class="no">
                         <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-                                ${vo.member_idx} >_<
+                                ${vo.member_idx}
                         </a>
                     </td>
                     <td>
@@ -321,31 +369,34 @@
         </c:forEach>
         </tbody>
     </table>
+        </form>
 
-
-    <div class="pagination">
-        <c:if test="${p.startPage > 1}">
-            <a href="AdminController?type=adminmemlist&cPage=${p.startPage - 1}">&lt;</a>
-        </c:if>
-
-        <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-            <c:choose>
-                <c:when test="${p.nowPage == vs.index}">
-                    <span class="current">${vs.index}</span>
-                </c:when>
-
-                <c:otherwise>
-                    <a href="AdminController?type=adminmemlist&cPage=${vs.index}">${vs.index}</a>
-                </c:otherwise>
-            </c:choose>
-        </c:forEach>
-
-        <c:if test="${p.endPage < p.totalPage}">
-            <a href="AdminController?type=adminmemlist&cPage=${p.endPage + 1}">&gt;</a>
-        </c:if>
+            <div class="paging-area">
+                <ol class="paging">
+                    <c:set var="p" value="${requestScope.page}" />
+                    <c:if test="${p.startPage < p.pagePerBlock}">
+                        <li class="disable">&lt;</li>
+                    </c:if>
+                    <c:if test="${p.startPage >= p.pagePerBlock}">
+                        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
+                    </c:if>
+                    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+                        <c:if test="${p.nowPage == vs.index}">
+                            <li class="now">${vs.index}</li>
+                        </c:if>
+                        <c:if test="${p.nowPage != vs.index}">
+                            <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
+                        </c:if>
+                    </c:forEach>
+                    <c:if test="${p.endPage < p.totalPage}">
+                        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
+                    </c:if>
+                    <c:if test="${p.endPage >= p.totalPage}">
+                        <li class="disable">&gt;</li>
+                    </c:if>
+                </ol>
     </div>
-
-</div> <!-- /main-content -->
+</div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -401,6 +452,26 @@
             // 해당 idx+1번째에 있는 td안의 체크박스들을 얻어낸다.
             let ar = $("#table tbody td:nth-child(" + (idx + 1) + ") input:checkbox");
             ar.prop("checked", this.checked);
+        });
+
+        // 별명 창에 타이핑을 쳤을 때
+        $("#u_nickname").keyup(function (){
+            const u_nickname_t = $(this).val().trim();
+            if (u_nickname_t.length > 0) {
+                $.ajax({
+                    url: "Controller?type=chknickname",
+                    type: "post",
+                    data:{ u_nickname: u_nickname_t }
+                }).done(function (res) {
+                    updateValidationMessage("#nickname_usable", res);
+                    if(u_nickname_t == "${sessionScope.member.member_nickname}"){
+                        $("#nickname_usable").removeClass("success error");
+                        $("#nickname_usable").addClass("success").html("");
+                    }
+                });
+            } else {
+                $("#nickname_usable").html("");
+            }
         });
 
         //전체선택을 클릭한 뒤, tbody에 있는 클릭 한 개가 해제되면 전체선택 체크박스도 해제

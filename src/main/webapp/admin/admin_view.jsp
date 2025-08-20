@@ -6,6 +6,7 @@
 <html>
 <head>
   <title>회원정보 관리</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
   <style>
       body {
           margin: 0;
@@ -40,6 +41,13 @@
           background-color: #34495e;
       }
 
+      .page-title {
+          font-size: 32px;
+          font-weight: bold;
+          color: #000000;
+          margin-bottom: 30px;
+      }
+
       .main-content {
           flex: 1;
           padding: 30px 40px;
@@ -50,12 +58,6 @@
           font-size: 14px;
       }
 
-      h1 {
-          margin-bottom: 20px;
-          font-weight: 600;
-          color: #2563eb; /* 진한 파랑 대신 #2563eb */
-          font-size: 22px;
-      }
 
       .search-area {
           margin-bottom: 15px;
@@ -203,9 +205,9 @@
 <c:set var="vo" value="${requestScope.vo}" scope="page"/>
 <div class="main-content">
 
-  <h1>회원정보 관리</h1>
+  <h1 class="page-title">회원정보 관리</h1>
     <div class="MyInfo-container" id="MyInfo-container">
-        <form action="AdminController?type=AdminmemInfo" method="post" name="MyInfo_form">
+        <form action="AdminController?type=adminmeminfo" method="post" name="MyInfo_form">
             <input type="hidden" id="member_idx" name="member_idx" value="${vo.member_idx}" />
             <table class="MyInfo-table">
 <%--                <caption class="hidden">개인정보 테이블</caption>--%>
@@ -269,10 +271,13 @@
                                 <c:set var="emailIndex" value="${fn:indexOf(vo.member_email, '@')}"/>
                                 <c:set var="email1" value="${fn:substring(vo.member_email,0,emailIndex)}"/>
                                 <c:set var="email2" value="${fn:substring(vo.member_email,emailIndex+1,fn:length(vo.member_email))}"/>
+                                email2: ${email2} <br/>
+                                email1: ${email1} <br/>
+                                emailIndex: ${emailIndex} <br/>
                                 <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
                                 <span class="email-separator">@</span>
                                 <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>
-                                <select id="emailAddr" name="emailAddr" class="email-select" onchange="changeemail2(this)">
+                                <select id="emailAddr" name="emailAddr" class="email-select">
                                     <option value="">직접 입력</option>
                                     <option value="naver.com" <c:if test="${email2.equals('naver.com')}" > selected</c:if> >naver.com</option>
                                     <option value="gmail.com" <c:if test="${email2.equals('gmail.com')}" > selected</c:if> >gmail.com</option>
@@ -292,7 +297,7 @@
                     <td>
                         <input type="text" id="u_warning" name="u_warning" class="input-field" placeholder="경고횟수" value="현재 경고횟수:${vo.member_warning}" disabled/>
                         <p>변경할 경고횟수:</p>
-                        <select id="warning" name="warning" class="warning" disabled>
+                        <select id="warning" name="u_warning" class="warning" disabled>
                             <option value="">직접 입력</option>
                             <option value="0">0</option>
                             <option value="1">1</option>
@@ -313,15 +318,16 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
         crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 
 <script>
-    // $(function (){
-    //     $("#emailAddr").change(function () {
-    //         $("#u_email2").val("");
-    //     })
-    // });
+
+
+    $(function (){
+        $("#emailAddr").change(function () {
+            $("#u_email2").val("");
+        })
+    });
 
 
     //개인정보 확인 dialog에서 [수정하기]를 눌렀을 때
@@ -391,11 +397,9 @@
     }
 
 
-
-
     // 별명 창에 타이핑을 쳤을 때
     $("#u_nickname").keyup(function (){
-        const u_nickname_t = $(this).val().trim();
+        const u_nickname_t = $("#u_nickname").val().trim();
         if (u_nickname_t.length > 0) {
             $.ajax({
                 url: "Controller?type=chknickname",
@@ -486,7 +490,6 @@
 
     //개인정보 확인 dialog에서 정보 수정 도중 [취소] 버튼을 눌렀을 때
     function cancelMyInfo() {
-        console.log("1231654");
         document.location.href = "AdminController?type=adminmemlist";
     }
 

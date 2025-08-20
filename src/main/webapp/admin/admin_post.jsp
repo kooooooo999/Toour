@@ -143,6 +143,51 @@
     #writebutton:hover {
       background-color: #2980b9;
     }
+
+    .paging-area {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .paging {
+      list-style: none;
+      padding: 0;
+      display: inline-block;
+    }
+
+    .paging li {
+      display: inline-block;
+      margin: 0 5px;
+    }
+
+    .paging li a,
+    .paging li.now,
+    .paging li.disable {
+      display: inline-block;
+      padding: 6px 12px;
+      font-size: 13px;
+      color: #3498db;
+      text-decoration: none;
+      border-radius: 4px;
+      border: 1px solid transparent;
+    }
+
+    .paging li a:hover {
+      background-color: #e7f0ff;
+      border-color: #3498db;
+    }
+
+    .paging li.now {
+      font-weight: 700;
+      background-color: #3498db;
+      color: white;
+      border-color: #3498db;
+    }
+
+    .paging li.disable {
+      color: #ccc;
+      cursor: default;
+    }
   </style>
 </head>
 <body>
@@ -155,17 +200,16 @@
 
   <div id="post">
     <div class="search-area">
-      <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
-        <input type="hidden" name="category_idx" value="1">
+      <form method="post" action="AdminController?type=adminpostsearch" onsubmit="return validateForm()">
+        <input type="hidden" name="category_idx" value="2">
         <select id="searchType" name="searchType">
-          <option value="post_title">제목</option>
-          <option value="post_content">내용</option>
-          <option value="member_nickname">글쓴이</option>
+          <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
+          <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
+          <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
+
         </select>
-
-        <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+        <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
         <button type="submit">검색</button>
-
       </form>
       <input type="button" id="writebutton" value="글쓰기" onclick="javascript:location.href='AdminController?type=adminpostwrite'">
     </div>
@@ -240,24 +284,32 @@
     </table>
   </div>
 
-  <div class="pagination">
-    <c:if test="${p.startPage > 1}">
-      <a href="AdminController?type=adminpost&cPage=${p.startPage - 1}">&lt;</a>
-    </c:if>
-    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-      <c:choose>
-        <c:when test="${p.nowPage == vs.index}">
-          <span class="current">${vs.index}</span>
-        </c:when>
-        <c:otherwise>
-          <a href="AdminController?type=adminpost&cPage=${vs.index}">${vs.index}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-    <c:if test="${p.endPage < p.totalPage}">
-      <a href="AdminController?type=adminpost&cPage=${p.endPage + 1}">&gt;</a>
-    </c:if>
+  <div class="paging-area">
+    <ol class="paging">
+      <c:set var="p" value="${requestScope.page}" />
+      <c:if test="${p.startPage < p.pagePerBlock}">
+        <li class="disable">&lt;</li>
+      </c:if>
+      <c:if test="${p.startPage >= p.pagePerBlock}">
+        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminpostsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminpost</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
+      </c:if>
+      <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+        <c:if test="${p.nowPage == vs.index}">
+          <li class="now">${vs.index}</li>
+        </c:if>
+        <c:if test="${p.nowPage != vs.index}">
+          <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminpostsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminpost</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
+        </c:if>
+      </c:forEach>
+      <c:if test="${p.endPage < p.totalPage}">
+        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminpostsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminpost</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
+      </c:if>
+      <c:if test="${p.endPage >= p.totalPage}">
+        <li class="disable">&gt;</li>
+      </c:if>
+    </ol>
   </div>
+
 
 
   <script>
