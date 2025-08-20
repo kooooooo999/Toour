@@ -27,6 +27,17 @@ public class AdminPostDAO {
         return cnt;
     }
 
+    // 총 게시글 수 막대그래프
+    public static List<Map<String, Object>> getWeeklyPostCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<Map<String,Object>> list = ss.selectList("adminpost.selectWeeklyPostCount");
+        System.out.println("list.get(0).get(\"post_day\")"+list.get(0).get("post_day"));
+
+        ss.close();
+        return list;
+    }
+
+
     // 기본키(고유번호)를 인자로 하여 게시물 가져오기
     public static PostVO getPost(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
