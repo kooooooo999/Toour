@@ -46,7 +46,12 @@ public class SearchResultAction implements Action{
 
         String addTitle = request.getParameter("title"); // 코스 짜는 창에 넣을 때 넘어오는 title 이름
         String removeTitle = request.getParameter("removeTitle"); // 코스 짜는 창에서 목록 삭제할 때 넘어오는 title
-
+        String myCourse = null;
+        Object mycourse = request.getAttribute("myCourse");
+        if (mycourse != null) {
+            myCourse = (String) mycourse;
+        }
+        System.out.println("myCourse:"+myCourse);
         // 요청시 contentType을 얻어낸다. get방식은 null값
         String enc_type = request.getContentType();
 
@@ -56,17 +61,21 @@ public class SearchResultAction implements Action{
             index1 = Integer.valueOf(index); // 넘어오는 index 값
         }
         String keyword = request.getParameter("keyword"); //키워드
-        String encodedKeyword;
-        try {
-            encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        String encodedKeyword = null;
+        if(keyword != null) {
+            try {
+                encodedKeyword = URLEncoder.encode(keyword, "UTF-8");
+            } catch (UnsupportedEncodingException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println(keyword);
         }
-        System.out.println(keyword);
+
+        System.out.println("here1");
 
         if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
             // + 버튼 눌렀을 때 수행
-
+            System.out.println("here2");
             courseList.add(srlist.get(index1));
 
             request.setAttribute("courseList", courseList);
@@ -76,18 +85,21 @@ public class SearchResultAction implements Action{
 
         } else if (removeTitle != null && !removeTitle.trim().isEmpty() && addTitle == null) {
             // - 버튼 눌렀을 때 수행
-
+            System.out.println("here3");
             System.out.println(removeTitle);
             courseList.remove(index1);
 
             request.setAttribute("courseList", courseList);
 
             viewPath = "addList.jsp";
+        } else if (myCourse!=null&&myCourse.equals("myCourse")) {
+            System.out.println("here4");
+            viewPath = "addList.jsp";
         } else {
             // 검색창에 검색했을 때 수행
-
+            System.out.println("here?");
             System.out.println(keyword);
-            SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
+            SearchDataVO[] data = GetAPISearchData.getSearch(request, encodedKeyword);
             request.setAttribute("data", data);
             viewPath = "searchReturn.jsp";
 
@@ -222,7 +234,8 @@ public class SearchResultAction implements Action{
 
         }
 
-        mvo.setCourseList(courseList);
+
+
         return viewPath;
     }
 

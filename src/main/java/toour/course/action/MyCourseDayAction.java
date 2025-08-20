@@ -40,6 +40,7 @@ public class MyCourseDayAction implements Action {
         }
 
         mvo.setCourseList(list);
+        request.setAttribute("myCourse", "myCourse");
         return "Controller?type=searchResult";
     }
 }

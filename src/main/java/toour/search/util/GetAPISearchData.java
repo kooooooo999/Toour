@@ -24,6 +24,7 @@ public class GetAPISearchData {
             StringBuffer sb = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/searchKeyword2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&pageNo=1&numOfRows=5");
             sb.append("&");
+            sb.append("keyword=");
             sb.append(keyword);
             /*sb.append("areaCode=");
             sb.append(areaCode);*/

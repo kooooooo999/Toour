@@ -341,6 +341,7 @@
             type: "post",
             data: { courseDate_idx: courseDate_idx }
         }).done(function (res) {
+            console.log(res);
             $("#courseList").html(res);
         })
 
