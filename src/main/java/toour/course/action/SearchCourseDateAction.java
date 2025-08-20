@@ -17,7 +17,7 @@ public class SearchCourseDateAction implements Action {
 
         CourseDateVO[] date_ar = CourseDateDAO.searchCourseDate(course_idx);
 
-
+        request.setAttribute("course_idx", course_idx);
         request.setAttribute("date_ar", date_ar);
 
         return "courseDateReturn.jsp";

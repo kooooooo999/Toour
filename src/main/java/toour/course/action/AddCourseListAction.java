@@ -24,7 +24,6 @@ public class AddCourseListAction implements Action {
             e.printStackTrace();
         }
 
-
         return "Controller?type=searchCourse";
     }
 }
