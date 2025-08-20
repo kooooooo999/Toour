@@ -34,7 +34,6 @@ public class tripSuggestionAction implements Action {
         String cPage = request.getParameter("cPage");
         String arrange = request.getParameter("arrange");
 
-        System.out.println("pagetype: " + pageType);
         if (cPage == null) {
             cPage = "1";
         }
@@ -131,7 +130,6 @@ public class tripSuggestionAction implements Action {
         sb.append(rows);
         sb.append("&pageNo=");
         sb.append(cPage);
-        System.out.println("sb: " + sb.toString());
         try {
             URL url1 = new URL(sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
@@ -142,18 +140,17 @@ public class tripSuggestionAction implements Action {
             Element root = doc.getRootElement();
             Element body = root.getChild("body");
             Element totalCount = body.getChild("totalCount");
-//            String totalCountStr = totalCount.getText();
+            String totalCountStr = null;
 
             if (totalCount != null) {
-                String totalCountStr = totalCount.getText();
-                if (totalCountStr != null && !totalCountStr.isEmpty()) {
-                    page.setTotalCount(Integer.parseInt(totalCountStr));
-                } else {
-                    page.setTotalCount(0); // totalCount 값이 비어있을 경우 0으로 설정
-                }
-            } else {
-                page.setTotalCount(0); // totalCount 태그가 없을 경우 0으로 설정
+                totalCountStr = totalCount.getText();
             }
+            if (totalCountStr != null && !totalCountStr.isEmpty()) {
+                page.setTotalCount(Integer.parseInt(totalCountStr));
+            } else {
+                page.setTotalCount(0); // totalCount 값이 비어있을 경우 0으로 설정
+            }
+
             page.setNowPage(Integer.parseInt(cPage));
             Element items = body.getChild("items");
             List<Element> item_list = items.getChildren("item");
@@ -174,7 +171,6 @@ public class tripSuggestionAction implements Action {
                 StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
                 sb2.append("&_type=xml&contentId=");
                 sb2.append(voContentid);
-                System.out.println("sb2: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
@@ -214,7 +210,19 @@ public class tripSuggestionAction implements Action {
                         homepageText = homepage;
                     }
                 }
-                DataVO vo = new DataVO(title, mapx, mapy, addr1, addr2, firstimage, tel, voContentTypeid, voContentid, overview, homepageText, homepageUrl);
+                DataVO vo = new DataVO();
+                vo.setTitle(title);
+                vo.setMapx(mapx);
+                vo.setMapy(mapy);
+                vo.setAddr1(addr1);
+                vo.setAddr2(addr2);
+                vo.setFirstimage(firstimage);
+                vo.setTel(tel);
+                vo.setContentTypeId(voContentTypeid);
+                vo.setContentId(voContentid);
+                vo.setOverview(overview);
+                vo.setHomepageText(homepageText);
+                vo.setHomepageUrl(homepageUrl);
                 ar[i++] = vo;
             }
             request.setAttribute("dataAr", ar);

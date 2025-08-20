@@ -408,8 +408,10 @@
                 </div>
             </c:if>
         </div>
-            <%--    a태그 새창으로 뜨게 다시 하쟈~~~~~~~ 까먹지 말고 if문도 적어라 --%>
-        <p class="courseText_1"><a href="${course.homepageUrl}"> ${course.title}</a></p>
+            <%-- target:클릭 시 브라우저에서 새로운 탭 또는 창/noopener:새 창이 window.opener 속성을 통해 원래 창에 접근하는 것을 방지
+             noreferrer:원래 페이지의 주소 정보를 보호--%>
+        <p class="courseText_1"><a href="${course.homepageUrl}" target="_blank"
+                                   rel="noopener noreferrer"> ${course.title}</a></p>
         <p class="courseText_1">${course.overview}</p>
     </div>
     </c:forEach>
