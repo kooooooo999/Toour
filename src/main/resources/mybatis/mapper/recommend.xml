@@ -16,18 +16,7 @@
         set post_likes = post_likes +1
         where post_idx=#{post_idx}
     </update>
-    <!--추천취소?-->
-    <delete id="deleteRecommend" parameterType="map">
-        delete from recommend
-        from recommend
-        where member_idx = #{member_idx} and post_idx=#{post_idx}
-    </delete>
-    <!--추천취소-->
-    <update id="postLikesDecrease">
-        update post
-        set post_likes = post_likes - 1
-        where post_idx = #{post_idx}
-    </update>
+
     <!--단순 추천수 정렬-->
     <select id="getPostsByLikes" parameterType="map" resultType="toour.post.vo.PostVO">
         select *
@@ -47,5 +36,17 @@
         ORDER BY popularity DESC
         LIMIT #{offset}, #{pageSize} ;
     </select>
+
+    <select id="hasUserRecommended" resultType="int" parameterType="map">
+        SELECT COUNT(*) FROM recommend
+        WHERE member_idx = #{member_idx} AND post_idx = #{post_idx}
+    </select>
+
+    <insert id="insertRecommend" parameterType="map">
+        INSERT INTO recommend ( member_idx, post_idx, recommend_date)
+        VALUES ( #{member_idx}, #{post_idx}, now())
+    </insert>
+
+
 
 </mapper>
