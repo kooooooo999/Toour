@@ -1,7 +1,7 @@
 package toour.action;
 
 import toour.notice.vo.PostVO;
-import toour.post.dao.NoticeDAO;
+import toour.notice.dao.NoticeDAO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

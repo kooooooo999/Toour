@@ -556,9 +556,8 @@
 
     </script>
 </div>
-</body>
-
 <c:import url="/common/footer.jsp"/>
+</body>
 
 </html>
 
