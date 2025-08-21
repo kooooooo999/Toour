@@ -271,9 +271,6 @@
                                 <c:set var="emailIndex" value="${fn:indexOf(vo.member_email, '@')}"/>
                                 <c:set var="email1" value="${fn:substring(vo.member_email,0,emailIndex)}"/>
                                 <c:set var="email2" value="${fn:substring(vo.member_email,emailIndex+1,fn:length(vo.member_email))}"/>
-                                email2: ${email2} <br/>
-                                email1: ${email1} <br/>
-                                emailIndex: ${emailIndex} <br/>
                                 <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
                                 <span class="email-separator">@</span>
                                 <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>

@@ -251,4 +251,38 @@
         select answer_content from inquiry where inquiry_idx = #{inquiry_idx}
     </select>
 
+    <!--문의글 수 전체-->
+    <select id="ReportCountAll" resultType="int">
+        select count(*) from report
+    </select>
+
+
+    <!-- 문의글수 가지고 오기 -->
+    <select id="inquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 미처리된 문의글수 가지고 오기 -->
+    <select id="UnprocessedinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '대기'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 처리된 문의글수 가지고 오기 -->
+    <select id="processedinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '답변완료'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 삭제된 문의글수 가지고 오기 -->
+    <select id="delinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '삭제'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+
 </mapper>

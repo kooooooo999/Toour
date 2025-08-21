@@ -8,4 +8,6 @@
         where post_idx = #{post_idx}
     </select>
 
+
+
 </mapper>

@@ -296,4 +296,36 @@ public class InquiryDAO {
 
         return IvoArr;
     }
+
+    //    문의글수 가지고 오기
+    public static int inquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.inquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    미처리된 문의글수 가지고 오기
+    public static int UnprocessedinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.UnprocessedinquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    처리된 문의글수 가지고 오기
+    public static int processedinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.processedinquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //   삭제된 문의글수 가지고 오기
+    public static int delinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.delinquiryCount");
+        ss.close();
+        return cnt;
+    }
 }
