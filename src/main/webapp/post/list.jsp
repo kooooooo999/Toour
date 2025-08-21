@@ -109,8 +109,9 @@
         }
 
         .paging-area {
-            margin-bottom: 0 !important;
+            margin-bottom: 20px !important;
             padding-bottom: 0 !important;
+
         }
 
         footer {

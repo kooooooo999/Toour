@@ -26,12 +26,12 @@
 
     <div class="container">
         <div class="footer-sns-links">
-            <a href="#"><div class="sns-icon sns-icon1"><i class="fab fa-blogger-b"></i></div>블로그</a>
-            <a href="#"><div class="sns-icon sns-icon2"><i class="fab fa-facebook-f"></i></div>페이스북</a>
-            <a href="#"><div class="sns-icon sns-icon3"><i class="fab fa-twitter"></i></div>엑스</a>
-            <a href="#"><div class="sns-icon sns-icon4"><i class="fas fa-comments"></i></div>카카오 스토리</a>
-            <a href="#"><div class="sns-icon sns-icon5"><i class="fab fa-instagram"></i></div>인스타그램</a>
-            <a href="#"><div class="sns-icon sns-icon6"><i class="fab fa-band"></i></div>네이버 밴드</a>
+            <a href="https://blog.naver.com/korea_diary"><div class="sns-icon sns-icon1"></div>블로그</a>
+            <a href="https://www.facebook.com/9suk9suklive"><div class="sns-icon sns-icon2"></div>페이스북</a>
+            <a href="https://x.com/kor_visitkorea"><div class="sns-icon sns-icon3"></div>엑스</a>
+            <a href="https://story.kakao.com/ch/visitkorea/"><div class="sns-icon sns-icon4"></div>카카오스토리</a>
+            <a href="https://www.instagram.com/kto9suk9suk/"><div class="sns-icon sns-icon5"></div>인스타그램</a>
+            <a href="https://www.band.us/@koreadiary"><div class="sns-icon sns-icon6"></div>네이버 밴드</a>
         </div>
 
         <div class="footer-banners">
