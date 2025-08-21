@@ -18,12 +18,17 @@ public class AdminMemSearchAction implements Action {
         String searchType = request.getParameter("searchType");
         String searchValue = request.getParameter("searchValue");
         String member_idx = request.getParameter("member_idx");
-
+        String member_warning = request.getParameter("member_warning");
 //        System.out.println(searchType);
 //        System.out.println(searchValue);
 
+        int totalCount = AdminMemberDAO.getSearchTotalCount(searchType,searchValue);
+
 
         Paging page = new Paging(10,5);
+
+        page.setTotalCount(totalCount);
+
 
 
         String cPage = request.getParameter("cPage");
@@ -37,16 +42,18 @@ public class AdminMemSearchAction implements Action {
 
         MemberVO[] ar = AdminMemberDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
 
+
+
         if(ar!=null &&ar.length>0) {
             System.out.println("1st: " + ar[0].getMember_id());
             request.setAttribute("ar", ar);
-
         }
         else
             System.out.println("검색결과가 없습니다.");
 
         request.setAttribute("page",page);
         request.setAttribute("member_idx",member_idx);
+        request.setAttribute("totalCount",totalCount);
         request.setAttribute("searchType",searchType);
         request.setAttribute("searchValue",searchValue);
         request.setAttribute("nowPage",page.getNowPage());

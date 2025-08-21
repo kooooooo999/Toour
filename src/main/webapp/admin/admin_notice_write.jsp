@@ -24,7 +24,7 @@
             flex-direction: column;
             padding: 20px;
             color: white;
-            height: 100vh;
+            height: auto;
         }
 
         .sidebar a {
@@ -137,15 +137,8 @@
 </head>
 <body>
 
-<div class="sidebar">
+<c:import url="/common/adminSidebar.jsp"/>
 
-    <!-- 메뉴 -->
-    <a href="AdminController">🏠 HOME</a>
-    <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-    <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-    <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-    <a href="AdminController?type=adminInquiry">📬문의사항 관리</a>
-</div>
 
 <div class="main-content">
     <h1 class="page-title">관리자 페이지 - 공지사항 글쓰기</h1>

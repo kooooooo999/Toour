@@ -70,6 +70,7 @@ public class tripDetailsAction implements Action {
         sb.append(contentId);
 
         try {
+            System.out.println("sb?:"+sb.toString());
             URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");

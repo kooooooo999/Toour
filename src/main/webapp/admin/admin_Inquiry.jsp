@@ -209,17 +209,12 @@
 </head>
 <body>
 
-<div class="sidebar">
-    <a href="AdminController">🏠 HOME</a>
-    <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-    <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-    <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-    <a href="AdminController?type=adminInquiry">📬문의사항 관리</a>
-</div>
+<c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content" id="post">
     <h1>문의사항 관리</h1>
     <c:set var="requestsearchType" value="${param.searchType}"/>
+    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
     <div class="search-area">
         <form method="post" action="AdminController?type=adminInquiry">
             <select id="searchType" name="searchType">
@@ -231,6 +226,14 @@
                 <option value="기술지원" <c:if test="${requestsearchType == '기술지원'}">selected</c:if>>기술 지원</option>
                 <option value="버그신고" <c:if test="${requestsearchType == '버그신고'}">selected</c:if>>버그 신고</option>
                 <option value="기타" <c:if test="${requestsearchType == '기타'}">selected</c:if>>기타</option>
+            </select>
+            <select id="searchStatus" name="searchStatus">
+                <option value="">
+                    --답변 상태 선택해주세요--
+                </option>
+                <option value="답변완료" <c:if test="${requestsearchStatus == '답변완료'}">selected</c:if>>답변완료</option>
+                <option value="대기" <c:if test="${requestsearchStatus == '대기'}">selected</c:if>>대기</option>
+                <option value="삭제" <c:if test="${requestsearchStatus == '삭제'}">selected</c:if>>삭제</option>
             </select>
         </form>
     </div>
@@ -244,55 +247,30 @@
                 <th>카테고리</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>읽음/안읽음</th>
                 <th>답변상태</th>
                 <th>작성일</th>
                 </thead>
                 <tbody>
-                <%--                inquiry_idx, member_idx, category, title, content, file_path, status, created_at, updated_at--%>
                 <c:set var="p" value="${requestScope.page}" scope="page"/>
-                <c:set var="category" value="${requestScope.cateAr}"/>
-                <c:if test="${empty category}">
-                    <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
-                        <%--                        <c:if test="${count.index < 10}">--%>
-                        <tr class="data-inquiry" data-idx="${Ivo.inquiry_idx}" data-category="${Ivo.category}"
-                            data-title="${Ivo.title}"
-                            data-nickname="${Ivo.member_nickname}" data-read="${Ivo.is_read}"
-                            data-status="${Ivo.status}" data-created="${Ivo.created_at}">
-                            <td>${Ivo.inquiry_idx}</td>
-                            <td>${Ivo.category}</td>
-                            <td>${Ivo.title}</td>
-                            <td>${Ivo.member_nickname}</td>
-                            <td>${Ivo.is_read}</td>
-                            <td>${Ivo.status}</td>
-                            <td>${Ivo.created_at}</td>
-                        </tr>
-                        <%--                        </c:if>--%>
-                    </c:forEach>
-                </c:if>
-                <c:if test="${not empty category}">
-                    <c:forEach var="cat" items="${category}" varStatus="count">
-                        <%--                        <c:if test="${count.index < 10}">--%>
-                        <tr class="data-inquiry" data-idx="${cat.inquiry_idx}" data-category="${cat.category}"
-                            data-title="${cat.title}"
-                            data-nickname="${cat.member_nickname}" data-read="${cat.is_read}"
-                            data-status="${cat.status}" data-created="${cat.created_at}">
-                            <td>${cat.inquiry_idx}</td>
-                            <td>${cat.category}</td>
-                            <td>${cat.title}</td>
-                            <td>${cat.member_nickname}</td>
-                            <td>${cat.is_read}</td>
-                            <td>${cat.status}</td>
-                            <td>${cat.created_at}</td>
-                        </tr>
-                        <%--                        </c:if>--%>
-                    </c:forEach>
-                </c:if>
+                <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
+                    <tr class="data-inquiry" data-idx="${Ivo.inquiry_idx}" data-category="${Ivo.category}"
+                        data-title="${Ivo.title}"
+                        data-nickname="${Ivo.member_nickname}"
+                        data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
+                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}">
+                        <td>${Ivo.inquiry_idx}</td>
+                        <td>${Ivo.category}</td>
+                        <td>${Ivo.title}</td>
+                        <td>${Ivo.member_nickname}</td>
+                        <td>${Ivo.status}</td>
+                        <td>${Ivo.created_at}</td>
+                    </tr>
+                </c:forEach>
                 </tbody>
             </table>
             <div class="pagination">
                 <c:if test="${p.startPage > 1}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}">&lt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
                 </c:if>
 
                 <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
@@ -302,13 +280,13 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}">${vs.index}</a>
+                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">${vs.index}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
 
                 <c:if test="${p.endPage < p.totalPage}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}">&gt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">&gt;</a>
                 </c:if>
             </div>
 
@@ -319,99 +297,48 @@
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <script>
-        $(function () {
-            let option = {
-                modal: true,
-                autoOpen: false,
-                resizable: false,
-            };
-            $(
-                "#del_dialog").dialog(option);
-        })
-
-        function openDel() {
-            $("#del_dialog").dialog("open");
-        }
-
-        $("#member_del_cancel").click(function () {
-            $("#del_dialog").dialog("close");
-        })
-
-        function goDel() {
-            document.getElementById("delform").submit();
-        }
-
-        function validateForm() {
-            let searchValue = document.getElementById('searchValue').value;
-            if (searchValue.trim() === '') {
-                alert('검색내용을 입력하세요.');
-                return false;
-            }
-            return true;
-        }
-
-        $(function () {
-            // 전체 선택, 전체 해제
-            $("#table thead input:checkbox").click(function () {
-                //console.log("TT");
-                // 클릭한 checkbox의 가장 가까운 태그(상위태그)를 알아낸다.
-                //let p = $(this).parent(); //th
-                let p = $(this).closest("th");// 현재 클릭한 체크박스의 가장 가까운 태그(th)
-
-                // 앞서 구한 부모태그(th)가 해당 행(tr)에서 몇번째 요소인지
-                // 인덱스를 알아내자
-                let idx = $("#table thead tr th").index(p);
-                // console.log(idx);
-
-                // 구한 index값을 가지고 tbody에 있는 각 행에서
-                // 해당 idx+1번째에 있는 td안의 체크박스들을 얻어낸다.
-                let ar = $("#table tbody td:nth-child(" + (idx + 1) + ") input:checkbox");
-                ar.prop("checked", this.checked);
-            });
-
-            //전체선택을 클릭한 뒤, tbody에 있는 클릭 한 개가 해제되면 전체선택 체크박스도 해제
-            $("#table tbody input:checkbox").click(function () {
-
-                //tbody에서 체크박스의 개수와 tbody에서 체크된 체크박스의 개수 비교
-                let AllChecked = $("#table tbody input:checkbox").length == $("#table tbody input:checkbox:checked").length;
-                $("#table thead input:checkbox").prop("checked", AllChecked);
-
-
-            });
-        });
 
         $("#searchType").change(function () {
             document.forms[0].submit();
         });
 
-        $(document).ready(function () { //보안을 위해 거쳐서 이동
-            $(document).on('click', '.data-inquiry', function (e) {
-                e.preventDefault(); // a태그 href 링크 이동 방지
-                let title = $(this).data('title');
-                let addr1 = $(this).data('addr1');
-                let overview = $(this).data('overview');
-                let firstimage = $(this).data('firstimage');
-                let mapx = $(this).data('mapx');
-                let mapy = $(this).data('mapy');
-                let contentTypeId = $(this).data('contenttypeid');
-                let contentId = $(this).data('contentid');
-                let homepageUrl = $(this).data('homepageurl');
-                let homepageText = $(this).data('homepagetext');
-                submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl, homepageText);
-            });
+        $("#searchStatus").change(function () {
+            document.forms[0].submit();
         });
 
-        function inquiryDetails(value) {
+        $(document).ready(function () { //보안을 위해 거쳐서 이동
+            $(document).on('click', '.data-inquiry', function () {
+                let idx = $(this).data('idx');
+                let category = $(this).data('category');
+                let title = $(this).data('title');
+                let nickname = $(this).data('nickname');
+                let status = $(this).data('status');
+                let created = $(this).data('created');
+                let content = $(this).data('content');
+                let file = $(this).data('file')
+                let answer = $(this).data('answer');
 
-            $.ajax({
-                url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
-                method: "POST"
-            }).done(function (res) {
-                console.log(value);
-                $(".main-content").html(res);
+                $.ajax({
+                    url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
+                    method: "POST",
+                    data: {
+                        idx: idx,
+                        category: category,
+                        title: title,
+                        nickname: nickname,
+                        status: status,
+                        created: created,
+                        content: content,
+                        file: file,
+                        answer: answer
+                    }
+                }).done(function (res) {
+                    console.log("됐냐");
+                    $(".main-content").html(res);
+                });
+
             });
-
-        }
+        });
 
     </script>
 </body>

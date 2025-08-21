@@ -40,7 +40,7 @@ public class InquiryListAction implements Action {
         // 페이징 처리
         int totalRecord = InquiryDAO.getTotalCount(member_idx, null, null, null);
 
-        Paging page = new Paging(10, 5);
+        Paging page = new Paging(5, 5);
         page.setTotalCount(totalRecord);
 
         String cPage = request.getParameter("cPage");
@@ -88,8 +88,8 @@ public class InquiryListAction implements Action {
         System.out.println("inquiryAction inquiryList.length: "+inquiryList.length);
         // request에 데이터 저장
         request.setAttribute("QnAcPage", cPage);
-        request.setAttribute("inquiryList", inquiryList);
-        request.setAttribute("QnAPage", page);
+        request.setAttribute("myInquiryList", inquiryList);
+        request.setAttribute("InquiryPage", page);
         request.setAttribute("QnAsearchType", searchType);
         request.setAttribute("QnAsearchValue", searchValue);
         request.setAttribute("category", category);
@@ -98,6 +98,6 @@ public class InquiryListAction implements Action {
 
 
 
-        return "post/inquiryList.jsp";
+        return "member/myPage.jsp";
     }
 }

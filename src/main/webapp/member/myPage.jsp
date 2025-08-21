@@ -371,6 +371,13 @@
             min-width: 700px; /* 테이블 최소 너비 확장 */
             font-size: 1em; /* 테이블 폰트 사이즈 확장 */
         }
+        .inquiry-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+            min-width: 700px; /* 테이블 최소 너비 확장 */
+            font-size: 1em; /* 테이블 폰트 사이즈 확장 */
+        }
 
         #post th, #post td {
             padding: 12px; /* 테이블 셀 패딩 확장 */
@@ -550,7 +557,6 @@
                                 <th>번호</th>
                                 <th>제목</th>
                                 <th>작성자</th>
-                                <th>별점</th>
                                 <th>조회수</th>
                                 <th>작성일</th>
                             </tr>
@@ -571,7 +577,6 @@
                                             </a>
                                         </td>
                                         <td>${vo.member_nickname}</td>
-                                        <td>${vo.post_star}</td>
                                         <td>${vo.post_views}</td>
                                         <td>${vo.post_created_at.substring(0,10)}</td>
                                     </tr>
@@ -612,10 +617,116 @@
                 </div>
             </div>
 
-            <div id="suggest_list" class="listArea">
+            <div id="suggest_list" class="listArea"><c:set var="t" value="${requestScope.QnAtotalCount}"/>
+
                 <a href="Controller?type=QnA">건의사항</a>
                 <div style="padding: 20px; text-align: center;">
-                    건의사항 관련 내용이 들어갈 자리입니다.
+                    <div class="container" id="inquiry-container">
+
+
+                        <!-- 문의 목록 테이블 -->
+                        <table class="inquiry-table">
+                            <caption>문의 목록 테이블</caption>
+
+                            <thead>
+                            <tr>
+                                <th width="10%">번호</th>
+                                <th width="15%">유형</th>
+                                <th width="30%">제목</th>
+                                <th width="15%">상태</th>
+                                <th width="15%">작성일</th>
+                                <th width="15%">관리</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <c:set var="p2" value="${requestScope.InquiryPage}" />
+                            <c:set var="inquiryList" value="${requestScope.myInquiry_ar}"/>
+                            <c:choose>
+                                <c:when test="${not empty inquiryList and fn:length(inquiryList) > 0}">
+                                    <c:forEach items="${inquiryList}" var="ivo" varStatus="vs">
+                                        <c:if test="${not empty ivo}">
+                                            <c:set var="num2" value="${p2.totalCount -((p2.nowPage-1)*p2.numPerPage+vs.index)}"/>
+                                            <tr>
+                                                <td>${num2}</td>
+                                                <td>${ivo.category}</td>
+                                                <td style="text-align: left">
+                                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}&cPage=${p2.nowPage}">
+                                                            ${ivo.title}
+                                                    </a>
+                                                </td>
+
+                                                <td><span class="status-badge status-${ivo.statusColor}">${ivo.status}</span></td>
+                                                <td>${ivo.created_at.substring( 0, 10)}</td>
+                                                <td>
+                                                    <a href="Controller?type=inquiryView&inquiry_idx=${ivo.inquiry_idx}" class="btn btn-primary">보기</a>
+                                                </td>
+                                            </tr>
+                                        </c:if>
+                                    </c:forEach>
+                                </c:when>
+
+                                <c:otherwise>
+                                    <tr>
+                                        <td colspan="6" class="no-data" style="text-align: center; padding: 50px;">
+                                            <div class="no-result">
+                                                <c:choose>
+                                                    <c:when test="${not empty requestScope.myInquiry_ar}">
+
+                                                    </c:when>
+                                                    <c:otherwise> 등록된 문의가 없습니다</c:otherwise>
+                                                </c:choose>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </c:otherwise>
+                            </c:choose>
+                            </tbody>
+                        </table>
+
+                        <!-- 페이징 -->
+
+
+                            <div class="paging-area">
+                                <ol class="paging">
+                                    <!-- 이전 블록 이동 불가 -->
+                                    <c:if test="${p2.startPage < p2.pagePerBlock}">
+                                        <li class="disable">&lt;</li>
+                                    </c:if>
+
+                                    <!-- 이전 블록 이동 -->
+                                    <c:if test="${p2.startPage >= p2.pagePerBlock}">
+                                        <li><a href="javascript:moveInquiryPage(${p2.startPage - p2.pagePerBlock})">&lt;</a></li>
+                                    </c:if>
+
+                                    <!-- 페이지 번호 -->
+                                    <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
+                                        <c:if test="${p2.nowPage == i}">
+                                            <li class="now">${i}</li>
+                                        </c:if>
+                                        <c:if test="${p2.nowPage != i}">
+                                            <li><a href="javascript:moveInquiryPage(${i})">${i}</a></li>
+                                        </c:if>
+                                    </c:forEach>
+
+                                    <!-- 다음 블록 이동 -->
+                                    <c:if test="${p2.endPage < p2.totalPage}">
+                                        <li><a href="javascript:moveInquiryPage(${p2.endPage + 1})">&gt;</a></li>
+                                    </c:if>
+
+                                    <!-- 다음 블록 이동 불가 -->
+                                    <c:if test="${p2.endPage >= p2.totalPage}">
+                                        <li class="disable">&gt;</li>
+                                    </c:if>
+
+                                </ol>
+                            </div>
+
+
+                    </div>
+
+
+
+
                 </div>
             </div>
         </div>
@@ -800,7 +911,18 @@
             $("#mypost").html(res);
         })
     }
-    
+    function moveInquiryPage(nPage) {
+        $.ajax({
+            url: "Controller?type=myinquiry",
+            type: "POST",
+            data: {nPage: nPage, totalCount: ${requestScope.InquiryPage.totalCount}}
+            }).done(function(response) {
+                // 여기에 결과 처리 방법을 작성 (예: 특정 영역에 삽입)
+                $('#inquiry-container').html(response);
+            })
+    }
+
+
     function goDetail(index) {
         document.forms[index+1].submit();
     }

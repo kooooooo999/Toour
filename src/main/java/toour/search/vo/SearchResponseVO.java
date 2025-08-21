@@ -10,11 +10,17 @@ public class SearchResponseVO {
     public SearchResponseVO(){
 
     }
-    public SearchResponseVO(String title, String addr1, String overview, String firstimage) {
+    public SearchResponseVO(String title, String mapx, String mapy, String addr1, String addr2, String firstimage, String tel, String contentTypeId, String contentId, String overview) {
         this.title = title;
+        this.mapx = mapx;
+        this.mapy = mapy;
         this.addr1 = addr1;
-        this.overview = overview;
+        this.addr2 = addr2;
         this.firstimage = firstimage;
+        this.tel = tel;
+        this.contenttypeid = contentTypeId;
+        this.contentid = contentId;
+        this.overview = overview;
     }
     public SearchResponseVO( String addr1, String addr2, String areacode, String cat1, String cat2, String cat3, String contentid, String contenttypeid, String createdtime,
                              String firstimage, String firstimage2, String cpyrhtDivCd,String mapx, String mapy, String mlevel, String modifiedtime,

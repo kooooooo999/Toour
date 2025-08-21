@@ -22,8 +22,7 @@
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
             select * from post
-            where post_status = 0
-            and category_idx=2
+            WHERE category_idx = 2
             ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
@@ -121,6 +120,40 @@
         </where>
         )a
         where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+    <!-- 검색 post 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="map">
+        select count(*) from post p
+        LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+                AND p.category_idx = 2
+            </if>
+        </where>
+    </select>
+
+    <!-- 총 게시글 수 막대그래프용 (post 테이블에서 게시글만 가져와서 최근 7일 집계) -->
+    <select id="selectWeeklyPostCount" resultType="map">
+        SELECT DATE(post_created_at) AS post_day,
+                COUNT(*) AS cnt
+        FROM post
+        WHERE category_idx = 2
+            AND post_created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(post_created_at)
+        ORDER BY post_day;
+
     </select>
 
 </mapper>

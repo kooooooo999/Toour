@@ -105,6 +105,8 @@
             margin-top: 0 !important;
         }
 
+        
+
     </style>
 </head>
 <body>
@@ -130,7 +132,7 @@
         <c:set var="t" value="${requestScope.totalCount}"/>
 
         <div class="totalCount">
-            <p>총 <strong>${t}건</strong></p>
+            <p>총 <strong>${t}</strong>건</p>
         </div>
 
         <table summary="검색결과 목록">
@@ -214,7 +216,9 @@
                 <li class="disable">&gt;</li>
             </c:if>
         </ol>
-        <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
+        <div class="write-button-area">
+            <input type="button" value="글쓰기" onclick="javascript:location.href='Controller?type=write'">
+        </div>
     </div>
 <c:import url="/common/footer.jsp" />
 

@@ -6,7 +6,9 @@ import toour.member.dao.ZzimDAO;
 import toour.member.vo.MemberVO;
 import toour.member.vo.CourseVO;
 import toour.member.vo.ZzimVO;
+import toour.post.dao.InquiryDAO;
 import toour.post.dao.PostDAO;
+import toour.post.vo.InquiryVO;
 import toour.post.vo.PostVO;
 import toour.tripsuggestion.vo.DataVO;
 import toour.util.GetAPIData;
@@ -37,13 +39,13 @@ public class myPageAction implements Action {
                 for (ZzimVO zvo : zzim_ar) {
                     String zzimType = zvo.getZzim_type();
                     // 관광지를 담는 배열에 최대 4개만 담는 문장
-                    if (zzimType.equals("tour")) {
+
                         if (tour_cnt < cnt) {
                             tour_ar[tour_cnt] = GetAPIData.getDataVO(zvo.getZzim_content_id());
                             tour_cnt++;
                             System.out.println("tour_cnt:" + tour_cnt);
                         }
-                    }
+
 
                     // 둘 다 4가 되었다면 그것은 두 배열이 완성되었으므로 for문 종료
                     if (tour_cnt >= cnt && course_cnt >= cnt) {
@@ -70,6 +72,24 @@ public class myPageAction implements Action {
             PostVO[] myPost = PostDAO.getMyList(mvo.getMember_idx(),1,5);
             page.setTotalCount(PostDAO.getMyTotalCount(mvo.getMember_idx()));
             page.setNowPage(1);
+
+            //내 문의목록
+            Paging InquiryPage = new Paging(5, 5);
+            InquiryPage.setTotalCount(InquiryDAO.getMyInquiryListCount(mvo.getMember_idx()));
+            InquiryPage.setNowPage(1);
+            int numPerPage = InquiryPage.getNumPerPage();
+            int currentPage = InquiryPage.getNowPage();
+
+            InquiryVO[] myInquiry = InquiryDAO.getMyInquiryList(mvo.getMember_idx(), currentPage, numPerPage);
+
+
+
+            System.out.println("InquiryPage.getTotalCount(): "+InquiryPage.getTotalCount());
+            request.setAttribute("InquiryPage", InquiryPage);
+            System.out.println("InquiryPage.getStartPage(): "+InquiryPage.getStartPage());
+            System.out.println("InquiryPage.getEndPage(): "+InquiryPage.getEndPage());
+            System.out.println("InquiryPage.getNowPage(): "+InquiryPage.getNowPage());
+            request.setAttribute("myInquiry_ar", myInquiry);
 
             //request에 page 값 저장
             request.setAttribute("page",page);

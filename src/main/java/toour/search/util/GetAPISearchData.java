@@ -26,6 +26,8 @@ public class GetAPISearchData {
             sb.append("&");
             sb.append("keyword=");
             sb.append(keyword);
+
+
             /*sb.append("areaCode=");
             sb.append(areaCode);*/
             //확인용 주소 출력
