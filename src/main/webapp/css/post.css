@@ -36,11 +36,11 @@ body {
     !* float 제거하고 *!
 }*/
 /* 정렬 메뉴 상단 위치 */
-.sort-area {
-    font-size: 14px;
-    color: #444;
-    margin-bottom: 10px;
-}
+/*.sort-area {*/
+/*    font-size: 14px;*/
+/*    color: #444;*/
+/*    margin-bottom: 10px;*/
+/*}*/
 
 /* 글쓰기 버튼과 검색창 간격 */
 .search-write-area {
