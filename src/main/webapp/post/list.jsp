@@ -17,6 +17,16 @@
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
             overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
         }
+        .write-button {
+            height: 36px;
+            padding: 0 16px;
+            font-size: 14px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
         table {
             width: 100%;
             border-collapse: collapse !important;
@@ -35,8 +45,10 @@
         }
 
         .search-area{
-            float: right;
-            margin-right: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px
         }
 
         .totalCount p{
@@ -104,6 +116,55 @@
         footer {
             margin-top: 0 !important;
         }
+        .title-wrap {
+            position: relative;
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+        }
+
+        .title-wrap h1 {
+            font-size: 36px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .title-wrap .write-button {
+            height: 38px;
+            padding: 6px 15px;
+            font-size: 14px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .filter-search-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin: 20px 40px;
+            flex-wrap: wrap;
+        }
+
+        .left-area {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .sort-area a {
+            margin: 0 5px;
+            color: #444;
+            text-decoration: none;
+        }
+
+        .sort-area a.active {
+            font-weight: bold;
+            color: #1a73e8;
+        }
 
     </style>
 </head>
@@ -113,10 +174,10 @@
 <div id="post">
     <h1>여행후기</h1>
 
-    <div class="post-header-container">
 
-        <!-- 첫 번째 줄: 정렬 + 글쓰기 -->
-        <div class="top-line" style="display: flex; justify-content: space-between; align-items: center; margin: 0 40px 10px 40px;">
+    <div class="filter-search-wrap">
+        <div class="left-area">
+            <p class="totalCount">총 <strong>${requestScope.totalCount}</strong>건</p>
             <div class="sort-area">
                 <a href="Controller?type=list&sort=latest" class="${sort eq 'latest' ? 'active' : ''}">최신순</a>
                 <span>|</span>
@@ -124,27 +185,22 @@
                 <span>|</span>
                 <a href="Controller?type=list&sort=popular" class="${sort eq 'popular' ? 'active' : ''}">인기순</a>
             </div>
-            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
         </div>
 
-        <!-- 두 번째 줄: 총 건수 + 검색 -->
-        <div class="bottom-line" style="display: flex; justify-content: space-between; align-items: center; margin: 0 40px;">
-            <p class="totalCount" style="font-size: 14px; color: #666;">총 <strong>${requestScope.totalCount}</strong>건</p>
-
-            <div class="search-area">
-                <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()" style="display: flex; gap: 10px;">
-                    <input type="hidden" name="category_idx" value="2">
-                    <select id="searchType" name="searchType">
-                        <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if>>제목</option>
-                        <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
-                        <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
-                        <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
-                    </select>
-                    <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"
-                           <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                    <button type="submit">검색</button>
-                </form>
-            </div>
+        <div class="search-area">
+            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
+            <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()" style="display: flex; gap: 10px;">
+                <input type="hidden" name="category_idx" value="2">
+                <select id="searchType" name="searchType">
+                    <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if>>제목</option>
+                    <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
+                    <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
+                    <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
+                </select>
+                <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"
+                       <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
+                <button type="submit">검색</button>
+            </form>
         </div>
     </div>
 
