@@ -247,6 +247,33 @@ public class AdminPostDAO {
         }
         return filecnt;
     }
+
+    //댓글 신고 수 가지고 오기
+    public static int getcommentTotalCount(){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.totalCount");
+        ss.close();
+        return cnt;
+    }
+
+    // 목록 반환
+    public static PostVO[] getcommentList(String category_idx, int begin, int end){
+        PostVO[] ar = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("category_idx", category_idx);
+        map.put("begin", begin);
+        map.put("end", end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("adminpost.list", map);
+        if(list != null && list.size()>0){
+            ar = new PostVO[list.size()];
+            list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
+        }
+        ss.close();
+        return ar;
+    }
 }
 
 //    // 조회수 증가
