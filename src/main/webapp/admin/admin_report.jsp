@@ -183,7 +183,6 @@
 
 <div class="main-content">
   <h1>신고사항 관리</h1>
-
   <div id="post">
    <%-- <div class="search-area">
       <form method="post" action="AdminController?type=adminnoticesearch" onsubmit="return validateForm()">
@@ -201,6 +200,24 @@
       <input type="button" id="writebutton" value="글쓰기"
              onclick="javascript:location.href='AdminController?type=adminnoticewrite'">
     </div>--%>
+     <div class="search-area">
+       <form method="post" action="AdminController?type=adminreportsearch" onsubmit="return validateForm()">
+         <select id="searchType" name="searchType">
+           <option value="COMMENT">댓글</option>
+           <option value="POST">게시글</option>
+         </select>
+         <i class="search"><button type="submit" class="search">검색</button></i>
+       </form>
+     </div>
+
+     <c:set var="t" value="${requestScope.TotalCount}"/>
+
+     <div class="totalCount">
+       <p>총 <strong>${t}</strong>건</p>
+     </div>
+
+
+
 
     <table>
       <%--      <caption>검색결과 목록</caption>--%>
@@ -212,21 +229,32 @@
         <th>게시글/댓글</th>
         <th>신고내용</th>
         <th>작성일</th>
+        <th>상태</th>
       </tr>
       </thead>
       <tbody>
       <c:if test="${not empty rvo}">
         <c:set var="p" value="${requestScope.page}"/>
         <c:forEach items="${rvo}" var="vo" varStatus="vs">
-          <tr>
+          <tr onclick="location.href='AdminController?type=${vo.target_type == 'POST' ? 'adminpostview' : 'admincommentview'}&post_idx=${vo.post_idx}&cPage=${nowPage}'">
             <td>${vo.report_idx}</td>
-            <td>${vo.reporter_idx}</td>
-            <td>${vo.reported_idx}</td>
+            <td>${vo.reporter_nickname}</td>
+            <td>${vo.reported_nickname}</td>
             <td><c:if test="${vo.target_type=='POST'}">게시글</c:if>
               <c:if test="${vo.target_type=='COMMENT'}">댓글</c:if>
                 </td>
             <td>${vo.report_content}</td>
             <td>${vo.report_created_at.substring(0,10)}</td>
+            <td>
+              <c:if test="${vo.report_status == 0}">
+                <p>처리전</p>
+              </c:if>
+              <c:if test="${vo.report_status == 1}">
+                <p>처리완료</p>
+              </c:if>
+
+
+            </td>
           </tr>
         </c:forEach>
       </c:if>
@@ -259,14 +287,16 @@
     검색 내용 유효성 검사
     --%>
 
-    function validateForm() {
-      let searchValue = document.getElementById('searchValue').value;
-      if (searchValue.trim() === '') {
-        alert('검색 내용을 입력하세요');
-        return false;
-      }
-      return true;
-    }
+    // function validateForm() {
+    //   let searchType = document.getElementById('searchType').value;
+    //   if (searchType.trim() === '') {
+    //     alert('검색 내용을 입력하세요');
+    //     return false;
+    //   }
+    //   return true;
+    // }
+
+
   </script>
 </div>
 </body>

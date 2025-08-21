@@ -285,7 +285,7 @@
                 </div>
             </div>
         </form>
-        </div>
+
 
 <%--      <%--%>
 <%--        String searchType = request.getParameter("searchType");--%>
@@ -301,12 +301,6 @@
     <p>총 <strong>${t}</strong>건</p>
   </div>
 
-
-    <c:set var="t" value="${requestScope.totalCount}"/>
-
-    <div class="totalCount">
-        <p>총 <strong>${t}</strong>건</p>
-    </div>
 
   <table id="table">
     <thead>
@@ -402,7 +396,7 @@
                         <li class="disable">&gt;</li>
                     </c:if>
                 </ol>
-    </div>
+            </div>
 </div>
 </body>
 

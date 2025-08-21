@@ -31,7 +31,7 @@ public class ViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
-        System.out.println("viewAction post_idx = " + post_idx);
+//        System.out.println("viewAction post_idx = " + post_idx);
         if(post_idx==null||post_idx.isEmpty()){
             return "Controller?type=list";
         }
@@ -50,7 +50,7 @@ public class ViewAction implements Action {
         MemberVO member_info = PostDAO.getPostMemberIdx(post_idx);
         request.setAttribute("member_info",member_info);
 
-        System.out.println("member_info.nickname:"+member_info.getMember_nickname());
+//        System.out.println("member_info.nickname:"+member_info.getMember_nickname());
         if (vo != null) {
             // 1. post_idx와 연관된 파일 가져오기
             List<FileVO> fileList = FileDAO.getFilesByPost(post_idx);
