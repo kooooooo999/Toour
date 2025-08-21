@@ -20,8 +20,10 @@
                 <a href="Controller?type=moveSignup">회원가입</a>
             </c:if>
             <c:if test="${sessionScope.member ne null}">
+                <c:if test="${sessionScope.member.member_type eq 0 }">
+                    <a href="AdminController">관리자 홈</a>
+                </c:if>
                 <c:choose>
-
                     <c:when test="${sessionScope.member.login_type=='LOCAL'}">
                         <a href="Controller?type=login">로그아웃</a>
                     </c:when>
