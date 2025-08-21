@@ -1,6 +1,7 @@
 package toour.post.action;
 
 import toour.member.vo.MemberVO;
+import toour.post.dao.RecommendDAO;
 import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.dao.FileDAO;
@@ -12,7 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ViewAction implements Action {
     public boolean checkPost(List<PostVO> list, PostVO vo){
@@ -72,6 +75,17 @@ public class ViewAction implements Action {
             comment_list = new CommentVO[0]; // null 대신 빈 배열
         }
         System.out.println("comment_list.length"+comment_list.length);
+        // 추천 여부 확인 (로그인한 경우에만)
+        boolean alreadyRecommended = false;
+        if (member_info.getMember_idx() != null) {
+            Map<String, String> map = new HashMap<>();
+            map.put("member_idx", member_info.getMember_idx());
+            map.put("post_idx", post_idx);
+            alreadyRecommended = RecommendDAO.hasUserRecommended(map);
+        }
+
+        request.setAttribute("alreadyRecommended", alreadyRecommended);
+
         request.setAttribute("comment_list", comment_list);
         request.setAttribute("vo", vo);
 

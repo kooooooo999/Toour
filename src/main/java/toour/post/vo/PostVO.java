@@ -9,6 +9,12 @@ public class PostVO {
     private String member_name;
     private String member_nickname;
     private String file_name_original, file_name_stored;
+    //인기순 정렬용
+    private String popularity;
+
+    public String getPopularity() {return popularity;}
+
+    public void setPopularity(String popularity) {this.popularity = popularity;}
 
     public String getFile_name_original() {
         return file_name_original;

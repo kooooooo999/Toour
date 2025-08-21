@@ -4,7 +4,6 @@ body {
     background-color: #f8f9fa;
     color: #333;
     line-height: 1.6;
-    /* padding 제거! */
 }
 
 /* 게시판 컨테이너 */
@@ -15,15 +14,108 @@ body {
     border: 1px solid #dee2e6;
     border-radius: 8px !important;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-    overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
+    overflow-x: auto;
+}
+
+/* 게시글 헤더 영역 (정렬, 총 건수, 검색) */
+.post-header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 40px;
+    flex-wrap: wrap;
+}
+
+/*.sort-count-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0 40px;
+}
+.sort-area {
+    !* float 제거하고 *!
+}*/
+/* 정렬 메뉴 상단 위치 */
+.sort-area {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 10px;
+}
+
+/* 글쓰기 버튼과 검색창 간격 */
+.search-write-area {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+.search-write-area {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+/* 글쓰기 버튼 공통 스타일 */
+.write-button {
+    height: 38px;
+    padding: 6px 15px;
+    font-size: 14px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+}
+.write-button:hover {
+    background-color: #1557b0;
+}
+
+/* 검색 영역 스타일 */
+.search-area #searchType, .search-area #searchValue {
+    height: 38px;
+    padding: 6px 10px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.search-area #searchValue {
+    width: 200px;
+}
+
+.search-area button {
+    height: 38px;
+    padding: 6px 15px;
+    font-size: 14px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.search-area button:hover {
+    background-color: #1557b0;
+}
+
+/* 총 게시물 수 스타일 */
+.totalCount p {
+    font-weight: bold;
+    color: #333;
+}
+.totalCount strong {
+    color: #1a73e8;
 }
 
 /* 테이블 공통 스타일 */
 table {
     width: 100%;
-    border-collapse: collapse !important;
+    border-collapse: collapse;
     text-align: center;
-    min-width: 800px; /* 테이블이 너무 작아지는 것 방지 */
+    min-width: 800px;
 }
 
 caption {
@@ -35,30 +127,29 @@ caption {
     color: #495057;
 }
 
-/* 테이블 헤더 (thead) 스타일 */
+/* 테이블 헤더 */
 thead {
     background-color: #e9ecef;
     border-bottom: 2px solid #adb5bd;
 }
 
-.title th {
+thead th {
     padding: 15px 10px;
     font-weight: bold;
     color: #495057;
-    border: none; /* 기존 border를 제거하고 깔끔하게 */
 }
 
-/* 테이블 바디 (tbody) 스타일 */
+/* 테이블 바디 */
 tbody tr {
     border-bottom: 1px solid #e9ecef;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f8f9fa; /* 짝수 행 배경색 */
+    background-color: #f8f9fa;
 }
 
 tbody tr:hover {
-    background-color: #e2e6ea; /* 마우스 오버 시 색상 변경 */
+    background-color: #e2e6ea;
 }
 
 tbody td {
@@ -76,84 +167,62 @@ td a:hover {
     text-decoration: underline;
 }
 
-/* 페이징 및 글쓰기 버튼이 있는 행 스타일 */
-tbody tr:last-child {
-    background-color: #fff;
-    border-bottom: none;
+/* 검색 결과 없을 때 */
+.no-result {
+    color: #666;
+    font-size: 16px;
+}
+.no-result strong {
+    color: #1a73e8;
 }
 
 /* 페이징 영역 스타일 */
-.paging {
+.paging-area {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.paging-area ol.paging {
+    display: flex;
     list-style: none;
     padding: 0;
-    margin: 12px;
+    margin: 0;
 }
 
-.paging li {
-    margin: 0 4px;
-    font-size: 14px;
-}
-
-.paging li a, .paging li.now {
-    display: block;
+.paging-area ol.paging li {
+    margin: 0 5px;
     padding: 8px 12px;
+    border: 1px solid #ddd;
     border-radius: 4px;
-    transition: background-color 0.2s ease, color 0.2s ease;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.paging-area ol.paging li.now {
+    background-color: #1a73e8;
+    color: white;
+    font-weight: bold;
+    border-color: #1a73e8;
+}
+
+.paging-area ol.paging li.disable {
+    color: #ccc;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+
+.paging-area a {
     text-decoration: none;
-    color: #495057;
-    border: 1px solid #dee2e6;
+    color: inherit;
 }
 
-.paging li a:hover {
-    background-color: #e9ecef;
+.paging-area li:not(.now):not(.disable):hover {
+    background-color: #f1f1f1;
 }
 
-.paging li.now {
-    background-color: #007bff;
-    color: #fff;
-    font-weight: bold;
-    border-color: #007bff;
-    pointer-events: none; /* 현재 페이지는 클릭 비활성화 */
-}
-
-/* 비활성화된 페이징 버튼 (disable 클래스) */
-.paging li.disable {
-    pointer-events: none; /* 클릭 이벤트 제거 */
-    opacity: 0.5; /* 흐리게 처리 */
-    color: #6c757d;
-    border: 1px solid #dee2e6;
-    padding: 8px 12px;
-    border-radius: 4px;
-}
-
-/* 글쓰기 버튼 스타일 */
-input[type="button"] {
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #0056b3; /* 녹색 버튼 */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-button[type="submit"]{
-    padding: 10px 20px;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
-    background-color: #0056b3; /* 녹색 버튼 */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-
-input[type="button"]:hover {
-    background-color: #218838;
+footer {
+    margin-top: 0 !important;
 }
