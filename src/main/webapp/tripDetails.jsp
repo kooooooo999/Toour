@@ -199,7 +199,7 @@
             <li>
                 <strong><span>■ 상세주소</span></strong>
                 <c:choose>
-                    <c:when test="${not empty Dvo2.addr1 or not empty Dvo.addr2}">
+                    <c:when test="${not empty Dvo.addr1 or not empty Dvo.addr2}">
                         <span>${Dvo.addr1} ${Dvo.addr2}</span>
                     </c:when>
                     <c:otherwise>
@@ -243,7 +243,7 @@
             <li>
                 <strong><span>■ 홈페이지</span></strong>
                 <c:choose>
-                    <c:when test="${not empty Dvo2.homepageUrl}">
+                    <c:when test="${not empty Dvo.homepageUrl}">
                         <span><a href="${Dvo.homepageUrl}" target="_blank"
                                  rel="noopener noreferrer">${Dvo.homepageText}</a></span>
                     </c:when>
