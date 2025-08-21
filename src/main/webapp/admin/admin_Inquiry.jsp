@@ -257,7 +257,8 @@
                         data-title="${Ivo.title}"
                         data-nickname="${Ivo.member_nickname}"
                         data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
-                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}">
+                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}" data-page="${p.nowPage}"
+                        data-searchtype="${requestsearchType}" data-searchvalue="${requestsearchStatus}">
                         <td>${Ivo.inquiry_idx}</td>
                         <td>${Ivo.category}</td>
                         <td>${Ivo.title}</td>
@@ -280,13 +281,13 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">${vs.index}</a>
+                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">${vs.index}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
 
                 <c:if test="${p.endPage < p.totalPage}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">&gt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&gt;</a>
                 </c:if>
             </div>
 
@@ -317,6 +318,8 @@
                 let content = $(this).data('content');
                 let file = $(this).data('file')
                 let answer = $(this).data('answer');
+                let page = $(this).data('page');
+                let searchtype = $(this)
 
                 $.ajax({
                     url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
@@ -330,7 +333,8 @@
                         created: created,
                         content: content,
                         file: file,
-                        answer: answer
+                        answer: answer,
+                        cPage: page,
                     }
                 }).done(function (res) {
                     console.log("됐냐");
