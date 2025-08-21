@@ -1,9 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="toour.post.dao.NoticeDAO" %>
+<%@ page import="toour.post.vo.PostVO" %>
+<%@ page import="java.util.List" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
 
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -18,7 +21,7 @@
 <body>
 
 <c:import url="/common/header.jsp"/>
-
+<c:import url="/Controller?type=noticeMain"/>
 <main>
 
     <section class="hero-travel-guide container">
@@ -96,38 +99,42 @@
         </div>
     </section>
 
+    <%
+        // NoticeDAO를 사용하여 공지사항 목록을 가져옵니다.
+        NoticeDAO noticeDAO = new NoticeDAO();
+        int c = 4;
+        List<toour.notice.vo.PostVO> noticeList = NoticeDAO.selectLatestNotice(c);
 
+        // 가져온 목록을 request 속성에 저장합니다.
+        request.setAttribute("noticeMainAr", noticeList);
+    %>
     <section class="news-banner-section container">
         <div class="news-area">
             <h3>
                 <a href="/Controller?type=notice" class="news-link">
-                    오늘의 공지 사항 <i class="fas fa-plus plus-icon"></i>
+                    오늘의 공지사항 <i class="fas fa-plus plus-icon"></i>
                 </a>
             </h3>
             <ul class="news-list">
-                <li>
-                    <span class="category">행정안전부</span>
-                    <span class="news-title">폭염 대비 국민 행동 요령! 이것만은 꼭 지키자!</span>
-                    <span class="news-date">2025.07.29</span>
-                </li>
-                <li>
-                    <span class="category">한국관광공사</span>
-                    <span class="news-title">'2025 대한민국 밤밤 페스타' 전국 개막</span>
-                    <span class="news-date">2025.07.28</span>
-                </li>
-                <li>
-                    <span class="category">강원특별자치도</span>
-                    <span class="news-title">2025 Tour de DMZ 고성 그란폰도 개최</span>
-                    <span class="news-date">2025.07.27</span>
-                </li>
-                <li>
-                    <span class="category">해양수산부</span>
-                    <span class="news-title">제11회 섬 여행 영상 공모전</span>
-                    <span class="news-date">2025.07.26</span>
-                </li>
+                <c:set value="${requestScope.noticeMainAr}" var="noticeMainAr"/>
+                <c:forEach items="${noticeMainAr}" var="vo">
+                    <li>
+                        <span class="category">공지</span>
+                        <span class="news-title">
+                        <a href="Controller?type=noticeview&post_idx=${vo.post_idx}">
+                                ${vo.post_title}
+                        </a>
+                    </span>
+                        <span class="news-date">
+                                ${vo.post_created_at.substring(0,10)}
+                        </span>
+                    </li>
+                </c:forEach>
             </ul>
         </div>
     </section>
+
+
 
     <section class="healing-travel-section container section-padding">
         <h3 class="section-title">함께 떠나는 힐링테마 여행</h3>
