@@ -44,17 +44,11 @@
         values ( #{courseDate_idx}, #{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{mapx}, #{mapy} )
     </insert>
 
-    <update id="courseEdit" parameterType="Map">
-        UPDATE courseIn
-        <trim prefix="SET" suffixOverrides=",">
-            contentId = #{contentId},
-            contentTypeId = #{contentTypeId},
-            title = #{title},
-            addr1 = #{addr1},
-            mapx = #{mapx},
-            mapy = #{mapy}
-        </trim>
+    <!-- 코스수정 했을때 DB에서 일단 해당 idx에 포함된 코스 지우기 -->
+    <delete id="deleteCourse" parameterType="String">
+        DELETE
+        FROM courseIn
         WHERE courseDate_idx = #{courseDate_idx}
-    </update>
+    </delete>
 
 </mapper>

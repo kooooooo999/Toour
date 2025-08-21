@@ -30,6 +30,8 @@ public class MyCourseDayAction implements Action {
         if (cvo_ar != null) {
             for (CourseInVO cvo : cvo_ar) {
                 DataVO dvo = new DataVO();
+                dvo.setContentId(cvo.getContentId());
+                dvo.setContentTypeId(cvo.getContentTypeId());
                 dvo.setTitle(cvo.getTitle());
                 dvo.setAddr1(cvo.getAddr1());
                 dvo.setMapx(cvo.getMapx());
@@ -41,6 +43,7 @@ public class MyCourseDayAction implements Action {
 
         mvo.setCourseList(list);
         request.setAttribute("myCourse", "myCourse");
+        request.setAttribute("courseDate_idx", courseDate_idx);
         return "Controller?type=searchResult";
     }
 }

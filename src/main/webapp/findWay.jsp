@@ -79,11 +79,8 @@
             </div>
 
             <div id="selected_places" class="selected_places">
-                <h3>여기로 가야지!</h3>
-                <%--<div>
-                     <p style="display: inline-block">날짜 : </p>
-                    <input type="date" id="date"/>
-                </div>--%>
+                <h3 id="head">여기로 가야지!</h3>
+
                 <div id="courseList"></div>
             </div>
 
@@ -91,7 +88,8 @@
                 <div  id="findButton" class="search_container">
                     <button type="button" class="detail_btn" onclick="addCourse(1)">내 코스</button>
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse(2)">코스 추가</button>
+                    <button type="button" id="editCourseButton" class="detail_btn hide" onclick="editCourse()">코스 수정</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse(2)">코스 저장</button>
                 </div>
             </div>
         </div>
@@ -203,6 +201,7 @@
     // 검색어로 장소 찾기
     function searchplace() {
 
+        let courseDate_idx = $("#courseDate_idx").val();
         let keyword = $("#searchKeyword").val().trim();
         if (keyword.length < 1) {
             alert("키워드나 주소를 입력해 주세요")
@@ -214,7 +213,7 @@
         $.ajax({
             url: "Controller?type=searchResult",
             method: "POST",
-            data: {keyword: keyword}
+            data: {keyword: keyword, courseDate_idx: courseDate_idx }
         }).done(function (res){
             $("#search_results").html(res);
         });
@@ -322,11 +321,11 @@
     }
     
     // 내코스에서 여행이름 눌렀을 때 날짜별 코스 띄우기
-    function myCourseDate(course_idx) {
+    function myCourseDate(course_idx, course_name) {
         $.ajax({
             url: "Controller?type=searchCourseDate",
             method: "post",
-            data: { course_idx: course_idx, num: 1 }
+            data: { course_idx: course_idx, num: 1, course_name: course_name }
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
@@ -334,7 +333,7 @@
     }
 
     // 내 코스 지도 코스 리스트에 띄우기
-    function showCourseList(courseDate_idx) {
+    function showCourseList(courseDate_idx, title, course_name) {
 
         $.ajax({
             url: "Controller?type=myCourseDay",
@@ -346,6 +345,20 @@
         })
 
         $("#memberCourse").dialog("close");
+        $("#head").html(course_name+'('+title+')')
+    }
+
+    // 내코스 불러온 다음에 코스수정 누르면 DB에서 해당 idx 코스 지운 다음에 다시 저장
+    function editCourse() {
+        let courseDate_idx = $("#courseDate_idx").val();
+        console.log("courseDate_idx:"+courseDate_idx);
+        $.ajax({
+            url: "Controller?type=courseDelete",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx }
+        }).done(function (res) {
+            document.location.href = "Controller?type=GoWay";
+        })
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
@@ -363,8 +376,9 @@
     }
 
     // 검색 결과 창에서 + 버튼 누르면 코스 칸으로 넘어가는 함수
-    function addList(title, i) {
+    function addList(title, i, myCourse) {
 
+        let courseDate_idx = $("#courseDate_idx").val();
         let keyword = $("#searchKeyword").val().trim();
         console.log(title);
         console.log(i);
@@ -372,7 +386,7 @@
         $.ajax({
             url: "Controller?type=searchResult",
             method: "post",
-            data: {keyword: keyword, title: title, index: i}
+            data: { keyword: keyword, title: title, index: i, myCourse: myCourse, courseDate_idx: courseDate_idx }
         }).done(function (res) {
             $("#courseList").html(res);
         });
@@ -381,6 +395,7 @@
     // 코스 짜는 창에서 - 버튼 누르면 삭제
     function removeList(title, i) {
 
+        let courseDate_idx = $("#courseDate_idx").val();
         let keyword = $("#searchKeyword").val().trim();
         console.log(title);
         console.log(i);
@@ -388,7 +403,7 @@
         $.ajax({
             url: "Controller?type=searchResult",
             method: "post",
-            data: {keyword: keyword, removeTitle: title, index: i}
+            data: {keyword: keyword, removeTitle: title, index: i, courseDate_idx: courseDate_idx }
         }).done(function (res) {
             $("#courseList").html(res);
         });
