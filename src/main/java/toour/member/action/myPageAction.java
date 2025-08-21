@@ -6,7 +6,9 @@ import toour.member.dao.ZzimDAO;
 import toour.member.vo.MemberVO;
 import toour.member.vo.CourseVO;
 import toour.member.vo.ZzimVO;
+import toour.post.dao.InquiryDAO;
 import toour.post.dao.PostDAO;
+import toour.post.vo.InquiryVO;
 import toour.post.vo.PostVO;
 import toour.tripsuggestion.vo.DataVO;
 import toour.util.GetAPIData;
@@ -70,6 +72,24 @@ public class myPageAction implements Action {
             PostVO[] myPost = PostDAO.getMyList(mvo.getMember_idx(),1,5);
             page.setTotalCount(PostDAO.getMyTotalCount(mvo.getMember_idx()));
             page.setNowPage(1);
+
+            //내 문의목록
+            Paging InquiryPage = new Paging(5, 5);
+            InquiryPage.setTotalCount(InquiryDAO.getMyInquiryListCount(mvo.getMember_idx()));
+            InquiryPage.setNowPage(1);
+            int numPerPage = InquiryPage.getNumPerPage();
+            int currentPage = InquiryPage.getNowPage();
+
+            InquiryVO[] myInquiry = InquiryDAO.getMyInquiryList(mvo.getMember_idx(), currentPage, numPerPage);
+
+
+
+            System.out.println("InquiryPage.getTotalCount(): "+InquiryPage.getTotalCount());
+            request.setAttribute("InquiryPage", InquiryPage);
+            System.out.println("InquiryPage.getStartPage(): "+InquiryPage.getStartPage());
+            System.out.println("InquiryPage.getEndPage(): "+InquiryPage.getEndPage());
+            System.out.println("InquiryPage.getNowPage(): "+InquiryPage.getNowPage());
+            request.setAttribute("myInquiry_ar", myInquiry);
 
             //request에 page 값 저장
             request.setAttribute("page",page);

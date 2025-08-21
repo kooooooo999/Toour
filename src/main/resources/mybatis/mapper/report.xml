@@ -1,14 +1,81 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="report">
-
-    <insert id="insertReport" parameterType="map">
+    <!--게시글 신고 등록-->
+    <insert id="insertWriteReport" parameterType="map">
         INSERT INTO report (
         reporter_idx, reported_idx, post_idx,
         report_content, target_type, report_status, report_created_at )
         VALUES (
         #{reporter_idx}, #{reported_idx}, #{post_idx},
-        #{report_content}, #{target_type}, 'PENDING', NOW() )
+        #{report_content}, 'POST', 0, NOW() )
     </insert>
+
+    <!--댓글 신고 등록-->
+    <insert id="insertCommentReport" parameterType="map">
+        INSERT INTO report (
+        reporter_idx, reported_idx, post_idx, comment_idx,
+        report_content, target_type, report_status, report_created_at )
+        VALUES (
+        #{reporter_idx}, #{reported_idx}, #{post_idx}, #{comment_idx},
+        #{report_content}, 'COMMENT', 0, NOW() )
+    </insert>
+    <!--이건 관리자용 목록 가져오기-->
+    <select id="getReportList" resultType="toour.post.vo.ReportVO">
+        SELECT r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+
+        reporter.member_idx AS reporter_idx,
+        reporter.member_nickname AS reporter_nickname,
+
+        reported.member_idx AS reported_idx,
+        reported.member_nickname AS reported_nickname
+
+        FROM report r
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+    </select>
+    <!--신고글 수 전체-->
+    <select id="ReportCountAll" resultType="int">
+        select count(*) from report
+    </select>
+
+
+
+    <!-- 신고수 가지고 오기 -->
+    <select id="reportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 미처리된 신고수 가지고 오기 -->
+    <select id="UnprocessedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 0
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 처리된 신고수 가지고 오기 -->
+    <select id="processedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 1
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 게시물신고수 가지고 오기 -->
+    <select id="PostreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'POST'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 댓글 신고수 가지고 오기 -->
+    <select id="CommentreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'COMMENT'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
 
 </mapper>

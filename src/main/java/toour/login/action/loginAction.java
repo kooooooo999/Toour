@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 public class loginAction implements Action {
@@ -52,7 +53,15 @@ public class loginAction implements Action {
                         System.out.println("loginAction mvo.nickname="+mvo.getMember_nickname());
                         session.setMaxInactiveInterval(30*60);
                         System.out.println("userNickName:"+session.getAttribute("userNickName"));
-
+                        try {
+                            int cnt = MemberDAO.updateLastLogin(mvo.getMember_idx());
+                            if (cnt > 0) {
+                                mvo.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            throw new RuntimeException(e);
+                        }
                         //cornsoup 수정
                         if(mvo.getMember_type().equals("0")){
                             viewPath = "AdminController?type=AdminMain";

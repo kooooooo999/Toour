@@ -29,15 +29,25 @@ public class AdminMemInfoAction implements Action {
         changeMvo.setMember_nickname(u_nickname);
         changeMvo.setMember_name(u_name);
         changeMvo.setMember_email(u_email+"@"+u_email2);
-        changeMvo.setMember_warning(String.valueOf(Integer.parseInt(u_warning)));
 
-        MemberVO vo = MemberDAO.getMem(member_idx);
+        //warning에 null값 들어가는 거 방지
+        int warningValue = 0;
+        try {
+            if (u_warning != null && !u_warning.trim().equals("")) {
+                warningValue = Integer.parseInt(u_warning);
+            }
+        } catch (NumberFormatException e) {
+            warningValue = 0;
+        }
 
-        MemberDAO.updateMemInfo(changeMvo);  // 회원 idx 기준 DB만 변경
+        changeMvo.setMember_warning(String.valueOf(Integer.parseInt(String.valueOf(warningValue))));
+
+        MemberVO vo = AdminMemberDAO.view(member_idx);
+
+        MemberDAO.updateMemInfo(changeMvo);
 
         request.setAttribute("vo", vo);
 
-        // 다시 목록 페이지나 상세페이지로 리디렉트
-        return "redirect:AdminController?type=adminmemlist";
+        return "";
     }
 }

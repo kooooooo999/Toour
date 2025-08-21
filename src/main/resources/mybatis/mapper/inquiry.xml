@@ -10,12 +10,32 @@
         INSERT INTO inquiry (member_idx, category, title, content, file_path, status, created_at, updated_at)
         VALUES (#{member_idx}, #{category}, #{title}, #{content}, #{file_path}, #{status}, NOW(), NOW())
     </insert>
+    <!--문의목록 (마이페이지용)-->
+
+    <select id="getMyInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
+        SELECT
+        i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
+        FROM inquiry i
+        LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.member_idx = #{member_idx}
+        ORDER BY i.inquiry_idx DESC
+        LIMIT #{numPerPage} OFFSET #{offset}
+    </select>
+
+    <!--문의목록 수(마이페이지용)-->
+    <select id="getMyInquiryListCount" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM inquiry
+        WHERE status != '삭제' and member_idx = #{member_idx}
+    </select>
 
     <!-- 문의 목록 조회 (페이징) -->
     <select id="getInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
-        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content, 
-               i.file_path, i.status, i.created_at, i.updated_at,
-               m.member_nickname, m.member_email
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
         FROM inquiry i
         LEFT JOIN member m ON i.member_idx = m.member_idx
         WHERE i.status != '삭제'
@@ -44,9 +64,9 @@
 
     <!-- 문의 상세 조회 (본인 확인 포함) -->
     <select id="getInquiryDetailByMember" parameterType="map" resultType="map">
-        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content, 
-               i.file_path, i.status, i.created_at, i.updated_at,
-               m.member_nickname, m.member_email
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
         FROM inquiry i
         LEFT JOIN member m ON i.member_idx = m.member_idx
         WHERE i.inquiry_idx = #{inquiry_idx} AND i.member_idx = #{member_idx}
@@ -54,38 +74,38 @@
 
     <!-- 문의 상세 조회 (관리자용) -->
     <select id="getInquiryDetail" parameterType="string" resultType="map">
-        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content, 
-               i.file_path, i.status, i.created_at, i.updated_at,
-               m.member_nickname, m.member_email
-        FROM inquiry i
-        LEFT JOIN member m ON i.member_idx = m.member_idx
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at, i.answer_content,
+        m.member_nickname, m.member_email
+        FROM inquiry i LEFT JOIN member m ON i.member_idx = m.member_idx
         WHERE i.inquiry_idx = #{inquiry_idx}
     </select>
 
     <!-- 문의 수정 -->
     <update id="updateInquiry" parameterType="map">
-        UPDATE inquiry 
-        SET category = #{category}, 
-            title = #{title}, 
-            content = #{content}, 
-            file_path = #{file_path}, 
-            updated_at = NOW()
+        UPDATE inquiry
+        SET category = #{category},
+        title = #{title},
+        content = #{content},
+        file_path = #{file_path},
+        updated_at = NOW()
         WHERE inquiry_idx = #{inquiry_idx} AND member_idx = #{member_idx}
     </update>
 
     <!-- 문의 상태 변경 (관리자용) -->
-    <update id="updateInquiryStatus" parameterType="map">
-        UPDATE inquiry 
-        SET status = #{status}, 
-            updated_at = NOW()
+    <update id="updateInquirydata" parameterType="map">
+        UPDATE inquiry
+        SET status = #{status},
+        updated_at = NOW(),
+        answer_content = #{answer_content}
         WHERE inquiry_idx = #{inquiry_idx}
     </update>
 
     <!-- 문의 삭제 (논리적 삭제) -->
     <update id="deleteInquiry" parameterType="map">
-        UPDATE inquiry 
-        SET status = '삭제', 
-            updated_at = NOW()
+        UPDATE inquiry
+        SET status = '삭제',
+        updated_at = NOW()
         WHERE inquiry_idx = #{inquiry_idx} AND member_idx = #{member_idx}
     </update>
 
@@ -134,15 +154,34 @@
 
 
     <!-- 총 게시물 수를 반환하는 기능 -->
-    <select id="totalCount" resultType="int" parameterType="String">
+    <select id="totalCount" parameterType="Map" resultType="int">
         select count(*) from inquiry
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
     </select>
 
-    <select id="all" resultType="toour.post.vo.InquiryVO">
-        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at, i.updated_at, i.is_read, m.member_nicnkname
+    <select id="allSearchtype" resultType="toour.post.vo.InquiryVO" parameterType="Map">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at,
+        i.updated_at, i.is_read, i.answer_content, m.member_nickname
         from inquiry i inner join member m
-        where i.member_idx = m.member_idx
+        on i.member_idx = m.member_idx
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
         order by i.inquiry_idx desc
+        LIMIT #{begin}, #{numPerPage}
+        <!-- 페이징을 위한 LIMIT -->
     </select>
 
     <!--한달 내의 신고들 보기-->
@@ -168,13 +207,15 @@
                         i.category = #{category} and
                     </when>
                     <when test="category != null and category == '기술지원'">
-                        i.category = #{category} and                    </when>
+                        i.category = #{category} and
+                    </when>
                     <when test="category != null and category == '버그신고'">
-                        i.category = #{category} and                    </when>
+                        i.category = #{category} and
+                    </when>
                     <when test="category != null and category == '기타'">
                         i.category = #{category} and
                     </when>
-                    <when test="category null">
+                    <when test="category == null or category == ''">
 
                     </when>
                 </choose>
@@ -192,12 +233,22 @@
         </where>
     </select>
 
-
-
     <select id="selectByMember" parameterType="String" resultType="toour.post.vo.InquiryVO">
         SELECT inquiry_idx, member_idx, category, title, content, file_path, status, created_at, updated_at
         FROM inquiry
         WHERE member_idx = #{member_idx}
         ORDER BY created_at DESC
     </select>
+    <select id="searchCategory" resultType="toour.post.vo.InquiryVO" parameterType="String">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at,
+        i.updated_at, i.is_read, i.answer_content, m.member_nickname
+        from inquiry i inner join member m
+        on i.member_idx = m.member_idx
+        where category = #{category}
+        order by i.inquiry_idx desc
+    </select>
+    <select id="searchContent" resultType="String" parameterType="String">
+        select answer_content from inquiry where inquiry_idx = #{inquiry_idx}
+    </select>
+
 </mapper>

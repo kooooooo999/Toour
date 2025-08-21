@@ -114,6 +114,15 @@
     session.setAttribute("userIdx", mvo.getMember_idx());
     session.setAttribute("userEmail", mvo.getMember_email());
     session.setAttribute("userNickName", mvo.getMember_nickname());
+    try {
+        int cnt = MemberDAO.updateLastLogin(mvo.getMember_idx());
+        if (cnt > 0) {
+            mvo.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+        throw new RuntimeException(e);
+    }
 
     session.setMaxInactiveInterval(30*60); // 세션 30분 유지
 

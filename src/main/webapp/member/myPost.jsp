@@ -80,7 +80,6 @@
         <li class="disable">&gt;</li>
       </c:if>
     </ol>
-    <input type="button" value="댓글" class="comment-btn" onclick="javascript:location.href=''">
   </div>
 </c:if>
 

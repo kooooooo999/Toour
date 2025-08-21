@@ -145,15 +145,7 @@
   </style>
 </head>
 <body>
-<div class="sidebar">
-
-  <!-- 메뉴 -->
-  <a href="AdminController">🏠 HOME</a>
-  <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-  <button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
-</div>
+<c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content">
   <h1>관리자 페이지</h1>

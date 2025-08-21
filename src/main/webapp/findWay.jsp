@@ -44,13 +44,14 @@
         .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         .plusButton {display: inline-block; background-image: url("images/plus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
         .minusButton {display: inline-block; background-image: url("images/minus.png"); background-size: 16px; width: 16px; height: 16px; border: none; position: absolute; right: 10px; }
-        #buttonWrap { position: relative; height: 30px; margin-top: 30px; bottom: 20px }
+        #buttonWrap { position: relative; height: 30px; margin-top: 20px; bottom: 20px }
         #saveButton { }
         #showDate { width: 315px; height: 280px; }
         #datepickerDiv { width: 100%; height: 280px; }
         #chooseDate { position: absolute; right: 20px; }
-        #date { width: 200px; height: 25px; display: inline-block; }
-        .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px;}
+        #date { width: 160px; height: 25px; display: inline-block; margin-bottom: 10px; }
+        .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px; }
+        #addCourseDateTitle {  }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -79,37 +80,41 @@
 
             <div id="selected_places" class="selected_places">
                 <h3>여기로 가야지!</h3>
-                <div>
+                <%--<div>
                      <p style="display: inline-block">날짜 : </p>
                     <input type="date" id="date"/>
-                </div>
-                <%--<input type="text" id="testDate"/>
-                <button type="button" class="detail_btn buttonRight" id="chooseDate" onclick="showDate()">날짜</button>
-                &lt;%&ndash; 사용자가 여행 언제갈지 선택할 수 있는 달력 표시 &ndash;%&gt;
-                <div id="showDate" class="hide">
-                    <div id="datepickerDiv" class="hide">
-                        <div id="datepicker"></div>
-                        <button type="button" style="font-size: 11px; display: inline-block" class="hide buttonRight detail_btn" id="saveDate" onclick="chooseDate()">선택</button>
-                    </div>
                 </div>--%>
                 <div id="courseList"></div>
             </div>
 
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
+                    <button type="button" class="detail_btn" onclick="addCourse(1)">내 코스</button>
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
-                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse()">코스 추가</button>
+                    <button type="button" id="saveButton" class="detail_btn hide" onclick="addCourse(2)">코스 추가</button>
                 </div>
             </div>
         </div>
 
+        <%-- 여행 추가 --%>
         <div id="memberCourse" class="hide" style="position: relative;">
             <div id="addCourseTitle" class="hide">
                 <p>여행 제목 : <input type="text" style="width: 100px; height: 30px;" id="courseTitle"/></p>
                 <p>여행 설명 : <input type="text" style="width: 150px; height: 150px;" id="courseSummary"/></p>
-                <button type="button" id="cancelCourseList"  style="font-size: 12px; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse()">취소</button>
+                <button type="button" id="cancelCourseList"  style="font-size: 12px; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse(2)">취소</button>
                 <button type="button" id="addCourseList"  style="font-size: 12px;" class="buttonRight detail_btn" onclick="addCourseList()">추가</button>
             </div>
+        </div>
+
+        <%-- 날짜별 코스 추가하는 창 --%>
+        <div id="addCourseDateTitle" class="hide">
+            <p>여행 날짜 : <input type="date" id="date"/></p>
+            <p>여행 일차 : <input type="text" style="width: 80px; height: 25px;" id="courseDateTitle" placeholder="N일차"/></p>
+
+            <button type="button" id="cancelCourseDate"  style="font-size: 12px; position: absolute; right: 80px; bottom: 10px;"
+                    class="buttonRight detail_btn" onclick="courseDate2()">취소</button>
+            <button type="button" id="addCourseDate"  style="font-size: 12px; position: absolute; right: 15px; bottom: 10px;"
+                    class="buttonRight detail_btn" onclick="addCourseDate()">저장</button>
         </div>
 
         <div id="searchBox2" class="left_panel hide">
@@ -167,7 +172,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "left top", at: "left top", of: ${'map_container'} }
+            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
         };
         $("#memberCourse").dialog(option);
 
@@ -178,20 +183,20 @@
             resizable: true,
             height:340,
             width:200,
-            position: { my: "left top", at: "left top", of: ${'map_container'} }
+            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
         };
         $("#addCourseTitle").dialog(option2);
 
-        $(document).ready(function () {
-            $(document).on('keydown', function () {
-                console.log("b");
-                if (event.key == 'F4') {
-                    console.log("a");
-                    document.location.href="Controller?type=searchResult"
-                }
-            })
-        })
-
+        let option3 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "여행 추가",
+            resizable: true,
+            height:200,
+            width:278,
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
+        };
+        $("#addCourseDateTitle").dialog(option3);
     })
 
 
@@ -218,15 +223,15 @@
     }
 
     // 코스 DB에서 불러오기
-    function addCourse() {
-        let date = $("#date").val();
+    function addCourse(num) {
 
-        console.log(date);
+        <%-- 1일 때는 '내코스', 2일 때는 '코스 추가' 눌렀을 때 --%>
+        let number = num;
 
         $.ajax({
             url: "Controller?type=searchCourse",
             method: "post",
-            data: { date: date }
+            data: { number: number }
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
@@ -241,11 +246,26 @@
         $.ajax({
             url: "Controller?type=searchCourseDate",
             method: "post",
-            data: { course_idx: course_idx }
+            data: { course_idx: course_idx, num: 2 }
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
         })
+    }
+    // 여행 날짜 이름 정하는 창에서 취소 버튼 누르면 이전 화면으로 되돌아가기
+    function courseDate2() {
+        let course_idx = $("#courseidxinput").val();
+        console.log(course_idx);
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx, num: 2 }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        })
+        $("#addCourseDateTitle").dialog("close");
+        $("#memberCourse").dialog("open");
     }
 
     // 여행 리스트 창에서 '여행 추가' 버튼 누르면 여행 제목 설정 할 창 띄우기
@@ -270,6 +290,61 @@
 
         $("#addCourseTitle").dialog("close");
         $("#memberCourse").dialog("open");
+    }
+
+    // 날짜별 여행계획 있는 창에서 추가 버튼 누르면 계획 추가할 수 있는 창 띄우기
+    function openDateTitle() {
+        $("#date").val("");
+        $("#courseDateTitle").val("");
+        $("#addCourseDateTitle").dialog("open");
+        $("#memberCourse").dialog("close");
+    }
+    
+    // 특정 코스에 세부코스 저장하기 (세부코스 만드는 창에서 저장버튼 눌렀을 때)
+    function addCourseDate() {
+        let date = $("#date").val();
+        let course_idx = $("#courseidxinput").val();
+        let date_title = $("#courseDateTitle").val();
+        console.log(date);
+        console.log(course_idx);
+        console.log(date_title);
+
+        $.ajax({
+            url: "Controller?type=addCourseDate",
+            method: "post",
+            data: { date: date, course_idx: course_idx, date_title: date_title, num: 2 }
+        }).done(function (res) {
+            $("#memberCourse").html(res);
+        })
+
+        $("#addCourseDateTitle").dialog("close");
+        $("#memberCourse").dialog("open");
+    }
+    
+    // 내코스에서 여행이름 눌렀을 때 날짜별 코스 띄우기
+    function myCourseDate(course_idx) {
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx, num: 1 }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        })
+    }
+
+    // 내 코스 지도 코스 리스트에 띄우기
+    function showCourseList(courseDate_idx) {
+
+        $.ajax({
+            url: "Controller?type=myCourseDay",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx }
+        }).done(function (res) {
+            $("#courseList").html(res);
+        })
+
+        $("#memberCourse").dialog("close");
     }
 
     // 페이지 누르면 해당 페이지로 변경되는 코드

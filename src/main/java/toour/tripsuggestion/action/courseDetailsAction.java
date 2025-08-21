@@ -107,6 +107,7 @@ public class courseDetailsAction implements Action {
                 //좌표 얻기
                 StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
                 sb2.append(subcontentid);
+                System.out.println("sb2: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
@@ -165,7 +166,6 @@ public class courseDetailsAction implements Action {
             restaurantSet.addAll(rList);
             List<DataVO> aList = getContenttyIdlist("32", arList.get(arList.size() - 1).getMapx(), arList.get(arList.size() - 1).getMapy(), key, "30000");
             accommodationSet.addAll(aList);
-            System.out.println("Mapx: " + arList.get(0).getMapx());
 
             request.setAttribute("couserAr", arList);
             request.setAttribute("restaurantSet", restaurantSet);

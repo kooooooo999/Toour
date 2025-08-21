@@ -332,11 +332,13 @@
 
   <!-- 신고 팝업 -->
   <div id="report_dialog" title="게시물 신고">
-    <form id="reportForm" action="ReportAction" method="post">
+    <form id="reportForm" action="Controller?type=reportPost" method="post"
+     >
       <p>신고 사유를 입력하세요:</p>
-      <textarea name="reason" id="report_reason" rows="5" style="width:100%; box-sizing:border-box;" required></textarea>
-      <input type="hidden" name="post_id" value="${vo.post_idx}"/>
-      <input type="hidden" name="reporter_id" value="${sessionScope.user.member_idx}"/>
+        <label><textarea name="reason" id="report_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
+        <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+        <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
+        <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
     </form>
   </div>
 
@@ -398,8 +400,11 @@
                     <div id="comment_nickname">
                             ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
-                        &nbsp;&nbsp; <span class="report-emoji" title="신고하기"
-                                           onclick="warningComment(${cvo.comment_idx})">🚨</span>
+                        &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+                                <c:set var="comment_idx" value="${cvo.comment_idx}"/>
+                                <span class="report-emoji" title="신고하기"
+                                      onclick="warningComment(${cvo.comment_idx})">🚨</span>
+                            </c:if>
                     </div>
                     <div id="comment_post">
                             ${cvo.comment_content}
@@ -408,13 +413,15 @@
                 <hr/>
             </c:forEach>
         </c:if>
-
+            <!--댓글신고-->
             <div id="warning_dialog" title="신고">
-                <form action="Controller" method="post">
-                    <input type="hidden" name="type" value="warning"/>
-                    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
-                    <input type="hidden" name="cPage" value="${param.cPage}"/>
-                    <input type="hidden" name="member_idx" value="${sessionScope.user.member_idx}"/>
+                <form id="CommentReportForm" action="Controller?type=reportComment" method="post">
+                    <p>신고 사유를 입력하세요:</p>
+                    <label><textarea name="reason" id="commentReport_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
+                    <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+                    <input type="hidden" name="comment_idx" value=""/>
+                    <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
+                    <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
                     <button type="button" onclick="warning(this.form)">신고</button>
                 </form>
             </div>
@@ -506,9 +513,14 @@
             document.ff.submit();
         }
 
-        function warningComment() {
-            $("#warning_dialog").dialog("open");
-        }
+      //댓글 신고 다이얼 로그 열기 함수
+
+      function warningComment(comment_idx) {
+          $("#commentReport_reason").val("");
+          $("#CommentReportForm input[name='comment_idx']").val(comment_idx);
+          $("#warning_dialog").dialog("open");
+          console.log(comment_idx);
+      }
 
 
         $(function () {
@@ -520,14 +532,27 @@
             // $("#loginDialog").dialog(option);
         });
 
-        $(function () {
+        $(function sendReport() {
             $("#warning_dialog").dialog({
                 autoOpen: false,
                 modal: true,
-                resizable: false
+                resizable: false,
+                width: 400,
+                buttons: {
+                    "신고하기": function () {
+                        let reason = $("#commentReport_reason").val().trim();
+                        if (reason.length < 1) {
+                            alert("신고 사유를 입력하세요");
+                            return;
+                        }
+                        $("#CommentReportForm").submit();
+                    },
+                    "취소": function () {
+                        $(this).dialog("close");
+                    }
+                }
             });
         });
-
 
     </script>
 </div>

@@ -10,7 +10,7 @@ public class ReportVO {
     public void setReport_idx(String report_idx) {
         this.report_idx = report_idx;
     }
-
+    //신고한 사람
     public String getReporter_idx() {
         return reporter_idx;
     }
@@ -18,7 +18,7 @@ public class ReportVO {
     public void setReporter_idx(String reporter_idx) {
         this.reporter_idx = reporter_idx;
     }
-
+    //신고당한 사람
     public String getReported_idx() {
         return reported_idx;
     }

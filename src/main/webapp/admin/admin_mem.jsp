@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -170,30 +169,96 @@
     }
 
 
-     #table thead th:nth-child(1) { width: 80px; }   /* 전체선택 */
-     #table thead th:nth-child(2) { width: 100px; }  /* 회원번호 */
-     #table thead th:nth-child(3) { width: 120px; }  /* 이름 */
-     #table thead th:nth-child(4) { width: 150px; }  /* 아이디 */
-     #table thead th:nth-child(5) { width: 150px; }  /* 별명 */
-     #table thead th:nth-child(6) { width: 100px; }  /* 경고횟수 */
-     #table thead th:nth-child(7) { width: 100px; }
+        #table thead th:nth-child(1) {
+            width: 80px;
+        }
+
+        /* 전체선택 */
+        #table thead th:nth-child(2) {
+            width: 100px;
+        }
+
+        /* 회원번호 */
+        #table thead th:nth-child(3) {
+            width: 120px;
+        }
+
+        /* 이름 */
+        #table thead th:nth-child(4) {
+            width: 150px;
+        }
+
+        /* 아이디 */
+        #table thead th:nth-child(5) {
+            width: 150px;
+        }
+
+        /* 별명 */
+        #table thead th:nth-child(6) {
+            width: 100px;
+        }
+
+        /* 경고횟수 */
+        #table thead th:nth-child(7) {
+            width: 100px;
+        }
+
+
+        .paging-area {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .paging {
+            list-style: none;
+            padding: 0;
+            display: inline-block;
+        }
+
+        .paging li {
+            display: inline-block;
+            margin: 0 5px;
+        }
+
+        .paging li a,
+        .paging li.now,
+        .paging li.disable {
+            display: inline-block;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: #3498db;
+            text-decoration: none;
+            border-radius: 4px;
+            border: 1px solid transparent;
+        }
+
+        .paging li a:hover {
+            background-color: #e7f0ff;
+            border-color: #3498db;
+        }
+
+        .paging li.now {
+            font-weight: 700;
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .paging li.disable {
+            color: #ccc;
+            cursor: default;
+        }
 
 
 
-  </style>
+    </style>
 </head>
 <body>
 
-<div class="sidebar">
-  <a href="AdminController">🏠 HOME</a>
-  <a href="AdminController?type=adminnotice">📢 공지사항 관리</a>
-  <a href="AdminController?type=adminpost">📝 게시물 관리</a>
-  <a href="AdminController?type=adminmemlist">👥 회원정보 관리</a>
-  <button type="button" onclick='location.href="Controller?type=login"'>로그아웃</button>
-</div>
+<c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content" id="post">
-  <h1>회원정보 관리</h1>
+    <h1>회원정보 관리</h1>
 
 
   <div class="search-area">
@@ -208,16 +273,19 @@
       <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
     </form>
 
-      <form id = "delform" method="post" action="AdminController?type=adminmemdel">
-      <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
 
-      <!-- 삭제 다이얼로그 -->
-      <div id = "del_dialog" title = "삭제하시겠습니까?">
-        <div class="button-group">
-          <button type="button" onclick="goDel()">삭제</button>
-          <button type="button" id = "member_del_cancel">취소</button>
+        <form id="delform" method="post" action="AdminController?type=adminmemdel">
+            <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
+
+            <!-- 삭제 다이얼로그 -->
+            <div id="del_dialog" title="삭제하시겠습니까?">
+                <div class="button-group">
+                    <button type="button" onclick="goDel()">삭제</button>
+                    <button type="button" id="member_del_cancel">취소</button>
+                </div>
+            </div>
+        </form>
         </div>
-      </div>
 
 <%--      <%--%>
 <%--        String searchType = request.getParameter("searchType");--%>
@@ -232,6 +300,13 @@
   <div class="totalCount">
     <p>총 <strong>${t}</strong>건</p>
   </div>
+
+
+    <c:set var="t" value="${requestScope.totalCount}"/>
+
+    <div class="totalCount">
+        <p>총 <strong>${t}</strong>건</p>
+    </div>
 
   <table id="table">
     <thead>
@@ -303,30 +378,32 @@
   </table>
 
 
-
-  <div class="pagination">
-    <c:if test="${p.startPage > 1}">
-      <a href="AdminController?type=adminmemlist&cPage=${p.startPage - 1}">&lt;</a>
-    </c:if>
-
-    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-      <c:choose>
-        <c:when test="${p.nowPage == vs.index}">
-          <span class="current">${vs.index}</span>
-        </c:when>
-
-        <c:otherwise>
-          <a href="AdminController?type=adminmemlist&cPage=${vs.index}">${vs.index}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-
-    <c:if test="${p.endPage < p.totalPage}">
-      <a href="AdminController?type=adminmemlist&cPage=${p.endPage + 1}">&gt;</a>
-    </c:if>
-  </div>
-
-</div> <!-- /main-content -->
+            <div class="paging-area">
+                <ol class="paging">
+                    <c:set var="p" value="${requestScope.page}" />
+                    <c:if test="${p.startPage < p.pagePerBlock}">
+                        <li class="disable">&lt;</li>
+                    </c:if>
+                    <c:if test="${p.startPage >= p.pagePerBlock}">
+                        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${p.startPage-p.pagePerBlock}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&lt;</a></li>
+                    </c:if>
+                    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+                        <c:if test="${p.nowPage == vs.index}">
+                            <li class="now">${vs.index}</li>
+                        </c:if>
+                        <c:if test="${p.nowPage != vs.index}">
+                            <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
+                        </c:if>
+                    </c:forEach>
+                    <c:if test="${p.endPage < p.totalPage}">
+                        <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${p.endPage+1}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">&gt;</a></li>
+                    </c:if>
+                    <c:if test="${p.endPage >= p.totalPage}">
+                        <li class="disable">&gt;</li>
+                    </c:if>
+                </ol>
+    </div>
+</div>
 </body>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -384,16 +461,36 @@
     ar.prop("checked", this.checked);
   });
 
-    //전체선택을 클릭한 뒤, tbody에 있는 클릭 한 개가 해제되면 전체선택 체크박스도 해제
-    $("#table tbody input:checkbox").click(function (){
+        // 별명 창에 타이핑을 쳤을 때
+        $("#u_nickname").keyup(function (){
+            const u_nickname_t = $(this).val().trim();
+            if (u_nickname_t.length > 0) {
+                $.ajax({
+                    url: "Controller?type=chknickname",
+                    type: "post",
+                    data:{ u_nickname: u_nickname_t }
+                }).done(function (res) {
+                    updateValidationMessage("#nickname_usable", res);
+                    if(u_nickname_t == "${sessionScope.member.member_nickname}"){
+                        $("#nickname_usable").removeClass("success error");
+                        $("#nickname_usable").addClass("success").html("");
+                    }
+                });
+            } else {
+                $("#nickname_usable").html("");
+            }
+        });
 
-      //tbody에서 체크박스의 개수와 tbody에서 체크된 체크박스의 개수 비교
-      let AllChecked = $("#table tbody input:checkbox").length == $("#table tbody input:checkbox:checked").length;
-      $("#table thead input:checkbox").prop("checked", AllChecked);
+        //전체선택을 클릭한 뒤, tbody에 있는 클릭 한 개가 해제되면 전체선택 체크박스도 해제
+        $("#table tbody input:checkbox").click(function () {
+
+            //tbody에서 체크박스의 개수와 tbody에서 체크된 체크박스의 개수 비교
+            let AllChecked = $("#table tbody input:checkbox").length == $("#table tbody input:checkbox:checked").length;
+            $("#table thead input:checkbox").prop("checked", AllChecked);
 
 
+        });
     });
-  });
 
 </script>
 

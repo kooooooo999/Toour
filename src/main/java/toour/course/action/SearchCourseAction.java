@@ -14,6 +14,7 @@ public class SearchCourseAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        System.out.println(request.getParameter("number"));
         Object obj = request.getSession().getAttribute("member");
         MemberVO mvo = null;
 

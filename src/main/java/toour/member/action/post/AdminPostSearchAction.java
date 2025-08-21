@@ -1,5 +1,6 @@
 package toour.member.action.post;
 
+import toour.member.dao.AdminPostDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
 import toour.post.dao.PostDAO;
@@ -14,10 +15,13 @@ public class AdminPostSearchAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String searchType = request.getParameter("searchType");
         String searchValue = request.getParameter("searchValue");
+
+//        System.out.println("searchType::::::::::::"+searchType);
+
         String category_idx = request.getParameter("category_idx");
         if (category_idx == null)
             category_idx = "2";
-        int totalCount = PostDAO.getTotalCount(category_idx);
+        int totalCount = AdminPostDAO.getSearchTotalCount(searchType,searchValue);
 
         Paging page = new Paging(10,5);
 

@@ -98,6 +98,7 @@ public class sidoDetailsAction implements Action {
 //        System.out.println("cPage"+cPage);
         sb.append("&numOfRows=5&_type=xml&contentTypeId=12&contentId=");
         sb.append(contentid);
+        System.out.println("sb = " + sb.toString());
 
         try {
             URL url = new URL(sb.toString());

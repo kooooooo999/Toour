@@ -1,5 +1,7 @@
 package toour.member.vo;
 
+import toour.tripsuggestion.vo.DataVO;
+
 import java.util.List;
 
 public class MemberVO {
@@ -25,10 +27,15 @@ public class MemberVO {
 
     // 내가 저장한 찜 목록저장소
 
+    private List<DataVO> courseList;
 
+    public List<DataVO> getCourseList() {
+        return courseList;
+    }
 
-
-
+    public void setCourseList(List<DataVO> courseList) {
+        this.courseList = courseList;
+    }
 
     public String getMember_idx() {
         return member_idx;}
