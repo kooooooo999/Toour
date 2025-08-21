@@ -41,7 +41,7 @@ public class myPageAction implements Action {
                     // 관광지를 담는 배열에 최대 4개만 담는 문장
 
                         if (tour_cnt < cnt) {
-                            tour_ar[tour_cnt] = GetAPIData.getDataVO(zvo.getZzim_content_id());
+                            tour_ar[tour_cnt] = GetAPIData.getDataVO_detail(zvo.getZzim_content_id());
                             tour_cnt++;
                             System.out.println("tour_cnt:" + tour_cnt);
                         }

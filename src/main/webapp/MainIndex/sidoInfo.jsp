@@ -83,34 +83,40 @@
                              onerror="this.src='images/noImage.png'"/>
                         <p class="ellip">${vo.addr1}</p>
                         <a href="#" class="data-link ellip_2" data-title="${vo.title}" data-addr1="${vo.addr1}"
-                           data-firstimage="${vo.firstimage}"
+                           data-overview="${vo.overview}" data-firstimage="${vo.firstimage}"
                            data-mapx="${vo.mapx}" data-mapy="${vo.mapy}" data-contentid="${vo.contentId}"
+                           data-homepageurl="${vo.homepageUrl}"
+                           data-homepagetext="${vo.homepageText}" data-contenttypeid="${vo.contentTypeId}"
                         >${vo.title}</a>
                     </div>
                 </c:if>
             </c:if>
         </c:forEach>
     </div>
+
+
 </div>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function () { //보안을 위해 거쳐서 이동
         $(document).on('click', '.data-link', function (e) {
-            e.preventDefault();//a태그 이동 방지
+            e.preventDefault(); // a태그 href 링크 이동 방지
             let title = $(this).data('title');
             let addr1 = $(this).data('addr1');
+            let overview = $(this).data('overview');
             let firstimage = $(this).data('firstimage');
             let mapx = $(this).data('mapx');
             let mapy = $(this).data('mapy');
-            let contentid = $(this).data('contentid');
-
-            submitData(title, addr1, firstimage, mapx, mapy, contentid)
+            let contentTypeId = $(this).data('contenttypeid');
+            let contentId = $(this).data('contentid');
+            let homepageUrl = $(this).data('homepageurl');
+            let homepageText = $(this).data('homepagetext');
+            submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl, homepageText);
         });
     });
 
-    function submitData(title, addr1, firstimage, mapx, mapy, contentid) {
-        console.log(contentid)
+    function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl, homepageText) {
         let form = document.createElement('form');
         form.method = 'POST';
         form.action = 'Controller?type=sidoDetails';
@@ -124,6 +130,11 @@
         addr1Input.type = 'hidden';
         addr1Input.name = 'addr1';
         addr1Input.value = addr1;
+
+        let overviewInput = document.createElement('input');
+        overviewInput.type = 'hidden';
+        overviewInput.name = 'overview';
+        overviewInput.value = overview;
 
         let firstimageInput = document.createElement('input');
         firstimageInput.type = 'hidden';
@@ -140,17 +151,36 @@
         mapyInput.name = 'mapy';
         mapyInput.value = mapy;
 
+        let contentTypeIdInput = document.createElement('input');
+        contentTypeIdInput.type = 'hidden';
+        contentTypeIdInput.name = 'contentTypeId';
+        contentTypeIdInput.value = contentTypeId;
+
         let contentIdInput = document.createElement('input');
         contentIdInput.type = 'hidden';
-        contentIdInput.name = 'contentid';
-        contentIdInput.value = contentid;
+        contentIdInput.name = 'contentId';
+        contentIdInput.value = contentId;
+
+        let homepageUrlInput = document.createElement('input');
+        homepageUrlInput.type = 'hidden';
+        homepageUrlInput.name = 'homepageUrl';
+        homepageUrlInput.value = homepageUrl;
+
+        let homepageTextInput = document.createElement('input');
+        homepageTextInput.type = 'hidden';
+        homepageTextInput.name = 'homepageText';
+        homepageTextInput.value = homepageText;
 
         form.appendChild(titleInput);
         form.appendChild(addr1Input);
+        form.appendChild(overviewInput);
         form.appendChild(firstimageInput);
         form.appendChild(mapxInput);
         form.appendChild(mapyInput);
+        form.appendChild(contentTypeIdInput);
         form.appendChild(contentIdInput);
+        form.appendChild(homepageUrlInput);
+        form.appendChild(homepageTextInput);
 
         document.body.appendChild(form);
 

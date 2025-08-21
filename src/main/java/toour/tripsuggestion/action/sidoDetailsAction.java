@@ -4,12 +4,13 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
+import toour.member.dao.ZzimDAO;
+import toour.member.vo.MemberVO;
+import toour.member.vo.ZzimVO;
 import toour.tripsuggestion.vo.DataVO;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -18,25 +19,28 @@ import java.util.regex.Pattern;
 
 public class sidoDetailsAction implements Action {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
         //title, addr1, firstimage, mapx, mapy, contentId
         String title = request.getParameter("title");
         String mapx = request.getParameter("mapx");
         String mapy = request.getParameter("mapy");
         String addr1 = request.getParameter("addr1");
         String firstimage = request.getParameter("firstimage");
-        String contentid = request.getParameter("contentid");
+        String contentId = request.getParameter("contentId");
+        String contentTypeId = request.getParameter("contentTypeId");
         DataVO dataVO = new DataVO();
         dataVO.setTitle(title);
         dataVO.setMapx(mapx);
         dataVO.setMapy(mapy);
         dataVO.setAddr1(addr1);
         dataVO.setFirstimage(firstimage);
-        dataVO.setContentId(contentid);
+        dataVO.setContentId(contentId);
+        dataVO.setContentTypeId(contentTypeId);
         try {
             StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
-            sb2.append(contentid);
+            sb2.append(contentId);
             URL url2 = new URL(sb2.toString());
+            System.out.println("sidoDetailsAction_sb2:"+sb2.toString());
             HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
             conn2.setRequestProperty("Content-Type", "application/xml");
             conn2.connect();
@@ -92,11 +96,12 @@ public class sidoDetailsAction implements Action {
 //        sb.append(cPage);
 //        System.out.println("cPage"+cPage);
         sb.append("&numOfRows=5&_type=xml&contentTypeId=12&contentId=");
-        sb.append(contentid);
+        sb.append(contentId);
         System.out.println("sb = " + sb.toString());
 
         try {
             URL url = new URL(sb.toString());
+            System.out.println("sidoDetailsAction_sb:"+sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");
             conn.connect();
@@ -106,21 +111,42 @@ public class sidoDetailsAction implements Action {
             Element body = root.getChild("body");
             Element items = body.getChild("items");
             List<Element> itemList = items.getChildren("item");
+            DataVO[] dvo_ar = new DataVO[itemList.size()];
+            int i =0;
             for (Element item : itemList) {
                 String infocenter = item.getChildText("infocenter"); //문의안내
                 String parking = item.getChildText("parking"); //주차시설
                 String restdate = item.getChildText("restdate"); //쉬는날
                 String usetime = item.getChildText("usetime"); //이용시간
-                dataVO.setInfocenter(infocenter);
-                dataVO.setParking(parking);
-                dataVO.setRestdate(restdate);
-                dataVO.setUsetime(usetime);
+                DataVO dvo = new DataVO(infocenter, parking, restdate, usetime);
+                dvo_ar[i++] =dvo;
             }
-            request.setAttribute("detailsData", dataVO);
+            boolean zzim_state = false;
+            ZzimVO[] zzim_ar = null;
+            if (contentId != null) {
+                Object obj = request.getSession().getAttribute("member");
+                MemberVO mvo = null;
+                if (obj != null) {
+                    mvo = (MemberVO) obj;
+                    zzim_ar = ZzimDAO.getZzimAr(mvo.getMember_idx());
+                    if (zzim_ar != null) {
+                        for (ZzimVO zvo : zzim_ar) {
+                            if (contentId.equals(zvo.getZzim_content_id())) {
+                                zzim_state = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            request.setAttribute("zzim_state", zzim_state);
+
+            request.setAttribute("detailsAr", dataVO);
+            request.setAttribute("detailsAr_2", dvo_ar);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        return "sidoDetails.jsp";
+        return "tripDetails.jsp";
     }
 }
