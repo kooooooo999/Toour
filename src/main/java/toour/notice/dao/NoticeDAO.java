@@ -1,4 +1,4 @@
-package toour.post.dao;
+package toour.notice.dao;
 
 import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;

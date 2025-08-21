@@ -8,9 +8,7 @@ footer { background-color: #343a40; color: #ddd; padding: 40px 0; font-size: 14p
 .footer-news-ticker .ticker-controls i { margin-left: 10px; cursor: pointer; }
 
 .footer-sns-links { display: flex; justify-content: center; gap: 30px; margin-bottom: 30px; }
-.footer-sns-links a { display: flex; flex-direction: column; align-items: center; color: #ddd; font-size: 13px; }
-.footer-sns-links .sns-icon { background-color: #666; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; margin-bottom: 8px; transition: background-color 0.3s ease; }
-.footer-sns-links a:hover .sns-icon { background-color: #007bff; }
+.footer-sns-links a { display: flex; flex-direction: column; align-items: center; color: #ddd; font-size: 12px; }
 
 .footer-banners { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 30px; }
 .footer-banners .banner-item { background-color: #f0f0f0; border-radius: 5px; overflow: hidden; text-align: center; }
