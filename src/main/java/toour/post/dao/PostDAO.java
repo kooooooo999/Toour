@@ -74,7 +74,7 @@ public class PostDAO {
         map.put("pageSize", pageSize);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.list", map);
+        List<PostVO > list = ss.selectList("post.list", map);
         if(list != null && !list.isEmpty()){
             ar = new PostVO[list.size()];
             list.toArray(ar);
@@ -419,12 +419,18 @@ public class PostDAO {
         return list;
     }
 
-    public static List<PostVO> getPostsByLikes(Paging paging) {
+    public static List<PostVO> getPostsByLikes(int begin, int end) {
         Map<String, Object> map = new HashMap<>();
-        int offset = paging.getBegin() - 1;
-        if(offset < 0) offset = 0; // 음수 방지
-        map.put("offset", offset); // MySQL LIMIT는 0부터 시작
-        map.put("pageSize", paging.getNumPerPage());
+        // offset 계산
+        int offset = begin - 1;
+        if (offset < 0) offset = 0;
+        int pageSize = end - begin + 1;
+        String category_idx ="2";
+        map.put("category_idx", category_idx);
+        map.put("offset", offset);
+        map.put("pageSize", pageSize);
+
+
 
         SqlSession ss = FactoryService.getFactory().openSession();
         List<PostVO> list = ss.selectList("recommend.getPostsByLikes", map);
@@ -432,12 +438,17 @@ public class PostDAO {
         return list;
     }
 
-    public static List<PostVO> getPostsByPopularity(Paging paging) {
+    public static List<PostVO> getPostsByPopularity(int begin, int end) {
         Map<String, Object> map = new HashMap<>();
-        int offset = paging.getBegin() - 1;
-        if(offset < 0) offset = 0; // 음수 방지
-        map.put("offset", paging.getBegin() - 1);
-        map.put("pageSize", paging.getNumPerPage());
+        // offset 계산
+        int offset = begin - 1;
+        if (offset < 0) offset = 0;
+        int pageSize = end - begin + 1;
+        String category_idx ="2";
+        map.put("category_idx", category_idx);
+        map.put("offset", offset);
+        map.put("pageSize", pageSize);
+
 
         SqlSession ss = FactoryService.getFactory().openSession();
         List<PostVO> list = ss.selectList("recommend.getPostsByPopularity", map);

@@ -32,6 +32,7 @@
     <select id="getPostsByLikes" parameterType="map" resultType="toour.post.vo.PostVO">
         select *
         from post
+        where category_idx=#{category_idx}
         order by post_likes desc
         LIMIT #{offset}, #{pageSize}
 
@@ -42,6 +43,7 @@
         (p.post_likes * 3 + p.post_views * 1 - TIMESTAMPDIFF(DAY, p.post_created_at, NOW()) * 2
         ) AS popularity
         FROM post p
+        where category_idx=#{category_idx}
         ORDER BY popularity DESC
         LIMIT #{offset}, #{pageSize} ;
     </select>

@@ -42,17 +42,20 @@ public class ListAction implements Action {
 
         switch (sort != null ? sort : "latest") {
             case "likes":
-                posts = PostDAO.getPostsByLikes(paging);
+                // Paging 객체를 likes 정렬에 맞게 설정하고 게시물을 가져옵니다.
+                // PostDAO.getPostsByLikes() 메서드가 begin과 end를 사용하도록 수정 필요
+                posts = PostDAO.getPostsByLikes(paging.getBegin(), paging.getEnd());
                 break;
             case "popular":
-                posts = PostDAO.getPostsByPopularity(paging);
+                // Paging 객체를 popular 정렬에 맞게 설정하고 게시물을 가져옵니다.
+                // PostDAO.getPostsByPopularity() 메서드가 begin과 end를 사용하도록 수정 필요
+                posts = PostDAO.getPostsByPopularity(paging.getBegin(), paging.getEnd());
                 break;
             case "latest":
-                PostVO[] arr = PostDAO.getList(category_idx, paging.getBegin(), paging.getBegin() + paging.getNumPerPage() - 1);
+                PostVO[] arr = PostDAO.getList(category_idx, paging.getBegin(), paging.getEnd());
                 posts = arr != null ? Arrays.asList(arr) : new ArrayList<>();
                 break;
         }
-
         request.setAttribute("ar", posts);
         request.setAttribute("page", paging);
         request.setAttribute("sort", sort != null ? sort : "latest");
