@@ -66,6 +66,7 @@ public class sidoAction implements Action {
                 String addr1 = item.getChildText("addr1");
                 String firstimage = item.getChildText("firstimage");
                 String contentId = item.getChildText("contentid");
+                String contentTypeID = item.getChildText("contenttypeid");
                 String mapx = item.getChildText("mapx");
                 String mapy = item.getChildText("mapy");
 
@@ -74,6 +75,7 @@ public class sidoAction implements Action {
                 vo.setAddr1(addr1);
                 vo.setFirstimage(firstimage);
                 vo.setContentId(contentId);
+                vo.setContentTypeId(contentTypeID);
                 vo.setMapx(mapx);
                 vo.setMapy(mapy);
                 ar[i++] = vo;

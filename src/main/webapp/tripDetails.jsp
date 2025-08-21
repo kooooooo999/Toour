@@ -41,7 +41,6 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding-left: 70px;
   }
      /* 뒤로가기 버튼 스타일 */
    .back-button {
