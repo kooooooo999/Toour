@@ -432,7 +432,7 @@
 
     let cnt123 =0;
     function findWay() { // 길찾기 버튼 누르면 카카오 api에 요청해서 json 받아오는 비동기식 호출
-        if(cnt123 >0){
+        if(cnt123 > 0){
             polyline.setMap(null);
         }
         cnt123++;

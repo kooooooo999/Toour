@@ -28,7 +28,7 @@
     var coursePoints = [];
     var points = [];
 
-    <c:forEach var="vo" items="${sessionScope.courseList}">
+    <c:forEach var="vo" items="${sessionScope.member.courseList}">
     var point = {
         mapx: "${vo.mapx}",
         mapy: "${vo.mapy}"
@@ -36,7 +36,7 @@
     coursePoints.push(point);
     </c:forEach>
 
-    <c:forEach var="list" items="${sessionScope.courseList}">
+    <c:forEach var="list" items="${sessionScope.member.courseList}">
     points.push(new kakao.maps.LatLng(${list.mapy}, ${list.mapx}));
     </c:forEach>
 

@@ -31,6 +31,7 @@ public class SearchResultAction implements Action{
         if (obj != null) {
             mvo = (MemberVO) obj;
         }
+        List<DataVO> myCourseList = mvo.getCourseList();
 
         String viewPath = null;
         String contentTypeid = request.getParameter("contentTypeId"); //관광타입ID (12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점)
@@ -77,7 +78,9 @@ public class SearchResultAction implements Action{
             // + 버튼 눌렀을 때 수행
             System.out.println("here2");
             courseList.add(srlist.get(index1));
+            myCourseList.add(srlist.get(index1));
 
+            mvo.setCourseList(myCourseList);
             request.setAttribute("courseList", courseList);
             request.setAttribute("addTitle", addTitle);
 
@@ -87,9 +90,14 @@ public class SearchResultAction implements Action{
             // - 버튼 눌렀을 때 수행
             System.out.println("here3");
             System.out.println(removeTitle);
-            courseList.remove(index1);
+            System.out.println(myCourseList.size()+": 1");
+//            courseList.remove(index1);
+            myCourseList.remove(index1);
+            System.out.println(myCourseList.size()+": 2");
 
-            request.setAttribute("courseList", courseList);
+            mvo.setCourseList(myCourseList);
+            System.out.println(myCourseList.size()+": 3");
+//            request.setAttribute("courseList", courseList);
 
             viewPath = "addList.jsp";
         } else if (myCourse!=null&&myCourse.equals("myCourse")) {
@@ -233,8 +241,6 @@ public class SearchResultAction implements Action{
             //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         }
-
-
 
         return viewPath;
     }
