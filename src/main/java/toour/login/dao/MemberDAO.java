@@ -57,7 +57,7 @@ public class MemberDAO {
         else
             ss.rollback();
         ss.close();
-
+        System.out.println("updateMyInfo_cnt:"+cnt);
     }
 
     public static void updateMemInfo(MemberVO mvo){

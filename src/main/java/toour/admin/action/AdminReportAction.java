@@ -10,9 +10,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static toour.post.dao.ReportDAO.TotalCount;
+
 public class AdminReportAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        int TotalCount = TotalCount();
 
         ReportVO[] rvo = ReportDAO.getReport();
 
@@ -28,11 +31,13 @@ public class AdminReportAction implements Action {
             page.setNowPage(nowPage);
         }
 
+
         request.setAttribute("totalCount", totalCount);
         request.setAttribute("rvo", rvo);
         request.setAttribute("page",page);
         request.setAttribute("cPage",cPage);
         request.setAttribute("nowPage",page.getNowPage());
+        request.setAttribute("TotalCount",TotalCount());
 
 
 

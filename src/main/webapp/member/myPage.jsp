@@ -740,6 +740,7 @@
         <table class="MyInfo-table">
             <caption class="hidden">개인정보 테이블</caption>
             <tbody>
+            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
             <tr>
                 <td>ID:</td>
                 <td>
@@ -773,7 +774,7 @@
                     </div>
                 </td>
             </tr>
-            <tr>
+            </c:if>
             <tr>
                 <td>별명:</td>
                 <td>
@@ -785,12 +786,14 @@
                     </div>
                 </td>
             </tr>
+            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
             <tr>
                 <td>이름:</td>
                 <td>
                     <input type="text" id="u_name" name="u_name" class="input-field" placeholder="이름" value="${mvo.member_name}" disabled/>
                 </td>
             </tr>
+            </c:if>
             <tr>
                 <td>이메일:</td>
                 <td>
@@ -802,13 +805,13 @@
                             <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
                             <span class="email-separator">@</span>
                             <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>
-                            <select id="emailAddr" name="emailAddr" class="email-select">
+                            <%--<select id="emailAddr" name="emailAddr" class="email-select">
                                 <option value="">직접 입력</option>
                                 <option value="naver.com" <c:if test="${email2.equals('naver.com')}" > selected</c:if> >naver.com</option>
                                 <option value="gmail.com" <c:if test="${email2.equals('gmail.com')}" > selected</c:if> >gmail.com</option>
                                 <option value="daum.net" <c:if test="${email2.equals('daum.com')}" > selected</c:if> >daum.net</option>
                                 <option value="nate.net" <c:if test="${email2.equals('nate.com')}" > selected</c:if> >nate.net</option>
-                            </select>
+                            </select>--%>
                         </div>
                     </div>
                 </td>
@@ -875,7 +878,13 @@
     //[개인정보 확인] 버튼을 눌렀을 때
     function changeMyInfo() {
         $("#match_pw").val("");
-        $("#matchPassword_dialog").dialog("open");
+        console.log('${sessionScope.member.login_type}');
+        <c:if test="${sessionScope.member.login_type eq 'LOCAL'}">
+            $("#matchPassword_dialog").dialog("open");
+        </c:if>
+        <c:if test="${sessionScope.member.login_type eq 'KAKAO'}">
+            $("#MyInfo-container").dialog("open");
+        </c:if>
     }
 
     function mysearch() {
@@ -947,30 +956,32 @@
     //개인정보 확인 dialog에서 정보 수정 후 [변경]을 눌렀을 때
     function saveMyInfo() {
         let u_nickname = $("#u_nickname").val();
+        console.log("u_nickname:" + u_nickname);
         let pw = $("#u_pw").val();
         let re_pw = $("#u_repw").val();
 
         let chk =0;
         //비밀번호 검사
-        if(pw.trim().length<1&&re_pw.trim().length<1){
-            //둘 다 입력 안 했을 때
-        }else {
-            // 둘 중 하나에라도 뭔가 입력했을 때
-
-            //조건 1. 둘 다 입력양식에 만족했는가
-            //조건 2. 둘의 값이 동일한가
-            if ($("#pw_usable").hasClass("success")) {
-                if ($("#repw_usable").hasClass("success")) {
-
-                } else {
-                    chk=chk+1;
-                }
+        if (pw !=null&&re_pw !=null) {
+            if (pw.trim().length < 1 && re_pw.trim().length < 1) {
+                //둘 다 입력 안 했을 때
             } else {
-                chk=chk+1;
+                // 둘 중 하나에라도 뭔가 입력했을 때
+
+                //조건 1. 둘 다 입력양식에 만족했는가
+                //조건 2. 둘의 값이 동일한가
+                if ($("#pw_usable").hasClass("success")) {
+                    if ($("#repw_usable").hasClass("success")) {
+
+                    } else {
+                        chk = chk + 1;
+                    }
+                } else {
+                    chk = chk + 1;
+                }
+
             }
-
         }
-
         //별명 검사
         if ($("#nickname_usable").hasClass("error")) {
             chk=chk+1;

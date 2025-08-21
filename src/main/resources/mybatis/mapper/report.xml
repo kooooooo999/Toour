@@ -37,11 +37,12 @@
         LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
         LEFT JOIN member reported ON r.reported_idx = reported.member_idx
     </select>
+
+
     <!--신고글 수 전체-->
     <select id="ReportCountAll" resultType="int">
         select count(*) from report
     </select>
-
 
 
     <!-- 신고수 가지고 오기 -->
@@ -77,5 +78,50 @@
         WHERE target_type = 'COMMENT'
         AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
     </select>
+
+    <!-- 총 신고수 가지고 오기 -->
+    <select id="TotalCount" resultType="int">
+        SELECT COUNT(*) FROM report
+    </select>
+
+    <!-- 검색 신고 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from report
+        <where>
+            <if test="searchType != null">
+                target_type = #{searchType}
+            </if>
+        </where>
+    </select>
+
+    <!-- 신고 검색 -->
+    <select id="report_search" parameterType="map" resultType="toour.post.vo.ReportVO">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY r.report_idx DESC) AS rnum,
+        r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+
+        reporter.member_idx AS reporter_idx,
+        reporter.member_nickname AS reporter_nickname,
+
+        reported.member_idx AS reported_idx,
+        reported.member_nickname AS reported_nickname
+
+        FROM report r
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+        <where>
+            <!--            <if test="searchValue != null and searchValue != ''">-->
+            <if test="searchType != null">
+                r.target_type = #{searchType}
+            </if>
+        </where>
+        )a
+        where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+
+
+
 
 </mapper>

@@ -3,8 +3,10 @@ package toour.member.action.post;
 import toour.member.dao.AdminNoticeDAO;
 import toour.member.dao.AdminPostDAO;
 import toour.member.vo.MemberVO;
+import toour.post.dao.ReportDAO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
+import toour.post.vo.ReportVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,18 +18,19 @@ public class AdminPostViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
-        System.out.println("post_idx: " + post_idx);
+//        System.out.println("post_idx: " + post_idx);
         HttpSession session = request.getSession();
 //        System.out.println("post_idx:"+post_idx);
-        Object obj = session.getAttribute("read_list");
-        ArrayList<PostVO> list = null;
+        Object obj = session.getAttribute("report_list");
+
+        ArrayList<String> report_list = null;
         if(obj == null){
-            list = new ArrayList<>();
-            session.setAttribute("read_list", list);
+            report_list = new ArrayList<>();
+            session.setAttribute("report_list", report_list);
         }else
-            list = (ArrayList<PostVO>) obj; // 형변환
+            report_list = (ArrayList<String>) obj; // 형변환
 
-
+        ReportVO[] rvo = ReportDAO.getReport();
         MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
         PostVO pvo = AdminPostDAO.getPost(post_idx);
 
@@ -42,6 +45,8 @@ public class AdminPostViewAction implements Action {
 
         request.setAttribute("vo", vo);
         request.setAttribute("pvo", pvo);
+        request.setAttribute("report_list", report_list);
+        request.setAttribute("rvo", rvo);
 
 
         if(pvo != null){

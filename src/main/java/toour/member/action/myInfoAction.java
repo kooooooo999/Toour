@@ -14,7 +14,7 @@ import java.io.IOException;
 public class myInfoAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        System.out.println("myInfoAction");
         String u_pw = request.getParameter("u_pw");
         String u_nickname = request.getParameter("u_nickname");
 

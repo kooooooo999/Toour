@@ -23,7 +23,7 @@
     <!-- 이메일로 회원 정보 받기 -->
     <select id="getE" parameterType="String" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member
-        WHERE member_email = #{member_email} and login_type=#{login_type}
+        WHERE member_email = #{member_email} and login_type= #{login_type}
     </select>
 
     <!--회원가입-->

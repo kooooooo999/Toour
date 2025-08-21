@@ -34,22 +34,20 @@
         justify-content: center;
     }
 
-    /* 상세 정보 목록 li에 적용 */
-    #detailsInfo li {
-        width: calc(100% / 3 - 20px * 2 / 3);
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        padding-left: 70px;
-    }
-
-    /* 뒤로가기 버튼 스타일 */
-    .back-button {
-        position: fixed; /* 👈 스크롤에 상관없이 화면에 고정 */
-        bottom: 20px; /* 👈 화면 아래쪽에서 20px 떨어진 위치 */
-        left: 20px; /* 👈 화면 왼쪽에서 20px 떨어진 위치 */
-        z-index: 1000; /* 다른 요소보다 위에 표시 */
+  /* 상세 정보 목록 li에 적용 */
+  #detailsInfo li {
+    width: calc(100% / 3 - 20px * 2 / 3);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+     /* 뒤로가기 버튼 스타일 */
+   .back-button {
+     position: fixed; /* 👈 스크롤에 상관없이 화면에 고정 */
+     bottom: 20px;    /* 👈 화면 아래쪽에서 20px 떨어진 위치 */
+     left: 20px;      /* 👈 화면 왼쪽에서 20px 떨어진 위치 */
+     z-index: 1000;   /* 다른 요소보다 위에 표시 */
 
         /* 버튼 디자인 */
         background-color: #337ab7;
@@ -201,7 +199,7 @@
             <li>
                 <strong><span>■ 상세주소</span></strong>
                 <c:choose>
-                    <c:when test="${not empty Dvo2.addr1 or not empty Dvo.addr2}">
+                    <c:when test="${not empty Dvo.addr1 or not empty Dvo.addr2}">
                         <span>${Dvo.addr1} ${Dvo.addr2}</span>
                     </c:when>
                     <c:otherwise>
@@ -245,7 +243,7 @@
             <li>
                 <strong><span>■ 홈페이지</span></strong>
                 <c:choose>
-                    <c:when test="${not empty Dvo2.homepageUrl}">
+                    <c:when test="${not empty Dvo.homepageUrl}">
                         <span><a href="${Dvo.homepageUrl}" target="_blank"
                                  rel="noopener noreferrer">${Dvo.homepageText}</a></span>
                     </c:when>
