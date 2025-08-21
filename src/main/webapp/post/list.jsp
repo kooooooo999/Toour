@@ -114,28 +114,25 @@
     <h1>여행후기</h1>
 
     <div class="post-header-container">
-        <div class="sort-count-area">
+
+        <!-- 첫 번째 줄: 정렬 + 글쓰기 -->
+        <div class="top-line" style="display: flex; justify-content: space-between; align-items: center; margin: 0 40px 10px 40px;">
             <div class="sort-area">
-                <form method="get" action="Controller">
-                    <input type="hidden" name="type" value="list">
-                    <input type="hidden" name="page" value="1">
-                    <label for="sortSelect">정렬:</label>
-                    <select id="sortSelect" name="sort" onchange="this.form.submit()">
-                        <option value="latest" <c:if test="${sort eq 'latest'}">selected</c:if>>최신순</option>
-                        <option value="likes" <c:if test="${sort eq 'likes'}">selected</c:if>>추천순</option>
-                        <option value="popular" <c:if test="${sort eq 'popular'}">selected</c:if>>인기순</option>
-                    </select>
-                </form>
+                <a href="Controller?type=list&sort=latest" class="${sort eq 'latest' ? 'active' : ''}">최신순</a>
+                <span>|</span>
+                <a href="Controller?type=list&sort=likes" class="${sort eq 'likes' ? 'active' : ''}">추천순</a>
+                <span>|</span>
+                <a href="Controller?type=list&sort=popular" class="${sort eq 'popular' ? 'active' : ''}">인기순</a>
             </div>
-            <div class="totalCount">
-                <p>총 <strong>${requestScope.totalCount}건</strong></p>
-            </div>
+            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
         </div>
 
-        <div class="search-write-area">
-            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
+        <!-- 두 번째 줄: 총 건수 + 검색 -->
+        <div class="bottom-line" style="display: flex; justify-content: space-between; align-items: center; margin: 0 40px;">
+            <p class="totalCount" style="font-size: 14px; color: #666;">총 <strong>${requestScope.totalCount}</strong>건</p>
+
             <div class="search-area">
-                <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
+                <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()" style="display: flex; gap: 10px;">
                     <input type="hidden" name="category_idx" value="2">
                     <select id="searchType" name="searchType">
                         <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if>>제목</option>
@@ -143,7 +140,8 @@
                         <option value="title_content" <c:if test="${requestScope.searchType eq 'title_content'}">selected</c:if>>제목+내용</option>
                         <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if>>글쓴이</option>
                     </select>
-                    <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
+                    <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"
+                           <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
                     <button type="submit">검색</button>
                 </form>
             </div>
@@ -157,7 +155,7 @@
                 <th>번호</th>
                 <th>제목</th>
                 <th>작성자</th>
-                <th>별점</th>
+                <th>추천수</th>
                 <th>조회수</th>
                 <th>작성일</th>
             </thead>
@@ -171,6 +169,7 @@
                             <tr>
                                 <td>${num}</td>
                                 <td style="text-align: left">
+                                    <input type="hidden" name="post_idx" value="${vo.post_idx}" />
                                     <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${p.nowPage}">
                                             ${vo.post_title}
                                         <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
@@ -179,7 +178,7 @@
                                     </a>
                                 </td>
                                 <td>${vo.member_nickname}</td>
-                                <td>${vo.post_star}</td>
+                                <td>${vo.post_likes}</td>
                                 <td>${vo.post_views}</td>
                                 <td>${vo.post_created_at.substring(0,10)}</td>
                             </tr>

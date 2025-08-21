@@ -33,7 +33,7 @@
         select *
         from post
         where category_idx=#{category_idx}
-        order by post_likes desc
+        order by post_likes desc, post_created_at DESC
         LIMIT #{offset}, #{pageSize}
 
     </select>

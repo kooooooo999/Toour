@@ -26,18 +26,32 @@ body {
     flex-wrap: wrap;
 }
 
-.sort-count-area {
+/*.sort-count-area {
     display: flex;
+    justify-content: space-between;
     align-items: center;
+    margin: 0 40px;
 }
-
 .sort-area {
-    margin-right: 15px;
+    !* float 제거하고 *!
+}*/
+/* 정렬 메뉴 상단 위치 */
+.sort-area {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: 10px;
 }
 
+/* 글쓰기 버튼과 검색창 간격 */
 .search-write-area {
     display: flex;
     align-items: center;
+    gap: 20px;
+}
+.search-write-area {
+    display: flex;
+    align-items: center;
+    gap: 30px;
 }
 
 /* 글쓰기 버튼 공통 스타일 */
@@ -51,7 +65,7 @@ body {
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s;
-    margin-right: 10px;
+
 }
 .write-button:hover {
     background-color: #1557b0;
