@@ -46,7 +46,6 @@ public class sidoAction implements Action {
         sb.append(areaCode);
         sb.append("&_type=xml&numOfRows=4&pageNo=");
         sb.append(cPage);
-        System.out.println("sido sb:" + sb.toString());
 
         try {
             URL url = new URL(sb.toString());
