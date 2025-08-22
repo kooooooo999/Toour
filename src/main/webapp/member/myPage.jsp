@@ -848,6 +848,15 @@
 <div id="memberCourse" class="hide" style="position: relative;">
 </div>
 
+<form action="Controller?type=GoWay" method="post" name="result_frm">
+    <input type="hidden" id="result" name="result" />
+    <input type="hidden" id="title" name="title" />
+    <input type="hidden" id="course_name" name="course_name" />
+</form>
+
+
+
+<div id="html-content"></div>
 <c:import url="/common/footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -1160,17 +1169,32 @@
     }
 
     // 내 코스 지도 코스 리스트에 띄우기
-    function showCourseList(courseDate_idx) {
+    function showCourseList(courseDate_idx, title, course_name) {
 
+        $("#course_name").val(course_name);
+        $("#title").val(title);
         $.ajax({
             url: "Controller?type=myCourseDay",
             type: "post",
             data: { courseDate_idx: courseDate_idx }
         }).done(function (res) {
-            $("#courseList").html(res);
+            console.log("res:" + res);
+            $("#html-content").html(res);
+            prepareAndSubmit();
         })
-
         $("#memberCourse").dialog("close");
+
+    }
+
+    function prepareAndSubmit() {
+        // 1. 전송할 HTML 내용을 가져옵니다.
+        var htmlContent = document.getElementById("html-content").innerHTML;
+        console.log("htmlContent:" + htmlContent);
+        // 2. 숨겨진 input의 value에 내용을 넣어줍니다.
+        document.getElementById("result").value = htmlContent;
+
+        // 3. 폼을 제출합니다.
+        document.result_frm.submit();
     }
 </script>
 </body>
