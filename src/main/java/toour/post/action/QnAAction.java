@@ -103,6 +103,6 @@ public class QnAAction implements Action {
         }
         
         // GET 요청인 경우 문의 작성 페이지로 이동
-        return "/post/QandA.jsp";
+        return "/MainIndex/index.jsp";
     }
 }
