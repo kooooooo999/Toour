@@ -152,8 +152,16 @@
 
         .left-area {
             display: flex;
-            align-items: center;
             gap: 20px;
+            align-items: center;     /* 세로 중앙 정렬 */
+
+        }
+
+        /* 정렬 메뉴 상단 위치 */
+        .sort-area {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 0px !important;
         }
 
         .sort-area a {
@@ -165,6 +173,21 @@
         .sort-area a.active {
             font-weight: bold;
             color: #1a73e8;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse !important;
+            text-align: center;
+            min-width: 800px;
+            table-layout: fixed; /* 열 너비를 고정함 */
+        }
+        td, th {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .table-container{
+
         }
 
     </style>
@@ -189,7 +212,6 @@
         </div>
 
         <div class="search-area">
-            <input type="button" value="글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
             <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()" style="display: flex; gap: 10px;">
                 <input type="hidden" name="category_idx" value="2">
                 <select id="searchType" name="searchType">
@@ -200,11 +222,12 @@
                 </select>
                 <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"
                        <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}"</c:if> />
-                <button type="submit">검색</button>
+                <input type="button" value="&#128393; 글쓰기" onclick="location.href='Controller?type=write'" class="write-button">
+<%--                <button type="submit">검색</button>--%>
             </form>
         </div>
     </div>
-
+    <div class="table-container">
     <c:set var="t" value="${requestScope.totalCount}"/>
     <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
@@ -262,6 +285,8 @@
                 </c:choose>
             </tbody>
         </table>
+    </div>
+
     </div>
 
 <div class="paging-area">

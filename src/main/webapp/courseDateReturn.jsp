@@ -16,7 +16,7 @@
 
 <c:if test="${param.num eq 1}">
   <c:forEach items="${requestScope.date_ar}" var="ar" varStatus="vs">
-    <p><a href="javascript:showCourseList(${ar.courseDate_idx})">${ar.date_title}(${ar.date})</a></p>
+    <p><a href="javascript:showCourseList('${ar.courseDate_idx}', '${ar.date_title}', '${requestScope.course_name}')">${ar.date_title}(${ar.date})</a></p>
     <hr/>
   </c:forEach>
   <button type="button" id="backCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 15px;" class="buttonRight detail_btn" onclick="addCourse(1)">뒤로</button>

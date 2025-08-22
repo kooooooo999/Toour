@@ -118,7 +118,10 @@
             table-layout: fixed;
             font-size: 15px;
         }
-
+        table td:hover {
+            background-color: inherit !important;
+            color: inherit !important;
+        }
         .post-table th, .post-table td {
             border: 1px solid #ccc;
             padding: 12px;
@@ -175,6 +178,17 @@
             text-align: right;
             margin-right: 40px;
             margin-top: 40px;
+        }
+
+        #post input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
         }
 
         .comment_button {
@@ -371,7 +385,7 @@
                 <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
                 <hr class="comment-line"/>
             </div>
-        </c:if>
+              </c:if>
             <div class="comment_action">
                 <div>
                     <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
@@ -383,7 +397,14 @@
                 </div>
             </div>
         </form>
+        <!-- 댓글 표시 영역 (무한 스크롤) -->
+        <div id="dynamic_comment_list" class="comment_list"></div>
 
+        <!-- 로딩 중 표시 -->
+        <div id="loading" style="text-align:center; display:none;">로딩중...</div>
+
+        <!-- 끝 표시 -->
+        <div id="endOfList" style="text-align:center; display:none;">댓글 끝</div>
 
         <form name="ff" method="get">
             <input type="hidden" name="member_idx" value="${vo.getMember_idx()}">
@@ -403,45 +424,8 @@
                 <button type="button" onclick="del(this.form)">삭제</button>
             </form>
         </div>
+        
 
-
-    <%--  댓글들<hr/>--%>
-
-    <c:if test="${not empty requestScope.comment_list}">
-        <div class="comment_list">
-            <!-- 댓글이 위에서 아래로 출력됨 -->
-            <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
-                <div id="comment_list">
-                    <div id="comment_nickname">
-                    ${cvo.member_nickname} &nbsp;
-                        | &nbsp;${cvo.comment_updated_at}
-                        &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
-                        <c:set var="comment_idx" value="${cvo.comment_idx}"/>
-                        <span class="report-emoji" title="신고하기"
-                        onclick="warningComment(${cvo.comment_idx})">🚨</span>
-                    </c:if>
-                    </div>
-                    <div id="comment_post">
-                    ${cvo.comment_content}
-                    </div>
-                </div>
-                <hr/>
-            </c:forEach>
-        </c:if>
-            <!--댓글신고-->
-            <div id="warning_dialog" title="신고">
-                <form id="CommentReportForm" action="Controller?type=reportComment" method="post">
-                    <p>신고 사유를 입력하세요:</p>
-                    <label><textarea name="reason" id="commentReport_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
-                    <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
-                    <input type="hidden" name="comment_idx" value=""/>
-                    <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
-                    <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
-                    <button type="button" onclick="warning(this.form)">신고</button>
-                </form>
-            </div>
-
-        </div>
     </div>
 </div>
 
@@ -453,6 +437,72 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
 <script>
+
+    let allComments = [
+        <c:forEach items="${comment_list}" var="c" varStatus="s">
+        {
+            nickname: "${c.member_nickname}",
+            content: `${c.comment_content}`,
+            updated_at: "${c.comment_updated_at}",
+            comment_idx: "${c.comment_idx}",
+            member_idx: "${c.member_idx}"
+        }<c:if test="${!s.last}">,</c:if>
+        </c:forEach>
+    ];
+    let container = document.getElementById('dynamic_comment_list');
+    let loadingDiv = document.getElementById('loading');
+    let endDiv = document.getElementById('endOfList');
+    let start = 0;
+    let perPage = 5;
+    let isLoading = false;
+
+    function renderComments() {
+        if (start >= allComments.length || isLoading) {
+            if (start >= allComments.length) {
+                endDiv.style.display = 'block';
+            }
+            return;
+        }
+
+        isLoading = true;
+        loadingDiv.style.display = 'block';
+
+        setTimeout(() => {
+            let end = Math.min(start + perPage, allComments.length);
+
+            for (let i = start; i < end; i++) {
+                let c = allComments[i];
+
+                let commentDiv = document.createElement('div');
+                commentDiv.innerHTML = `
+        <div id="comment_nickname">${c.nickname} | ${c.updated_at}
+          ${c.member_idx ? `<span class="report-emoji" title="신고하기" onclick="warningComment(${c.comment_idx})">🚨</span>` : ''}
+        </div>
+        <div id="comment_post">${c.content}</div>
+        <hr/>
+      `;
+                container.appendChild(commentDiv);
+            }
+
+            start = end;
+            isLoading = false;
+            loadingDiv.style.display = 'none';
+
+            if (start >= allComments.length) {
+                endDiv.style.display = 'block';
+            }
+        }, 200);
+    }
+
+    window.addEventListener('scroll', () => {
+        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
+            renderComments();
+        }
+    });
+
+    renderComments(); // 초기 렌더링
+
+
 // 로그인 여부 체크
 let login = ${sessionScope.memeber != null};
 
