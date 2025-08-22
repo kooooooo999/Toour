@@ -2,6 +2,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 <style>
     /* 문의사항 답변 섹션 스타일 */
     .inquiry-details-container {
@@ -178,10 +180,50 @@
     .button-group button:last-child:hover {
         background-color: #f4f6f8;
     }
+
+    /* 뒤로가기 버튼 스타일 */
+    .back-button {
+        position: fixed; /* 👈 스크롤에 상관없이 화면에 고정 */
+        bottom: 20px; /* 👈 화면 아래쪽에서 20px 떨어진 위치 */
+        left: 20px; /* 👈 화면 왼쪽에서 20px 떨어진 위치 */
+        z-index: 1000; /* 다른 요소보다 위에 표시 */
+
+        /* 버튼 디자인 */
+        background-color: #337ab7;
+        color: white;
+        border-radius: 50%; /* 원형 모양 */
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        transition: background-color 0.3s;
+        text-decoration: none; /* 밑줄 제거 */
+    }
+
+    .back-button:hover {
+        background-color: #286090;
+    }
+
 </style>
+
 <h1>사용자 문의사항</h1>
 <div class="inquiry-details-container">
+    <c:set var="Type" value="${requestScope.searchType}"/>
+    <c:set var="Status" value="${requestScope.searchStatus}"/>
+
     <c:set var="Ivo" value="${requestScope.reqInquiry}"/>
+    <c:set var="p" value="${requestScope.page}" scope="page"/>
+    <c:set var="Ar" value="${requestScope.IvoArr}"/>
+    <a href="AdminController?type=adminInquiry&cPage=${p.nowPage}&searchType=${Type}&searchStatus=${Status}"
+       class="back-button">
+        <i class="fas fa-arrow-left"></i>
+    </a>
+    <p>${Type}</p>
+    <p>${Status}</p>
+    <p>${p.nowPage}</p>
     <ul>
         <li><strong>번호:</strong> ${Ivo.inquiry_idx}</li>
         <li><strong>카테고리:</strong> ${Ivo.category}</li>
@@ -191,10 +233,8 @@
             <span class="status">${Ivo.status}</span>
         </li>
         <li><strong>작성일:</strong> ${Ivo.created_at}</li>
-        <li class="inquiry-content"><strong>내용</strong>
-            <p>${Ivo.content}</p>
-        </li>
-        <li><strong>첨부파일</strong>
+
+        <li id="post_content"><strong>내용</strong>
             <c:if test="${not empty Ivo.file_path}">
                 <p><img src="${requestScope.fileName}" style="width: 300px; height: 300px;"></p>
             </c:if>
@@ -202,6 +242,8 @@
                 [없음]
             </c:if>
         </li>
+
+
     </ul>
 </div>
 
@@ -240,7 +282,50 @@
         </div>
     </div>
 </div>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<script src="../js/summernote-lite.js"></script>
+<script src="../js/lang/summernote-ko-KR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <script>
+
+    $(document).ready(function () {
+        // Summernote 에디터 초기화
+        $('#post_content').summernote({
+            height: 300, // 에디터 높이 설정
+            lang: 'ko-KR', // 한국어 설정
+            callbacks: {
+                // 이미지 업로드 처리
+                onImageUpload: function (files) {
+                    // 이미지를 Cloudinary로 업로드
+                    var data = new FormData();
+                    data.append("file", files[0]); // 업로드된 파일 추가
+                    data.append("upload_preset", "testtest"); // Cloudinary 업로드 프리셋
+
+                    // 비동기식 이미지 업로드
+                    $.ajax({
+                        url: 'https://api.cloudinary.com/v1_1/dqkajtq62/image/upload',
+                        method: 'POST',
+                        data: data,
+                        contentType: false,
+                        processData: false,
+                        success: function (response) {
+                            // 업로드된 이미지 URL
+                            var imageUrl = response.secure_url;
+
+                            // 에디터에 이미지 삽입
+                            $('#post_content').summernote('insertImage', imageUrl);
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('이미지 업로드 실패:', error);
+                            alert('이미지 업로드에 실패했습니다.');
+                        }
+                    });
+                }
+            }
+        });
+    });
+
 
     $(function () {
         let option = {
