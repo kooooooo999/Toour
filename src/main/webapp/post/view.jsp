@@ -118,7 +118,10 @@
             table-layout: fixed;
             font-size: 15px;
         }
-
+        table td:hover {
+            background-color: inherit !important;
+            color: inherit !important;
+        }
         .post-table th, .post-table td {
             border: 1px solid #ccc;
             padding: 12px;
