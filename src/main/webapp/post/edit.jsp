@@ -201,25 +201,6 @@
                 </tr>
 
                 <tr>
-                    <th>첨부파일:</th>
-                    <td>
-                        <c:if test="${not empty requestScope.file}">
-                            <c:forEach var="file" items="${requestScope.file}">
-                                <div class="file-item">
-                                    <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
-                                    <label><input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제</label>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-
-                        <div class="file-item">
-                            <label for="file">새 파일 첨부:</label>
-                            <input type="file" id="file" name="file"/>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
                     <td colspan="2">
                         <div class="post-actions">
                             <input type="submit" value="수정" class="btn primary"/>
@@ -278,8 +259,6 @@
             }
         });
     });
-
-
     function sendData() {
         let title = $("#post_title").val();
         if (title.trim().length < 1) {
@@ -312,6 +291,8 @@
             processData: false,
             dataType: "json"
         }).done(function(res){
+            // Ensure that your server response is a JSON object with a key like "img_url"
+            // and that it contains the URL of the saved image.
             $("#post_content").summernote("editor.insertImage", res.img_url);
         });
     }

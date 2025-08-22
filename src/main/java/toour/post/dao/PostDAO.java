@@ -243,16 +243,11 @@ public class PostDAO {
 
     // 수정
     public static int edit(String post_idx, String post_title, String post_content,
-                           String file_name_stored, String file_name_original, String ip){
+                            String ip){
         Map<String, String> map = new HashMap<>();
         map.put("post_idx", post_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
-
-        if(file_name_stored != null){
-            map.put("file_name_stored", file_name_stored);
-            map.put("file_name_original", file_name_original);
-        }
 
 
         SqlSession ss = FactoryService.getFactory().openSession();

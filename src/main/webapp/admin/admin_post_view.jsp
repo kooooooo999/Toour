@@ -173,7 +173,41 @@
     border-top: 1px solid #eee;
     margin-top: 10px;
   }
+  .comment {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+  }
 
+  .comment.reported {
+    border: 2px solid red;
+    background-color: #ffe6e6;
+  }
+
+  .comment.resolved {
+    border: 2px solid green;
+    background-color: #e6ffe6;
+  }
+  .comment.highlight {
+    box-shadow: 0 0 5px 2px yellow; /* 클릭한 댓글 강조 */
+  }
+  .badge {
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 3px;
+    margin-left: 10px;
+  }
+
+  .badge.unprocessed{
+    background: red;
+    color: white;
+  }
+
+  .badge.processed{
+    background: green;
+    color: white;
+  }
 
 </style>
 
@@ -251,47 +285,35 @@
     </div>
   </div>
 </section>
-  <c:if test="${not empty requestScope.comment_list}">
   <div class="comment_list">
-    <!-- 댓글이 위에서 아래로 출력됨 -->
-    <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
-      <div id="comment_list">
-        <div id="comment_nickname">
-            ${cvo.member_nickname} &nbsp;
-          | &nbsp;${cvo.comment_updated_at}
-          &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
-          <c:set var="comment_idx" value="${cvo.comment_idx}"/>
-          <span class="report-emoji" title="신고하기"
-                onclick="warningComment(${cvo.comment_idx})">🚨</span>
-        </c:if>
-        </div>
-        <div id="comment_post">
-            ${cvo.comment_content}
-        </div>
-      </div>
-      <hr/>
-    </c:forEach>
-    </c:if>
-<section class="report">
-    <c:if test="${not empty rvo}">
-      <div class="comment_list">
-        <c:forEach items="${rvo}" var="cvo">
-          <c:if test="${cvo.post_idx == param.post_idx}">
-            <div class="comment_item">
-              <div class="comment_nickname">
-                  ${cvo.reporter_nickname} → ${cvo.reported_nickname}
+    <c:if test="${not empty requestScope.CommentAr}">
+      <c:forEach items="${requestScope.CommentAr}" var="cvo">
+        <div class="comment
+          <c:if test="${cvo.report_status eq 0}">reported</c:if>
+          <c:if test="${cvo.report_status eq 1}">resolved</c:if>
+        ${cvo.comment_idx == param.comment_idx ? 'highlight' : ''}">
+          <div class="comment_nickname">
+              ${cvo.member_nickname} | ${cvo.comment_updated_at}
+            <c:if test="${cvo.report_status == 0}">대기</c:if>
+            <c:if test="${cvo.report_status == 1}">처리완료</c:if>
+            <c:if test="${not empty cvo.report_content}">
+              <div class="report_reason">
+                <strong>신고 사유:</strong> ${cvo.report_content}
               </div>
-              <div class="comment_content">
-                  ${cvo.report_content}
-              </div>
-              <hr/>
-            </div>
-          </c:if>
-        </c:forEach>
-      </div>
+            </c:if>
+          </div>
+          <div class="comment_post">
+              ${cvo.comment_content}
+          </div>
+        </div>
+        <hr/>
+      </c:forEach>
     </c:if>
-</section>
-</div>
+  </div>
+
+
+
+  </div>
 
 
 

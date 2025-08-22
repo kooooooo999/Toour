@@ -2,6 +2,7 @@ package toour.member.dao;
 
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
+import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
@@ -271,7 +272,17 @@ public class AdminPostDAO {
         ss.close();
         return ar;
     }
-
+    //댓글 가져오기
+    public static CommentVO[] getCommentList(String post_idx){
+        CommentVO[] ar = null;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<CommentVO> list = ss.selectList("comment.commentList",post_idx);
+        if(list.size()>0&& !list.isEmpty()){
+            ar = new CommentVO[list.size()];
+            list.toArray(ar);
+        }
+        return  ar;
+    }
 
 }
 

@@ -21,7 +21,7 @@ public class AdminPostViewAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
 //        System.out.println("post_idx: " + post_idx);
-        HttpSession session = request.getSession();
+       /* HttpSession session = request.getSession();
 //        System.out.println("post_idx:"+post_idx);
         Object obj = session.getAttribute("report_list");
 
@@ -35,24 +35,33 @@ public class AdminPostViewAction implements Action {
         ReportVO[] rvo = ReportDAO.getReport();
         MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
         PostVO pvo = AdminPostDAO.getPost(post_idx);
-
+*/
 //        System.out.println(vo.getPost_idx());
 //       if(vo == null){
 //            System.out.println("vo가 존재하지 않습니다.");
 //        }
-        CommentVO[] comment_list = PostDAO.getCommentList(post_idx);
+
+  MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx);
+  PostVO pvo = AdminPostDAO.getPost(post_idx);
+
+        /*CommentVO[] comment_list = PostDAO.getCommentList(post_idx);
         if (comment_list == null) {
             comment_list = new CommentVO[0]; // null 대신 빈 배열
+        }*/
+        CommentVO[] ar = AdminPostDAO.getCommentList(post_idx);
+        if (ar == null) {
+            ar = new CommentVO[0];
         }
 
-
+        request.setAttribute("CommentAr", ar);
+        System.out.println("AdminPostViewAction ar.length: "+ar.length);
         request.setAttribute("vo", vo);
         request.setAttribute("pvo", pvo);
+        /*request.setAttribute("rvo", rvo);
         request.setAttribute("report_list", report_list);
-        request.setAttribute("rvo", rvo);
         request.setAttribute("comment_list",comment_list);
-
-
+*/
+        System.out.println("AdminPostviewAction post_idx: : "+post_idx);
 //        System.out.println("vo"+vo.getCategory_idx());
 
         return "admin/admin_post_view.jsp";
