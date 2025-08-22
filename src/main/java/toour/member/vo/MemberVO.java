@@ -2,6 +2,7 @@ package toour.member.vo;
 
 import toour.tripsuggestion.vo.DataVO;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MemberVO {
@@ -27,7 +28,7 @@ public class MemberVO {
 
     // 내가 저장한 찜 목록저장소
 
-    private List<DataVO> courseList;
+    private List<DataVO> courseList =new ArrayList<>();
 
     public List<DataVO> getCourseList() {
         return courseList;
