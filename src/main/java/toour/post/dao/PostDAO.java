@@ -5,6 +5,7 @@ import toour.member.vo.MemberVO;
 import toour.post.vo.CommentVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.ReportVO;
 import toour.util.Paging;
 
 import java.math.BigInteger;
@@ -450,6 +451,10 @@ public class PostDAO {
         ss.close();
         return list;
     }
+
+
+
+
 
 }
 

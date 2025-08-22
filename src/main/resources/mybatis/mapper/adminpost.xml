@@ -193,4 +193,8 @@
             ORDER BY c.post_created_at ASC
 
     </select>
+    <!-- 총 댓글을 반환하는 기능 -->
+    <select id="totalCount" resultType="int" parameterType="String">
+        select count(*) from comment
+    </select>
 </mapper>
