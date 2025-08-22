@@ -156,4 +156,26 @@
 
     </select>
 
+    <select id="selectReportComment" resultMap="map1" parameterType="map">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY r.report_idx DESC) AS rnum,
+        r.*,
+        c.comment_content,
+        p.post_title,
+        reporter.member_nickname AS reporter_nickname,
+        reported.member_nickname AS reported_nickname
+        FROM report r
+        JOIN comment c ON r.comment_idx = c.comment_idx
+        JOIN post p ON c.post_idx = p.post_idx
+        JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        JOIN member reported ON r.reported_idx = reported.member_idx
+        WHERE r.target_type = #{target_type}
+        ) sub
+        WHERE sub.rnum BETWEEN #{begin} AND #{end]
+        ORDER BY sub.report_idx DESC;
+
+    </select>
+
+
 </mapper>

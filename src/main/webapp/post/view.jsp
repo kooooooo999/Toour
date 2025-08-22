@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style type="text/css">
         #post {
@@ -176,6 +177,17 @@
             margin-top: 40px;
         }
 
+        #post input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         .comment_button {
             display: flex;
             justify-content: flex-end;
@@ -261,7 +273,6 @@
 <c:set var="member_info" value="${requestScope.member_info}"/>
 
 
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <div id="post">
     <form method="post">
         <table summary="게시판 글쓰기" class="post-table">
@@ -289,81 +300,96 @@
 
         <div class="attachment">
 
-            <%--                <tr>--%>
-            <%--        <th>첨부파일:</th>--%>
-            <%--                    <td colspan="2">--%>
+        <%--                <tr>--%>
+        <%--        <th>첨부파일:</th>--%>
+        <%--                    <td colspan="2">--%>
             <c:if test="${not empty requestScope.fileList}">
                 <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="20" height="20" alt="첨부파일">
                 <c:forEach var="file" items="${requestScope.fileList}">
                     <div>
                         <a href="Controller?type=download&fileName=${file.file_name_stored}" target="_blank">다운로드</a>
-                                ${file.file_name_original} 다운로드
+                    ${file.file_name_original} 다운로드
                         </a>
                     </div>
                 </c:forEach>
             </c:if>
-            <%-- Display message if the list of files is empty --%>
+        <%-- Display message if the list of files is empty --%>
             <c:if test="${empty requestScope.fileList}">
                 첨부파일 없음
             </c:if>
-            <%--                    </td>--%>
-            <%--                </tr>--%>
+        <%--                    </td>--%>
+        <%--                </tr>--%>
         </div>
     </form>
+    <div id="heartContainer" style="text-align: center; font-size: 24px; margin: 40px 0;">
+        <span style="font-weight: bold; margin-right: 10px;">추천</span>
+        <c:choose>
+            <c:when test="${requestScope.alreadyRecommended}">
+                <i id="heart" class="fa-solid fa-heart" style="cursor:pointer; font-size: 30px; color: red;"></i>
+            </c:when>
+            <c:otherwise>
+                <i id="heart" class="fa-regular fa-heart" style="cursor:pointer; font-size: 30px; color: red;"></i>
+            </c:otherwise>
+        </c:choose>
+        <input type="hidden" name="post_likes" id="likesCount" value="${vo.post_likes}">
+        <span id="likesCountDisplay">${vo.post_likes}</span>
+        <input type="hidden" id="member_idx" value="${sessionScope.member.member_idx}">
+        <input type="hidden" id="post_idx" value="${vo.post_idx}">
+    </div>
 
-      <div class="post-buttons">
+    <div class="post-buttons">
         <c:if test="${not empty sessionScope.member}">
-          <!-- 내가 쓴 글 -->
-          <c:if test="${sessionScope.member.member_idx == member_info.member_idx}">
-            <input type="button" value="수정" onclick="goEdit()"/>
-            <input type="button" value="삭제" onclick="goDel()"/>
-          </c:if>
+            <!-- 내가 쓴 글 -->
+            <c:if test="${sessionScope.member.member_idx == member_info.member_idx}">
+                <input type="button" value="수정" onclick="goEdit()"/>
+                <input type="button" value="삭제" onclick="goDel()"/>
+            </c:if>
 
-          <!-- 다른 사람이 쓴 글일 때 신고 버튼 -->
-          <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
-<%--            <input type="button" value="신고🚨" onclick="openReportDialog()"/>--%>
-            <span class="report-emoji" title="신고하기" onclick="openReportDialog()">🚨</span>
-          </c:if>
+            <!-- 다른 사람이 쓴 글일 때 신고 버튼 -->
+            <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+                <%--            <input type="button" value="신고🚨" onclick="openReportDialog()"/>--%>
+                <span class="report-emoji" title="신고하기" onclick="openReportDialog()">🚨</span>
+            </c:if>
         </c:if>
 
 
         <input type="button" value="목록" onclick="goList()"/>
-      </div>
+    </div>
 
-  <!-- 신고 팝업 -->
-  <div id="report_dialog" title="게시물 신고">
-    <form id="reportForm" action="Controller?type=reportPost" method="post"
+    <!-- 신고 팝업 -->
+    <div id="report_dialog" title="게시물 신고">
+        <form id="reportForm" action="Controller?type=reportPost" method="post"
      >
-      <p>신고 사유를 입력하세요:</p>
-        <label><textarea name="reason" id="report_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
-        <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
-        <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
-        <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
-    </form>
-  </div>
+            <p>신고 사유를 입력하세요:</p>
+            <label><textarea name="reason" id="report_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
+            <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+            <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
+            <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
+        </form>
+    </div>
 
-  <!--댓글 작성-->
-  <div id="comment_form">
-    <h3>댓글</h3>
-    <form enctype="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form" onsubmit="return commentData()">
-      <div class="comment_container">
-        <c:if test="${empty sessionScope.member}">
-          <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
+    <!--댓글 작성-->
+    <div id="comment_form">
+        <h3>댓글</h3>
+        <form enctype="multipart/form-data" action="Controller?type=comment" method="post" name="comment_form" onsubmit="return commentData()">
+            <div class="comment_container">
+                <c:if test="${empty sessionScope.member}">
+                    <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
 
+                </c:if>
+            <c:if test="${not empty sessionScope.member}">
+                <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
+                <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
+                <hr class="comment-line"/>
+            </div>
         </c:if>
-        <c:if test="${not empty sessionScope.member}">
-          <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
-        <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
-        <hr class="comment-line"/>
-      </div>
-      </c:if>
-        <div class="comment_action">
-          <div>
-            <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
-            <input type="hidden" name="cPage" value="${param.cPage}"/>
-            <input type="hidden" name="type" value="comment"/>
-            <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
-            <input type="hidden" name="member_nickname" value="${sessionScope.member.member_nickname}"/>
+            <div class="comment_action">
+                <div>
+                    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+                    <input type="hidden" name="cPage" value="${param.cPage}"/>
+                    <input type="hidden" name="type" value="comment"/>
+                    <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
+                    <input type="hidden" name="member_nickname" value="${sessionScope.member.member_nickname}"/>
 
                 </div>
             </div>
@@ -377,37 +403,37 @@
             <input type="hidden" name="cPage" value="${param.cPage}"/>
         </form>
 
-  <!-- 삭제시 보여주는 팝업창 -->
-  <div id="del_dialog" title="삭제">
-    <form action="Controller" method="post">
-      <p>정말로 삭제 하시겠습니까?</p>
-      <input type="hidden" name="type" value="del"/>
-      <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
-      <input type="hidden" name="cPage" value="${param.cPage}"/>
-      <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
-      <button type="button" onclick="del(this.form)">삭제</button>
-    </form>
-  </div>
+        <!-- 삭제시 보여주는 팝업창 -->
+        <div id="del_dialog" title="삭제">
+            <form action="Controller" method="post">
+                <p>정말로 삭제 하시겠습니까?</p>
+                <input type="hidden" name="type" value="del"/>
+                <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
+                <input type="hidden" name="cPage" value="${param.cPage}"/>
+                <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
+                <button type="button" onclick="del(this.form)">삭제</button>
+            </form>
+        </div>
 
 
-        <%--  댓글들<hr/>--%>
+    <%--  댓글들<hr/>--%>
 
-        <c:if test="${not empty requestScope.comment_list}">
+    <c:if test="${not empty requestScope.comment_list}">
         <div class="comment_list">
             <!-- 댓글이 위에서 아래로 출력됨 -->
             <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
                 <div id="comment_list">
                     <div id="comment_nickname">
-                            ${cvo.member_nickname} &nbsp;
+                    ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
                         &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
-                                <c:set var="comment_idx" value="${cvo.comment_idx}"/>
-                                <span class="report-emoji" title="신고하기"
-                                      onclick="warningComment(${cvo.comment_idx})">🚨</span>
-                            </c:if>
+                        <c:set var="comment_idx" value="${cvo.comment_idx}"/>
+                        <span class="report-emoji" title="신고하기"
+                        onclick="warningComment(${cvo.comment_idx})">🚨</span>
+                    </c:if>
                     </div>
                     <div id="comment_post">
-                            ${cvo.comment_content}
+                    ${cvo.comment_content}
                     </div>
                 </div>
                 <hr/>
@@ -428,14 +454,18 @@
 
         </div>
     </div>
+</div>
 
+<c:import url="/common/footer.jsp"/>
+
+</body>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
 <script>
-  // 로그인 여부 체크
-  let login = ${sessionScope.memeber != null};
+// 로그인 여부 체크
+let login = ${sessionScope.memeber != null};
 
   $(function (){
     let option = {
@@ -554,11 +584,46 @@
             });
         });
 
-    </script>
-</div>
-</body>
+  document.getElementById('heart').addEventListener('click', function() {
+      const heart = document.getElementById('heart');
+      const post_idx = document.getElementById('post_idx').value;
+      const member_idx = document.getElementById('member_idx').value;
 
-<c:import url="/common/footer.jsp"/>
+      if (!member_idx) {
+          alert('로그인이 필요합니다.');
+          return;
+      }
+
+      // 이미 추천한 경우 아무 동작 안 함
+      if (heart.classList.contains('fa-solid')) {
+          alert('이미 추천한 게시글입니다.');
+          return;
+      }
+
+      fetch(`Controller?type=recommendInsert&member_idx=${sessionScope.member.member_idx}&post_idx=${requestScope.vo.post_idx}`, {
+          method: 'POST'
+      })
+          .then(res => res.json())
+          .then(data => {
+              if (data.success) {
+                  heart.classList.remove('fa-regular');
+                  heart.classList.add('fa-solid');
+
+                  const likesInput = document.getElementById('likesCount');
+                  const display = document.getElementById('likesCountDisplay');
+                  let likes = parseInt(likesInput.value);
+                  likes++;
+                  likesInput.value = likes;
+                  display.textContent = likes;
+              } else {
+                  alert(data.message || '추천 처리 실패');
+              }
+          });
+  });
+
+</script>
+
+
 
 </html>
 

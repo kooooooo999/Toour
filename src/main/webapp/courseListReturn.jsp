@@ -14,7 +14,7 @@
   <c:set var="member_idx" value="${requestScope.member_idx}"/>
   <input id="member_idx" type="hidden" value="${requestScope.member_idx}">
   <c:forEach items="${requestScope.course_ar}" var="ar" varStatus="vs">
-    <p><a href="javascript:myCourseDate(${ar.course_idx})">${ar.course_name}</a></p>
+    <p><a href="javascript:myCourseDate('${ar.course_idx}', '${ar.course_name}')">${ar.course_name}</a></p>
     <hr/>
   </c:forEach>
 </c:if>

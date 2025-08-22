@@ -6,6 +6,7 @@ import java.util.Map;
 
 import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
+import toour.member.vo.MemberVO;
 import toour.post.vo.ReportVO;
 
 public class ReportDAO {
@@ -67,7 +68,53 @@ public class ReportDAO {
         return reportVO;
     }
 
-    //모든 신고글 수 가져오기
+    //신고정보 검색
+    public static ReportVO[] search(String searchType, int begin, int end){
+        ReportVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        map.put("begin",begin);
+        map.put("end",end);
+
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<ReportVO> list = ss.selectList("report.report_search",map);
+        if(list!=null&&list.size()>0){
+            ar= new ReportVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new ReportVO[0];
+        }
+        ss.close();
+        return ar;
+    }
+
+    // 게시물에서 검색결과 수를 반환
+    public static int getSearchTotalCount(String searchType){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+
+        int cnt = ss.selectOne("report.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+
+
+
+    //총 신고글 수 가져오기
+    public static int TotalCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("report.TotalCount");
+        ss.close();
+        return cnt;
+    }
+
+
+    //30일동안의  신고글 수 가져오기
     public static int getReportCount() {
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.selectOne("report.ReportCountAll");
@@ -114,5 +161,6 @@ public class ReportDAO {
         ss.close();
         return cnt;
     }
+
 
 }

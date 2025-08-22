@@ -5,6 +5,7 @@ import toour.member.vo.MemberVO;
 import toour.post.vo.CommentVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
+import toour.util.Paging;
 
 import java.math.BigInteger;
 import java.util.HashMap;
@@ -61,15 +62,21 @@ public class PostDAO {
     //글쓰기 목록 보기
     public static PostVO[] getList(String category_idx, int begin, int end ){
         PostVO[] ar = null;
-        Map<String,Object> map = new HashMap<String,Object>();
-        map.put("category_idx",category_idx);
-        map.put("begin",begin);
-        map.put("end",end);
+        Map<String, Object> map = new HashMap<>();
+
+        // offset 계산
+        int offset = begin - 1;
+        if (offset < 0) offset = 0;
+        int pageSize = end - begin + 1;
+
+        map.put("category_idx", category_idx);
+        map.put("offset", offset);
+        map.put("pageSize", pageSize);
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("post.list", map);
-        if(list.size()>0&& list!=null){
-            ar= new PostVO[list.size()];
+        List<PostVO > list = ss.selectList("post.list", map);
+        if(list != null && !list.isEmpty()){
+            ar = new PostVO[list.size()];
             list.toArray(ar);
         }
         ss.close();
@@ -374,6 +381,80 @@ public class PostDAO {
         else ss.rollback();
         ss.close();
         return cnt;
-        }
+    }
+
+
+    //게시글 추천
+    public static int postLikesUpdate(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("recommend.postLikesUpdate", post_idx);
+        if (cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+        return cnt;
+    }
+
+    //게시글 추천 취소
+    public static int postLikesDecrease(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("recommend.postLikesDecrease", post_idx);
+        if (cnt > 0)
+            ss.commit();
+        else ss.rollback();
+        ss.close();
+        return cnt;
+    }
+    public static List<PostVO> getPostsByLikes() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("recommend.getPostsByLikes");
+        ss.close();
+        return list;
+    }
+
+    public static List<PostVO> getPostsByPopularity() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("recommend.getPostsByPopularity");
+        ss.close();
+        return list;
+    }
+
+    public static List<PostVO> getPostsByLikes(int begin, int end) {
+        Map<String, Object> map = new HashMap<>();
+        // offset 계산
+        int offset = begin - 1;
+        if (offset < 0) offset = 0;
+        int pageSize = end - begin + 1;
+        String category_idx ="2";
+        map.put("category_idx", category_idx);
+        map.put("offset", offset);
+        map.put("pageSize", pageSize);
+
+
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("recommend.getPostsByLikes", map);
+        ss.close();
+        return list;
+    }
+
+    public static List<PostVO> getPostsByPopularity(int begin, int end) {
+        Map<String, Object> map = new HashMap<>();
+        // offset 계산
+        int offset = begin - 1;
+        if (offset < 0) offset = 0;
+        int pageSize = end - begin + 1;
+        String category_idx ="2";
+        map.put("category_idx", category_idx);
+        map.put("offset", offset);
+        map.put("pageSize", pageSize);
+
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("recommend.getPostsByPopularity", map);
+        ss.close();
+        return list;
+    }
+
 }
 

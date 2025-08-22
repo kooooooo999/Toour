@@ -12,7 +12,7 @@ public class InquiryDAO {
 
     // 문의 등록
     public static int insertInquiry(String member_idx, String category, String title,
-                                   String content, String file_path, String status) {
+                                    String content, String file_path, String status) {
         Map<String, Object> map = new HashMap<>();
         map.put("member_idx", member_idx);
         map.put("category", category);
@@ -38,20 +38,20 @@ public class InquiryDAO {
         InquiryVO[] ar = null;
 
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<InquiryVO> list =ss.selectList("Inquiry.selectByMember", member_idx);
+        List<InquiryVO> list = ss.selectList("Inquiry.selectByMember", member_idx);
         if (list != null && list.size() > 0) {
             ar = new InquiryVO[list.size()];
             ar = list.toArray(ar);
 
         }
-        return  ar;
+        return ar;
     }
 
     // 문의 목록 조회 (페이징)
     public static InquiryVO[] getInquiryList(String member_idx, String category,
-                                           String searchType, String searchValue,
-                                           int begin, int end) {
-        InquiryVO[] ar=null;
+                                             String searchType, String searchValue,
+                                             int begin, int end) {
+        InquiryVO[] ar = null;
         Map<String, Object> map = new HashMap<>();
         if (member_idx != null && !member_idx.isEmpty()) {
             map.put("member_idx", member_idx);
@@ -68,8 +68,8 @@ public class InquiryDAO {
 
         SqlSession ss = FactoryService.getFactory().openSession();
         List<InquiryVO> list = ss.selectList("Inquiry.getInquiryList", map);
-        if(list.size()>0&&list!=null){
-            ar=new InquiryVO[list.size()];
+        if (list.size() > 0 && list != null) {
+            ar = new InquiryVO[list.size()];
             list.toArray(ar);
         }
         ss.close();
@@ -102,7 +102,7 @@ public class InquiryDAO {
 
     // 문의 수정
     public static int updateInquiry(String inquiry_idx, String member_idx, String category,
-                                   String title, String content, String file_path) {
+                                    String title, String content, String file_path) {
         Map<String, Object> map = new HashMap<>();
         map.put("inquiry_idx", inquiry_idx);
         map.put("member_idx", member_idx);
@@ -133,7 +133,9 @@ public class InquiryDAO {
 
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("Inquiry.updateInquirydata", map);
-
+        System.out.println("inquiry_idx=" + inquiry_idx);
+        System.out.println("status=" + status);
+        System.out.println("answer_content=" + answer_content);
         if (cnt > 0) {
             ss.commit();
         } else {
@@ -165,7 +167,7 @@ public class InquiryDAO {
 
     // 전체 문의 수 조회
     public static int getTotalCount(String member_idx, String category,
-                                   String searchType, String searchValue) {
+                                    String searchType, String searchValue) {
         Map<String, Object> map = new HashMap<>();
         if (member_idx != null && !member_idx.isEmpty()) {
             map.put("member_idx", member_idx);
@@ -201,7 +203,7 @@ public class InquiryDAO {
         return statusCount;
     }
 
-    public static int getSearchTotalCount(String searchType,String searchValue){
+    public static int getSearchTotalCount(String searchType, String searchValue) {
         SqlSession ss = FactoryService.getFactory().openSession();
 
         Map<String, Object> map = new HashMap<>();
@@ -212,7 +214,7 @@ public class InquiryDAO {
             map.put("searchValue", searchValue);
         }
 
-      int cnt  = ss.selectOne("Inquiry.searchTotalCount", map);
+        int cnt = ss.selectOne("Inquiry.searchTotalCount", map);
         ss.close();
         return cnt;
 
@@ -240,9 +242,10 @@ public class InquiryDAO {
         ss.close();
         return ar;
     }
-    public static int getMyInquiryListCount(String member_idx){
+
+    public static int getMyInquiryListCount(String member_idx) {
         SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt =ss.selectOne("Inquiry.getMyInquiryListCount", member_idx);
+        int cnt = ss.selectOne("Inquiry.getMyInquiryListCount", member_idx);
 
         ss.close();
         return cnt;
@@ -285,6 +288,7 @@ public class InquiryDAO {
         int ressultCount = ss.selectOne("Inquiry.totalCount", map);
         return ressultCount;
     }
+
     public static InquiryVO[] searchCategorydata(String searchType) {
         SqlSession ss = FactoryService.getFactory().openSession();
         List<InquiryVO> Ivo = ss.selectList("Inquiry.searchCategory", searchType);
@@ -295,5 +299,37 @@ public class InquiryDAO {
         ss.close();
 
         return IvoArr;
+    }
+
+    //    문의글수 가지고 오기
+    public static int inquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.inquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    미처리된 문의글수 가지고 오기
+    public static int UnprocessedinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.UnprocessedinquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //    처리된 문의글수 가지고 오기
+    public static int processedinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.processedinquiryCount");
+        ss.close();
+        return cnt;
+    }
+
+    //   삭제된 문의글수 가지고 오기
+    public static int delinquiryCount() {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("Inquiry.delinquiryCount");
+        ss.close();
+        return cnt;
     }
 }

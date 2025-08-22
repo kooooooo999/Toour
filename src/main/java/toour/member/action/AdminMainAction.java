@@ -5,6 +5,7 @@ import toour.login.dao.MemberDAO;
 import toour.member.dao.AdminMemberDAO;
 import toour.member.dao.AdminPostDAO;
 import toour.member.vo.MemberVO;
+import toour.post.dao.InquiryDAO;
 import toour.post.dao.ReportDAO;
 import toour.util.Paging;
 
@@ -35,6 +36,11 @@ public class AdminMainAction implements Action {
         int CommentreportCount = ReportDAO.CommentreportCount();
         int UnprocessedreportCount = ReportDAO.UnprocessedreportCount();
         int processedreportCount = ReportDAO.processedreportCount();
+        int inquiryCount = InquiryDAO.inquiryCount();
+        int UnprocessedinquiryCount = InquiryDAO.UnprocessedinquiryCount();
+        int processedinquiryCount = InquiryDAO.processedinquiryCount();
+        int delinquiryCount = InquiryDAO.delinquiryCount();
+
 
 
 
@@ -67,6 +73,10 @@ public class AdminMainAction implements Action {
         request.setAttribute("CommentreportCount",CommentreportCount);
         request.setAttribute("UnprocessedreportCount",UnprocessedreportCount);
         request.setAttribute("processedreportCount",processedreportCount);
+        request.setAttribute("inquiryCount",inquiryCount);
+        request.setAttribute("UnprocessedinquiryCount",UnprocessedinquiryCount);
+        request.setAttribute("processedinquiryCount",processedinquiryCount);
+        request.setAttribute("delinquiryCount",delinquiryCount);
 
         return "admin/admin_main.jsp";
     }

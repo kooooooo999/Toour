@@ -144,4 +144,16 @@
         WHERE c.post_idx = #{post_idx}
         ORDER BY c.comment_created_at ASC
     </select>
+
+    <!-- 메인페이지 공지사항 불러오기 -->
+    <select id="selectLatestNotice" parameterType="int" resultType="toour.post.vo.PostVO">
+        SELECT post_idx, post_title, post_created_at, post_views
+        FROM post
+        WHERE category_idx = 1
+        and post_status = 0
+        ORDER BY post_created_at DESC
+        LIMIT #{limit}
+    </select>
+
+
 </mapper>

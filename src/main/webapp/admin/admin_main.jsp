@@ -51,18 +51,31 @@
         }
 
         .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            display: flex;
             gap: 20px;
+            align-items: stretch;
         }
 
-        .card-group {
+        .left-card{
+            flex: 1;
             display: flex;
             flex-direction: column;
             gap: 20px;
+            height: 100%
+        }
+
+
+
+        .card-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: auto;
         }
 
         .card {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -210,10 +223,13 @@
 
 
     <div class="dashboard">
+        <div class="left-card">
         <div class="card">
             <div class="card-title">
+                <a href="AdminController?type=adminmemlist">
                 전체 회원 수<br>
                 <small>(전체회원수 / 회원수 / 휴면회원수 / 탈퇴회원수 / 강퇴회원수)</small>
+                </a>
                 <p>${requestScope.totalCount}/
                     ${requestScope.MemCount}/
                     ${requestScope.DormantMemCount}/
@@ -281,6 +297,96 @@
             </div>
         </div>
 
+            <div class="card2">
+                <div class="today_board">
+                    <a href="AdminController?type=adminpost">
+                    최근 7일간 게시글 수
+                    </a>
+                    <p>${requestScope.getRecentPost}</p>
+                    <div class="chart-container">
+                        <canvas id="weeklyPostChart" width="600" height="400"></canvas>
+                    </div>
+                </div>
+
+                <script>
+                    // 오늘 날짜
+                    var today = new Date();
+
+                    // 최근 7일 날짜 라벨 & DB 매칭용 키 배열
+                    var labels = [];
+                    var dateKeys = [];
+                    for (var i = 6; i >= 0; i--) {
+                        var d = new Date();
+                        d.setDate(today.getDate() - i);
+                        var month = d.getMonth() + 1;
+                        var day = d.getDate();
+                        labels.push(month + '/' + day); // 차트에 표시될 라벨
+                        dateKeys.push(d.getFullYear() + '-' + String(month).padStart(2,'0') + '-' + String(day).padStart(2,'0')); // DB 날짜 키
+                    }
+
+                    // DB 데이터 객체로 변환 (키-값 매핑)
+                    var dbDataMap = {
+                        <c:forEach var="map" items="${requestScope.weeklyPostList}" varStatus="loop">
+                        '${map.post_day}': ${map.cnt}<c:if test="${!loop.last}">,</c:if>
+                        </c:forEach>
+                    };
+
+                    // 최근 7일 데이터 매핑, 없는 날짜는 0
+                    var postData = [];
+                    for(var i=0; i<dateKeys.length; i++){
+                        postData.push(dbDataMap[dateKeys[i]] || 0);
+                    }
+
+                    var postColors = [
+                        'rgba(255, 99, 132, 0.6)',
+                        'rgba(54, 162, 235, 0.6)',
+                        'rgba(255, 206, 86, 0.6)',
+                        'rgba(75, 192, 192, 0.6)',
+                        'rgba(153, 102, 255, 0.6)',
+                        'rgba(255, 159, 64, 0.6)',
+                        'rgba(99, 255, 132, 0.6)'
+                    ];
+
+                    // 차트 그리기
+                    var ctx = document.getElementById('weeklyPostChart').getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: '게시글 수',
+                                data: postData,
+                                backgroundColor: postColors, // 각 막대 색 지정
+                                borderColor: postColors.map(c => c.replace('0.6','1')), // 테두리 색
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: false,
+                            maintainAspectRatio: false,
+                            scales: {
+                                xAxes: [{
+                                    gridLines: { display: false }
+                                }],
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true, // 0부터 시작
+                                        min: 0,            // 최소값 0
+                                        max: 100,          // 최대값 100
+                                        stepSize: 10        // 눈금 간격
+                                    },
+                                    gridLines: { color: "rgba(0,0,0,0.05)" }
+                                }]
+                            },
+                            legend: { display: false }
+                        }
+                    });
+                </script>
+            </div>
+
+
+        </div> <!-- left card 끝 -->
+
 
         <div class="card-group">
         <div class="card">
@@ -289,9 +395,13 @@
                 <p>방문자 수: ${requestScope.RecentVisitMem}명</p>
             </div>
         </div>
+
+
             <div class="card">
                 <div class="today_warning">
+                    <a href="AdminController?type=adminReport">
                     <h3>📊 최근 30일간 신고 통계</h3>
+                    </a>
 
                     <div class="report-summary">
                         총 신고 수: <strong>${requestScope.ReportCount}</strong><br/>
@@ -313,99 +423,36 @@
                         처리된 신고 수: <strong>${requestScope.processedreportCount}건</strong>
                     </div>
                 </div>
-        <div class="card2">
-            <div class="today_board">
-                최근 게시글 수(일주일)
-                <p>${requestScope.getRecentPost}</p>
-                <div class="chart-container">
-                    <canvas id="weeklyPostChart" width="600" height="400"></canvas>
+            </div>
+
+            <div class="card">
+                <div class="today_warning">
+                    <a href="AdminController?type=adminInquiry">
+                    <h3>📊 최근 30일간 문의 통계</h3>
+                    </a>
+
+                    <div class="report-summary">
+                        총 문의 수: <strong>${requestScope.inquiryCount}</strong><br/>
+                    </div>
+
+                    <div class="report-summary">
+                        미처리된 문의 수:
+                        <c:choose>
+                            <c:when test="${requestScope.UnprocessedinquiryCount > 0}">
+                                <span class="report-alert">${requestScope.UnprocessedinquiryCount}건 ⚠️</span>
+                            </c:when>
+                            <c:otherwise>
+                                <strong>${requestScope.UnprocessedinquiryCount}건</strong>
+                            </c:otherwise>
+                        </c:choose><br/>
+
+                        처리된 문의 수: <strong>${requestScope.processedinquiryCount}건</strong><br/>
+                        삭제된 문의 수: <strong>${requestScope.delinquiryCount}건</strong>
+                    </div>
                 </div>
             </div>
-
-            <script>
-                // 오늘 날짜
-                var today = new Date();
-
-                // 최근 7일 날짜 라벨 & DB 매칭용 키 배열
-                var labels = [];
-                var dateKeys = [];
-                for (var i = 6; i >= 0; i--) {
-                    var d = new Date();
-                    d.setDate(today.getDate() - i);
-                    var month = d.getMonth() + 1;
-                    var day = d.getDate();
-                    labels.push(month + '/' + day); // 차트에 표시될 라벨
-                    dateKeys.push(d.getFullYear() + '-' + String(month).padStart(2,'0') + '-' + String(day).padStart(2,'0')); // DB 날짜 키
-                }
-
-                // DB 데이터 객체로 변환 (키-값 매핑)
-                var dbDataMap = {
-                    <c:forEach var="map" items="${requestScope.weeklyPostList}" varStatus="loop">
-                    '${map.post_day}': ${map.cnt}<c:if test="${!loop.last}">,</c:if>
-                    </c:forEach>
-                };
-
-                // 최근 7일 데이터 매핑, 없는 날짜는 0
-                var postData = [];
-                for(var i=0; i<dateKeys.length; i++){
-                    postData.push(dbDataMap[dateKeys[i]] || 0);
-                }
-
-                var postColors = [
-                    'rgba(255, 99, 132, 0.6)',
-                    'rgba(54, 162, 235, 0.6)',
-                    'rgba(255, 206, 86, 0.6)',
-                    'rgba(75, 192, 192, 0.6)',
-                    'rgba(153, 102, 255, 0.6)',
-                    'rgba(255, 159, 64, 0.6)',
-                    'rgba(99, 255, 132, 0.6)'
-                ];
-
-                // 차트 그리기
-                var ctx = document.getElementById('weeklyPostChart').getContext('2d');
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: '게시글 수',
-                            data: postData,
-                            backgroundColor: postColors, // 각 막대 색 지정
-                            borderColor: postColors.map(c => c.replace('0.6','1')), // 테두리 색
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        responsive: false,
-                        maintainAspectRatio: false,
-                        scales: {
-                            xAxes: [{
-                                gridLines: { display: false }
-                            }],
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true, // 0부터 시작
-                                    min: 0,            // 최소값 0
-                                    max: 100,          // 최대값 100
-                                    stepSize: 10        // 눈금 간격
-                                },
-                                gridLines: { color: "rgba(0,0,0,0.05)" }
-                            }]
-                        },
-                        legend: { display: false }
-                    }
-                });
-            </script>
-
         </div>
 
-        <div class="card2">
-            <div class="today_warning">
-                최근 신고 수 (한달)
-            </div>
-        </div>
-    </div>
-</div>
     </div>
 </div>
 </body>
