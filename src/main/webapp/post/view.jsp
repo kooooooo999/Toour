@@ -177,6 +177,17 @@
             margin-top: 40px;
         }
 
+        #post input[type="button"] {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
         .comment_button {
             display: flex;
             justify-content: flex-end;

@@ -24,7 +24,7 @@
     <style>
         /* 전체 페이지 배경 및 기본 폰트 설정 */
         body {
-            font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+            font-family: 'Malgun Gothic', sans-serif;
             background-color: #f8f9fa;
             color: #333;
             line-height: 1.6;
@@ -41,7 +41,7 @@
             /* 기존 속성 유지 + 내부 여백만 컨테이너에 한정 */
             max-width: 1600px;
             margin: 0 auto;
-            padding: 0 20px; /* 필요 시 조절 */
+            /*padding: 0 20px; !* 필요 시 조절 *!*/
             background-color: #fff;
             border: 1px solid #dee2e6;
             border-radius: 8px;
