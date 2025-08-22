@@ -177,5 +177,20 @@
 
     </select>
 
+    <select id="postReport" resultType="toour.post.vo.PostVO" parameterType="String">
 
+            SELECT p.*, m.member_nickname,
+            CASE
+            WHEN r.report_status IS NULL THEN -1
+            ELSE r.report_status
+            END AS report_status
+            FROM post p
+            INNER JOIN member m ON p.member_idx = m.member_idx
+            LEFT JOIN report r
+            ON p.post_idx = r.post_idx
+            AND r.target_type = 'POST'
+            WHERE c.post_idx = #{post_idx}
+            ORDER BY c.post_created_at ASC
+
+    </select>
 </mapper>

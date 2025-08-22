@@ -285,6 +285,23 @@
     </div>
   </div>
 </section>
+
+  <c:if test="${not empty requestScope.PostReportAr}">
+    <div class="report-section">
+      <h2>게시글 신고 내역</h2>
+      <div class="report-list">
+        <c:forEach items="${requestScope.PostReportAr}" var="report">
+          <div class="report-item">
+            <strong>신고 사유:</strong> ${report.report_content}
+            <span class="badge ${report.report_status eq 0 ? 'unprocessed' : 'processed'}">
+                ${report.report_status eq 0 ? '대기' : '처리완료'}
+            </span>
+          </div>
+        </c:forEach>
+      </div>
+    </div>
+  </c:if>
+
   <div class="comment_list">
     <c:if test="${not empty requestScope.CommentAr}">
       <c:forEach items="${requestScope.CommentAr}" var="cvo">
@@ -326,7 +343,7 @@
       </c:forEach>--%>
     </c:if>
   </div>
-
+</div>
 
 
 
@@ -341,6 +358,45 @@
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
 <script>
+  let currentPage = 1;
+  const postIdx = "${pvo.post_idx}";
+  const commentsContainer = $('.comment_list');
+
+  $(window).scroll(function() {
+    if ($(window).scrollTop() + $(window).height() >= $(document).height() - 200) {
+      // Prevent multiple simultaneous requests
+      if (!commentsContainer.data('loading')) {
+        loadMoreComments();
+      }
+    }
+  });
+
+  function loadMoreComments() {
+    commentsContainer.data('loading', true); // Set loading flag
+    currentPage++;
+
+    $.ajax({
+      url: 'AdminController', // Or a new specific endpoint
+      type: 'GET',
+      data: {
+        type: 'getCommentsByPage', // New type for fetching paginated comments
+        post_idx: postIdx,
+        cPage: currentPage
+      },
+      success: function(data) {
+        // 'data' is the HTML or JSON from the server
+        if (data.trim() !== '') {
+          commentsContainer.append(data); // Append new comments
+        }
+        commentsContainer.data('loading', false); // Clear loading flag
+      },
+      error: function() {
+        commentsContainer.data('loading', false);
+        console.error("Failed to load more comments.");
+      }
+    });
+  }
+
   $(function () {
     $("#del_dialog").dialog({
       modal: true,
