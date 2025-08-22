@@ -519,7 +519,7 @@
             </div>
 
             <div id="course_list" class="listArea">
-                <a href="Controller">내 코스 목록</a>
+                <a href="javascript:addCourse()">내 코스 목록</a>
                 <div class="item-grid">
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
@@ -844,6 +844,10 @@
     </table>
 </div>
 
+<%-- 여행 추가 --%>
+<div id="memberCourse" class="hide" style="position: relative;">
+</div>
+
 <c:import url="/common/footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -865,6 +869,17 @@
             height:200,
             width:400
         };
+
+        let option3 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "나의 코스",
+            resizable: true,
+            height:300,
+            width:300,
+            position: { my: "left top", at: "left top: 100" }
+        };
+        $("#memberCourse").dialog(option3);
 
         $("#MyInfo-container").dialog(option);
         $("#matchPassword_dialog").dialog(option2);
@@ -1115,6 +1130,47 @@
         } else {
             $target.html('');
         }
+    }
+
+    //코스 관리
+    function addCourse() {
+
+        <%-- 1일 때는 '내코스', 2일 때는 '코스 추가' 눌렀을 때 --%>
+
+        $.ajax({
+            url: "Controller?type=searchCourse",
+            method: "post",
+            data: { number: '1' }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        });
+        $("#memberCourse").dialog("open");
+    }
+
+    function myCourseDate(course_idx) {
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx, num: 1 }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        })
+    }
+
+    // 내 코스 지도 코스 리스트에 띄우기
+    function showCourseList(courseDate_idx) {
+
+        $.ajax({
+            url: "Controller?type=myCourseDay",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx }
+        }).done(function (res) {
+            $("#courseList").html(res);
+        })
+
+        $("#memberCourse").dialog("close");
     }
 </script>
 </body>
