@@ -25,20 +25,51 @@
 
     <div class="container">
         <div class="footer-sns-links">
-            <a href="#"><div class="sns-icon sns-icon1"><i class="fab fa-blogger-b"></i></div>블로그</a>
-            <a href="#"><div class="sns-icon sns-icon2"><i class="fab fa-facebook-f"></i></div>페이스북</a>
-            <a href="#"><div class="sns-icon sns-icon3"><i class="fab fa-twitter"></i></div>엑스</a>
-            <a href="#"><div class="sns-icon sns-icon4"><i class="fas fa-comments"></i></div>카카오 스토리</a>
-            <a href="#"><div class="sns-icon sns-icon5"><i class="fab fa-instagram"></i></div>인스타그램</a>
-            <a href="#"><div class="sns-icon sns-icon6"><i class="fab fa-band"></i></div>네이버 밴드</a>
+            <a href="#">
+                <div class="sns-icon sns-icon1"><i class="fab fa-blogger-b"></i></div>
+                블로그</a>
+            <a href="#">
+                <div class="sns-icon sns-icon2"><i class="fab fa-facebook-f"></i></div>
+                페이스북</a>
+            <a href="#">
+                <div class="sns-icon sns-icon3"><i class="fab fa-twitter"></i></div>
+                엑스</a>
+            <a href="#">
+                <div class="sns-icon sns-icon4"><i class="fas fa-comments"></i></div>
+                카카오 스토리</a>
+            <a href="#">
+                <div class="sns-icon sns-icon5"><i class="fab fa-instagram"></i></div>
+                인스타그램</a>
+            <a href="#">
+                <div class="sns-icon sns-icon6"><i class="fab fa-band"></i></div>
+                네이버 밴드</a>
         </div>
 
         <div class="footer-banners">
-            <a href="https://www.odii.kr/smarttour_web/iframe"><div class="banner-item"><img src="https://korean.visitkorea.or.kr/resources/images/common/fot_link_banner8.png?v=20230808001" alt="오디 (ODii)"></div></a>
-            <div class="banner-item"><img src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner3.gif" alt="관광정보 수정/신청"></div>
-            <a href="https://korean.visitkorea.or.kr/wallpaper/main.do"><div class="banner-item"><img src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner6.gif" alt="대한민국 구석구석 Wallpaper"></div></a>
-            <a href="https://korean.visitkorea.or.kr/notice/guide_book.do"><div class="banner-item"><img src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner4.gif" alt="여행 가이드북"></div></a>
-            <a href="https://1330chat.visitkorea.or.kr:3000/#/ttalk_main/CHAT1330_160635739001093018/_0300_0100_guidebook.do"><div class="banner-item"><img src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner7.gif" alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div></a>
+            <a href="https://www.odii.kr/smarttour_web/iframe" target="_blank" rel="noopener noreferrer">
+                <div class="banner-item"><img
+                        src="https://korean.visitkorea.or.kr/resources/images/common/fot_link_banner8.png?v=20230808001"
+                        alt="오디 (ODii)"></div>
+            </a>
+            <div class="banner-item"><img
+                    src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner3.gif" alt="관광정보 수정/신청">
+            </div>
+            <a href="https://korean.visitkorea.or.kr/wallpaper/main.do" target="_blank">
+                <div class="banner-item"><img
+                        src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner6.gif"
+                        alt="대한민국 구석구석 Wallpaper"></div>
+            </a>
+            <a href="https://korean.visitkorea.or.kr/notice/guide_book.do" target="_blank">
+                <div class="banner-item"><img
+                        src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner4.gif" alt="여행 가이드북">
+                </div>
+            </a>
+            <a href="https://1330chat.visitkorea.or.kr:3000/#/ttalk_main/CHAT1330_160635739001093018/_0300_0100_guidebook.do"
+               target="_blank">
+                <div class="banner-item"><img
+                        src="https://cdn.visitkorea.or.kr/resources/images/common/fot_link_banner7.gif"
+                        alt="전화/실시간 문자 채팅 상담 1330 관광안내"></div>
+            </a>
         </div>
 
         <nav class="footer-nav">

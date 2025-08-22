@@ -76,9 +76,6 @@ public class adminInquiryAction implements Action {
         String searchStatus = request.getParameter("searchStatus");
         request.setAttribute("searchType", searchType);
         request.setAttribute("searchStatus", searchStatus);
-
-        System.out.println("searchType==" + searchType);
-        System.out.println("searchStatus==" + searchStatus);
         int cnt = InquiryDAO.getInquiryTotalCount(searchType, searchStatus);
         System.out.println("cnt:" + cnt);
         //Page 생성

@@ -257,8 +257,7 @@
                         data-title="${Ivo.title}"
                         data-nickname="${Ivo.member_nickname}"
                         data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
-                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}" data-page="${p.nowPage}"
-                        data-searchtype="${requestsearchType}" data-searchvalue="${requestsearchStatus}">
+                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}" data-page="${p.nowPage}">
                         <td>${Ivo.inquiry_idx}</td>
                         <td>${Ivo.category}</td>
                         <td>${Ivo.title}</td>
@@ -269,7 +268,8 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <div class="pagination">
+            <div class=" pagination
+                ">
                 <c:if test="${p.startPage > 1}">
                     <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
                 </c:if>
@@ -319,7 +319,9 @@
                 let file = $(this).data('file')
                 let answer = $(this).data('answer');
                 let page = $(this).data('page');
-                let searchtype = $(this)
+
+                let searchType = $("#searchType").val();
+                let searchStatus = $("#searchStatus").val();
 
                 $.ajax({
                     url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
@@ -335,6 +337,8 @@
                         file: file,
                         answer: answer,
                         cPage: page,
+                        searchType: searchType,
+                        searchStatus: searchStatus
                     }
                 }).done(function (res) {
                     console.log("됐냐");
