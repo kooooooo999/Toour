@@ -204,11 +204,29 @@
         #table thead th:nth-child(7) {
             width: 100px;
         }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            height: 100%;
+            background-color: #f0f2f5;
+
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh; /* 화면 전체 높이 최소 보장 */
+            width: 100%;
+            align-items: stretch; /* 사이드바와 컨텐츠 높이를 같게 맞춤 */
+        }
 
     </style>
 </head>
 <body>
-
+<div class="container">
 <c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content" id="post">
@@ -294,6 +312,7 @@
 
         </div>
     </div>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
