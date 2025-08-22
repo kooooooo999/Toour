@@ -14,6 +14,8 @@ public class SearchCourseAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+        // 내 여행 띄우기
+
         System.out.println(request.getParameter("number"));
         Object obj = request.getSession().getAttribute("member");
         MemberVO mvo = null;

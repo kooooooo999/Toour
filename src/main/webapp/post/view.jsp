@@ -382,7 +382,7 @@
                 <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
                 <hr class="comment-line"/>
             </div>
-        </c:if>
+              </c:if>
             <div class="comment_action">
                 <div>
                     <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
@@ -426,11 +426,14 @@
                     <div id="comment_nickname">
                     ${cvo.member_nickname} &nbsp;
                         | &nbsp;${cvo.comment_updated_at}
-                        &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+                        &nbsp;&nbsp;
+                        <c:if test="${sessionScope.member.member_idx != null}">
                         <c:set var="comment_idx" value="${cvo.comment_idx}"/>
+                        <c:set var="comment_member_idx" value="${cvo.member_idx}"/>
+
                         <span class="report-emoji" title="신고하기"
                         onclick="warningComment(${cvo.comment_idx})">🚨</span>
-                    </c:if>
+                        </c:if>
                     </div>
                     <div id="comment_post">
                     ${cvo.comment_content}
@@ -445,10 +448,9 @@
                     <p>신고 사유를 입력하세요:</p>
                     <label><textarea name="reason" id="commentReport_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea></label>
                     <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
-                    <input type="hidden" name="comment_idx" value=""/>
+                    <input type="hidden" name="comment_idx" value="${comment_idx}"/>
                     <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
-                    <input type="hidden" name="reported_idx" value="${member_info.member_idx}"/>
-                    <button type="button" onclick="warning(this.form)">신고</button>
+                    <input type="hidden" name="reported_idx" value="${comment_member_idx}"/>
                 </form>
             </div>
 

@@ -261,8 +261,6 @@
           | &nbsp;${cvo.comment_updated_at}
           &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
           <c:set var="comment_idx" value="${cvo.comment_idx}"/>
-          <span class="report-emoji" title="신고하기"
-                onclick="warningComment(${cvo.comment_idx})">🚨</span>
         </c:if>
         </div>
         <div id="comment_post">

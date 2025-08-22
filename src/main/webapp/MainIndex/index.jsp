@@ -17,6 +17,8 @@
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
 </head>
 <body>
 
@@ -40,63 +42,55 @@
     </section>
     <jsp:include page="./sido.jsp"/>
     <section class="travel-cockcock">
-        <div class="container">
-            <div class="section-header">
-                <h3><strong>추천코스</strong></h3>
-                <p>빅데이터 기반 AI 추천 여행지 코스를 알려드려요.</p>
-            </div>
-
+        <form class="container">
             <div class="tabs">
-                <button class="tab active">AI콕콕</button>
-                <button class="tab">핫플콕콕</button>
-                <button class="tab">AI콕콕 플래너</button>
+                <span class="tab" style="font-weight: 900; color: #0056b3; font-size: 30px;">🔥핫플콕콕🔥</span>
             </div>
-
-            <div class="ai-intro">
-                <p>당신의 성향, 취향 분석 완료! 마음에 쏙 들 여행지를 추천해 드릴게요.</p>
-                <p> 　</p>
-            </div>
+            <%--data-contentid="126674" --%>
 
             <div class="recommend-cards">
                 <div class="card">
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=b2526e1d-56a4-42df-9c98-f8255009c851"
-                         alt="해운대">
-                    <div class="card-content">
-                        <h4>해운대 달맞이길<br><small>부산시 해운대구</small></h4>
-                    </div>
-                    <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
+                    <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="6" data-contentid="126674">
+                        <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=b2526e1d-56a4-42df-9c98-f8255009c851"
+                             alt="해운대">
+                        <div class="card-content">
+                            <h4>해운대 달맞이길<br><small>부산시 해운대구</small></h4>
+                        </div>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=3d29f393-801a-41dd-8472-a79a01642fce"
-                         alt="백석봉(정선)">
-                    <div class="card-content">
-                        <h4>롯데월드<br><small>서울시 송파구</small></h4>
-                    </div>
-                    <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
+                    <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="35" data-contentid="2753918">
+                        <img src="http://tong.visitkorea.or.kr/cms/resource/57/2754157_image2_1.jpg"
+                             alt="나곡낚시공원 (바다낚시공원)">
+                        <div class="card-content">
+                            <h4>바다낚시공원<br><small>경상북도 울진군</small></h4>
+                        </div>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=26eacf69-77ed-4ec7-a659-fe19f39ff7d1"
-                         alt="데미샘자연휴양림">
-                    <div class="card-content">
-                        <h4>데미샘자연휴양림<br><small>전라북도 진안군</small></h4>
-                    </div>
-                    <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
+                    <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="6" data-contentid="2748834">
+                        <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=26eacf69-77ed-4ec7-a659-fe19f39ff7d1"
+                             alt="데미샘자연휴양림">
+                        <div class="card-content">
+                            <h4>데미샘자연휴양림<br><small>전라북도 진안군</small></h4>
+                        </div>
+                    </a>
                 </div>
 
                 <div class="card">
-                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=8132ce55-9fbf-4b85-8a8e-b324286393db"
-                         alt="내동마을 연꽃단지">
-                    <div class="card-content">
-                        <h4>내동마을 연꽃단지<br><small>경기도 용인시</small></h4>
-                    </div>
-                    <%--                    <span class="heart-icon"><i class="far fa-heart"></i></span>--%>
+                    <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="6" data-contentid="2499842">
+                        <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=8132ce55-9fbf-4b85-8a8e-b324286393db"
+                             alt="내동마을 연꽃단지">
+                        <div class="card-content">
+                            <h4>내동마을 연꽃단지<br><small>경기도 용인시</small></h4>
+                        </div>
+                    </a>
                 </div>
             </div>
+        </form>
 
-            <a href="#" class="more-button">오늘의 추천 코스<i class="fas fa-plus"></i></a>
-        </div>
     </section>
 
     <%
@@ -133,7 +127,6 @@
             </ul>
         </div>
     </section>
-
 
 
     <section class="healing-travel-section container section-padding">
@@ -189,7 +182,33 @@
 </main>
 
 <c:import url="/common/footer.jsp"/>
+<script>
 
+    $(document).ready(function () { //보안을 위해 거쳐서 이동
+        $(document).on('click', '.data-trip', function (e) {
+            //data-contenttypeid="12" data-contentid="126674" data-areacode="6"
+            e.preventDefault();
+            let contentTypeId = $(this).data('contenttypeid');
+            let areacode = $(this).data('areacode');
+            let contentId = $(this).data('contentid');
+            console.log("넘길 contentId:", contentId);
+            let form = $('<form></form>');
+            form.attr('action', 'Controller?type=tripSuggestion&pageType=gogo');
+            form.attr('method', 'post');
+            form.attr('style', 'display: none;'); // 화면에 보이지 않게 숨김
+
+            let contentTypeInput = $('<input>').attr('type', 'hidden').attr('name', 'contentTypeId').val(contentTypeId);
+            let areaCodeInput = $('<input>').attr('type', 'hidden').attr('name', 'areaCode').val(areacode);
+            let contentIdInput = $('<input>').attr('type', 'hidden').attr('name', 'contentId').val(contentId);
+
+            form.append(contentTypeInput, areaCodeInput, contentIdInput);
+
+            $('body').append(form);
+            form.submit();
+        });
+    });
+
+</script>
 </body>
 
 </html>

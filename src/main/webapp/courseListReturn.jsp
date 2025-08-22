@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%-- 코스추가 눌렀을 때 조회 --%>
 <c:if test="${param.number eq '2'}">
   <c:set var="member_idx" value="${requestScope.member_idx}"/>
   <input id="member_idx" type="hidden" value="${requestScope.member_idx}">
@@ -10,6 +11,7 @@
   </c:forEach>
 </c:if>
 
+<%-- 내코스에서 조회 --%>
 <c:if test="${param.number eq 1}">
   <c:set var="member_idx" value="${requestScope.member_idx}"/>
   <input id="member_idx" type="hidden" value="${requestScope.member_idx}">

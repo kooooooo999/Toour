@@ -214,6 +214,9 @@
     <c:set var="Type" value="${requestScope.searchType}"/>
     <c:set var="Status" value="${requestScope.searchStatus}"/>
 
+    <c:set var="requestsearchType" value="${param.searchType}"/>
+    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
+
     <c:set var="Ivo" value="${requestScope.reqInquiry}"/>
     <c:set var="p" value="${requestScope.page}" scope="page"/>
     <c:set var="Ar" value="${requestScope.IvoArr}"/>
@@ -221,9 +224,6 @@
        class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
-    <p>${Type}</p>
-    <p>${Status}</p>
-    <p>${p.nowPage}</p>
     <ul>
         <li><strong>번호:</strong> ${Ivo.inquiry_idx}</li>
         <li><strong>카테고리:</strong> ${Ivo.category}</li>
@@ -233,8 +233,10 @@
             <span class="status">${Ivo.status}</span>
         </li>
         <li><strong>작성일:</strong> ${Ivo.created_at}</li>
-
-        <li id="post_content"><strong>내용</strong>
+        <li class="inquiry-content"><strong>내용</strong>
+            <p>${Ivo.content}</p>
+        </li>
+        <li><strong>첨부파일</strong>
             <c:if test="${not empty Ivo.file_path}">
                 <p><img src="${requestScope.fileName}" style="width: 300px; height: 300px;"></p>
             </c:if>
@@ -242,8 +244,6 @@
                 [없음]
             </c:if>
         </li>
-
-
     </ul>
 </div>
 
@@ -288,43 +288,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <script>
-
-    $(document).ready(function () {
-        // Summernote 에디터 초기화
-        $('#post_content').summernote({
-            height: 300, // 에디터 높이 설정
-            lang: 'ko-KR', // 한국어 설정
-            callbacks: {
-                // 이미지 업로드 처리
-                onImageUpload: function (files) {
-                    // 이미지를 Cloudinary로 업로드
-                    var data = new FormData();
-                    data.append("file", files[0]); // 업로드된 파일 추가
-                    data.append("upload_preset", "testtest"); // Cloudinary 업로드 프리셋
-
-                    // 비동기식 이미지 업로드
-                    $.ajax({
-                        url: 'https://api.cloudinary.com/v1_1/dqkajtq62/image/upload',
-                        method: 'POST',
-                        data: data,
-                        contentType: false,
-                        processData: false,
-                        success: function (response) {
-                            // 업로드된 이미지 URL
-                            var imageUrl = response.secure_url;
-
-                            // 에디터에 이미지 삽입
-                            $('#post_content').summernote('insertImage', imageUrl);
-                        },
-                        error: function (xhr, status, error) {
-                            console.error('이미지 업로드 실패:', error);
-                            alert('이미지 업로드에 실패했습니다.');
-                        }
-                    });
-                }
-            }
-        });
-    });
 
 
     $(function () {
