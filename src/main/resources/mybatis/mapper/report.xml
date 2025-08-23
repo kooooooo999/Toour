@@ -120,6 +120,30 @@
         where a.rnum BETWEEN #{begin} AND #{end};
     </select>
 
+    <select id="getCommentListWithReports" parameterType="map" resultType="map">
+        SELECT
+        m.member_nickname,
+        c.*,
+        MAX(CASE WHEN r.target_type = 'COMMENT' THEN r.report_status END) AS report_status,
+        GROUP_CONCAT(
+        CASE WHEN r.target_type = 'COMMENT' THEN
+        CONCAT(reporter.member_nickname, ': ', r.report_content)
+        ELSE NULL END
+        SEPARATOR '&#x000A;'
+        ) AS all_report_contents
+        FROM comment c
+        LEFT JOIN report r ON c.comment_idx = r.comment_idx AND r.target_type = 'COMMENT'
+        LEFT JOIN member m ON c.member_idx = m.member_idx
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        WHERE c.post_idx = #{post_idx}
+        GROUP BY c.comment_idx
+        ORDER BY c.comment_updated_at DESC
+    </select>
+
+    <select id="countAllComments" resultType="int">
+        SELECT COUNT(*) FROM comment
+    </select>
+
 
 
 
