@@ -3,10 +3,11 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<div style="padding: 20px; text-align: center;">
+<div id="inquiry_container" style="padding: 20px; text-align: center;">
     <div class="container" id="inquiry-container">
 
-
+        <div id="inquiry-header-container">
+        </div>
         <!-- 문의 목록 테이블 -->
         <table class="inquiry-table">
             <caption>문의 목록 테이블</caption>
@@ -67,7 +68,7 @@
         </table>
 
         <!-- 페이징 -->
-
+    </div>
 
         <div class="paging-area">
             <ol class="paging">
@@ -104,5 +105,5 @@
             </ol>
         </div>
 
-    </div>
+
 </div>

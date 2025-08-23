@@ -1,5 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>문의 상세보기</title>
@@ -142,7 +143,7 @@
             <%= request.getAttribute("error") %>
         </div>
     <% } %>
-    
+    <c:set var="ivo" value="${requestScope.inquiry}"/>
     <% 
     Map<String, Object> inquiry = (Map<String, Object>) request.getAttribute("inquiry");
     if (inquiry != null) {
@@ -190,33 +191,25 @@
                 <%= inquiry.get("content") %>
             </div>
         </div>
+        <c:if test="${not empty ivo.answer_content}" >
+            <div class="content-box">
+                <h4>답변 내용</h4>
+                <div style="white-space: pre-wrap; line-height: 1.6;">
+                    ${ivo.answer_content}
+                </div>
+            </div>
+        </c:if>
         
-       <%-- <!-- 첨부파일 -->
-        <% if (inquiry.get("file_path") != null && !inquiry.get("file_path").toString().isEmpty()) { %>
-            <div class="file-info">
-                <h4>첨부파일</h4>
-                <a href="inquiry_upload/<%= inquiry.get("file_path") %>" 
-                   class="file-link" target="_blank">
-                    <%= inquiry.get("file_path") %>
-                </a>
-            </div>
-        <% } else { %>
-            <div class="file-info">
-                <h4>첨부파일</h4>
-                <div class="no-file">첨부된 파일이 없습니다.</div>
-            </div>
-        <% } %>
-        --%>
-        <!-- 버튼 그룹 -->
+
         <div class="btn-group">
-            <a href="Controller?type=inquiryList" class="btn btn-secondary">목록으로</a>
+            <a href="Controller?type=mypage" class="btn btn-secondary">목록으로</a>
             <a href="Controller?type=QnA" class="btn btn-success">새 문의 작성</a>
         </div>
         
     <% } else { %>
         <div style="text-align: center; padding: 50px; color: #666;">
             <p>문의 정보를 찾을 수 없습니다.</p>
-            <a href="Controller?type=inquiryList" class="btn btn-primary">목록으로 돌아가기</a>
+            <a href="Controller?type=mypage" class="btn btn-primary">목록으로 돌아가기</a>
         </div>
     <% } %>
 </div>
