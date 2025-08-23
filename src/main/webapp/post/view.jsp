@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page import="toour.post.vo.PostVO" %>
 <%@ page import="toour.post.vo.CommentVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -264,6 +265,24 @@
     .report-emoji:hover {
       transform: scale(1.2);
     }
+        /* 댓글 전체 컨테이너 */
+        #dynamic_comment_list {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+
+        /* 각 댓글 항목 */
+        .comment-item {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 6px;
+            background-color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+
 
 
   </style>
@@ -380,15 +399,16 @@
                     <textarea id="none_comment_content" placeholder="로그인을 하시고 여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55" name="post_content" readonly></textarea><br/>
 
                 </c:if>
-            <c:if test="${not empty sessionScope.member}">
-                <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
-                <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
-                <hr class="comment-line"/>
+                <c:if test="${not empty sessionScope.member}">
+                    <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
+                    <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
+                    <hr class="comment-line"/>
+                </c:if>
             </div>
-              </c:if>
+
             <div class="comment_action">
                 <div>
-                    <input type="hidden" name="post_idx" value="${vo.getPost_idx()}">
+                    <input type="hidden" name="post_idx" value="${vo.post_idx}">
                     <input type="hidden" name="cPage" value="${param.cPage}"/>
                     <input type="hidden" name="type" value="comment"/>
                     <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
@@ -397,14 +417,11 @@
                 </div>
             </div>
         </form>
-        <!-- 댓글 표시 영역 (무한 스크롤) -->
-        <div id="dynamic_comment_list" class="comment_list"></div>
+        <!--무한스크롤-->
+        <div id="dynamic_comment_list"></div>
 
-        <!-- 로딩 중 표시 -->
-        <div id="loading" style="text-align:center; display:none;">로딩중...</div>
+        <p id="endOfList" style="display:none; text-align:center; color:gray;">더 이상 댓글이 없습니다.</p>
 
-        <!-- 끝 표시 -->
-        <div id="endOfList" style="text-align:center; display:none;">댓글 끝</div>
 
         <form name="ff" method="get">
             <input type="hidden" name="member_idx" value="${vo.getMember_idx()}">
@@ -418,263 +435,248 @@
             <form action="Controller" method="post">
                 <p>정말로 삭제 하시겠습니까?</p>
                 <input type="hidden" name="type" value="del"/>
-                <input type="hidden" name="post_idx" value="${vo.getPost_idx()}"/>
+                <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
                 <input type="hidden" name="cPage" value="${param.cPage}"/>
                 <input type="hidden" name="member_idx" value="${sessionScope.member.member_idx}"/>
                 <button type="button" onclick="del(this.form)">삭제</button>
             </form>
         </div>
-        
 
+        <!--댓글신고-->
+        <div id="warning_dialog" title="댓글 신고">
+            <form id="CommentReportForm" action="Controller?type=reportComment" method="post">
+                <p>신고 사유를 입력하세요:</p>
+                <label>
+                    <textarea name="reason" id="commentReport_reason" rows="5" style="width:95%; box-sizing:border-box;" required></textarea>
+                </label>
+                <input type="hidden" name="comment_idx" value=""/>
+                <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
+                <input type="hidden" name="reporter_idx" value="${sessionScope.member.member_idx}"/>
+                <input type="hidden" name="reported_idx" />
+
+            </form>
+        </div>
     </div>
 </div>
 
 <c:import url="/common/footer.jsp"/>
 
 </body>
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        let allComments = [
+            <c:forEach items="${comment_list}" var="c" varStatus="s">
+            {
+                comment_idx: "${c.comment_idx}",
+                post_idx: "${c.post_idx}",
+                member_idx: "${c.member_idx}",
+                nickname: "${c.member_nickname}",
+                content: "${fn:replace(c.comment_content, '&#10;', '<br/>')}",
+                created_at: "${c.comment_created_at}",
+                report_button_html: `<c:if test="${not empty sessionScope.member and sessionScope.member.member_idx != c.member_idx}">
+                       <span class="report-emoji" title="신고하기" onclick="warningComment('${c.comment_idx}', '${c.member_idx}')">🚨</span>
+                     </c:if>`
+            }<c:if test="${!s.last}">,</c:if>
+            </c:forEach>
+        ];
 
-    let allComments = [
-        <c:forEach items="${comment_list}" var="c" varStatus="s">
-        {
-            nickname: "${c.member_nickname}",
-            content: `${c.comment_content}`,
-            updated_at: "${c.comment_updated_at}",
-            comment_idx: "${c.comment_idx}",
-            member_idx: "${c.member_idx}"
-        }<c:if test="${!s.last}">,</c:if>
-        </c:forEach>
-    ];
-    let container = document.getElementById('dynamic_comment_list');
-    let loadingDiv = document.getElementById('loading');
-    let endDiv = document.getElementById('endOfList');
-    let start = 0;
-    let perPage = 5;
-    let isLoading = false;
+        let container = document.getElementById('dynamic_comment_list');
+        let start = 0;
+        let limit  = 10;
+        let isLoading = false;
 
-    function renderComments() {
-        if (start >= allComments.length || isLoading) {
-            if (start >= allComments.length) {
-                endDiv.style.display = 'block';
+        function renderComments() {
+            if (start >= allComments.length || isLoading) {
+                if (start >= allComments.length) {
+                    document.getElementById("endOfList").style.display = "block";
+                }
+                return;
             }
-            return;
+
+            isLoading = true;
+
+            for (let i = start; i < start + limit && i < allComments.length; i++) {
+                const c = allComments[i];
+                const nickname = c.nickname+" | " || "익명";
+                const content = c.content || "";
+                const creatAt = c.created_at.substring(0,10) || "";
+                const div = document.createElement("div");
+                const report_button_html = c.report_button_html;
+                div.className = "comment-item";
+                div.innerHTML =
+                    '<div class="comment-header">' +
+                    '<strong>' + nickname +creatAt+'</strong>' + report_button_html+
+                    '</div>' +
+                    '<div class="comment-body">' +
+                    '<p>' + content + '</p>' +
+                    '</div>' +
+                    '<hr/>';
+                container.appendChild(div);
+            }
+
+            start += limit;
+            isLoading = false;
+
+            if (start >= allComments.length) {
+                document.getElementById("endOfList").style.display = "block";
+                window.removeEventListener("scroll", handleScroll);
+            }
         }
 
-        isLoading = true;
-        loadingDiv.style.display = 'block';
-
-        setTimeout(() => {
-            let end = Math.min(start + perPage, allComments.length);
-
-            for (let i = start; i < end; i++) {
-                let c = allComments[i];
-
-                let commentDiv = document.createElement('div');
-                commentDiv.innerHTML = `
-        <div id="comment_nickname">${c.nickname} | ${c.updated_at}
-          ${c.member_idx ? `<span class="report-emoji" title="신고하기" onclick="warningComment(${c.comment_idx})">🚨</span>` : ''}
-        </div>
-        <div id="comment_post">${c.content}</div>
-        <hr/>
-      `;
-                container.appendChild(commentDiv);
+        function handleScroll() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 50 && !isLoading) {
+                renderComments();
             }
+        }
 
-            start = end;
-            isLoading = false;
-            loadingDiv.style.display = 'none';
+        renderComments();
+        window.addEventListener("scroll", handleScroll);
 
-            if (start >= allComments.length) {
-                endDiv.style.display = 'block';
+    });
+
+    $(function (){
+        let option = {
+            modal: true,
+            autoOpen: false,
+            resizable: false
+        };
+
+        $("#del_dialog").dialog(option);
+
+        $("#report_dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: false,
+            width: 400,
+            buttons: {
+                "신고하기": function () {
+                    let reason = $("#report_reason").val().trim();
+                    if (reason.length < 1) {
+                        alert("신고 사유를 입력하세요.");
+                        return;
+                    }
+                    $("#reportForm").submit();
+                },
+                "취소": function () {
+                    $(this).dialog("close");
+                }
             }
-        }, 200);
+        });
+
+        $("#loginDialog").dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: false
+        });
+
+        $("#warning_dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            resizable: false,
+            width: 400,
+            buttons: {
+                "신고하기": function () {
+                    let reason = $("#commentReport_reason").val().trim();
+                    if (reason.length < 1) {
+                        alert("신고 사유를 입력하세요");
+                        return;
+                    }
+                    $("#CommentReportForm").submit();
+                },
+                "취소": function () {
+                    $(this).dialog("close");
+                }
+            }
+        });
+        console.log("jQuery UI 다이얼로그 초기화 완료.");
+
+    });
+
+    function commentData() {
+        let content = $("#comment_content").val();
+        if (!content.trim()) {
+            alert("내용을 입력하세요");
+            return false;
+        }
+        return true;
     }
 
-    window.addEventListener('scroll', () => {
-        if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 100) {
-            renderComments();
-        }
-    });
+    let login = "${sessionScope.member != null}" === "true";
 
-    renderComments(); // 초기 렌더링
+    function openReportDialog() {
+        $("#report_reason").val("");
+        $("#report_dialog").dialog("open");
+    }
 
+    function goList() {
+        document.ff.action = "Controller";
+        document.ff.type.value = "list";
+        document.ff.submit();
+    }
 
-// 로그인 여부 체크
-let login = ${sessionScope.memeber != null};
+    function goDel() {
+        $("#del_dialog").dialog("open");
+    }
+    function del(frm) {
+        frm.submit();
+    }
 
-  $(function (){
-    let option = {
-      modal: true,
-      autoOpen: false, // 호출되는 즉시 대화상자 표시(기본값: true)
-      resizable: false,
-    };
+    function goEdit() {
+        document.ff.action = "Controller";
+        document.ff.type.value = "edit";
+        document.ff.submit();
+    }
 
-    // 삭제 다이얼로그 초기화
-    $("#del_dialog").dialog(option);
-  });
+    window.warningComment = function(comment_idx, reported_idx) {
+        $("#commentReport_reason").val("");
+        $("#CommentReportForm input[name='comment_idx']").val(comment_idx);
+        $("#CommentReportForm input[name='reported_idx']").val(reported_idx);
 
-  // 신고 다이얼로그 초기화
-  $(function goReport() {
-    $("#report_dialog").dialog({
-      autoOpen: false, // 처음에는 닫혀있음
-      modal: true,
-      resizable: false,
-      width: 400,
-      buttons: {
-        "신고하기": function () {
-          let reason = $("#report_reason").val().trim();
-          if (reason.length < 1) {
-            alert("신고 사유를 입력하세요.");
+        $("#warning_dialog").dialog("open");
+        console.log("신고 다이얼로그 열기 - 댓글 인덱스:", comment_idx, "신고 대상자 인덱스:", reported_idx);
+    }
+
+    document.getElementById('heart').addEventListener('click', function() {
+        const heart = document.getElementById('heart');
+        const post_idx = document.getElementById('post_idx').value;
+        const member_idx = document.getElementById('member_idx').value;
+
+        if (!member_idx) {
+            alert('로그인이 필요합니다.');
             return;
-          }
-          $("#reportForm").submit();
-        },
-        "취소": function () {
-          $(this).dialog("close");
-        }
-      }
-    });
-  });
-
-  // 신고 다이얼로그 열기 함수
-  function openReportDialog() {
-    $("#report_reason").val(""); // 이전 입력값 초기화
-    $("#report_dialog").dialog("open");
-  }
-
-  // 댓글
-  function commentData() {
-      let title = $("#comment_content").val();
-      if (title.trim().length < 1) {
-          alert("내용을 입력하세요");
-          $("#comment_content").val("");
-          $("#comment_content").focus();
-          return false;
-      }
-
-      return true;
-  }
-
-  function goList() {
-    document.ff.action = "Controller";
-    document.ff.type.value = "list";
-    document.ff.submit();
-  }
-
-  function goDel() {
-    /*document.ff.action = "Controller";
-    document.ff.type.value = "del"
-    document.ff.submit();*/
-    $("#del_dialog").dialog("open");
-  }
-  function del(frm) {
-    frm.submit();
-  }
-
-        function goEdit() {
-            // ff 폼의 action과 type을 설정
-            document.ff.action = "Controller";
-            document.ff.type.value = "edit";
-            document.ff.submit();
         }
 
-      //댓글 신고 다이얼 로그 열기 함수
+        if (heart.classList.contains('fa-solid')) {
+            alert('이미 추천한 게시글입니다.');
+            return;
+        }
 
-      function warningComment(comment_idx) {
-          $("#commentReport_reason").val("");
-          $("#CommentReportForm input[name='comment_idx']").val(comment_idx);
-          $("#warning_dialog").dialog("open");
-          console.log(comment_idx);
-      }
+        fetch("Controller?type=recommendInsert&member_idx=${sessionScope.member.member_idx}&post_idx=${requestScope.vo.post_idx}", {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    heart.classList.remove('fa-regular');
+                    heart.classList.add('fa-solid');
 
-
-        $(function () {
-            $("#loginDialog").dialog({
-                autoOpen: false,
-                modal: true,
-                resizable: false
-            });
-            // $("#loginDialog").dialog(option);
-        });
-
-        $(function sendReport() {
-            $("#warning_dialog").dialog({
-                autoOpen: false,
-                modal: true,
-                resizable: false,
-                width: 400,
-                buttons: {
-                    "신고하기": function () {
-                        let reason = $("#commentReport_reason").val().trim();
-                        if (reason.length < 1) {
-                            alert("신고 사유를 입력하세요");
-                            return;
-                        }
-                        $("#CommentReportForm").submit();
-                    },
-                    "취소": function () {
-                        $(this).dialog("close");
-                    }
+                    const likesInput = document.getElementById('likesCount');
+                    const display = document.getElementById('likesCountDisplay');
+                    let likes = parseInt(likesInput.value);
+                    likes++;
+                    likesInput.value = likes;
+                    display.textContent = likes;
+                } else {
+                    alert(data.message || '추천 처리 실패');
                 }
             });
-        });
-
-  document.getElementById('heart').addEventListener('click', function() {
-      const heart = document.getElementById('heart');
-      const post_idx = document.getElementById('post_idx').value;
-      const member_idx = document.getElementById('member_idx').value;
-
-      if (!member_idx) {
-          alert('로그인이 필요합니다.');
-          return;
-      }
-
-      // 이미 추천한 경우 아무 동작 안 함
-      if (heart.classList.contains('fa-solid')) {
-          alert('이미 추천한 게시글입니다.');
-          return;
-      }
-
-      fetch(`Controller?type=recommendInsert&member_idx=${sessionScope.member.member_idx}&post_idx=${requestScope.vo.post_idx}`, {
-          method: 'POST'
-      })
-          .then(res => res.json())
-          .then(data => {
-              if (data.success) {
-                  heart.classList.remove('fa-regular');
-                  heart.classList.add('fa-solid');
-
-                  const likesInput = document.getElementById('likesCount');
-                  const display = document.getElementById('likesCountDisplay');
-                  let likes = parseInt(likesInput.value);
-                  likes++;
-                  likesInput.value = likes;
-                  display.textContent = likes;
-              } else {
-                  alert(data.message || '추천 처리 실패');
-              }
-          });
-  });
-
+    })
 </script>
 
-
-
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 

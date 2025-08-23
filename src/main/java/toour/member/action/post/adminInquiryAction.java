@@ -1,3 +1,5 @@
+// Corrected adminInquiryAction.java
+
 package toour.member.action.post;
 
 import toour.action.Action;
@@ -5,12 +7,11 @@ import toour.post.dao.InquiryDAO;
 import toour.post.vo.InquiryVO;
 import toour.util.Paging;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 public class adminInquiryAction implements Action {
     @Override
@@ -22,56 +23,20 @@ public class adminInquiryAction implements Action {
             //문의글 상세보기
             viewPath = "admin/inquiryDetails.jsp";
             String idx = request.getParameter("idx");
-            String category = request.getParameter("category");
-            String title = request.getParameter("title");
-            String nickname = request.getParameter("nickname");
-            String status = request.getParameter("status");
-            String file = request.getParameter("file");
-            String created = request.getParameter("created");
-            String content = request.getParameter("content");
-            String answer_content = request.getParameter("answer");
-            String cPage = request.getParameter("page");
+            if (idx != null && !idx.isEmpty()) {
+                // InquiryDAO에 있는 관리자용 상세 조회 메서드 사용
+                Map<String, Object> inquiryData = InquiryDAO.getInquiryDetail(idx);
 
-            InquiryVO inquiryVO = new InquiryVO();
-            inquiryVO.setInquiry_idx(idx);
-            inquiryVO.setCategory(category);
-            inquiryVO.setTitle(title);
-            inquiryVO.setMember_nickname(nickname);
-            inquiryVO.setStatus(status);
-            inquiryVO.setCreated_at(created);
-            inquiryVO.setContent(content);
-            inquiryVO.setFile_path(file);
-            inquiryVO.setAnswer_content(answer_content);
-            request.setAttribute("reqInquiry", inquiryVO);
-
-            String answer = request.getParameter("answer");
-            if ("1".equals(answer)) {
-                //답변 등록 버튼을 클릭했을 시
-                viewPath = "admin/admin_Inquiry.jsp";
-                String answerValue = request.getParameter("answer_content");
-                if (status.equals("대기")) {
-                    InquiryDAO.updateInquirydata(idx, "답변완료", answerValue);
-                }
+                // Map 데이터를 request에 설정합니다.
+                request.setAttribute("reqInquiry", inquiryData);
             }
-            try {
-                // 파일 업로드를 위한 설정
-                ServletContext application = request.getServletContext();
-                String realPath = application.getRealPath("/inquiry_upload/");
-
-                // 디렉토리가 없으면 생성
-                File dir = new File(realPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                String fileName = "/inquiry_upload/" + file;
-                request.setAttribute("fileName", fileName);
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            request.setAttribute("searchType", request.getParameter("searchType"));
+            request.setAttribute("searchStatus", request.getParameter("searchStatus"));
+            // *** 추가 끝 ***
+            return viewPath; // 바로 상세 페이지로 이동합니다.
         }
+
+        // 기존 문의 목록 조회 및 페이징 로직은 그대로 유지
         String searchType = request.getParameter("searchType");
         String searchStatus = request.getParameter("searchStatus");
         request.setAttribute("searchType", searchType);
@@ -90,13 +55,11 @@ public class adminInquiryAction implements Action {
         if (cPage == null || cPage.isEmpty() || cPage.equals("null")) {
             page.setNowPage(1);
         } else {
-            int nowPage = Integer.parseInt(cPage); //"2" -> 2
+            int nowPage = Integer.parseInt(cPage);
             page.setNowPage(nowPage);
         }
 
-        //table에 표현될 DB 데이터 값 가져옴, Paging의 begin은 1부터 시작, DB는 0부터 계산하기에 -1 해줘야함
         InquiryVO[] IvoArr = InquiryDAO.getInquiryTotaldata(page.getBegin() - 1, page.getNumPerPage(), searchType, searchStatus);
-        //searchType을 받아 DB 데이터 값 가져옴
         request.setAttribute("page", page);
         request.setAttribute("IvoArr", IvoArr);
 

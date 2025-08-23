@@ -22,15 +22,5 @@
         WHERE c.post_idx = #{post_idx}
         ORDER BY c.comment_created_at ASC
     </select>
-    <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
-    <select id="list" resultMap="map1" parameterType="map">
-        select * from(
-        SELECT ROW_NUMBER() OVER(ORDER BY comment_idx DESC) AS rnum, a.*
-        from(
-        select * from comment
-        ) a
-        ) c inner join member m on c.member_idx=m.member_idx
-        where c.rnum Between #{begin} and #{end}
-        ORDER BY c.post_idx DESC
-    </select>
+
 </mapper>

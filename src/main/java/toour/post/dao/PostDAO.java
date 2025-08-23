@@ -356,16 +356,12 @@ public class PostDAO {
         return cnt;
     }
     //댓글 불러오는 로직
-    public static CommentVO[] getCommentList(String post_idx){
+    public static List<CommentVO> getCommentList(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         CommentVO[] comment =null;
         List<CommentVO> list = ss.selectList("post.getComment",post_idx);
-        if(list.size()>0){
-            comment = new CommentVO[list.size()];
-            list.toArray(comment);
-        }
         ss.close();
-        return comment;
+        return list;
     }
 
 //    댓글 신고

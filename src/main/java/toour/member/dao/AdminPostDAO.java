@@ -2,6 +2,7 @@ package toour.member.dao;
 
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
+import toour.post.dao.ReportDAO;
 import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
@@ -285,10 +286,7 @@ public class AdminPostDAO {
     }
     //댓글 신고 수 가지고 오기
     public static int getcommentTotalCount(){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.selectOne("post.totalCount");
-        ss.close();
-        return cnt;
+        return ReportDAO.TotalCount();
     }
 
     // 목록 반환

@@ -191,7 +191,7 @@
             </div>
         </div>
         
-        <!-- 첨부파일 -->
+       <%-- <!-- 첨부파일 -->
         <% if (inquiry.get("file_path") != null && !inquiry.get("file_path").toString().isEmpty()) { %>
             <div class="file-info">
                 <h4>첨부파일</h4>
@@ -206,7 +206,7 @@
                 <div class="no-file">첨부된 파일이 없습니다.</div>
             </div>
         <% } %>
-        
+        --%>
         <!-- 버튼 그룹 -->
         <div class="btn-group">
             <a href="Controller?type=inquiryList" class="btn btn-secondary">목록으로</a>

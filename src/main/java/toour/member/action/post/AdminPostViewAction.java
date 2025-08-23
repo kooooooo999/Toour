@@ -54,7 +54,7 @@ public class AdminPostViewAction implements Action {
         }
 
         //게시물 신고내역 나타내기 위해 보내는 것
-        PostVO[] PostReportAr = Ad
+        //PostVO[] PostReportAr = Ad
 
         request.setAttribute("CommentAr", ar);
         System.out.println("AdminPostViewAction ar.length: "+ar.length);
