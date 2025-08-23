@@ -165,6 +165,29 @@
       background-color: #0056b3;
     }
 
+    /* 아이디/비밀번호 찾기 링크 */
+    .find-links {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .find-link {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s ease;
+    }
+
+    .find-link:hover {
+      color: #0056b3;
+      text-decoration: underline;
+    }
+
+    .separator {
+      color: #ccc;
+      margin: 0 10px;
+    }
+
     /* hidden caption */
     .hidden {
       position: absolute;
@@ -206,6 +229,13 @@
       <button type="button" class="login-button" onclick="sendForm(this.form)">로그인</button>
     </div>
   </form>
+  
+  <!-- 아이디/비밀번호 찾기 링크 -->
+  <div class="find-links">
+    <a href="Controller?type=findId" class="find-link">아이디 찾기</a>
+    <span class="separator">|</span>
+    <a href="Controller?type=findPassword" class="find-link">비밀번호 찾기</a>
+  </div>
   <!-- 카카오 로그인 -->
   <div class="social">
     <a class="kakao_login_btn" id="kakao_login_btn" href="javascript:loginWithKakao()">

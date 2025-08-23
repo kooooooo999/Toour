@@ -28,15 +28,18 @@
 
     <!--회원가입-->
     <insert id="add" parameterType="toour.member.vo.MemberVO">
-        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id,login_type)
-        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id}, #{login_type})
+        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id, login_type, is_temp_password)
+        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id}, #{login_type}, 0)
     </insert>
 
     <update id="changeMyInfo" parameterType="toour.member.vo.MemberVO">
         UPDATE member
         SET member_nickname = #{member_nickname},
-        member_password = #{member_password},
-        member_salt = #{member_salt},
+        <if test="member_password != null and member_password != ''">
+            member_password = #{member_password},
+            member_salt = #{member_salt},
+            is_temp_password = 0,
+        </if>
         member_updated_at = #{member_updated_at}
         WHERE
             member_idx = #{member_idx}
@@ -75,6 +78,29 @@
     <update id="updateLastLogin" parameterType="String">
         UPDATE member SET member_last_login_at = NOW() WHERE member_idx = #{member_idx}
     </update>
+
+    <!-- 이름과 이메일로 회원 정보 조회 (아이디 찾기용) -->
+    <select id="findByNameAndEmail" parameterType="Map" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_name = #{member_name} AND member_email = #{member_email} AND login_type = 'LOCAL'
+    </select>
+
+    <!-- 아이디, 이름, 이메일로 회원 정보 조회 (비밀번호 찾기용) -->
+    <select id="findByIdNameAndEmail" parameterType="Map" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_id = #{member_id} AND member_name = #{member_name} AND member_email = #{member_email} AND login_type = 'LOCAL'
+    </select>
+
+    <!-- 임시 비밀번호 업데이트 -->
+    <update id="updateTempPassword" parameterType="Map">
+        UPDATE member 
+        SET member_password = #{hashedPassword},
+            member_salt = #{newSalt},
+            is_temp_password = 1,
+            member_updated_at = NOW()
+        WHERE member_idx = #{member_idx}
+    </update>
+
     <!--이게 필요한지는 모르겠음 일단 만들어둠-->
     <select id="getKakaoLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
         SELECT * FROM member

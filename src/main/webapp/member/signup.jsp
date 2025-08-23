@@ -258,8 +258,8 @@
               </select>
               <button onclick="sendAuthEmail()" class="action-button">인증메일전송</button>
               <p id="resultMsg"></p>
-              <input type="text" id="inputCode" class="input-field input-field-full" placeholder="인증번호 입력">
-              <button type="button" onclick="verifyCode(event)" class="action-button">인증 확인</button>
+              <input type="text" id="inputCode" class="input-field input-field-full" placeholder="인증번호 입력" disabled>
+              <button type="button" onclick="verifyCode(event)" class="action-button" disabled>인증 확인</button>
               <p id="verifyMsg"></p>
 
 
@@ -282,11 +282,49 @@
   </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style>
+    #resultMsg, #verifyMsg {
+      margin: 5px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    #resultMsg.success, #verifyMsg.success {
+      color: #28a745 !important;
+    }
+    
+    #resultMsg.error, #verifyMsg.error {
+      color: #dc3545 !important;
+    }
+    
+    .action-button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    #inputCode:disabled {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+  </style>
+  <script>
   function verifyCode(event) {
     event.preventDefault();
     const code = document.getElementById('inputCode').value;
+
+    if (!code || code.trim() === '') {
+      document.getElementById('verifyMsg').textContent = "인증번호를 입력해주세요.";
+      document.getElementById('verifyMsg').style.color = "#dc3545";
+      return;
+    }
+
+    // 버튼 비활성화 및 로딩 표시
+    const button = event.target;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "확인 중...";
 
     fetch('/verifyEmailCode', {
       method: 'POST',
@@ -295,14 +333,42 @@
       },
       body: 'code=' + encodeURIComponent(code)
     })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                document.getElementById('verifyMsg').textContent = "인증 성공!";
-              } else {
-                document.getElementById('verifyMsg').textContent = "인증 실패. 코드가 틀렸습니다.";
-              }
-            });
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        document.getElementById('verifyMsg').textContent = data.message || "인증 성공!";
+        document.getElementById('verifyMsg').style.color = "#28a745";
+        // 인증 성공 시 입력 필드 비활성화
+        document.getElementById('inputCode').disabled = true;
+        // 성공 표시를 위한 hidden input 추가
+        if (!document.getElementById('emailVerified')) {
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.id = 'emailVerified';
+          hiddenInput.name = 'emailVerified';
+          hiddenInput.value = 'true';
+          document.querySelector('form').appendChild(hiddenInput);
+        }
+      } else {
+        document.getElementById('verifyMsg').textContent = data.message || "인증 실패. 코드가 틀렸습니다.";
+        document.getElementById('verifyMsg').style.color = "#dc3545";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('verifyMsg').textContent = "인증 확인 중 오류가 발생했습니다. 다시 시도해주세요.";
+      document.getElementById('verifyMsg').style.color = "#dc3545";
+    })
+    .finally(() => {
+      // 버튼 복원
+      button.disabled = false;
+      button.textContent = originalText;
+    });
   }
 
   function validateEmail(email) {
@@ -330,6 +396,12 @@
       return;
     }
 
+    // 버튼 비활성화 및 로딩 표시
+    const button = event.target;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "전송 중...";
+
     fetch('/sendEmailAuth', {
       method: 'POST',
       headers: {
@@ -337,14 +409,35 @@
       },
       body: 'email=' + encodeURIComponent(fullEmail)
     })
-            .then(res => res.json())
-            .then(data => {
-              if (data.success) {
-                document.getElementById('resultMsg').textContent = "인증 메일이 전송되었습니다. 이메일을 확인하세요.";
-              } else {
-                document.getElementById('resultMsg').textContent = "메일 전송 실패: " + (data.message || "");
-              }
-            });
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        document.getElementById('resultMsg').textContent = data.message || "인증 메일이 전송되었습니다. 이메일을 확인하세요.";
+        document.getElementById('resultMsg').style.color = "#28a745";
+        // 인증번호 입력 필드와 확인 버튼 활성화
+        document.getElementById('inputCode').disabled = false;
+        document.getElementById('inputCode').focus();
+        document.querySelector('button[onclick="verifyCode(event)"]').disabled = false;
+      } else {
+        document.getElementById('resultMsg').textContent = "메일 전송 실패: " + (data.message || "알 수 없는 오류");
+        document.getElementById('resultMsg').style.color = "#dc3545";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('resultMsg').textContent = "메일 전송 중 오류가 발생했습니다. 다시 시도해주세요.";
+      document.getElementById('resultMsg').style.color = "#dc3545";
+    })
+    .finally(() => {
+      // 버튼 복원
+      button.disabled = false;
+      button.textContent = originalText;
+    });
   }
 
   $(function (){
