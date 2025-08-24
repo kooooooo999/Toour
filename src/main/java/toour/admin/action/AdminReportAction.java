@@ -15,7 +15,6 @@ import static toour.post.dao.ReportDAO.TotalCount;
 public class AdminReportAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        int TotalCount = TotalCount();
 
         ReportVO[] rvo = ReportDAO.getReport();
 
