@@ -87,8 +87,8 @@ public class SearchResultAction implements Action{
 
         if (f5 != null) {
             //나만의 코스를 눌렀을 때 혹은 F5로 새로고침을 했을 경우
-
-            mvo.getCourseList().clear();
+            if(request.getParameter("result")==null)
+                mvo.getCourseList().clear();
             viewPath = "findWay.jsp";
             System.out.println("f5 : "+f5 );
         } else {

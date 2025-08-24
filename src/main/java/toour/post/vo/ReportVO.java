@@ -3,7 +3,18 @@ package toour.post.vo;
 public class ReportVO {
     private String report_idx, reporter_idx, reported_idx, post_idx, report_content, report_created_at, target_type, report_status;
 
-    private String reporter_nickname, reported_nickname;
+    private String reporter_nickname;
+    private String reported_nickname;
+
+    public String getComment_idx() {
+        return comment_idx;
+    }
+
+    public void setComment_idx(String comment_idx) {
+        this.comment_idx = comment_idx;
+    }
+
+    private String comment_idx;
 
     public String getReporter_nickname() {
         return reporter_nickname;

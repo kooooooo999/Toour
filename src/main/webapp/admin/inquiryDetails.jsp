@@ -236,14 +236,7 @@
         <li class="inquiry-content"><strong>내용</strong>
             <p>${Ivo.content}</p>
         </li>
-        <li><strong>첨부파일</strong>
-            <c:if test="${not empty Ivo.file_path}">
-                <p><img src="${requestScope.fileName}" style="width: 300px; height: 300px;"></p>
-            </c:if>
-            <c:if test="${empty Ivo.file_path}">
-                [없음]
-            </c:if>
-        </li>
+
     </ul>
 </div>
 
@@ -261,7 +254,7 @@
                 <button type="button" class="submit-btn" onclick="sendAnswer()">답변 등록</button>
             </c:if>
             <c:if test="${not empty Ivo.answer_content}">
-                <p>${Ivo.answer_content}</p>
+                <p><c:out value="${Ivo.content}" escapeXml="false" /></p>
             </c:if>
         </form>
     </c:if>

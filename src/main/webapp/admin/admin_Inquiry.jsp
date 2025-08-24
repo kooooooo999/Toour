@@ -271,11 +271,17 @@
                 <tbody>
                 <c:set var="p" value="${requestScope.page}" scope="page"/>
                 <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
-                    <tr class="data-inquiry" data-idx="${Ivo.inquiry_idx}" data-category="${Ivo.category}"
-                        data-title="${Ivo.title}"
-                        data-nickname="${Ivo.member_nickname}"
-                        data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
-                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}" data-page="${p.nowPage}">
+                    <tr class="data-inquiry"
+                        data-idx="${Ivo.inquiry_idx}"
+                        data-category="${Ivo.category}"
+                        data-title="<c:out value='${Ivo.title}' default=''/>"
+                        data-nickname="<c:out value='${Ivo.member_nickname}' default=''/>"
+                        data-status="<c:out value='${Ivo.status}' default=''/>"
+                        data-created="<c:out value='${Ivo.created_at}' default=''/>"
+                        data-content="<c:out value='${Ivo.content}' default=''/>"
+                        data-file="<c:out value='${Ivo.file_path}' default=''/>"
+                        data-answer="<c:out value='${Ivo.answer_content}' default=''/>"
+                        data-page="<c:out value='${p.nowPage}' default=''/>">
                         <td>${Ivo.inquiry_idx}</td>
                         <td>${Ivo.category}</td>
                         <td>${Ivo.title}</td>
@@ -330,14 +336,14 @@
             $(document).on('click', '.data-inquiry', function () {
                 let idx = $(this).data('idx');
                 let category = $(this).data('category');
-                let title = $(this).data('title');
+                /*let title = $(this).data('title');
                 let nickname = $(this).data('nickname');
                 let status = $(this).data('status');
                 let created = $(this).data('created');
                 let content = $(this).data('content');
                 let file = $(this).data('file')
                 let answer = $(this).data('answer');
-                let page = $(this).data('page');
+                let page = $(this).data('page');*/
 
                 let searchType = $("#searchType").val();
                 let searchStatus = $("#searchStatus").val();
@@ -348,14 +354,14 @@
                     data: {
                         idx: idx,
                         category: category,
-                        title: title,
+                        /*title: title,
                         nickname: nickname,
                         status: status,
                         created: created,
                         content: content,
                         file: file,
                         answer: answer,
-                        cPage: page,
+                        cPage: page,*/
                         searchType: searchType,
                         searchStatus: searchStatus
                     }

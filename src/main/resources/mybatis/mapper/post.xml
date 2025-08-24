@@ -143,13 +143,12 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post p
-        INNER JOIN file f ON p.post_idx = f.post_idx
+        UPDATE post
         <trim prefix="SET" suffixOverrides=",">
-            p.post_title = #{post_title},
-            p.post_content = #{post_content}
+            post_title = #{post_title},
+            post_content = #{post_content}
         </trim>
-        WHERE p.post_idx = #{post_idx}
+        WHERE post_idx = #{post_idx}
     </update>
 
     <select id="search" parameterType="map" resultMap="map1">

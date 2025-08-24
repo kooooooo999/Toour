@@ -95,7 +95,9 @@ public class SearchSuggestionAction implements Action {
             sb.append("5");
             sb.append("&keyword=");
             sb.append(encodedKeyword);
-            sb.append("&arrange=A");
+            sb.append("&arrange=R");//arrange	정렬구분	0	C	(A=제목순, C=수정일순, D=생성일순 )
+            // 대표 이미지가 반드시 있는 정렬(O=제목순, Q=수정일순, R=생성일순)
+
             sb.append("&_type=xml");
             System.out.println("sb1:" + sb);
             try {

@@ -498,7 +498,6 @@
             contentType: "application/json",
             data: JSON.stringify(coursePoints)
         }).done(function (res) {
-            console.log("됐니");
             $("#resultMap").html(res);
         });
     });

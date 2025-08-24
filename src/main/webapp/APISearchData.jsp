@@ -350,7 +350,7 @@
           <div class="text ellipsis" id="searchText">
             <p class="searchTitle"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}','${Dvo.mapx}','${Dvo.mapy}', '${Dvo.contenttypeid}', '${Dvo.contentid}')">${Dvo.title}</a></p>
             <p class="searchAddr1"><a href="javascript:;" class="data-link" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}','${Dvo.mapx}','${Dvo.mapy}', '${Dvo.contenttypeid}', '${Dvo.contentid}')">[${Dvo.addr1}]</a></p>
-            <%--<p class="overview"><a href="javascript:;" onclick="submitData('${Dvo.title}','${Dvo.addr1}','${Dvo.overview}','${Dvo.firstimage}')">${Dvo.overview}</a></p>--%>
+
           </div>
         </c:if>
           </div>
