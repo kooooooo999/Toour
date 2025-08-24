@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class RecommendDAO {
 
-    public static int recommendInsert(String member_idx,String post_idx){
+   /* public static int recommendInsert(String member_idx,String post_idx){
         Map<String,Object> map = new HashMap<>();
         map.put("member_idx",member_idx);
         map.put("post_idx",post_idx);
@@ -23,7 +23,7 @@ public class RecommendDAO {
         ss.close();
 
         return cnt;
-    }
+    }*/
 
 
     public static boolean hasUserRecommended(Map<String, String> paramMap) {
