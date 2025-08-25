@@ -207,6 +207,17 @@
         background-color: #286090;
     }
 
+    .editBtn {
+        background-color: #2980b9;
+        border: none;
+        color: white;
+        padding: 8px 18px;
+        margin-right: 10px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: none;
+    }
 </style>
 
 <h1>사용자 문의사항</h1>
@@ -253,7 +264,16 @@
                 <button type="button" class="submit-btn" onclick="sendAnswer()">답변 등록</button>
             </c:if>
             <c:if test="${not empty Ivo.answer_content}">
-                <p><c:out value="${Ivo.answer_content}" escapeXml="false"/></p>
+                <div id="answerDisplayArea">
+                    <p><c:out value="${Ivo.answer_content}" escapeXml="false"/></p>
+                    <button class="editBtn" type="button" onclick="editAnswer()">수정</button>
+                </div>
+
+                <div id="editModeArea" style="display: none;">
+                    <textarea id="answer_content_edit" name="answer_content" class="answer-textarea"
+                              placeholder="답변을 수정하세요." required></textarea>
+                    <button type="button" class="submit-btn" onclick="submitEditedAnswer()">등록</button>
+                </div>
             </c:if>
         </form>
     </c:if>
@@ -294,6 +314,7 @@
     });
 
     function sendAnswer() {
+        //새로운 답변 등록
         let answerContent = document.getElementById('answer_content').value;
 
         if (answerContent.trim() === '') {
@@ -323,11 +344,14 @@
                         method: "POST",
                         data: {idx: ${Ivo.inquiry_idx}, status: '${Ivo.status}', answer_content: answerContent}, // 폼의 모든 입력 데이터를 직렬화하여 전송
                         success: function (response) {
+                            //입력창과 버튼 숨김
                             $('#answer_content').hide().prop('disabled', true);
-                            $('.submit-btn').hide(); // 버튼도 숨김
+                            $('.submit-btn').hide();
 
+                            //입력한 내용을 보여주고 수정 버튼을 보여줌
                             $('#display_answer_content p').text(answerContent);
                             $('#display_answer_content').show();
+                            $('#editAnswerButton').show();
 
                             $('.status').html("답변완료");
                         }
@@ -345,4 +369,100 @@
         }
     }
 
+    // 수정 버튼을 눌렀을 때 UI를 변경하는 함수
+    function editAnswer() {
+        // 기존 답변 내용 가져오기
+        let currentAnswer = $('#answerDisplayArea p').text();
+
+        // 답변 표시 영역 숨기기
+        $('#answerDisplayArea').hide();
+
+        // 수정 모드 영역 보이기
+        $('#editModeArea').show();
+
+        // textarea에 기존 답변 내용 채우기
+        $('#answer_content_edit').val(currentAnswer);
+
+        // '등록' 버튼 텍스트를 '수정'으로 변경
+        $('#editModeArea .submit-btn').text('수정');
+    }
+
+    function submitEditedAnswer() {
+        //기존의 답변이 있을 시 답변 수정
+        let answerContent = $('#answer_content_edit').val();
+
+        if (answerContent.trim() === '') {
+            $("#confirmDialog").dialog("option", "title", "⚠️ 경고");
+            $("#confirmDialog").find(".dialog-body").html("<p>답변 내용을 입력해주세요.</p>");
+            $("#confirmDialog").dialog("option", "buttons", [{
+                text: "확인",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]);
+            $("#confirmDialog").dialog("open");
+        } else {
+            $("#confirmDialog").dialog("option", "title", "✅ 확인");
+            $("#confirmDialog").find(".dialog-body").html("<p>수정된 답변을 등록하시겠습니까?</p>");
+            $("#confirmDialog").dialog("option", "buttons", [{
+                text: "확인",
+                click: function () {
+                    $.ajax({
+                        url: "AdminController?type=adminInquiry&pageType=inquiryDetails&answer=1",
+                        method: "POST",
+                        data: {
+                            idx: ${Ivo.inquiry_idx},
+                            status: '${Ivo.status}',
+                            answer_content: answerContent
+                        },
+                        success: function (response) {
+                            //수정 입력창 숨김
+                            $('#editModeArea').hide();
+                            //수정된 입력창 내용 변경
+                            $('#answerDisplayArea p').html(answerContent);
+                            $('#answerDisplayArea').show();
+
+                            $('.status').html("답변완료");
+
+                            // 텍스트를 수정 버튼으로 다시 변경합니다.
+                            $('#editModeArea .submit-btn').text('등록');
+                        }
+                    });
+                    $(this).dialog("close");
+                }
+            }, {
+                text: "취소",
+                click: function () {
+                    $(this).dialog("close");
+                }
+            }]);
+            $("#confirmDialog").dialog("open");
+        }
+    }
+
+    // function editAnswer() {
+    //     // 1. 다이얼로그의 제목, 내용, 버튼을 설정합니다.
+    //     $("#confirmDialog").dialog("option", "title", "⚠️ 확인");
+    //     $("#confirmDialog").find(".dialog-body").html("<p>답변 내용을 수정하겠습니까?</p>");
+    //     $("#confirmDialog").dialog("option", "buttons", [{
+    //         text: "확인",
+    //         click: function () {
+    //             let currentAnswer = $('#answerDisplayArea p').text();
+    //
+    //             $('#display_answer_content p').hide();
+    //
+    //             $('#answer_content').show();
+    //             $('#answer_content').val(currentAnswer);
+    //
+    //             $(this).dialog("close");
+    //         }
+    //     }, {
+    //         text: "취소",
+    //         click: function () {
+    //             $(this).dialog("close");
+    //         }
+    //     }]);
+    //
+    //     $("#confirmDialog").dialog("open");
+    // }
 </script>
