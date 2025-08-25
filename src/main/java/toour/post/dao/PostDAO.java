@@ -5,6 +5,7 @@ import toour.member.vo.MemberVO;
 import toour.post.vo.CommentVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.ReportVO;
 import toour.util.Paging;
 
 import java.math.BigInteger;
@@ -39,6 +40,19 @@ public class PostDAO {
             map.put("searchValue", searchValue);
 
         int cnt = ss.selectOne("post.searchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
+    // 게시물에서 검색결과 수를 반환
+    public static int adminsearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("post.adminsearchTotalCount",map);
         ss.close();
         return cnt;
     }
@@ -101,6 +115,32 @@ public class PostDAO {
         map.put("searchType", searchType);
         if(searchValue!=null)
         map.put("searchValue", searchValue);
+        map.put("begin",begin);
+        map.put("end",end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.search",map);
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        }
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new PostVO[0];
+        }
+        ss.close();
+        return ar;
+    }
+    public static PostVO[] adminsearch(String searchType,String searchValue,int begin,int end){
+        PostVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
         map.put("begin",begin);
         map.put("end",end);
 
@@ -243,16 +283,11 @@ public class PostDAO {
 
     // 수정
     public static int edit(String post_idx, String post_title, String post_content,
-                           String file_name_stored, String file_name_original, String ip){
+                            String ip){
         Map<String, String> map = new HashMap<>();
         map.put("post_idx", post_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
-
-        if(file_name_stored != null){
-            map.put("file_name_stored", file_name_stored);
-            map.put("file_name_original", file_name_original);
-        }
 
 
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -360,16 +395,12 @@ public class PostDAO {
         return cnt;
     }
     //댓글 불러오는 로직
-    public static CommentVO[] getCommentList(String post_idx){
+    public static List<CommentVO> getCommentList(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         CommentVO[] comment =null;
         List<CommentVO> list = ss.selectList("post.getComment",post_idx);
-        if(list.size()>0){
-            comment = new CommentVO[list.size()];
-            list.toArray(comment);
-        }
         ss.close();
-        return comment;
+        return list;
     }
 
 //    댓글 신고
@@ -455,6 +486,10 @@ public class PostDAO {
         ss.close();
         return list;
     }
+
+
+
+
 
 }
 

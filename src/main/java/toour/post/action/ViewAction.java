@@ -34,6 +34,7 @@ public class ViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
+
 //        System.out.println("viewAction post_idx = " + post_idx);
         if(post_idx==null||post_idx.isEmpty()){
             return "Controller?type=list";
@@ -50,6 +51,7 @@ public class ViewAction implements Action {
 
         //DB에서 게시물 정보를 한번만 조회한다
         PostVO vo = PostDAO.getPost(post_idx);
+        System.out.println(vo.getPost_idx());
         MemberVO member_info = PostDAO.getPostMemberIdx(post_idx);
         request.setAttribute("member_info",member_info);
 
@@ -64,17 +66,17 @@ public class ViewAction implements Action {
             }
         }
 
-        System.out.println(vo.getPost_idx());
+
         // 검색된 vo가 처음으로 읽은 게시물인지 판단
         if(!readList.contains(post_idx)){
             PostDAO.post_views(post_idx);
             readList.add(post_idx);
         }
-        CommentVO[] comment_list =PostDAO.getCommentList(post_idx);
+        List<CommentVO> comment_list = PostDAO.getCommentList(post_idx);
         if (comment_list == null) {
-            comment_list = new CommentVO[0]; // null 대신 빈 배열
+            comment_list = new ArrayList<>(); // null 대신 빈 ArrayList
         }
-        System.out.println("comment_list.length"+comment_list.length);
+        request.setAttribute("comment_list", comment_list);
         // 추천 여부 확인 (로그인한 경우에만)
         boolean alreadyRecommended = false;
         if (member_info.getMember_idx() != null) {

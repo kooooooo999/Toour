@@ -60,7 +60,31 @@
             </if>
         </where>
     </select>
-
+    <!-- 검색 게시물 수를 반환하는 기능 -->
+    <select id="adminsearchTotalCount" resultType="int" parameterType="String">
+        select count(*) from post p
+        LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'title_content'">
+                        (p.post_title LIKE CONCAT('%', #{searchValue}, '%')
+                        OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
+                    </when>
+                </choose>
+                and p.category_idx = 2
+            </if>
+        </where>
+    </select>
     <!-- My Page 검색 게시물 수를 반환하는 기능 -->
     <select id="mySearchTotalCount" resultType="int" parameterType="String">
         select count(*) from post p
@@ -114,9 +138,9 @@
 
     <!-- 게시글 보기 -->
     <select id="getPost" parameterType="String" resultMap="map1">
-        SELECT  * FROM post p inner join file f
-        WHERE p.post_idx = #{post_idx} and post_status=0
-        group by p.post_idx
+        SELECT  * FROM post
+        WHERE post_idx = #{post_idx} and post_status=0
+        group by post_idx
     </select>
 
     <!--게시글 보기(회원정보 불러오기)-->
@@ -143,13 +167,12 @@
 
     <!-- 게시글 수정 -->
     <update id="edit" parameterType="Map">
-        UPDATE post p
-        INNER JOIN file f ON p.post_idx = f.post_idx
+        UPDATE post
         <trim prefix="SET" suffixOverrides=",">
-            p.post_title = #{post_title},
-            p.post_content = #{post_content}
+            post_title = #{post_title},
+            post_content = #{post_content}
         </trim>
-        WHERE p.post_idx = #{post_idx}
+        WHERE post_idx = #{post_idx}
     </update>
 
     <select id="search" parameterType="map" resultMap="map1">
@@ -179,6 +202,35 @@
             </where>
         )a
          where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+    <select id="adminsearch" parameterType="map" resultMap="map1">
+        SELECT a.*
+        FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
+        FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'title_content'">
+                        (p.post_title LIKE CONCAT('%', #{searchValue}, '%')
+                        OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
+                    </when>
+                </choose>
+            </if>
+            and p.category_idx=2
+        </where>
+        )a
+        where a.rnum BETWEEN #{begin} AND #{end};
     </select>
 
     <select id="mysearch" parameterType="map" resultMap="map1">

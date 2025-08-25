@@ -35,8 +35,20 @@ public class SignUpAction implements Action {
             // 비밀번호와 같이 암호화할 salt 얻어내기
             String salt = Salt.getSalt();
 
+            // 디버깅: 회원가입 해시 과정 로깅
+            System.out.println("=== 회원가입 해시 디버깅 ===");
+            System.out.println("입력 비밀번호: " + u_pw);
+            System.out.println("생성된 salt: " + salt);
+            System.out.println("salt 길이: " + (salt != null ? salt.length() : "null"));
+            System.out.println("salt + 비밀번호: " + salt + u_pw);
+            System.out.println("salt + 비밀번호 길이: " + (salt + u_pw).length());
+
             //비밀번호와 salt 둘을 합쳐 hash함수로 암호화 
             String hash_pw= Hash.getHash(salt+u_pw);
+            
+            System.out.println("생성된 해시: " + hash_pw);
+            System.out.println("해시 길이: " + hash_pw.length());
+            System.out.println("===============================");
 
             //데이터 베이스에 저장할 VO생성
             MemberVO mvo = new MemberVO();
@@ -62,6 +74,6 @@ public class SignUpAction implements Action {
         if(cmd==0){
             viewPath ="member/signup.jsp";
         }
-        return viewPath;
+        return "MainIndex/index.jsp";
     }
 }

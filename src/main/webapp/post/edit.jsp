@@ -179,7 +179,7 @@
     <div id="post">
         <h2>게시글 수정</h2>
         <form name="editForm" action="Controller?type=edit" method="post"
-              enctype="multipart/form-data" onsubmit="return sendData()">
+              onsubmit="return sendData()">
             <input type="hidden" name="category_idx" value="2"/>
             <input type="hidden" name="post_idx" value="${vo.post_idx}"/>
             <input type="hidden" name="cPage" value="${cPage}"/>
@@ -201,25 +201,6 @@
                 </tr>
 
                 <tr>
-                    <th>첨부파일:</th>
-                    <td>
-                        <c:if test="${not empty requestScope.file}">
-                            <c:forEach var="file" items="${requestScope.file}">
-                                <div class="file-item">
-                                    <a href="<c:url value="/bbs_upload/${file.file_name_stored}" />">${file.file_name_original}</a>
-                                    <label><input type="checkbox" name="deleteFile" value="${file.file_idx}"/> 삭제</label>
-                                </div>
-                            </c:forEach>
-                        </c:if>
-
-                        <div class="file-item">
-                            <label for="file">새 파일 첨부:</label>
-                            <input type="file" id="file" name="file"/>
-                        </div>
-                    </td>
-                </tr>
-
-                <tr>
                     <td colspan="2">
                         <div class="post-actions">
                             <input type="submit" value="수정" class="btn primary"/>
@@ -237,10 +218,9 @@
 <c:import url="/common/footer.jsp" />
 
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-<script src="../js/summernote-lite.js"></script>
-<script src="../js/lang/summernote-ko-KR.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
+<script src="../js/lang/summernote-ko-KR.js"></script>
 <script>
     $(document).ready(function() {
         // Summernote 에디터 초기화
@@ -263,6 +243,7 @@
                         contentType: false,
                         processData: false,
                         success: function(response) {
+                            console.log("Cloudinary response: "+response); // 업로드 응답 찍어보기
                             // 업로드된 이미지 URL
                             var imageUrl = response.secure_url;
 
@@ -278,24 +259,21 @@
             }
         });
     });
-
-
     function sendData() {
         let title = $("#post_title").val();
         if (title.trim().length < 1) {
             alert("제목을 입력하세요");
-            $("#post_title").val("");
             $("#post_title").focus();
             return false;
         }
 
-        let content = $("#post_content").val();
+        let content = $("#post_content").summernote("code");  // 여기 수정
         if (content.trim().length < 1) {
             alert("내용을 입력하세요");
-            $("#post_content").val("");
-            $("#post_content").focus();
+            $("#post_content").summernote("focus");
             return false;
         }
+        $("#post_content").val(content);
         //유효성 검사 통과시 폼제출!
         return true;
     }
@@ -312,6 +290,8 @@
             processData: false,
             dataType: "json"
         }).done(function(res){
+            // Ensure that your server response is a JSON object with a key like "img_url"
+            // and that it contains the URL of the saved image.
             $("#post_content").summernote("editor.insertImage", res.img_url);
         });
     }
@@ -319,7 +299,7 @@
     function goBack() {
         let post_idx = $('input[name="post_idx"]').val();
         let cPage = $('input[name="cPage"]').val();
-        location.href = `Controller?type=view&b_idx=${post_idx}&cPage=${cPage}`;
+        location.href = `Controller?type=view&post_idx=${post_idx}&cPage=${cPage}`;
     }
 </script>
 

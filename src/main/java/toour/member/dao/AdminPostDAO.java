@@ -2,6 +2,8 @@ package toour.member.dao;
 
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
+import toour.post.dao.ReportDAO;
+import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
@@ -61,7 +63,7 @@ public class AdminPostDAO {
     }
 
     // 게시물에서 검색결과 수를 반환
-    public static int getSearchTotalCount(String searchType,String searchValue){
+    public static int adminsearchTotalCount(String searchType,String searchValue){
         SqlSession ss = FactoryService.getFactory().openSession();
         Map<String, String> map = new HashMap<>();
         if(searchType!=null)
@@ -69,7 +71,7 @@ public class AdminPostDAO {
         if(searchValue!=null)
             map.put("searchValue", searchValue);
 
-        int cnt = ss.selectOne("adminpost.searchTotalCount",map);
+        int cnt = ss.selectOne("post.adminsearchTotalCount",map);
         ss.close();
         return cnt;
     }
@@ -271,8 +273,42 @@ public class AdminPostDAO {
         ss.close();
         return ar;
     }
+    //댓글 가져오기
+    public static CommentVO[] getCommentList(String post_idx){
+        CommentVO[] ar = null;
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<CommentVO> list = ss.selectList("comment.commentList",post_idx);
+        if(list.size()>0&& !list.isEmpty()){
+            ar = new CommentVO[list.size()];
+            list.toArray(ar);
+        }
+        return  ar;
+    }
+    //댓글 신고 수 가지고 오기
+    public static int getcommentTotalCount(){
+        int cnt = 0;
+        return ReportDAO.TotalCount();
 
+    }
 
+    // 목록 반환
+    public static PostVO[] getcommentList(String category_idx, int begin, int end){
+        PostVO[] ar = null;
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("category_idx", category_idx);
+        map.put("begin", begin);
+        map.put("end", end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("adminpost.list", map);
+        if(list != null && list.size()>0){
+            ar = new PostVO[list.size()];
+            list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
+        }
+        ss.close();
+        return ar;
+    }
 }
 
 //    // 조회수 증가

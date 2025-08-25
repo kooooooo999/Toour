@@ -481,6 +481,7 @@ nav.main-nav a:hover {
 .healing-carousel-wrapper {
     position: relative;
     overflow: hidden;
+    width: 100%;
 }
 
 .healing-card-wrapper {
@@ -777,8 +778,8 @@ footer address, footer .contact-info, footer .copyright {
 }
 
 .card-content {
-    padding: 10px 12px;
-    font-size: 13px;
+    padding: 30px 12px;
+    font-size: 15px;
     line-height: 1.4;
     color: #222;
     text-align: center;
@@ -787,7 +788,7 @@ footer address, footer .contact-info, footer .copyright {
 .card-content h4 {
     font-weight: 600;
     margin-bottom: 6px;
-    font-size: 14px;
+    font-size: 20px;
     line-height: 1.3;
 }
 
