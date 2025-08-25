@@ -103,15 +103,26 @@
       text-align: center;
     }
 
-    .pagination {
-      margin: 20px auto;
+    .paging-area {
+      margin-top: 30px;
       text-align: center;
-      width: 100%;
     }
 
-    .pagination a, .pagination span {
+    .paging {
+      list-style: none;
+      padding: 0;
       display: inline-block;
-      margin: 0 6px;
+    }
+
+    .paging li {
+      display: inline-block;
+      margin: 0 5px;
+    }
+
+    .paging li a,
+    .paging li.now,
+    .paging li.disable {
+      display: inline-block;
       padding: 6px 12px;
       font-size: 13px;
       color: #3498db;
@@ -120,16 +131,21 @@
       border: 1px solid transparent;
     }
 
-    .pagination a:hover {
+    .paging li a:hover {
       background-color: #e7f0ff;
       border-color: #3498db;
     }
 
-    .pagination .current {
+    .paging li.now {
       font-weight: 700;
       background-color: #3498db;
       color: white;
       border-color: #3498db;
+    }
+
+    .paging li.disable {
+      color: #ccc;
+      cursor: default;
     }
 
     .search-area {
@@ -260,23 +276,30 @@
     </table>
   </div>
 
-  <div class="pagination">
-    <c:if test="${p.startPage > 1}">
-      <a href="AdminController?type=adminReport&cPage=${p.startPage - 1}">&lt;</a>
-    </c:if>
-    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-      <c:choose>
-        <c:when test="${p.nowPage == vs.index}">
-          <span class="current">${vs.index}</span>
-        </c:when>
-        <c:otherwise>
-          <a href="AdminController?type=adminReport&cPage=${vs.index}">${vs.index}</a>
-        </c:otherwise>
-      </c:choose>
-    </c:forEach>
-    <c:if test="${p.endPage < p.totalPage}">
-      <a href="AdminController?type=adminReport&cPage=${p.endPage + 1}">&gt;</a>
-    </c:if>
+  <div class="paging-area">
+    <ol class="paging">
+      <c:set var="p" value="${requestScope.page}" />
+      <c:if test="${p.startPage < p.pagePerBlock}">
+        <li class="disable">&lt;</li>
+      </c:if>
+      <c:if test="${p.startPage >= p.pagePerBlock}">
+        <li><a href="AdminController?type=adminreportsearch&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+      </c:if>
+      <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+        <c:if test="${p.nowPage == vs.index}">
+          <li class="now">${vs.index}</li>
+        </c:if>
+        <c:if test="${p.nowPage != vs.index}">
+          <li><a href="AdminController?type=adminreportsearch&cPage=${vs.index}">${vs.index}</a></li>
+        </c:if>
+      </c:forEach>
+      <c:if test="${p.endPage < p.totalPage}">
+        <li><a href="AdminController?type=adminreportsearch&cPage=${p.endPage+1}">&gt;</a></li>
+      </c:if>
+      <c:if test="${p.endPage >= p.totalPage}">
+        <li class="disable">&gt;</li>
+      </c:if>
+    </ol>
   </div>
 
 

@@ -7,6 +7,7 @@
 
     <resultMap id="map1" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
+        <id property="report_idx" column="report_idx"/>
         <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
 
@@ -40,6 +41,14 @@
         SELECT  * FROM post p
         left join file f ON p.post_idx = f.post_idx
         WHERE p.post_idx = #{post_idx}
+    </select>
+
+    <!-- 게시글 보기 -->
+    <select id="getreportidx" parameterType="String" resultType="toour.post.vo.ReportVO">
+        SELECT * FROM report r
+        JOIN post p ON r.post_idx = p.post_idx
+        JOIN member m ON p.member_idx = m.member_idx
+        WHERE r.report_idx = #{report_idx}
     </select>
 
     <!--게시글 보기(회원정보 불러오기)-->
@@ -197,4 +206,22 @@
     <select id="CommentTotalCount" resultType="int" parameterType="String">
         select count(*) from comment
     </select>
+
+
+    <update id="pluswarning" parameterType="String">
+        UPDATE member m
+        JOIN report r ON r.report_idx = #{report_idx}
+        LEFT JOIN post p ON r.target_type = 'post' AND r.post_idx = p.post_idx
+        LEFT JOIN comment c ON r.target_type = 'comment' AND r.comment_idx = c.comment_idx
+        SET m.member_warning = m.member_warning + 1
+        WHERE m.member_idx = COALESCE(p.member_idx, c.member_idx)
+    </update>
+
+
+    <update id="reportstatus" parameterType="String">
+        UPDATE report
+        SET report_status = 1
+        WHERE report_idx = #{report_idx}
+    </update>
+
 </mapper>

@@ -7,6 +7,7 @@ import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
+import toour.post.vo.ReportVO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -48,6 +49,15 @@ public class AdminPostDAO {
         if (vo != null) {
             System.out.println("Post found for post_idx: " + post_idx);
         }
+
+        ss.close();
+        return vo;
+    }
+
+    // 기본키(고유번호)를 인자로 하여 게시물 가져오기
+    public static ReportVO getreportidx(String report_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        ReportVO vo = ss.selectOne("adminpost.getreportidx", report_idx);
 
         ss.close();
         return vo;
@@ -309,6 +319,34 @@ public class AdminPostDAO {
         ss.close();
         return ar;
     }
+
+    //경고 횟수 증가
+    public static int pluswarning(String report_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("adminpost.pluswarning", report_idx);
+        if(cnt > 0){
+            ss.commit();
+        }else{
+            ss.rollback();
+        }
+        ss.close();
+        return cnt;
+
+    }
+
+    public static PostVO[] postReport(String post_idx){
+        PostVO[] pvo = null;
+        SqlSession ss = FactoryService.getFactory().openSession();
+
+        List<PostVO> list = ss.selectList("adminpost.postReport", post_idx);
+        if(list != null && list.size()>0){
+            pvo = new PostVO[list.size()];
+            list.toArray(pvo); // list에 있는 모든 항목들을 배열 ar에 복사한다.
+        }
+        ss.close();
+        return pvo;
+    }
+
 }
 
 //    // 조회수 증가
