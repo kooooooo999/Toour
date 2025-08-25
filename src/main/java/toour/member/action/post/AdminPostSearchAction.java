@@ -21,7 +21,7 @@ public class AdminPostSearchAction implements Action {
         String category_idx = request.getParameter("category_idx");
         if (category_idx == null)
             category_idx = "2";
-        int totalCount = AdminPostDAO.getSearchTotalCount(searchType,searchValue);
+        int totalCount = AdminPostDAO.adminsearchTotalCount(searchType,searchValue);
 
         Paging page = new Paging(10,5);
 
@@ -36,7 +36,7 @@ public class AdminPostSearchAction implements Action {
             page.setNowPage(nowPage);
         }
 
-        PostVO[] ar = PostDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
+        PostVO[] ar = AdminPostDAO.search(searchType,searchValue, page.getBegin(),page.getEnd());
 
         if(ar!=null &&ar.length>0)
             System.out.println("검색 결과 첫 번째 항목: " + ar[0]);
