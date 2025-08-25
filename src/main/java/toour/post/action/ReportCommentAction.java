@@ -1,6 +1,7 @@
 package toour.post.action;
 
 import toour.action.Action;
+import toour.post.dao.PostDAO;
 import toour.post.dao.ReportDAO;
 
 import javax.servlet.ServletException;

@@ -41,6 +41,14 @@
         WHERE
             member_idx = #{member_idx}
     </update>
+    <update id="changeKakaoMyInfo" parameterType="toour.member.vo.MemberVO">
+        UPDATE member
+        SET member_nickname = #{member_nickname},
+        member_updated_at = #{member_updated_at}
+        WHERE
+        member_type = #{member_type} and member_email=#{member_email}
+    </update>
+
 
     <update id="updateMemInfo" parameterType="toour.member.vo.MemberVO">
         UPDATE member

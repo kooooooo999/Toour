@@ -194,6 +194,15 @@
           background-color: #1d4ed8;
       }
 
+      .input-padding{
+          padding: 6px 10px;
+          font-size: 13px;
+          border: 1px solid #cbd5e1;
+          border-radius: 5px;
+          outline: none;
+          font-family: 'Noto Sans KR', sans-serif;
+          box-sizing: border-box;
+      }
 
   </style>
 </head>
@@ -271,9 +280,9 @@
                                 <c:set var="emailIndex" value="${fn:indexOf(vo.member_email, '@')}"/>
                                 <c:set var="email1" value="${fn:substring(vo.member_email,0,emailIndex)}"/>
                                 <c:set var="email2" value="${fn:substring(vo.member_email,emailIndex+1,fn:length(vo.member_email))}"/>
-                                <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일" value="${email1}" disabled/>
+                                <input type="email" id="u_email" name="u_email" class="input-field input-padding" placeholder="이메일" value="${email1}" disabled/>
                                 <span class="email-separator">@</span>
-                                <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력" value="${email2}" disabled/>
+                                <input type="email" id="u_email2" name="u_email2" class="input-field input-padding" placeholder="직접 입력" value="${email2}" disabled/>
                                 <select id="emailAddr" name="emailAddr" class="email-select">
                                     <option value="">직접 입력</option>
                                     <option value="naver.com" <c:if test="${email2.equals('naver.com')}" > selected</c:if> >naver.com</option>

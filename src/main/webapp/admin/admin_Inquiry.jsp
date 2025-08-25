@@ -204,11 +204,29 @@
         #table thead th:nth-child(7) {
             width: 100px;
         }
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            height: 100%;
+            background-color: #f0f2f5;
+
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh; /* 화면 전체 높이 최소 보장 */
+            width: 100%;
+            align-items: stretch; /* 사이드바와 컨텐츠 높이를 같게 맞춤 */
+        }
 
     </style>
 </head>
 <body>
-
+<div class="container">
 <c:import url="/common/adminSidebar.jsp"/>
 
 <div class="main-content" id="post">
@@ -257,7 +275,7 @@
                         data-title="${Ivo.title}"
                         data-nickname="${Ivo.member_nickname}"
                         data-status="${Ivo.status}" data-created="${Ivo.created_at}" data-content="${Ivo.content}"
-                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}">
+                        data-file="${Ivo.file_path}" data-answer="${Ivo.answer_content}" data-page="${p.nowPage}">
                         <td>${Ivo.inquiry_idx}</td>
                         <td>${Ivo.category}</td>
                         <td>${Ivo.title}</td>
@@ -268,7 +286,8 @@
                 </c:forEach>
                 </tbody>
             </table>
-            <div class="pagination">
+            <div class=" pagination
+                ">
                 <c:if test="${p.startPage > 1}">
                     <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
                 </c:if>
@@ -280,19 +299,20 @@
                         </c:when>
 
                         <c:otherwise>
-                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">${vs.index}</a>
+                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">${vs.index}</a>
                         </c:otherwise>
                     </c:choose>
                 </c:forEach>
 
                 <c:if test="${p.endPage < p.totalPage}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}"">&gt;</a>
+                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&gt;</a>
                 </c:if>
             </div>
 
 
         </div>
     </div>
+</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -317,6 +337,10 @@
                 let content = $(this).data('content');
                 let file = $(this).data('file')
                 let answer = $(this).data('answer');
+                let page = $(this).data('page');
+
+                let searchType = $("#searchType").val();
+                let searchStatus = $("#searchStatus").val();
 
                 $.ajax({
                     url: "AdminController?type=adminInquiry&pageType=inquiryDetails",
@@ -330,7 +354,10 @@
                         created: created,
                         content: content,
                         file: file,
-                        answer: answer
+                        answer: answer,
+                        cPage: page,
+                        searchType: searchType,
+                        searchStatus: searchStatus
                     }
                 }).done(function (res) {
                     console.log("됐냐");

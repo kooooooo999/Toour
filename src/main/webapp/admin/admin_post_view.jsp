@@ -251,7 +251,25 @@
     </div>
   </div>
 </section>
-
+  <c:if test="${not empty requestScope.comment_list}">
+  <div class="comment_list">
+    <!-- 댓글이 위에서 아래로 출력됨 -->
+    <c:forEach items="${requestScope.comment_list}" varStatus="vs" var="cvo">
+      <div id="comment_list">
+        <div id="comment_nickname">
+            ${cvo.member_nickname} &nbsp;
+          | &nbsp;${cvo.comment_updated_at}
+          &nbsp;&nbsp; <c:if test="${sessionScope.member.member_idx != member_info.member_idx}">
+          <c:set var="comment_idx" value="${cvo.comment_idx}"/>
+        </c:if>
+        </div>
+        <div id="comment_post">
+            ${cvo.comment_content}
+        </div>
+      </div>
+      <hr/>
+    </c:forEach>
+    </c:if>
 <section class="report">
     <c:if test="${not empty rvo}">
       <div class="comment_list">
