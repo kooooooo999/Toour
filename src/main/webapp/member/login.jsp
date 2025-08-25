@@ -301,6 +301,11 @@
 
 
 <script>
+  $(function (){
+    <c:if test="${requestScope.alertLoginText ne null}">
+    alert('${requestScope.alertLoginText}');
+    </c:if>
+  })
   // CSRF 방지용 state 토큰 생성 (JavaScript)
   function generateState() {
     return [...crypto.getRandomValues(new Uint32Array(4))]

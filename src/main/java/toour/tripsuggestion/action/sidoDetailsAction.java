@@ -40,7 +40,7 @@ public class sidoDetailsAction implements Action {
             StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
             sb2.append(contentId);
             URL url2 = new URL(sb2.toString());
-            System.out.println("sidoDetailsAction_sb2:"+sb2.toString());
+            System.out.println("sidoDetailsAction_sb2:" + sb2.toString());
             HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
             conn2.setRequestProperty("Content-Type", "application/xml");
             conn2.connect();
@@ -101,7 +101,7 @@ public class sidoDetailsAction implements Action {
 
         try {
             URL url = new URL(sb.toString());
-            System.out.println("sidoDetailsAction_sb:"+sb.toString());
+            System.out.println("sidoDetailsAction_sb:" + sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");
             conn.connect();
@@ -112,14 +112,14 @@ public class sidoDetailsAction implements Action {
             Element items = body.getChild("items");
             List<Element> itemList = items.getChildren("item");
             DataVO[] dvo_ar = new DataVO[itemList.size()];
-            int i =0;
+            int i = 0;
             for (Element item : itemList) {
                 String infocenter = item.getChildText("infocenter"); //문의안내
                 String parking = item.getChildText("parking"); //주차시설
                 String restdate = item.getChildText("restdate"); //쉬는날
                 String usetime = item.getChildText("usetime"); //이용시간
                 DataVO dvo = new DataVO(infocenter, parking, restdate, usetime);
-                dvo_ar[i++] =dvo;
+                dvo_ar[i++] = dvo;
             }
             boolean zzim_state = false;
             ZzimVO[] zzim_ar = null;

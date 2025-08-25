@@ -56,6 +56,13 @@
         </foreach>
     </update>
 
+
+    <update id="mem_delone" parameterType="String">
+        UPDATE member
+        SET member_status = 2
+        WHERE member_idx =#{member_idx}
+    </update>
+
     <!-- 여러 회원정보글 목록: 인자 3개(bname, begin, end)-->
     <select id="mem_list" parameterType="Map" resultType="toour.member.vo.MemberVO">
         SELECT * FROM(
