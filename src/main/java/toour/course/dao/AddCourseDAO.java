@@ -154,4 +154,46 @@ public class AddCourseDAO {
         ss.close();
         return cnt;
     }
+
+    public static int totalDeleteCourse(String course_idx) {
+        int cnt = 0;
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+
+        try{
+            cnt = ss.delete("course.totalDeleteCourse", course_idx);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (cnt > 0) {
+            ss.commit();
+        } else {
+            ss.rollback();
+        }
+
+        ss.close();
+        return cnt;
+    }
+
+    public static int deleteCourseDate(String courseDate_idx) {
+        int cnt = 0;
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+
+        try{
+            cnt = ss.delete("course.deleteCourseDate", courseDate_idx);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (cnt > 0) {
+            ss.commit();
+        } else {
+            ss.rollback();
+        }
+
+        ss.close();
+        return cnt;
+    }
 }
