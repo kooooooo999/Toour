@@ -7,7 +7,6 @@ import java.util.Map;
 import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
 import toour.member.vo.MemberVO;
-import toour.post.vo.CommentVO;
 import toour.post.vo.ReportVO;
 
 public class ReportDAO {
@@ -99,7 +98,7 @@ public class ReportDAO {
         if(searchType!=null)
             map.put("searchType", searchType);
 
-        int cnt = ss.selectOne("report.searchTotalCount",searchType);
+        int cnt = ss.selectOne("report.searchTotalCount",map);
         ss.close();
         return cnt;
     }
@@ -161,14 +160,6 @@ public class ReportDAO {
         int cnt = ss.selectOne("report.processedreportCount");
         ss.close();
         return cnt;
-    }
-    public static List<Map<String ,Object>> getCommentListWithReports(String post_idx) {
-        Map<String,Object> map = new HashMap<>();
-        map.put("post_idx", post_idx);
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<Map<String ,Object>> list = ss.selectList("report.getCommentListWithReports",map);
-        ss.close();
-        return list;
     }
 
 

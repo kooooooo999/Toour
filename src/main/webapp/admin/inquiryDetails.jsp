@@ -214,20 +214,16 @@
     <c:set var="Type" value="${requestScope.searchType}"/>
     <c:set var="Status" value="${requestScope.searchStatus}"/>
 
+    <c:set var="requestsearchType" value="${param.searchType}"/>
+    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
+
     <c:set var="Ivo" value="${requestScope.reqInquiry}"/>
     <c:set var="p" value="${requestScope.page}" scope="page"/>
     <c:set var="Ar" value="${requestScope.IvoArr}"/>
-
     <a href="AdminController?type=adminInquiry&cPage=${p.nowPage}&searchType=${Type}&searchStatus=${Status}"
        class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
-
-    <c:out value="${p.nowPage}"/>
-
-    <c:out value="${requestScope.page.nowPage}"/>
-
-
     <ul>
         <li><strong>번호:</strong> ${Ivo.inquiry_idx}</li>
         <li><strong>카테고리:</strong> ${Ivo.category}</li>
@@ -240,7 +236,14 @@
         <li class="inquiry-content"><strong>내용</strong>
             <p>${Ivo.content}</p>
         </li>
-
+        <li><strong>첨부파일</strong>
+            <c:if test="${not empty Ivo.file_path}">
+                <p><img src="${requestScope.fileName}" style="width: 300px; height: 300px;"></p>
+            </c:if>
+            <c:if test="${empty Ivo.file_path}">
+                [없음]
+            </c:if>
+        </li>
     </ul>
 </div>
 
@@ -258,7 +261,7 @@
                 <button type="button" class="submit-btn" onclick="sendAnswer()">답변 등록</button>
             </c:if>
             <c:if test="${not empty Ivo.answer_content}">
-                <p><c:out value="${Ivo.answer_content}" escapeXml="false"/></p>
+                <p>${Ivo.answer_content}</p>
             </c:if>
         </form>
     </c:if>

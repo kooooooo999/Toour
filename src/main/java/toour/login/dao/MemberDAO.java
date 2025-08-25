@@ -105,54 +105,7 @@ public class MemberDAO {
         return mvo;
     }
 
-    // 이름과 이메일로 회원 정보 조회 (아이디 찾기용)
-    public static MemberVO findMemberByNameAndEmail(String member_name, String member_email) {
-        SqlSession ss = FactoryService.getFactory().openSession();
-        try {
-            java.util.Map<String, String> params = new java.util.HashMap<>();
-            params.put("member_name", member_name);
-            params.put("member_email", member_email);
-            MemberVO mvo = ss.selectOne("member.findByNameAndEmail", params);
-            return mvo;
-        } finally {
-            ss.close();
-        }
-    }
 
-    // 아이디, 이름, 이메일로 회원 정보 조회 (비밀번호 찾기용)
-    public static MemberVO findMemberByIdNameAndEmail(String member_id, String member_name, String member_email) {
-        SqlSession ss = FactoryService.getFactory().openSession();
-        try {
-            java.util.Map<String, String> params = new java.util.HashMap<>();
-            params.put("member_id", member_id);
-            params.put("member_name", member_name);
-            params.put("member_email", member_email);
-            MemberVO mvo = ss.selectOne("member.findByIdNameAndEmail", params);
-            return mvo;
-        } finally {
-            ss.close();
-        }
-    }
-
-    // 임시 비밀번호 업데이트
-    public static int updateTempPassword(String member_idx, String hashedPassword, String newSalt) {
-        SqlSession ss = FactoryService.getFactory().openSession();
-        try {
-            java.util.Map<String, String> params = new java.util.HashMap<>();
-            params.put("member_idx", member_idx);
-            params.put("hashedPassword", hashedPassword);
-            params.put("newSalt", newSalt);
-            int cnt = ss.update("member.updateTempPassword", params);
-            if (cnt > 0) {
-                ss.commit();
-            } else {
-                ss.rollback();
-            }
-            return cnt;
-        } finally {
-            ss.close();
-        }
-    }
 
 
 }

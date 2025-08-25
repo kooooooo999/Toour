@@ -174,21 +174,6 @@
             font-weight: bold;
             color: #1a73e8;
         }
-        table {
-            width: 100%;
-            border-collapse: collapse !important;
-            text-align: center;
-            min-width: 800px;
-            table-layout: fixed; /* 열 너비를 고정함 */
-        }
-        td, th {
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
-        .table-container{
-
-        }
 
     </style>
 </head>
@@ -227,7 +212,7 @@
             </form>
         </div>
     </div>
-    <div class="table-container">
+
     <c:set var="t" value="${requestScope.totalCount}"/>
     <table summary="검색결과 목록">
             <caption>검색결과 목록</caption>
@@ -285,8 +270,6 @@
                 </c:choose>
             </tbody>
         </table>
-    </div>
-
     </div>
 
 <div class="paging-area">

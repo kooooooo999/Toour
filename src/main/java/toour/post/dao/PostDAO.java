@@ -244,11 +244,16 @@ public class PostDAO {
 
     // 수정
     public static int edit(String post_idx, String post_title, String post_content,
-                            String ip){
+                           String file_name_stored, String file_name_original, String ip){
         Map<String, String> map = new HashMap<>();
         map.put("post_idx", post_idx);
         map.put("post_title", post_title);
         map.put("post_content", post_content);
+
+        if(file_name_stored != null){
+            map.put("file_name_stored", file_name_stored);
+            map.put("file_name_original", file_name_original);
+        }
 
 
         SqlSession ss = FactoryService.getFactory().openSession();
@@ -356,12 +361,16 @@ public class PostDAO {
         return cnt;
     }
     //댓글 불러오는 로직
-    public static List<CommentVO> getCommentList(String post_idx){
+    public static CommentVO[] getCommentList(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         CommentVO[] comment =null;
         List<CommentVO> list = ss.selectList("post.getComment",post_idx);
+        if(list.size()>0){
+            comment = new CommentVO[list.size()];
+            list.toArray(comment);
+        }
         ss.close();
-        return list;
+        return comment;
     }
 
 //    댓글 신고
