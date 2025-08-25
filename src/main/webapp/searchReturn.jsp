@@ -55,6 +55,11 @@
   </div>
 
   <script>
+    $(function () {
+
+
+    });
+
     // 좌표값 저장할 배열
     var points = [];
 
@@ -85,5 +90,6 @@
     }
     // 지도 범위 재설정
     map.setBounds(bounds);
+
   </script>
 </c:if>

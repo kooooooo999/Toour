@@ -25,7 +25,7 @@
             grid-template-columns: 250px 280px;
             gap: 30px;
             width: 500px;
-            margin-left: 40px;
+            margin-left: 50px;
             padding-top: 25px;
             /*border: 1px solid #4a545e;
             border-collapse: collapse;*/

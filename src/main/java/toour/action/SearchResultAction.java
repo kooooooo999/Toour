@@ -127,6 +127,9 @@ public class SearchResultAction implements Action{
             // 검색창에 검색했을 때 수행
             System.out.println("here?");
             System.out.println(keyword);
+                if (keyword != null) {
+                    request.setAttribute("keyword", keyword);
+                }
             SearchDataVO[] data = GetAPISearchData.getSearch(request, encodedKeyword);
             request.setAttribute("data", data);
             viewPath = "searchReturn.jsp";
