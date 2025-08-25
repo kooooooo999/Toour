@@ -2,9 +2,9 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
-<input type="hidden" id="courseDate_idx" value="${requestScope.courseDate_idx}"/>
 <c:set var="myCourse" value="${requestScope.myCourse}"/>
-<c:if test="${requestScope.resultAr != null}">
+<c:if test="${fn:length(requestScope.resultAr) > 0}">
+  <input type="hidden" id="courseDate_idx" value="${requestScope.courseDate_idx}"/>
   <h3>검색 결과</h3>
   <c:forEach items="${requestScope.resultAr}" var="vo" varStatus="vs">
     <%-- 주소 있는 결과들만 검색창에 표현 --%>
@@ -55,6 +55,11 @@
   </div>
 
   <script>
+    $(function () {
+
+
+    });
+
     // 좌표값 저장할 배열
     var points = [];
 
@@ -85,5 +90,6 @@
     }
     // 지도 범위 재설정
     map.setBounds(bounds);
+
   </script>
 </c:if>
