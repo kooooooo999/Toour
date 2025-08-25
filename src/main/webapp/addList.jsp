@@ -30,7 +30,7 @@
         <c:if test="${requestScope.myCourse eq 'myCourse'}">
             $("#editCourseButton").show();
         </c:if>
-        
+
         <c:if test="${fn:length(sessionScope.member.courseList) == 0}">
             $("#saveButton").hide();
         </c:if>

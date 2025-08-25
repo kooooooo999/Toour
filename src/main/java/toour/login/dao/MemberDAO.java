@@ -83,6 +83,17 @@ public class MemberDAO {
 
     }
 
+    public static void delOneMember(String member_idx){
+        SqlSession ss =FactoryService.getFactory().openSession();
+        System.out.println("delOneMember member_idx:"+member_idx);
+        int cnt = ss.update("mem.mem_delone", member_idx);
+        if(cnt >0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+    }
+
 
 
 
