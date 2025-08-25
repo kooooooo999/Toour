@@ -286,7 +286,9 @@ public class AdminPostDAO {
     }
     //댓글 신고 수 가지고 오기
     public static int getcommentTotalCount(){
+        int cnt = 0;
         return ReportDAO.TotalCount();
+
     }
 
     // 목록 반환
