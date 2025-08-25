@@ -135,17 +135,12 @@
     });
 
     function goWay() {
-
-        <c:if test="${sessionScope.member ne null}">
-            let form = document.createElement('form');
-            form.method = 'POST';
-            form.action = 'Controller?type=GoWay';
-            document.body.appendChild(form);
-            form.submit();
-        </c:if>
-        <c:if test="${sessionScope.member eq null}">
-            alert("로그인 해주세요.");
-        </c:if>
+        console.log("gd")
+        let form = document.createElement('form');
+        form.method = 'POST';
+        form.action = 'Controller?type=GoWay';
+        document.body.appendChild(form);
+        form.submit();
     }
 
 

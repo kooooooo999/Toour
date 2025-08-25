@@ -169,7 +169,7 @@
 <%--지도영역--%>
 <div class="map-container">
     <div id="mapDetails">
-        <div id="map" style="width: 850px; height: 300px;"></div>
+        <div id="map" style="width: 850px; height: 300px; margin-left: 80px"></div>
     </div>
 </div>
 

@@ -162,6 +162,10 @@
         <textarea id="content" name="content" placeholder="문의하실 내용을 자세히 작성해주세요" required></textarea>
         <div class="form-info">문의 내용을 구체적으로 작성해주시면 더 빠른 답변이 가능합니다.</div>
 
+        <label for="file_path">첨부파일</label>
+        <input type="file" id="file_path" name="file_path" accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.txt">
+        <div class="form-info">이미지(jpg, jpeg, png, gif), 문서(pdf, doc, docx), 텍스트(txt) 파일만 첨부 가능합니다. (최대 10MB)</div>
+
         <!-- status는 기본값 '대기중'으로 설정 -->
         <input type="hidden" name="status" value="대기중">
 
@@ -175,49 +179,17 @@
     </form>
 </div>
 <c:import url="/common/footer.jsp"/>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-
-<script src="../js/lang/summernote-ko-KR.js"></script>
 <script>
-    $(document).ready(function() {
-        // Summernote 에디터 초기화
-        $('#content').summernote({
-            height: 300, // 에디터 높이 설정
-            lang: 'ko-KR', // 한국어 설정
-            callbacks: {
-                // 이미지 업로드 처리
-                onImageUpload: function(files) {
-                    // 이미지를 Cloudinary로 업로드
-                    var data = new FormData();
-                    data.append("file", files[0]); // 업로드된 파일 추가
-                    data.append("upload_preset", "testtest"); // Cloudinary 업로드 프리셋
+    // 파일 크기 체크
+    document.getElementById('file_path').addEventListener('change', function (e) {
+        const file = e.target.files[0];
+        const maxSize = 10 * 1024 * 1024; // 10MB
 
-                    // 비동기식 이미지 업로드
-                    $.ajax({
-                        url: 'https://api.cloudinary.com/v1_1/dqkajtq62/image/upload',
-                        method: 'POST',
-                        data: data,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            // 업로드된 이미지 URL
-                            var imageUrl = response.secure_url;
-
-                            // 에디터에 이미지 삽입
-                            $('#content').summernote('insertImage', imageUrl);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('이미지 업로드 실패:', error);
-                            alert('이미지 업로드에 실패했습니다.');
-                        }
-                    });
-                }
-            }
-        });
+        if (file && file.size > maxSize) {
+            alert('파일 크기는 10MB를 초과할 수 없습니다.');
+            this.value = '';
+        }
     });
 
     // 폼 제출 전 유효성 검사

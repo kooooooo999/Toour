@@ -41,7 +41,7 @@ public class sidoAction implements Action {
 
         //관광타입(12: 관광지, 14: 문화시설, 15: 축제공연 행사, 25: 여행코스, 28: 레포츠, 32: 숙박, 38: 쇼핑, 39: 음식점) ID
         sb.append(key);
-        sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=R&contentTypeId=12");
+        sb.append("&MobileApp=AppTest&MobileOS=ETC&arrange=O&contentTypeId=12");
         sb.append("&areaCode=");
         sb.append(areaCode);
         sb.append("&_type=xml&numOfRows=4&pageNo=");

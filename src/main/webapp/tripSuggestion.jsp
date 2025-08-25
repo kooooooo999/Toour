@@ -264,14 +264,12 @@
                                 data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                 data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                 data-homepageurl="${Dvo.homepageUrl}"
-                                data-homepagetext="${Dvo.homepageText}"
-                                data-contenttypeid="${Dvo.contentTypeId}">${Dvo.addr1}</a></p>
+                                data-homepagetext="${Dvo.homepageText}" data-contenttypeid="${Dvo.contentTypeId}">${Dvo.addr1}</a></p>
             <p class="overview"><a href="#" class="data-link" data-title="${Dvo.title}" data-addr1="${Dvo.addr1}"
                                    data-overview="${Dvo.overview}" data-firstimage="${Dvo.firstimage}"
                                    data-mapx="${Dvo.mapx}" data-mapy="${Dvo.mapy}" data-contentid="${Dvo.contentId}"
                                    data-homepageurl="${Dvo.homepageUrl}"
-                                   data-homepagetext="${Dvo.homepageText}"
-                                   data-contenttypeid="${Dvo.contentTypeId}">${Dvo.overview}</a></p>
+                                   data-homepagetext="${Dvo.homepageText}" data-contenttypeid="${Dvo.contentTypeId}">${Dvo.overview}</a></p>
         </div>
     </c:forEach>
 </div>
@@ -457,6 +455,7 @@
     });
 
     function submitData(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, homepageUrl, homepageText) {
+        console.log(contentId);
         let form = document.createElement('form');
         form.method = 'POST';
         form.action = 'Controller?type=tripDetails';

@@ -52,8 +52,8 @@
                         m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
                     </when>
                     <when test="searchType != null and searchType == 'title_content'">
-                        (p.post_title LIKE CONCAT('%', #{searchValue}, '%') 
-                         OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
+                        (p.post_title LIKE CONCAT('%', #{searchValue}, '%')
+                        OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
                     </when>
                 </choose>
                 and p.post_status = 0 and p.category_idx = 2
@@ -154,30 +154,30 @@
     <select id="search" parameterType="map" resultMap="map1">
         SELECT a.*
         FROM (
-            SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
-            FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
-            <where>
-                <if test="searchValue != null and searchValue != ''">
-                    <choose>
-                        <when test="searchType != null and searchType == 'post_title'">
-                            p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
-                        </when>
-                        <when test="searchType != null and searchType == 'post_content'">
-                            p.post_content LIKE CONCAT('%', #{searchValue}, '%')
-                        </when>
-                        <when test="searchType != null and searchType == 'member_nickname'">
-                            m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
-                        </when>
-                        <when test="searchType != null and searchType == 'title_content'">
-                            (p.post_title LIKE CONCAT('%', #{searchValue}, '%') 
-                             OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
-                        </when>
-                    </choose>
-                </if>
-                and p.post_status = 0 and p.category_idx=2
-            </where>
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
+        FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'title_content'">
+                        (p.post_title LIKE CONCAT('%', #{searchValue}, '%')
+                        OR p.post_content LIKE CONCAT('%', #{searchValue}, '%'))
+                    </when>
+                </choose>
+            </if>
+            and p.post_status = 0 and p.category_idx=2
+        </where>
         )a
-         where a.rnum BETWEEN #{begin} AND #{end};
+        where a.rnum BETWEEN #{begin} AND #{end};
     </select>
 
     <select id="mysearch" parameterType="map" resultMap="map1">
@@ -212,8 +212,8 @@
     </select>
 
     <insert id="insertComment" parameterType="Map" useGeneratedKeys="true" keyProperty="comment_idx">
-    insert into comment( post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status)
-    values ( #{post_idx}, #{member_idx}, #{comment_content}, now(), now(), 0)
+        insert into comment( post_idx, member_idx, comment_content, comment_created_at, comment_updated_at, comment_status)
+        values ( #{post_idx}, #{member_idx}, #{comment_content}, now(), now(), 0)
     </insert>
 
     <select id="getComment" parameterType="String" resultType="toour.post.vo.CommentVO">

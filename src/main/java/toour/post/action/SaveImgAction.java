@@ -2,74 +2,62 @@ package toour.post.action;
 
 import com.oreilly.servlet.MultipartRequest;
 import com.oreilly.servlet.multipart.DefaultFileRenamePolicy;
-import org.json.simple.JSONObject;
 import toour.action.Action;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.PrintWriter;
 
 public class SaveImgAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
-        response.setContentType("application/json;charset=utf-8");
-
+        // 이미지들이 저장될 위치를 절대경로로 준비해야 한다.
         ServletContext application = request.getServletContext();
+        String realPath = application.getRealPath("/editor_img");
 
+
+        // 업로드 디렉토리 생성
+        File uploadDir = new File(realPath);
+        if (!uploadDir.exists()) {
+            uploadDir.mkdirs();
+            System.out.println("create summernote directory: " + realPath);
+        }
+        //첨부되어오는 이미지 파일을 위에서 준비한 절대경로에 업로드 시키기 위해서다.
+        // 그렇게 하기 위해서는 cos라이브러리의 MultipartRequest객체가 필요함!
         try {
-            String realPath = application.getRealPath("/editor_img");
-            File uploadDir = new File(realPath);
-            if (!uploadDir.exists()) {
-                uploadDir.mkdirs();
-            }
+            MultipartRequest mr = new MultipartRequest(request, realPath,
+                    1024*1024*10, "utf-8",
+                    new DefaultFileRenamePolicy());
+            // 이때 파일은 이미 editor_img폴더에 업로드가 된 상태다.
 
-            // MultipartRequest를 사용하여 파일 업로드
-            // 이때 파일은 이미 지정된 폴더에 저장됩니다.
-            MultipartRequest mr = new MultipartRequest(
-                    request,
-                    realPath,
-                    1024 * 1024 * 10, // 10MB
-                    "utf-8",
-                    new DefaultFileRenamePolicy()
-            );
-
-            // 저장된 파일명을 얻어냅니다.
+            //파일이 저장될 때 이름이 변경될 수 있기때문에 저장된 파일의
+            // 정확한 이름을 알아내야 한다.
             File f = mr.getFile("upload");
-            if (f != null) {
-                String fileName = f.getName();
+           /* String file_name_stored = null;
 
-                // Summernote가 요구하는 이미지 URL을 만듭니다.
-                String fileUrl = request.getContextPath() + "/editor_img/" + fileName;
-
-                // JSON 객체 생성
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("img_url", fileUrl);
-
-                // JSON 응답을 클라이언트로 보냅니다.
-                PrintWriter out = response.getWriter();
-                out.print(jsonObject.toJSONString());
-                out.flush();
-                out.close();
+            if( f != null ) {
+                file_name_stored = f.getName();//저장된 파일명!!!!!
+                request.setAttribute("f_name", file_name_stored);
+            }*/
+            String f_name = null;
+            if(f != null){
+                f_name = f.getName();
+                request.setAttribute("f_name", f_name);//저장된 파일명
+                String file_name_original = mr.getOriginalFileName("upload");
+                request.setAttribute("file_name_original", file_name_original);
             }
-
+            request.setAttribute("contextPath", request.getContextPath());
         } catch (Exception e) {
             e.printStackTrace();
-            // 오류 발생 시 JSON 형식으로 에러 메시지 반환
             try {
-                PrintWriter out = response.getWriter();
-                JSONObject jsonObject = new JSONObject();
-                jsonObject.put("error", "Image upload failed: " + e.getMessage());
-                out.print(jsonObject.toJSONString());
-                out.flush();
-                out.close();
+                response.setContentType("text/plain;charset=utf-8");
+                response.getWriter().print("에러 발생: " + e.getMessage());
             } catch(Exception ex) {
                 ex.printStackTrace();
             }
         }
 
-        // JSP로 포워딩하지 않고, null을 반환하여 요청을 종료합니다.
-        return null;
+        return "post/saveImg.jsp";
     }
 }

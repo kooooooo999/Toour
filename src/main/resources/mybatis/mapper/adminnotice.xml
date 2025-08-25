@@ -5,7 +5,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="adminnotice">
 
-    <resultMap id="map1" type="toour.post.vo.PostVO">
+    <resultMap id="map2" type="toour.post.vo.PostVO">
         <id property="post_idx" column="post_idx"/>
         <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
     </resultMap>
@@ -17,7 +17,7 @@
     </select>
 
     <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
-    <select id="list" resultMap="map1" parameterType="map">
+    <select id="list" resultMap="map2" parameterType="map">
         select * from(
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
@@ -36,7 +36,7 @@
     </insert>
 
     <!-- 게시글 보기 -->
-    <select id="getPost" parameterType="String" resultMap="map1">
+    <select id="getPost" parameterType="String" resultMap="map2">
         SELECT  * FROM post p
         left join file f ON p.post_idx = f.post_idx
         WHERE p.post_idx = #{post_idx}
@@ -98,7 +98,7 @@
         VALUES ( #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type}, NOW() )
     </insert>
 
-    <select id="search" parameterType="map" resultMap="map1">
+    <select id="search" parameterType="map" resultMap="map2">
         SELECT a.*
         FROM (
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname

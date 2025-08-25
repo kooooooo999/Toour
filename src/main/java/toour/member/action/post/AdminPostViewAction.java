@@ -1,36 +1,62 @@
 package toour.member.action.post;
 
+import toour.member.dao.AdminNoticeDAO;
 import toour.member.dao.AdminPostDAO;
+import toour.member.vo.MemberVO;
 import toour.post.dao.ReportDAO;
 import toour.post.vo.PostVO;
-import toour.member.vo.MemberVO;
 import toour.action.Action;
+import toour.post.vo.ReportVO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class AdminPostViewAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         String post_idx = request.getParameter("post_idx");
+//        System.out.println("post_idx: " + post_idx);
+        HttpSession session = request.getSession();
+//        System.out.println("post_idx:"+post_idx);
+        Object obj = session.getAttribute("report_list");
 
-        // 1. 게시글 정보와 작성자 닉네임 가져오기
-        MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx);
+        ArrayList<String> report_list = null;
+        if(obj == null){
+            report_list = new ArrayList<>();
+            session.setAttribute("report_list", report_list);
+        }else
+            report_list = (ArrayList<String>) obj; // 형변환
+
+        ReportVO[] rvo = ReportDAO.getReport();
+        MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx); // 사용자가 선택한 게시물을 검색해 온다.
         PostVO pvo = AdminPostDAO.getPost(post_idx);
 
-        // 2. 해당 게시물의 모든 댓글과 신고 정보를 함께 가져오기
-        // DAO에서 댓글 목록을 가져오고, 그 안에 신고 정보도 포함시킵니다.
-        // DAO는 List<Map>을 반환하므로, 변수 타입을 맞춰줍니다.
-        List<Map<String, Object>> commentListWithReports = ReportDAO.getCommentListWithReports(post_idx);
+//        System.out.println(vo.getPost_idx());
+//       if(vo == null){
+//            System.out.println("vo가 존재하지 않습니다.");
+//        }
 
-        // 3. request에 데이터 설정
+        if(pvo != null){
+            System.out.println("pvo가 널이 아니다");
+        }
+
         request.setAttribute("vo", vo);
         request.setAttribute("pvo", pvo);
-        request.setAttribute("commentList", commentListWithReports); // JSP에서 사용할 이름
+        request.setAttribute("report_list", report_list);
+        request.setAttribute("rvo", rvo);
 
-        System.out.println("commentListWithReports.size()"+commentListWithReports.size());
+
+        if(pvo != null){
+            System.out.println("후::::: pvo가 널이 아니다");
+        }
+
+
+
+//        System.out.println("vo"+vo.getCategory_idx());
+
         return "admin/admin_post_view.jsp";
     }
 }

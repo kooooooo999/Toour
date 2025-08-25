@@ -2,8 +2,6 @@ package toour.member.dao;
 
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
-import toour.post.dao.ReportDAO;
-import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
@@ -250,45 +248,12 @@ public class AdminPostDAO {
         return filecnt;
     }
 
-    //전체가져오기는 그냥 가져오면 될거같은데?
-    public static PostVO[] getCommentReport(String target_type,String begin, String end){
-        //rnum, report_idx, reporter_idx, reported_idx, post_idx, comment_idx, report_content, report_created_at, target_type,
-        // report_status, comment_content, post_title, reporter_nickname, reported_nickname
-
-        PostVO[] ar = null;
-        Map<String,String> map = new HashMap<>();
-        if(target_type == "COMMENT")
-            map.put("target_type",target_type);
-        map.put("begin",begin);
-        map.put("end",end);
-
-
-        SqlSession ss = FactoryService.getFactory().openSession();
-
-        List<PostVO> list = ss.selectList("adminpost.selectReportComment",map);
-        if(list.size()>0&& !list.isEmpty()){
-            ar = new PostVO[list.size()];
-            list.toArray(ar);
-        }
-        ss.close();
-        return ar;
-    }
-    //댓글 가져오기
-    public static CommentVO[] getCommentList(String post_idx){
-        CommentVO[] ar = null;
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<CommentVO> list = ss.selectList("comment.commentList",post_idx);
-        if(list.size()>0&& !list.isEmpty()){
-            ar = new CommentVO[list.size()];
-            list.toArray(ar);
-        }
-        return  ar;
-    }
     //댓글 신고 수 가지고 오기
     public static int getcommentTotalCount(){
-        int cnt = 0;
-        return ReportDAO.TotalCount();
-
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.totalCount");
+        ss.close();
+        return cnt;
     }
 
     // 목록 반환
