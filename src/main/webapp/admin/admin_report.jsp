@@ -236,7 +236,7 @@
       <c:if test="${not empty rvo}">
         <c:set var="p" value="${requestScope.page}"/>
         <c:forEach items="${rvo}" var="vo" varStatus="vs">
-          <tr onclick="location.href='AdminController?type=${vo.target_type == 'POST' ? 'adminpostview' : 'adminpostview'}&post_idx=${vo.post_idx}&cPage=${nowPage}'">
+          <tr onclick="location.href='AdminController?type=${vo.target_type == 'POST' ? 'adminpostview' : 'admincommentview'}&post_idx=${vo.post_idx}&cPage=${nowPage}'">
             <td>${vo.report_idx}</td>
             <td>${vo.reporter_nickname}</td>
             <td>${vo.reported_nickname}</td>

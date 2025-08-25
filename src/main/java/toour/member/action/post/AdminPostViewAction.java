@@ -3,9 +3,7 @@ package toour.member.action.post;
 import toour.member.dao.AdminNoticeDAO;
 import toour.member.dao.AdminPostDAO;
 import toour.member.vo.MemberVO;
-import toour.post.dao.PostDAO;
 import toour.post.dao.ReportDAO;
-import toour.post.vo.CommentVO;
 import toour.post.vo.PostVO;
 import toour.action.Action;
 import toour.post.vo.ReportVO;
@@ -40,17 +38,21 @@ public class AdminPostViewAction implements Action {
 //       if(vo == null){
 //            System.out.println("vo가 존재하지 않습니다.");
 //        }
-        CommentVO[] comment_list = PostDAO.getCommentList(post_idx);
-        if (comment_list == null) {
-            comment_list = new CommentVO[0]; // null 대신 빈 배열
-        }
 
+        if(pvo != null){
+            System.out.println("pvo가 널이 아니다");
+        }
 
         request.setAttribute("vo", vo);
         request.setAttribute("pvo", pvo);
         request.setAttribute("report_list", report_list);
         request.setAttribute("rvo", rvo);
-        request.setAttribute("comment_list",comment_list);
+
+
+        if(pvo != null){
+            System.out.println("후::::: pvo가 널이 아니다");
+        }
+
 
 
 //        System.out.println("vo"+vo.getCategory_idx());

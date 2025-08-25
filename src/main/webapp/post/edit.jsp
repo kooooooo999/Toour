@@ -239,46 +239,20 @@
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script src="../js/summernote-lite.js"></script>
 <script src="../js/lang/summernote-ko-KR.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 <script>
-    $(document).ready(function() {
-        // Summernote 에디터 초기화
-        $('#post_content').summernote({
-            height: 300, // 에디터 높이 설정
-            lang: 'ko-KR', // 한국어 설정
+    $(function (){
+        $("#post_content").summernote({
+            lang: "ko-KR",
+            height: 300,
             callbacks: {
-                // 이미지 업로드 처리
-                onImageUpload: function(files) {
-                    // 이미지를 Cloudinary로 업로드
-                    var data = new FormData();
-                    data.append("file", files[0]); // 업로드된 파일 추가
-                    data.append("upload_preset", "testtest"); // Cloudinary 업로드 프리셋
-
-                    // 비동기식 이미지 업로드
-                    $.ajax({
-                        url: 'https://api.cloudinary.com/v1_1/dqkajtq62/image/upload',
-                        method: 'POST',
-                        data: data,
-                        contentType: false,
-                        processData: false,
-                        success: function(response) {
-                            // 업로드된 이미지 URL
-                            var imageUrl = response.secure_url;
-
-                            // 에디터에 이미지 삽입
-                            $('#post_content').summernote('insertImage', imageUrl);
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('이미지 업로드 실패:', error);
-                            alert('이미지 업로드에 실패했습니다.');
-                        }
-                    });
+                onImageUpload: function(files, editor){
+                    // 이미지를 서버에 업로드
+                    for(let i=0; i<files.length; i++)
+                        sendImg(files[i], editor);
                 }
             }
         });
     });
-
 
     function sendData() {
         let title = $("#post_title").val();

@@ -740,7 +740,7 @@
         <table class="MyInfo-table">
             <caption class="hidden">개인정보 테이블</caption>
             <tbody>
-            <c:if test="${sessionScope.member.login_type eq 'LOCAL'}">
+            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
             <tr>
                 <td>ID:</td>
                 <td>
@@ -786,7 +786,7 @@
                     </div>
                 </td>
             </tr>
-            <c:if test="${sessionScope.member.login_type eq 'LOCAL'}">
+            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
             <tr>
                 <td>이름:</td>
                 <td>

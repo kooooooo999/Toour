@@ -17,7 +17,6 @@ public class adminInquiryAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pageType = request.getParameter("pageType");
         String viewPath = "admin/admin_Inquiry.jsp";
-
         if ("inquiryDetails".equals(pageType)) {
             //문의글 상세보기
             viewPath = "admin/inquiryDetails.jsp";
@@ -29,8 +28,7 @@ public class adminInquiryAction implements Action {
             String file = request.getParameter("file");
             String created = request.getParameter("created");
             String content = request.getParameter("content");
-            String answer_content = request.getParameter("answer");
-            String cPage = request.getParameter("page");
+            String answerValue = request.getParameter("answer");
 
             InquiryVO inquiryVO = new InquiryVO();
             inquiryVO.setInquiry_idx(idx);
@@ -41,16 +39,18 @@ public class adminInquiryAction implements Action {
             inquiryVO.setCreated_at(created);
             inquiryVO.setContent(content);
             inquiryVO.setFile_path(file);
-            inquiryVO.setAnswer_content(answer_content);
+            inquiryVO.setAnswer_content(answerValue);
             request.setAttribute("reqInquiry", inquiryVO);
 
             String answer = request.getParameter("answer");
             if ("1".equals(answer)) {
                 //답변 등록 버튼을 클릭했을 시
                 viewPath = "admin/admin_Inquiry.jsp";
-                String answerValue = request.getParameter("answer_content");
-                if (status.equals("대기")) {
-                    InquiryDAO.updateInquirydata(idx, "답변완료", answerValue);
+                String answer_content = request.getParameter("answer_content");
+                String answer_inquiry_idx = request.getParameter("inquiry_idx");
+                String answer_status = request.getParameter("status");
+                if (answer_status.equals("대기")) {
+                    InquiryDAO.updateInquirydata(answer_inquiry_idx, "답변완료", answer_content);
                 }
             }
             try {
@@ -74,8 +74,7 @@ public class adminInquiryAction implements Action {
         }
         String searchType = request.getParameter("searchType");
         String searchStatus = request.getParameter("searchStatus");
-        request.setAttribute("searchType", searchType);
-        request.setAttribute("searchStatus", searchStatus);
+        System.out.println("searchStatus:" + searchStatus);
         int cnt = InquiryDAO.getInquiryTotalCount(searchType, searchStatus);
         System.out.println("cnt:" + cnt);
         //Page 생성
