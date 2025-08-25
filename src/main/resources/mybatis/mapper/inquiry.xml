@@ -65,7 +65,7 @@
     <!-- 문의 상세 조회 (본인 확인 포함) -->
     <select id="getInquiryDetailByMember" parameterType="map" resultType="map">
         SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
-        i.file_path, i.status, i.created_at, i.updated_at,
+        i.answer_content, i.status, i.created_at, i.updated_at,
         m.member_nickname, m.member_email
         FROM inquiry i
         LEFT JOIN member m ON i.member_idx = m.member_idx

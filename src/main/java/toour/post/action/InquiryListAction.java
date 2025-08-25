@@ -98,6 +98,6 @@ public class InquiryListAction implements Action {
 
 
 
-        return "member/myPage.jsp";
+        return "MainIndex/index.jsp";
     }
 }

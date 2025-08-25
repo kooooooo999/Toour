@@ -69,7 +69,7 @@ public class NoticeViewAction implements Action {
             PostDAO.post_views(post_idx);
             readList.add(post_idx);
         }
-        CommentVO[] comment_list =PostDAO.getCommentList(post_idx);
+        List<CommentVO> comment_list =PostDAO.getCommentList(post_idx);
         request.setAttribute("comment_list", comment_list);
         request.setAttribute("vo", vo);
 

@@ -19,19 +19,19 @@
 
     <!--단순 추천수 정렬-->
     <select id="getPostsByLikes" parameterType="map" resultType="toour.post.vo.PostVO">
-        select *
-        from post
+        select p.*, m.member_nickname
+        from post p inner join member m ON p.member_idx = m.member_idx
         where category_idx=#{category_idx}
-        order by post_likes desc, post_created_at DESC
+        order by p.post_likes desc, p.post_created_at DESC
         LIMIT #{offset}, #{pageSize}
 
     </select>
     <!--인기순 정렬 추천수에 가중치 3 조회수에 1 하루 지나면 -2점-->
     <select id="getPostsByPopularity" parameterType="map" resultType="toour.post.vo.PostVO">
-        SELECT p.*,
+        SELECT p.*,m.member_nickname, m.member_idx,
         (p.post_likes * 3 + p.post_views * 1 - TIMESTAMPDIFF(DAY, p.post_created_at, NOW()) * 2
         ) AS popularity
-        FROM post p
+        FROM post p inner join member m ON p.member_idx = m.member_idx
         where category_idx=#{category_idx}
         ORDER BY popularity DESC
         LIMIT #{offset}, #{pageSize} ;

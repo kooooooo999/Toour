@@ -1,225 +1,4 @@
-<%--
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>JSP - Hello World</title>
-  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-  <style>
-    #table{
-      border-collapse: collapse;
-    }
-    #table caption{
-      text-indent: -9999px;
-      height: 0;
-    }
-    #table td{
-      border: 1px solid #000;
-    }
-  </style>
-</head>
-<body>
-<c:import url="/common/header.jsp" />
 
-<form action="Controller?type=signup" method="post" name="SignUp_form">
-  <table id="table">
-    <caption>회원가입 테이블</caption>
-    <tbody>
-    <tr>
-      <td>ID:</td>
-      <td><input type="text" id="u_id" name="u_id"/><div id="id_usable"></div></td>
-    </tr>
-    <tr>
-      <td>PW:</td>
-      <td><input type="password" id="u_pw" name="u_pw"/><div id="pw_usable"></div> </td>
-    </tr>
-    <tr>
-      <td>RE-PW:</td>
-      <td><input type="password" id="u_repw" name="u_repw" /><div id="repw_usable"></div> </td>
-    </tr>
-    <tr>
-      <td>별명:</td>
-      <td><input type="text" id="u_nickname" name="u_nickname"/><div id="nickname_usable"></div></td>
-    </tr>
-    <tr>
-      <td>이름:</td>
-      <td><input type="text" id="u_name" name="u_name"/></td>
-    </tr>
-    <tr>
-      <td>이메일:</td>
-      <td>
-        <input type="email" id="u_email" name="u_email"/>
-        @
-        <input type="email" id="u_email2" name="u_email2"/>
-        <select id="emailAddr" name="emailAddr">
-          <option id="no" value="">:::직접 입력:::</option>
-          <option id="naver" value="naver.com">naver.com</option>
-          <option id="gmail" value="gmail.com">gmail.com</option>
-          <option id="daum" value="daum.net">daum.net</option>
-          <option id="nate" value="nate.net">nate.net</option>
-        </select>
-        <button type="button" id="chkEmail">중복 검사</button>
-        <div id="email_usable"></div></td>
-    </tr>
-    <tr>
-      <td colspan="2"><button type="button" onclick="sendForm(this.form)">가입하기</button></td>
-    </tr>
-    </tbody>
-  </table>
-  <hr/>
-</form>
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-</body>
-<script>
-  $(function (){
-    //아이디 창에 타이핑을 쳤을 때
-    $("#u_id").keyup(function (){
-      let u_id = document.getElementById("u_id");
-      let u_id_t = u_id.value.trim();
-      if(u_id_t.length>0){
-        $.ajax({
-          url:"Controller?type=chkid",
-          type:"post",
-          data:"u_id="+u_id_t
-        }).done(function (res) {
-          $("#id_usable").html(res);
-        });
-      }else
-        $("#id_usable").html("");
-    });
-    //비밀번호 창에 타이핑 했을 때
-    $("#u_pw").keyup(function (){
-      let u_pw = document.getElementById("u_pw");
-      let u_pw_t = u_pw.value.trim();
-      if (u_pw_t.length>0) {
-        $.ajax({
-          url: "Controller?type=chkpw",
-          type: "post",
-          data: "u_pw=" + u_pw_t
-        }).done(function (res) {
-          $("#pw_usable").html(res);
-        });
-      }else
-        $("#pw_usable").html("");
-    });
-
-    $("#u_nickname").keyup(function (){
-      let u_nickname = document.getElementById("u_nickname");
-      let u_nickname_t = u_nickname.value.trim();
-      if (u_nickname_t.length>0) {
-        $.ajax({
-          url: "Controller?type=chknickname",
-          type: "post",
-          data: "u_nickname=" + u_nickname_t
-        }).done(function (res) {
-          $("#nickname_usable").html(res);
-        });
-      }else
-        $("#nickname_usable").html("");
-    });
-
-    //이메일 중복 검사 버튼을 눌렀을 때
-    $("#chkEmail").click(function (){
-      let u_email = document.getElementById("u_email");
-      let u_email_t = u_email.value.trim();
-      let emailAddr = document.getElementById("emailAddr").value;
-      if(emailAddr.length==0){
-        emailAddr = document.getElementById("u_email2").value;
-      }
-
-      if (u_email_t.length>0&&emailAddr.length>0) {
-        $.ajax({
-          url: "Controller?type=chkemail",
-          type: "post",
-          data:{u_email:u_email_t,emailAddr:emailAddr}
-        }).done(function (res) {
-          $("#email_usable").html(res);
-        });
-      }else
-        $("#email_usable").html("");
-    });
-
-    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비1
-    $("#u_email").keyup(function (){
-      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
-    });
-    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비2
-    $("#u_email2").keyup(function (){
-      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
-    });
-    // 이메일 중복 검사 후에 정보를 바꿨을 때 대비3
-    $("#emailAddr").blur(function (){
-      $("#email_usable").html("<p>중복 검사 버튼을 눌러주세요</p><input type='hidden' id='disable'>")
-    });
-
-    // 비밀번호 확인(확인번호)에 타이핑을 쳤을 때
-    $("#u_repw").keyup(function (){
-      //비밀번호
-      let u_pw = document.getElementById("u_pw");
-      let u_pw_v = u_pw.value.trim();
-      //확인번호
-      let u_repw = document.getElementById("u_repw");
-      let u_repw_v = u_repw.value.trim();
-
-      if (u_pw_v!=u_repw_v){
-        $("#repw_usable").html("비밀번호와 동일하게 입력해주세요.<input type='hidden' id='disable'>");
-      }else{
-        $("#repw_usable").text("");
-      }
-    });
-
-    //이메일에서 주소를 선택했을 때
-    $("#emailAddr").blur(function (){
-      //비밀번호
-      let emailAddr = document.getElementById("emailAddr");
-      let emailAddr_v = emailAddr.value.trim();
-      if(emailAddr_v.length>0) {
-        document.getElementById("u_email2").value = "";
-        document.getElementById("u_email2").disabled = true;
-      }
-    else
-      document.getElementById("u_email2").disabled = false;
-    });
-
-  });
-
-  function sendForm(frm) {
-    //값 모두 받아오기
-    let id = document.getElementById("u_id").value;
-    let pw = document.getElementById("u_pw").value;
-    let repw = document.getElementById("u_repw").value;
-    let nickname = document.getElementById("u_nickname").value;
-    let name = document.getElementById("u_name").value;
-    let email1 = document.getElementById("u_email").value;
-    let email2 = document.getElementById("u_email2").value;
-    let email3 = document.getElementById("emailAddr").value;
-    //유효성 검사
-    if(id.length>0&&pw.length>0&&repw.length>0&&nickname.length>0&&name.length>0&&email1.length>0){
-      let cmd =0;
-      if(email3.length>0){
-          cmd=1;
-      }else {
-        if(email2.length>0){
-          cmd=1;
-        }
-      }
-
-      if(cmd==1){
-        if (document.getElementById("disable") == null) {
-          document.SignUp_form.submit();
-        } else {
-          alert("입력 조건을 모두 확인해주세요")
-        }
-      }else
-        alert("이메일을 확인해주세요")
-    }else
-      alert("모든 입력란에 입력을 확인해주세요")
-
-    }
-</script>
-</html>--%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -396,6 +175,12 @@
       clip: rect(0, 0, 0, 0);
       border: 0;
     }
+
+    .email-group {
+      flex-wrap: wrap;
+      gap: 5px 10px; /* 줄바꿈 시 간격 조절 */
+    }
+
   </style>
 </head>
 <body>
@@ -461,9 +246,9 @@
         <td>
           <div class="input-group">
             <div class="email-group">
-              <input type="email" id="u_email" name="u_email" class="input-field" placeholder="이메일"/>
+              <input type="text" id="u_email" name="u_email" class="input-field" placeholder="이메일"/>
               <span class="email-separator">@</span>
-              <input type="email" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력"/>
+              <input type="text" id="u_email2" name="u_email2" class="input-field" placeholder="직접 입력"/>
               <select id="emailAddr" name="emailAddr" class="email-select">
                 <option value="">직접 입력</option>
                 <option value="naver.com">naver.com</option>
@@ -471,6 +256,14 @@
                 <option value="daum.net">daum.net</option>
                 <option value="nate.net">nate.net</option>
               </select>
+              <button onclick="sendAuthEmail()" class="action-button">인증메일전송</button>
+              <p id="resultMsg"></p>
+              <input type="text" id="inputCode" class="input-field input-field-full" placeholder="인증번호 입력" disabled>
+              <button type="button" onclick="verifyCode(event)" class="action-button" disabled>인증 확인</button>
+              <p id="verifyMsg"></p>
+
+
+
             </div>
             <div style="display: flex; align-items: center; margin-top: 5px;">
               <button type="button" id="chkEmail" class="action-button">중복 검사</button>
@@ -489,8 +282,164 @@
   </form>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <style>
+    #resultMsg, #verifyMsg {
+      margin: 5px 0;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    
+    #resultMsg.success, #verifyMsg.success {
+      color: #28a745 !important;
+    }
+    
+    #resultMsg.error, #verifyMsg.error {
+      color: #dc3545 !important;
+    }
+    
+    .action-button:disabled {
+      background-color: #6c757d;
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+    
+    #inputCode:disabled {
+      background-color: #e9ecef;
+      cursor: not-allowed;
+    }
+  </style>
+  <script>
+  function verifyCode(event) {
+    event.preventDefault();
+    const code = document.getElementById('inputCode').value;
+
+    if (!code || code.trim() === '') {
+      document.getElementById('verifyMsg').textContent = "인증번호를 입력해주세요.";
+      document.getElementById('verifyMsg').style.color = "#dc3545";
+      return;
+    }
+
+    // 버튼 비활성화 및 로딩 표시
+    const button = event.target;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "확인 중...";
+
+    fetch('/verifyEmailCode', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'code=' + encodeURIComponent(code)
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        document.getElementById('verifyMsg').textContent = data.message || "인증 성공!";
+        document.getElementById('verifyMsg').style.color = "#28a745";
+        // 인증 성공 시 입력 필드 비활성화
+        document.getElementById('inputCode').disabled = true;
+        // 성공 표시를 위한 hidden input 추가
+        if (!document.getElementById('emailVerified')) {
+          const hiddenInput = document.createElement('input');
+          hiddenInput.type = 'hidden';
+          hiddenInput.id = 'emailVerified';
+          hiddenInput.name = 'emailVerified';
+          hiddenInput.value = 'true';
+          document.querySelector('form').appendChild(hiddenInput);
+        }
+      } else {
+        document.getElementById('verifyMsg').textContent = data.message || "인증 실패. 코드가 틀렸습니다.";
+        document.getElementById('verifyMsg').style.color = "#dc3545";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('verifyMsg').textContent = "인증 확인 중 오류가 발생했습니다. 다시 시도해주세요.";
+      document.getElementById('verifyMsg').style.color = "#dc3545";
+    })
+    .finally(() => {
+      // 버튼 복원
+      button.disabled = false;
+      button.textContent = originalText;
+    });
+  }
+
+  function validateEmail(email) {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  }
+  function sendAuthEmail() {
+    const emailFront = document.getElementById('u_email').value.trim();     // 이메일 앞부분
+    const emailSelect = document.getElementById('emailAddr').value.trim(); // 도메인 선택값
+    const emailCustom = document.getElementById('u_email2').value.trim();  // 직접입력값
+
+    let fullEmail;
+
+    if (emailSelect === "") {
+      // 직접 입력 모드
+      fullEmail = emailFront + "@" + emailCustom;
+    } else {
+      // 선택한 도메인 사용
+      fullEmail = emailFront + "@" + emailSelect;
+    }
+    fullEmail = fullEmail.replace(/\s/g, '');
+
+    if (!validateEmail(fullEmail)) {
+      document.getElementById('resultMsg').textContent = "유효한 이메일 형식이 아닙니다.";
+      return;
+    }
+
+    // 버튼 비활성화 및 로딩 표시
+    const button = event.target;
+    const originalText = button.textContent;
+    button.disabled = true;
+    button.textContent = "전송 중...";
+
+    fetch('/sendEmailAuth', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'email=' + encodeURIComponent(fullEmail)
+    })
+    .then(res => {
+      if (!res.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return res.json();
+    })
+    .then(data => {
+      if (data.success) {
+        document.getElementById('resultMsg').textContent = data.message || "인증 메일이 전송되었습니다. 이메일을 확인하세요.";
+        document.getElementById('resultMsg').style.color = "#28a745";
+        // 인증번호 입력 필드와 확인 버튼 활성화
+        document.getElementById('inputCode').disabled = false;
+        document.getElementById('inputCode').focus();
+        document.querySelector('button[onclick="verifyCode(event)"]').disabled = false;
+      } else {
+        document.getElementById('resultMsg').textContent = "메일 전송 실패: " + (data.message || "알 수 없는 오류");
+        document.getElementById('resultMsg').style.color = "#dc3545";
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      document.getElementById('resultMsg').textContent = "메일 전송 중 오류가 발생했습니다. 다시 시도해주세요.";
+      document.getElementById('resultMsg').style.color = "#dc3545";
+    })
+    .finally(() => {
+      // 버튼 복원
+      button.disabled = false;
+      button.textContent = originalText;
+    });
+  }
+
   $(function (){
     // 아이디, 비밀번호, 별명, 이메일 중복 검사 결과 메시지를 예쁘게 표시하기 위한 함수
     function updateValidationMessage(targetId, res) {

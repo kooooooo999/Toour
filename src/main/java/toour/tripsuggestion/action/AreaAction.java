@@ -6,22 +6,22 @@ import toour.util.GetAPIData;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class AreaAction implements Action {
+public class AreaAction extends GetAPIData implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         // 지역 검색
-        String areaCode =request.getParameter("areaCode");
-        if(areaCode!=null&& !areaCode.equals("0"))
-            GetAPIData.getSigungu(request,areaCode);
+        String areaCode = request.getParameter("areaCode");
+        if (areaCode != null && !areaCode.equals("0"))
+            GetAPIData.getSigungu(request, areaCode);
         String contentTypeId = request.getParameter("contentTypeId");
-        if(contentTypeId!=null)
-            GetAPIData.getCat1(request,contentTypeId);
+        if (contentTypeId != null)
+            GetAPIData.getCat1(request, contentTypeId);
         String cat1 = request.getParameter("cat1");
-        if(cat1!=null&& !cat1.equals("0"))
+        if (cat1 != null && !cat1.equals("0"))
             GetAPIData.getCat2(request, cat1);
         String cat2 = request.getParameter("cat2");
-        if(cat1!=null&& !cat1.equals("0")&&cat2!=null&& !cat2.equals("0"))
-            GetAPIData.getCat3(request,cat1,cat2);
+        if (cat1 != null && !cat1.equals("0") && cat2 != null && !cat2.equals("0"))
+            GetAPIData.getCat3(request, cat1, cat2);
         return "makeSelect.jsp";
     }
 }
