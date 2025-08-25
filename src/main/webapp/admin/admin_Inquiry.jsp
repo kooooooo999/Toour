@@ -204,12 +204,14 @@
         #table thead th:nth-child(7) {
             width: 100px;
         }
+
         body {
             font-family: 'Noto Sans KR', sans-serif;
             height: 100%;
             background-color: #f0f2f5;
 
         }
+
         html, body {
             height: 100%;
             margin: 0;
@@ -227,98 +229,92 @@
 </head>
 <body>
 <div class="container">
-<c:import url="/common/adminSidebar.jsp"/>
+    <c:import url="/common/adminSidebar.jsp"/>
 
-<div class="main-content" id="post">
-    <h1>문의사항 관리</h1>
-    <c:set var="requestsearchType" value="${param.searchType}"/>
-    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
-    <div class="search-area">
-        <form method="post" action="AdminController?type=adminInquiry">
-            <select id="searchType" name="searchType">
-                <option value="">
-                    --문의 유형을 선택해주세요--
-                </option>
-                <option value="계정관리" <c:if test="${requestsearchType == '계정관리'}">selected</c:if>>계정 관리</option>
-                <option value="서비스이용" <c:if test="${requestsearchType == '서비스이용'}">selected</c:if>>서비스 이용</option>
-                <option value="기술지원" <c:if test="${requestsearchType == '기술지원'}">selected</c:if>>기술 지원</option>
-                <option value="버그신고" <c:if test="${requestsearchType == '버그신고'}">selected</c:if>>버그 신고</option>
-                <option value="기타" <c:if test="${requestsearchType == '기타'}">selected</c:if>>기타</option>
-            </select>
-            <select id="searchStatus" name="searchStatus">
-                <option value="">
-                    --답변 상태 선택해주세요--
-                </option>
-                <option value="답변완료" <c:if test="${requestsearchStatus == '답변완료'}">selected</c:if>>답변완료</option>
-                <option value="대기" <c:if test="${requestsearchStatus == '대기'}">selected</c:if>>대기</option>
-                <option value="삭제" <c:if test="${requestsearchStatus == '삭제'}">selected</c:if>>삭제</option>
-            </select>
-        </form>
-    </div>
+    <div class="main-content" id="post">
+        <h1>문의사항 관리</h1>
+        <c:set var="requestsearchType" value="${param.searchType}"/>
+        <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
+        <div class="search-area">
+            <form method="post" action="AdminController?type=adminInquiry">
+                <select id="searchType" name="searchType">
+                    <option value="">
+                        --문의 유형을 선택해주세요--
+                    </option>
+                    <option value="계정관리" <c:if test="${requestsearchType == '계정관리'}">selected</c:if>>계정 관리</option>
+                    <option value="서비스이용" <c:if test="${requestsearchType == '서비스이용'}">selected</c:if>>서비스 이용</option>
+                    <option value="기술지원" <c:if test="${requestsearchType == '기술지원'}">selected</c:if>>기술 지원</option>
+                    <option value="버그신고" <c:if test="${requestsearchType == '버그신고'}">selected</c:if>>버그 신고</option>
+                    <option value="기타" <c:if test="${requestsearchType == '기타'}">selected</c:if>>기타</option>
+                </select>
+                <select id="searchStatus" name="searchStatus">
+                    <option value="">
+                        --답변 상태 선택해주세요--
+                    </option>
+                    <option value="답변완료" <c:if test="${requestsearchStatus == '답변완료'}">selected</c:if>>답변완료</option>
+                    <option value="대기" <c:if test="${requestsearchStatus == '대기'}">selected</c:if>>대기</option>
+                    <option value="삭제" <c:if test="${requestsearchStatus == '삭제'}">selected</c:if>>삭제</option>
+                </select>
+            </form>
+        </div>
 
-    <div>
         <div>
-            <table>
-                <caption style="display: none">문의사항 테이블</caption>
-                <thead>
-                <th>번호</th>
-                <th>카테고리</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>답변상태</th>
-                <th>작성일</th>
-                </thead>
-                <tbody>
-                <c:set var="p" value="${requestScope.page}" scope="page"/>
-                <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
-                    <tr class="data-inquiry"
-                        data-idx="${Ivo.inquiry_idx}"
-                        data-category="${Ivo.category}"
-                        data-title="<c:out value='${Ivo.title}' default=''/>"
-                        data-nickname="<c:out value='${Ivo.member_nickname}' default=''/>"
-                        data-status="<c:out value='${Ivo.status}' default=''/>"
-                        data-created="<c:out value='${Ivo.created_at}' default=''/>"
-                        data-content="<c:out value='${Ivo.content}' default=''/>"
-                        data-file="<c:out value='${Ivo.file_path}' default=''/>"
-                        data-answer="<c:out value='${Ivo.answer_content}' default=''/>"
-                        data-page="<c:out value='${p.nowPage}' default=''/>">
-                        <td>${Ivo.inquiry_idx}</td>
-                        <td>${Ivo.category}</td>
-                        <td>${Ivo.title}</td>
-                        <td>${Ivo.member_nickname}</td>
-                        <td>${Ivo.status}</td>
-                        <td>${Ivo.created_at}</td>
-                    </tr>
-                </c:forEach>
-                </tbody>
-            </table>
-            <div class=" pagination
+            <div>
+                <table>
+                    <caption style="display: none">문의사항 테이블</caption>
+                    <thead>
+                    <th>번호</th>
+                    <th>카테고리</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>답변상태</th>
+                    <th>작성일</th>
+                    </thead>
+                    <tbody>
+                    <c:set var="p" value="${requestScope.page}" scope="page"/>
+                    <c:forEach var="Ivo" items="${requestScope.IvoArr}" varStatus="count">
+                        <tr class="data-inquiry"
+                            data-idx="${Ivo.inquiry_idx}"
+                            data-category="${Ivo.category}"
+                            data-page="${p.nowPage}"
+                            data-answer="${Ivo.answer_content}">
+                            <td>${Ivo.inquiry_idx}</td>
+                            <td>${Ivo.category}</td>
+                            <td>${Ivo.title}</td>
+                            <td>${Ivo.member_nickname}</td>
+                            <td>${Ivo.status}</td>
+                            <td>${Ivo.created_at}</td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+                <div class=" pagination
                 ">
-                <c:if test="${p.startPage > 1}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
-                </c:if>
+                    <c:if test="${p.startPage > 1}">
+                        <a href="AdminController?type=adminInquiry&cPage=${p.startPage - 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&lt;</a>
+                    </c:if>
 
-                <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                    <c:choose>
-                        <c:when test="${p.nowPage == vs.index}">
-                            <span class="current">${vs.index}</span>
-                        </c:when>
+                    <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+                        <c:choose>
+                            <c:when test="${p.nowPage == vs.index}">
+                                <span class="current">${vs.index}</span>
+                            </c:when>
 
-                        <c:otherwise>
-                            <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">${vs.index}</a>
-                        </c:otherwise>
-                    </c:choose>
-                </c:forEach>
+                            <c:otherwise>
+                                <a href="AdminController?type=adminInquiry&cPage=${vs.index}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">${vs.index}</a>
+                            </c:otherwise>
+                        </c:choose>
+                    </c:forEach>
 
-                <c:if test="${p.endPage < p.totalPage}">
-                    <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&gt;</a>
-                </c:if>
+                    <c:if test="${p.endPage < p.totalPage}">
+                        <a href="AdminController?type=adminInquiry&cPage=${p.endPage + 1}&searchType=${requestsearchType}&searchStatus=${requestsearchStatus}">&gt;</a>
+                    </c:if>
+                </div>
+
+
             </div>
-
-
         </div>
     </div>
-</div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
@@ -336,15 +332,8 @@
             $(document).on('click', '.data-inquiry', function () {
                 let idx = $(this).data('idx');
                 let category = $(this).data('category');
-                /*let title = $(this).data('title');
-                let nickname = $(this).data('nickname');
-                let status = $(this).data('status');
-                let created = $(this).data('created');
-                let content = $(this).data('content');
-                let file = $(this).data('file')
-                let answer = $(this).data('answer');
-                let page = $(this).data('page');*/
-
+                let page = $(this).data('page');
+                let answer_content = $(this).data('answer');
                 let searchType = $("#searchType").val();
                 let searchStatus = $("#searchStatus").val();
 
@@ -354,19 +343,12 @@
                     data: {
                         idx: idx,
                         category: category,
-                        /*title: title,
-                        nickname: nickname,
-                        status: status,
-                        created: created,
-                        content: content,
-                        file: file,
-                        answer: answer,
-                        cPage: page,*/
                         searchType: searchType,
-                        searchStatus: searchStatus
+                        searchStatus: searchStatus,
+                        cPage: page,
+                        answer_content: answer_content
                     }
                 }).done(function (res) {
-                    console.log("됐냐");
                     $(".main-content").html(res);
                 });
 

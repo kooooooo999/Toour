@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class tripSuggestionAction implements Action {
+public class tripSuggestionAction extends LoCatVO implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -220,7 +220,7 @@ public class tripSuggestionAction implements Action {
         sb.append(cPage);
         try {
             URL url1 = new URL(sb.toString());
-            System.out.println("tripSuggestionAction sb:"+sb.toString());
+            System.out.println("tripSuggestionAction sb:" + sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();
@@ -262,7 +262,7 @@ public class tripSuggestionAction implements Action {
                 sb2.append(voContentid);
 
                 URL url2 = new URL(sb2.toString());
-                System.out.println("tripSuggestionAction sb2:"+sb2.toString());
+                System.out.println("tripSuggestionAction sb2:" + sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
                 conn2.connect();

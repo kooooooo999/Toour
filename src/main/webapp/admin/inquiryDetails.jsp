@@ -214,16 +214,15 @@
     <c:set var="Type" value="${requestScope.searchType}"/>
     <c:set var="Status" value="${requestScope.searchStatus}"/>
 
-    <c:set var="requestsearchType" value="${param.searchType}"/>
-    <c:set var="requestsearchStatus" value="${param.searchStatus}"/>
-
     <c:set var="Ivo" value="${requestScope.reqInquiry}"/>
     <c:set var="p" value="${requestScope.page}" scope="page"/>
     <c:set var="Ar" value="${requestScope.IvoArr}"/>
+
     <a href="AdminController?type=adminInquiry&cPage=${p.nowPage}&searchType=${Type}&searchStatus=${Status}"
        class="back-button">
         <i class="fas fa-arrow-left"></i>
     </a>
+
     <ul>
         <li><strong>번호:</strong> ${Ivo.inquiry_idx}</li>
         <li><strong>카테고리:</strong> ${Ivo.category}</li>
@@ -254,7 +253,7 @@
                 <button type="button" class="submit-btn" onclick="sendAnswer()">답변 등록</button>
             </c:if>
             <c:if test="${not empty Ivo.answer_content}">
-                <p><c:out value="${Ivo.content}" escapeXml="false" /></p>
+                <p><c:out value="${Ivo.answer_content}" escapeXml="false"/></p>
             </c:if>
         </form>
     </c:if>

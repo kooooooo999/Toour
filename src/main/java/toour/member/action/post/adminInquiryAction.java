@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-public class adminInquiryAction implements Action {
+public class adminInquiryAction extends InquiryDAO implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String pageType = request.getParameter("pageType");
@@ -27,22 +27,21 @@ public class adminInquiryAction implements Action {
                 // InquiryDAO에 있는 관리자용 상세 조회 메서드 사용
                 Map<String, Object> inquiryData = InquiryDAO.getInquiryDetail(idx);
 
+                String answer_content = request.getParameter("answer_content");
+                InquiryDAO.updateInquirydata(idx, "답변완료", answer_content);
+
                 // Map 데이터를 request에 설정합니다.
                 request.setAttribute("reqInquiry", inquiryData);
+
             }
             request.setAttribute("searchType", request.getParameter("searchType"));
             request.setAttribute("searchStatus", request.getParameter("searchStatus"));
-            // *** 추가 끝 ***
-            return viewPath; // 바로 상세 페이지로 이동합니다.
         }
 
         // 기존 문의 목록 조회 및 페이징 로직은 그대로 유지
         String searchType = request.getParameter("searchType");
         String searchStatus = request.getParameter("searchStatus");
-        request.setAttribute("searchType", searchType);
-        request.setAttribute("searchStatus", searchStatus);
         int cnt = InquiryDAO.getInquiryTotalCount(searchType, searchStatus);
-        System.out.println("cnt:" + cnt);
         //Page 생성
         Paging page = new Paging(10, 5);
         if (cnt > 0) {
@@ -62,6 +61,7 @@ public class adminInquiryAction implements Action {
         InquiryVO[] IvoArr = InquiryDAO.getInquiryTotaldata(page.getBegin() - 1, page.getNumPerPage(), searchType, searchStatus);
         request.setAttribute("page", page);
         request.setAttribute("IvoArr", IvoArr);
+
 
         return viewPath;
     }
