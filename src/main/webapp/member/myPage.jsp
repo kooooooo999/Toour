@@ -492,21 +492,23 @@
                     <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
-                                <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
-                                <p class="overflowHidden">${dataVO.addr1}</p>
-                                <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
-                                    <input type="hidden" name="title" value="${dataVO.title}"/>
-                                    <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
-                                    <input type="hidden" name="overview" value="${dataVO.overview}"/>
-                                    <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
-                                    <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
-                                    <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
-                                    <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
-                                    <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
-                                    <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
-                                    <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
-                                </form>
+                                <c:if test="${dataVO ne null}">
+                                    <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
+                                    <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
+                                    <p class="overflowHidden">${dataVO.addr1}</p>
+                                    <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
+                                        <input type="hidden" name="title" value="${dataVO.title}"/>
+                                        <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
+                                        <input type="hidden" name="overview" value="${dataVO.overview}"/>
+                                        <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
+                                        <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
+                                        <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
+                                        <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
+                                        <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
+                                        <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
+                                        <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
+                                    </form>
+                                </c:if>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -524,7 +526,7 @@
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="#">${courseVO.course_name}</a>
+                                <a href="javascript:myCourseDate('${courseVO.course_idx}','${courseVO.course_name}')">${courseVO.course_name}</a>
                                 <p class="overflowHidden2">${courseVO.course_summary}</p>
                             </div>
                         </c:if>
@@ -1166,8 +1168,11 @@
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
+            $("#memberCourse").dialog("open");
         })
     }
+
+
 
     // 내 코스 지도 코스 리스트에 띄우기
     function showCourseList(courseDate_idx, title, course_name) {
