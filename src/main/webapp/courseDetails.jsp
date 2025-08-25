@@ -316,9 +316,6 @@
 <c:set var="aSet" value="${requestScope.accommodationSet}"/>
 <div id="main">
     <h3 class="tag" style="padding: 30px 30px;">${Dvo.title}</h3>
-    <div id="heartImagedetails">
-        <p class="heartIcon"><i class="fa-solid fa-heart"></i></p>
-    </div>
 
     <div id="detailsInfo">
         <ul>
