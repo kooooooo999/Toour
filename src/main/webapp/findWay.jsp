@@ -216,13 +216,13 @@
             data: {keyword: keyword, courseDate_idx: courseDate_idx }
         }).done(function (res){
 
-            <c:if test="${fn:length(requestScope.resultAr) < 1}">
-                alert("키워드를 확인해 주세요.")
+            if (res.trim().length < 1) {
+                alert("키워드를 확인해 주세요");
                 $("#searchKeyword").val("");
                 $("#searchKeyword").focus();
                 return;
-            </c:if>
-
+            }
+            console.log(res);
             $("#search_results").html(res);
 
             $("#searchBox2").show();
