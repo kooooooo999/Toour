@@ -1,209 +1,3 @@
-<%--
-
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<html>
-<head>
-    <title>Title</title>
-  <link rel="stylesheet" href="<c:url value="/css/header.css" />">
-  <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
-
-    <link rel="stylesheet" href="<c:url value="/css/post.css" />">
-    <style>
-        #post {
-            max-width: 1200px;
-            margin: 0 auto;
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 8px !important;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            overflow-x: auto; /* 테이블이 너무 넓을 경우 스크롤바 생성 */
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse !important;
-            text-align: center;
-            min-width: 800px; /* 테이블이 너무 작아지는 것 방지 */
-        }
-    </style>
-
-  <style>
-    .listArea{
-      border: 0.5px solid #1e40af;
-      width: 500px;
-      height: 500px;
-      background-color: #EFF7FF;
-      overflow: hidden;
-    }
-    .div44{
-      display: grid;
-      grid-template-columns: 500px 500px;
-    }
-    .divSmall44{
-        display: grid;
-        grid-template-columns: 250px 250px;
-    }
-    .oneDiv{
-        height: 238px;
-        width: 250px;
-    }
-    .imgSize{
-        height: 160px;
-        width: 250px;
-    }
-    .overflowHidden{
-        overflow: hidden;
-    }
-
-  </style>
-
-
-</head>
-<body>
-<c:import url="/common/header.jsp" />
-
-
-    <div>
-      &lt;%&ndash;내 정보&ndash;%&gt;
-    </div>
-
-    <div class="div44">
-        <div id="zzim_list" class="listArea">
-          <a href="Controller">찜 목록</a>
-          <div class="divSmall44">
-            <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
-              <div class="oneDiv" >
-                  <a href="#">${dataVO.title}</a>
-                  <img src="${dataVO.firstimage}" class="imgSize">
-                  <p class="overflowHidden">${dataVO.addr1}</p>
-              </div>
-            </c:forEach>
-          </div>
-        </div>
-
-        <div id="course_list" class="listArea">
-          <a href="Controller">내 코스 목록</a>
-            <div class="divSmall44">
-                <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
-                    <div class="oneDiv" >
-                        <a href="#">${courseVO.course_name}</a>
-                        <p> ${courseVO.course_summary}</p>
-                    </div>
-                </c:forEach>
-            </div>
-
-        </div>
-
-        <div id="post_list" class="listArea">
-          <a href="Controller">내 게시글/ 댓글</a>
-
-
-            <div id="mypost">
-                <div id="post">
-                    <div class="search-area">
-                        <form method="post" action="Controller?type=postSearch" onsubmit="return validateForm()">
-                            <input type="hidden" name="category_idx" value="2">
-                            <select id="searchType" name="searchType">
-                                <option value="post_title">제목</option>
-                                <option value="post_content">내용</option>
-                            </select>
-                            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
-                            <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
-                        </form>
-                    </div>
-                    <table summary="검색결과 목록">
-                        <caption>검색결과 목록</caption>
-                        <thead>
-                        <th>번호</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>별점</th>
-                        <th>조회수</th>
-                        <th>작성일</th>
-
-                        </thead>
-                        <tbody>
-                        <c:if test="${not empty requestScope.myPost_ar}">
-                            <c:set var="p" value="${requestScope.page}" />
-                            <c:forEach items="${requestScope.myPost_ar}" var="vo" varStatus="vs">
-                                <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-                                <tr>
-                                    <td>${num}</td>
-                                    <td style="text-align: left">
-                                        <a href="Controller?type=view&post_idx=${vo.post_idx}&cPage=${nowPage}">
-                                                ${vo.post_title}
-                                            <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                                                (<c:out value="${fn:length(vo.c_list)}"/>)
-                                            </c:if>
-                                        </a>
-                                    </td>
-                                    <td>${vo.member_nickname}</td>
-                                    <td>${vo.post_star}</td>
-                                    <td>${vo.post_views}</td>
-                                    <td>${vo.post_created_at.substring(0,10)}</td>
-                                </tr>
-                            </c:forEach>
-                        </c:if>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="paging-area">
-                    <ol class="paging">
-                        <c:set var="p" value="${requestScope.page}" />
-                        <c:if test="${p.startPage < p.pagePerBlock}">
-                            <li class="disable">&lt;</li>
-                        </c:if>
-                        <c:if test="${p.startPage >= p.pagePerBlock}">
-                            <li><a href="javascript:movePage(${p.startPage-p.pagePerBlock})">&lt;</a></li>
-                        </c:if>
-                        <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
-                            <c:if test="${p.nowPage == vs.index}">
-                                <li class="now">${vs.index}</li>
-                            </c:if>
-                            <c:if test="${p.nowPage != vs.index}">
-                                <li><a href="javascript:movePage(${vs.index})">${vs.index}</a></li>
-                            </c:if>
-                        </c:forEach>
-                        <c:if test="${p.endPage < p.totalPage}">
-                            <li><a href="javascript:movePage(${p.endPage+1})">&gt;</a></li>
-                        </c:if>
-                        <c:if test="${p.endPage >= p.totalPage}">
-                            <li class="disable">&gt;</li>
-                        </c:if>
-                    </ol>
-                    <input type="button" value="댓글" onclick="javascript:location.href=''">
-                </div>
-            </div>
-
-        </div>
-
-      <div id="suggest_list" class="listArea">
-        <a href="Controller">건의사항</a>
-
-      </div>
-    </div>
-
-<c:import url="/common/footer.jsp" />
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script>
-    function movePage(nPage) {
-
-        $.ajax({
-            url:"Controller?type=mypost",
-            type:"POST",
-            data:{nPage:nPage , totalCount:${requestScope.page.totalCount}}
-        }).done(function (res) {
-            console.log(${requestScope.page.totalCount})
-            $("#mypost").html(res);
-        })
-    }
-</script>
-</body>
-</html>
---%>
-
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -221,6 +15,18 @@
             padding: 0;
             background-color: #f8f9fa; /* 배경색 추가 */
         }
+        /*문의사항 컨테이너*/
+        #inquiry-container{
+            max-width: 1400px !important;
+            margin: 0 auto;
+            background-color: #fff;
+            border: 1px solid #dee2e6;
+            border-radius: 8px !important;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow-x: auto;
+            padding: 0 !important;
+        }
+
 
         .main-container {
             display: flex;
@@ -388,6 +194,9 @@
             background-color: #f8f9fa;
             font-weight: bold;
         }
+        #inquiry-container th{
+            background-color: #f8f9fa;
+            font-weight: bold;}
 
         .search-area {
             padding: 15px;
@@ -492,21 +301,23 @@
                     <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
-                                <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
-                                <p class="overflowHidden">${dataVO.addr1}</p>
-                                <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
-                                    <input type="hidden" name="title" value="${dataVO.title}"/>
-                                    <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
-                                    <input type="hidden" name="overview" value="${dataVO.overview}"/>
-                                    <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
-                                    <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
-                                    <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
-                                    <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
-                                    <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
-                                    <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
-                                    <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
-                                </form>
+                                <c:if test="${dataVO ne null}">
+                                    <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
+                                    <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
+                                    <p class="overflowHidden">${dataVO.addr1}</p>
+                                    <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
+                                        <input type="hidden" name="title" value="${dataVO.title}"/>
+                                        <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
+                                        <input type="hidden" name="overview" value="${dataVO.overview}"/>
+                                        <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
+                                        <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
+                                        <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
+                                        <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
+                                        <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
+                                        <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
+                                        <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
+                                    </form>
+                                </c:if>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -519,12 +330,12 @@
             </div>
 
             <div id="course_list" class="listArea">
-                <a href="Controller">내 코스 목록</a>
+                <a href="javascript:addCourse()">내 코스 목록</a>
                 <div class="item-grid">
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="#">${courseVO.course_name}</a>
+                                <a href="javascript:myCourseDate('${courseVO.course_idx}','${courseVO.course_name}')">${courseVO.course_name}</a>
                                 <p class="overflowHidden2">${courseVO.course_summary}</p>
                             </div>
                         </c:if>
@@ -619,10 +430,12 @@
 
             <div id="suggest_list" class="listArea"><c:set var="t" value="${requestScope.QnAtotalCount}"/>
 
-                <a href="Controller?type=QnA">건의사항</a>
-                <div style="padding: 20px; text-align: center;">
-                    <div class="container" id="inquiry-container">
+                <a href="Controller?type=QnA">문의사항</a>
+                <div id="inquiry-container" style="padding: 20px; text-align: center;">
+                    <div class="inquiry_container" >
+                        <div class="post-header-container">
 
+                        </div>
 
                         <!-- 문의 목록 테이블 -->
                         <table class="inquiry-table">
@@ -632,10 +445,10 @@
                             <tr>
                                 <th width="10%">번호</th>
                                 <th width="15%">유형</th>
-                                <th width="30%">제목</th>
+                                <th width="35%">제목</th>
                                 <th width="15%">상태</th>
                                 <th width="15%">작성일</th>
-                                <th width="15%">관리</th>
+                                <th width="10%">관리</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -682,7 +495,9 @@
                             </c:choose>
                             </tbody>
                         </table>
+                    </div>
 
+                </div>
                         <!-- 페이징 -->
 
 
@@ -722,7 +537,7 @@
                             </div>
 
 
-                    </div>
+
 
 
 
@@ -740,7 +555,7 @@
         <table class="MyInfo-table">
             <caption class="hidden">개인정보 테이블</caption>
             <tbody>
-            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
+            <c:if test="${sessionScope.member.login_type eq 'LOCAL'}">
             <tr>
                 <td>ID:</td>
                 <td>
@@ -786,7 +601,7 @@
                     </div>
                 </td>
             </tr>
-            <c:if test="${sessionScope.member.login_type = 'KAKAO'}">
+            <c:if test="${sessionScope.member.login_type eq 'LOCAL'}">
             <tr>
                 <td>이름:</td>
                 <td>
@@ -818,7 +633,7 @@
             </tr>
             <tr id="revision_btn">
                 <td colspan="2">
-                    <button type="button" onclick="goChange()" class="">수정하기</button>
+                    <button type="button" onclick="goOutMember()" class="">회원 탈퇴</button><button type="button" onclick="goChange()" class="">수정하기</button>
                 </td>
             </tr>
             </tbody>
@@ -844,6 +659,20 @@
     </table>
 </div>
 
+<%-- 여행 추가 --%>
+<div id="memberCourse" class="hide" style="position: relative;">
+</div>
+
+<form action="Controller?type=GoWay" method="post" name="result_frm">
+    <input type="hidden" id="result" name="result" />
+    <input type="hidden" id="title" name="title" />
+    <input type="hidden" id="course_name" name="course_name" />
+</form>
+
+
+
+
+<div id="html-content"></div>
 <c:import url="/common/footer.jsp" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -865,6 +694,17 @@
             height:200,
             width:400
         };
+
+        let option3 = {
+            modal: true,
+            autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
+            title: "나의 코스",
+            resizable: true,
+            height:300,
+            width:300,
+            position: { my: "left top", at: "left top: 100" }
+        };
+        $("#memberCourse").dialog(option3);
 
         $("#MyInfo-container").dialog(option);
         $("#matchPassword_dialog").dialog(option2);
@@ -1036,7 +876,7 @@
                    $("#pw").attr("hidden",true);
                    $("#re-pw").attr("hidden",true);
                    $("#revision_btn").html(
-                       "<td colspan='2'> <button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
+                       "<td colspan='2'> <button type='button' onClick='goOutMember()' className=''>회원 탈퇴</button><button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
                    )
 
                    $("#matchPassword_dialog").dialog("close");
@@ -1115,6 +955,69 @@
         } else {
             $target.html('');
         }
+    }
+
+    //코스 관리
+    function addCourse() {
+
+        <%-- 1일 때는 '내코스', 2일 때는 '코스 추가' 눌렀을 때 --%>
+
+        $.ajax({
+            url: "Controller?type=searchCourse",
+            method: "post",
+            data: { number: '1' }
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+        });
+        $("#memberCourse").dialog("open");
+    }
+
+    function myCourseDate(course_idx, course_name) {
+        $.ajax({
+            url: "Controller?type=searchCourseDate",
+            method: "post",
+            data: { course_idx: course_idx, num: 1 , course_name:course_name}
+        }).done(function (res) {
+            console.log(res);
+            $("#memberCourse").html(res);
+            $("#memberCourse").dialog("open");
+        })
+    }
+
+
+
+    // 내 코스 지도 코스 리스트에 띄우기
+    function showCourseList(courseDate_idx, title, course_name) {
+
+        $("#course_name").val(course_name);
+        $("#title").val(title);
+        $.ajax({
+            url: "Controller?type=myCourseDay",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx}
+        }).done(function (res) {
+            console.log("res:" + res);
+            $("#html-content").html(res);
+            prepareAndSubmit();
+        })
+        $("#memberCourse").dialog("close");
+
+    }
+
+    function prepareAndSubmit() {
+        // 1. 전송할 HTML 내용을 가져옵니다.
+        var htmlContent = document.getElementById("html-content").innerHTML;
+        console.log("htmlContent:" + htmlContent);
+        // 2. 숨겨진 input의 value에 내용을 넣어줍니다.
+        document.getElementById("result").value = htmlContent;
+
+        // 3. 폼을 제출합니다.
+        document.result_frm.submit();
+    }
+
+    function goOutMember() {
+        document.location.href = "Controller?type=delMember";
     }
 </script>
 </body>

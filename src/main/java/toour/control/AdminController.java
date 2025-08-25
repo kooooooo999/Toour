@@ -117,12 +117,12 @@ public class AdminController extends HttpServlet {
 
         Object obj = request.getSession().getAttribute("member");
         if (obj != null){
-        MemberVO mvo = (MemberVO) obj;;
-        String membertype = mvo.getMember_type();
-        if (membertype.equals("1")) {
-            //로그인을 했을 때 회원이라면
-            viewPath = "MainIndex/index.jsp";
-        }
+            MemberVO mvo = (MemberVO) obj;;
+            String membertype = mvo.getMember_type();
+            if (membertype.equals("1")) {
+                //로그인을 했을 때 회원이라면
+                viewPath = "MainIndex/index.jsp";
+            }
         }else
             viewPath = "MainIndex/index.jsp";
 

@@ -1,14 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<c:if test="${requestScope.resultAr != null}">
+
+<c:set var="myCourse" value="${requestScope.myCourse}"/>
+<c:if test="${fn:length(requestScope.resultAr) > 0}">
+  <input type="hidden" id="courseDate_idx" value="${requestScope.courseDate_idx}"/>
   <h3>검색 결과</h3>
   <c:forEach items="${requestScope.resultAr}" var="vo" varStatus="vs">
     <%-- 주소 있는 결과들만 검색창에 표현 --%>
     <c:if test="${fn:length(vo.addr1) > 0 }">
       <c:if test="${vo.mapy ne '19.6944274800'}">
         <div id="places_list">
-          <button type="button" class="plusButton" onclick="addList('${vo.title}',${vs.index})"></button>
+          <button type="button" class="plusButton" onclick="addList('${vo.title}',${vs.index}, ${myCourse})"></button>
           <div style="display: inline-block;">
             <p class="ellip" style="display: inline-block;">${vo.title}</p>
             <p class="ellip" style="display: block; font-weight: bold; font-size: 10px; color: #6c757d">${vo.addr1}</p>
@@ -20,6 +23,9 @@
       </c:if>
     </c:if>
   </c:forEach>
+
+
+
 
   <%--  페이징 넣는 코드 --%>
   <div id="page" class="paging-area">
@@ -49,6 +55,11 @@
   </div>
 
   <script>
+    $(function () {
+
+
+    });
+
     // 좌표값 저장할 배열
     var points = [];
 
@@ -79,5 +90,6 @@
     }
     // 지도 범위 재설정
     map.setBounds(bounds);
+
   </script>
 </c:if>

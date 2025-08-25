@@ -31,6 +31,8 @@ public class SearchResultAction implements Action{
         if (obj != null) {
             mvo = (MemberVO) obj;
         }
+        String courseDate_idx = request.getParameter("courseDate_idx");
+        System.out.println("sraCourseDate_idx : " + courseDate_idx);
 
         String viewPath = null;
         String contentTypeid = request.getParameter("contentTypeId"); //관광타입ID (12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점)
@@ -47,6 +49,18 @@ public class SearchResultAction implements Action{
         String addTitle = request.getParameter("title"); // 코스 짜는 창에 넣을 때 넘어오는 title 이름
         String removeTitle = request.getParameter("removeTitle"); // 코스 짜는 창에서 목록 삭제할 때 넘어오는 title
 
+        // 내코스 버튼 눌렀을때 전달 받을 값
+        String myCourse = null;
+        Object mycourse = request.getAttribute("myCourse");
+        if (mycourse != null) {
+            myCourse = (String) mycourse;
+        }
+
+        System.out.println("myCourse:"+myCourse);
+        request.setAttribute("myCourse", myCourse);
+
+        // 요청시 contentType을 얻어낸다. get방식은 null값
+        String enc_type = request.getContentType();
 
         String index = request.getParameter("index");
         int index1 = 0;
@@ -69,36 +83,56 @@ public class SearchResultAction implements Action{
             f5 = String.valueOf(obj1);
         }
 
+        System.out.println("here1");
+
         if (f5 != null) {
             //나만의 코스를 눌렀을 때 혹은 F5로 새로고침을 했을 경우
-            courseList.clear();
+            if(request.getParameter("result")==null)
+                mvo.getCourseList().clear();
             viewPath = "findWay.jsp";
             System.out.println("f5 : "+f5 );
         } else {
             // 코스에 관광지를 추가하거나 삭제 했을 경우 , [+] or [-]
             System.out.println("f5 : null" );
-            if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null) {
+            if (addTitle != null && !addTitle.trim().isEmpty() && removeTitle == null && myCourse == null) {
+                System.out.println("myCourse : " + myCourse);
+                System.out.println("here2");
+                // + 버튼 눌렀을 때 수행
 
-                courseList.add(srlist.get(index1));
+                System.out.println("myCourse x");
+                mvo.getCourseList().add(srlist.get(index1));
 
-                request.setAttribute("courseList", courseList);
                 request.setAttribute("addTitle", addTitle);
 
                 viewPath = "addList.jsp";
 
             } else if (removeTitle != null && !removeTitle.trim().isEmpty() && addTitle == null) {
-                System.out.println(removeTitle);
-                courseList.remove(index1);
+            // - 버튼 눌렀을 때 수행
+            System.out.println("here3");
+            System.out.println(removeTitle);
 
-                request.setAttribute("courseList", courseList);
+//          courseList.remove(index1);
+            mvo.getCourseList().remove(index1);
 
-                viewPath = "addList.jsp";
-            } else {
 
-                System.out.println(keyword);
-                SearchDataVO[] data = GetAPISearchData.getSearch(request, keyword);
-                request.setAttribute("data", data);
-                viewPath = "searchReturn.jsp";
+//          request.setAttribute("courseList", courseList);
+
+            viewPath = "addList.jsp";
+        } else if (myCourse!=null&&myCourse.equals("myCourse")) {
+            // 내코스 눌렀을 때 코스리스트 창으로 바로 반환
+
+            System.out.println("here4");
+            viewPath = "addList.jsp";
+        } else {
+            // 검색창에 검색했을 때 수행
+            System.out.println("here?");
+            System.out.println(keyword);
+                if (keyword != null) {
+                    request.setAttribute("keyword", keyword);
+                }
+            SearchDataVO[] data = GetAPISearchData.getSearch(request, encodedKeyword);
+            request.setAttribute("data", data);
+            viewPath = "searchReturn.jsp";
 
                 String code = request.getParameter("areaCode");
                 if (code == null) {
@@ -230,9 +264,11 @@ public class SearchResultAction implements Action{
                 //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
             }
-        }
 
-        mvo.setCourseList(courseList);
+        }
+        System.out.println("sraCourseDate_idx2 :" +courseDate_idx);
+        // DB에서 코스 수정하기 위해 idx값 전달
+        request.setAttribute("courseDate_idx", courseDate_idx);
         return viewPath;
     }
 

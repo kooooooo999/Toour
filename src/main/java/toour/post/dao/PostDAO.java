@@ -43,6 +43,19 @@ public class PostDAO {
         ss.close();
         return cnt;
     }
+    // 게시물에서 검색결과 수를 반환
+    public static int adminsearchTotalCount(String searchType,String searchValue){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        Map<String, String> map = new HashMap<>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
+
+        int cnt = ss.selectOne("post.adminsearchTotalCount",map);
+        ss.close();
+        return cnt;
+    }
 
     // 내가 쓴 총 게시물에서 검색결과 수를 반환
     public static int getMySearchTotalCount(String searchType,String searchValue,String member_idx){
@@ -102,6 +115,32 @@ public class PostDAO {
         map.put("searchType", searchType);
         if(searchValue!=null)
         map.put("searchValue", searchValue);
+        map.put("begin",begin);
+        map.put("end",end);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<PostVO> list = ss.selectList("post.search",map);
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        }
+        if(list!=null&&list.size()>0){
+            ar= new PostVO[list.size()];
+            list.toArray(ar);
+        } else {
+            // 검색 결과가 없을 때 빈 배열을 반환하도록 수정
+            ar = new PostVO[0];
+        }
+        ss.close();
+        return ar;
+    }
+    public static PostVO[] adminsearch(String searchType,String searchValue,int begin,int end){
+        PostVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        if(searchType!=null)
+            map.put("searchType", searchType);
+        if(searchValue!=null)
+            map.put("searchValue", searchValue);
         map.put("begin",begin);
         map.put("end",end);
 

@@ -238,7 +238,7 @@
             </div>
 
             <div class="chart-container">
-                <canvas id="myChart" width="180" height="180"></canvas>
+                <canvas id="myChart" style="width: 110px; height: 110px;"></canvas>
                 <script>
                     var ctx = document.getElementById('myChart');
                     var myChart = new Chart(ctx, {
@@ -273,6 +273,7 @@
                             }]
                         },
                         options: {
+                            cutout: '70%',
                             responsive: false,
                             maintainAspectRatio: false,
                             cutoutPercentage: 10,
@@ -372,7 +373,7 @@
                                     ticks: {
                                         beginAtZero: true, // 0부터 시작
                                         min: 0,            // 최소값 0
-                                        max: 100,          // 최대값 100
+                                        max: 50,          // 최대값 100
                                         stepSize: 10        // 눈금 간격
                                     },
                                     gridLines: { color: "rgba(0,0,0,0.05)" }

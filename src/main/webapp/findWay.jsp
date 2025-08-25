@@ -216,10 +216,20 @@
             method: "POST",
             data: {keyword: keyword}
         }).done(function (res){
+
+            if (res.trim().length < 1) {
+                alert("키워드를 확인해 주세요");
+                $("#searchKeyword").val("");
+                $("#searchKeyword").focus();
+                return;
+            }
+            console.log(res);
             $("#search_results").html(res);
+
+            $("#searchBox2").show();
         });
 
-        $("#searchBox2").show();
+
     }
 
     // 코스 DB에서 불러오기
@@ -347,6 +357,30 @@
         $("#memberCourse").dialog("close");
     }
 
+    // 코스 아예 삭제(코스, 코스 날짜, 코스 일정)
+    function totalDeleteCourse(course_idx) {
+        console.log("deleteCourse_idx : " + course_idx)
+        $.ajax({
+            url: "Controller?type=totalCourseDelete",
+            type: "post",
+            data: { course_idx: course_idx }
+        }).done(function (res) {
+            document.location.href = "Controller?type=GoWay";
+        })
+    }
+
+    // 코스 날짜 삭제(코스 날짜, 코스 일정)
+    function deleteCourseDate(courseDate_idx) {
+        console.log("deleteCourseDate_idx : " + courseDate_idx)
+        $.ajax({
+            url: "Controller?type=totalCourseDelete",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx }
+        }).done(function (res) {
+            document.location.href = "Controller?type=GoWay";
+        })
+    }
+
     // 페이지 누르면 해당 페이지로 변경되는 코드
     function paging(cPage) {
 
@@ -410,6 +444,7 @@
         }
         markers = [];
     }
+
     // 달력 창 열기
 
    /* var appendText = $("#datepicker").datepicker( "option", "appendText" );

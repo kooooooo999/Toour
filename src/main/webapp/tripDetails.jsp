@@ -139,9 +139,11 @@
     <h1 class="tag">${Dvo.title}</h1>
     <p class="lineDetails">
     <div id="heartImagedetails">
-        <p class="heartIcon" id="heartIcon"><i id="heart"
-                                               <c:if test="${!requestScope.zzim_state}">class="fa-regular fa-heart"</c:if>
-                                               <c:if test="${requestScope.zzim_state}">class="fa-solid fa-heart"</c:if> ></i>
+        <p class="heartIcon" id="heartIcon">
+            <i id="heart"
+             <c:if test="${!requestScope.zzim_state}">class="fa-regular fa-heart"</c:if>
+             <c:if test="${requestScope.zzim_state}">class="fa-solid fa-heart"</c:if> >
+            </i>
         </p>
     </div>
     <div class="image-container">
@@ -345,29 +347,33 @@
     $("#heartIcon").on("click", function () {
         // Action에서 추가인지 삭제인지 구분하기 위한 값
         let state = null;
+        <c:if test="${sessionScope.member ne null}">
 
-        if ($("#heart").hasClass("fa-regular fa-heart")) {
-            //빈 하트 눌렀을 때 if
-            $("#heart").removeClass("fa-regular fa-heart")
-            $("#heart").addClass("fa-solid fa-heart")
-            //찜 목록에 add해라
-            state = "add";
-        } else {
-            // 꽉 찬 하트를 눌렀을 때 else
-            $("#heart").removeClass("fa-solid fa-heart")
-            $("#heart").addClass("fa-regular fa-heart")
+            if ($("#heart").hasClass("fa-regular fa-heart")) {
+                //빈 하트 눌렀을 때 if
+                $("#heart").removeClass("fa-regular fa-heart")
+                $("#heart").addClass("fa-solid fa-heart")
+                //찜 목록에 add해라
+                state = "add";
+            } else {
+                // 꽉 찬 하트를 눌렀을 때 else
+                $("#heart").removeClass("fa-solid fa-heart")
+                $("#heart").addClass("fa-regular fa-heart")
 
-            //찜 목록에 delete해라
-            state = "delete";
-        }
+                //찜 목록에 delete해라
+                state = "delete";
+            }
 
-        //Action만 가서 해당 회원의 찜목록에 저장
-        $.ajax({
-            url: "Controller?type=addDeleteZzim",
-            type: "POST",
-            data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}
-        })
-
+            //Action만 가서 해당 회원의 찜목록에 저장
+            $.ajax({
+                url: "Controller?type=addDeleteZzim",
+                type: "POST",
+                data: {contentId:${Dvo.contentId}, state: state, contentTypeId:${Dvo.contentTypeId}}
+            })
+        </c:if>
+        <c:if test="${sessionScope.member eq null}">
+            alert("찜 기능은 로그인 후 사용할 수 있습니다.")
+        </c:if>
     })
 
 

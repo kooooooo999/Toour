@@ -51,4 +51,18 @@
         WHERE courseDate_idx = #{courseDate_idx}
     </delete>
 
+    <!-- 큰 코스 삭제하면 코스, 코스 날짜, 코스 일정 한번에 삭제 -->
+    <delete id="totalDeleteCourse" parameterType="String">
+        DELETE
+        FROM course
+        WHERE course_idx = #{course_idx}
+    </delete>
+
+    <!-- 코스 날짜 시 코스 일정 같이 삭제 -->
+    <delete id="deleteCourseDate" parameterType="String">
+        DELETE
+        FROM courseDate
+        WHERE courseDate_idx = #{courseDate_idx}
+    </delete>
+
 </mapper>

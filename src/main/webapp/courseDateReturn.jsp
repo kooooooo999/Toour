@@ -16,7 +16,10 @@
 
 <c:if test="${param.num eq 1}">
   <c:forEach items="${requestScope.date_ar}" var="ar" varStatus="vs">
-    <p><a href="javascript:showCourseList(${ar.courseDate_idx})">${ar.date_title}(${ar.date})</a></p>
+    <div style="display: flex; position: relative;">
+      <p><a href="javascript:showCourseList('${ar.courseDate_idx}', '${ar.date_title}', '${requestScope.course_name}')">${ar.date_title}(${ar.date})</a></p>
+      <button type="button" id="deleteCourseDate" style="position: absolute; display: inline-block; background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 11px; height: 20px; margin-top: 2px; right: 0 " onclick="deleteCourseDate(${ar.courseDate_idx})">삭제</button>
+    </div>
     <hr/>
   </c:forEach>
   <button type="button" id="backCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 15px;" class="buttonRight detail_btn" onclick="addCourse(1)">뒤로</button>

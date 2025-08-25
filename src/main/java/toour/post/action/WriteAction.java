@@ -1,6 +1,7 @@
 package toour.post.action;
 
 import toour.action.Action;
+import toour.control.Controller;
 import toour.login.dao.MemberDAO;
 import toour.member.vo.MemberVO;
 import toour.post.dao.FileDAO;
@@ -125,12 +126,14 @@ public class WriteAction implements Action {
                         e.printStackTrace();
                     }
                 }
+                request.setAttribute("member_idx", member_idx);
 
+                request.setAttribute("category_idx", category_idx);
 
                 //DB에 저장 ++
                 response.sendRedirect("Controller?type=view&post_idx=" + generatedPostIdx);
                 System.out.println("write success");
-                return null;
+            return null;
             }  catch (Exception e) {
                 System.out.println("writeAction error");
                 e.printStackTrace();
