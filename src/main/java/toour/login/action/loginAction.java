@@ -83,7 +83,7 @@ public class loginAction implements Action {
                             }
                             //cornsoup 수정
                             if(mvo.getMember_type().equals("0")){
-                                viewPath = "AdminController?type=AdminMain";
+                                viewPath = "AdminController?type=AdminMainGo";
                             }
                             else {
                                 // 임시 비밀번호로 로그인한 경우 비밀번호 변경 페이지로 이동
