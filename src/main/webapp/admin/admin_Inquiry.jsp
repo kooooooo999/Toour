@@ -276,7 +276,8 @@
                         <tr class="data-inquiry"
                             data-idx="${Ivo.inquiry_idx}"
                             data-category="${Ivo.category}"
-                            data-page="${p.nowPage}">
+                            data-page="${p.nowPage}"
+                            data-answer="${Ivo.answer_content}">
                             <td>${Ivo.inquiry_idx}</td>
                             <td>${Ivo.category}</td>
                             <td>${Ivo.title}</td>
@@ -332,6 +333,7 @@
                 let idx = $(this).data('idx');
                 let category = $(this).data('category');
                 let page = $(this).data('page');
+                let answer_content = $(this).data('answer');
                 let searchType = $("#searchType").val();
                 let searchStatus = $("#searchStatus").val();
 
@@ -343,7 +345,8 @@
                         category: category,
                         searchType: searchType,
                         searchStatus: searchStatus,
-                        cPage: page
+                        cPage: page,
+                        answer_content: answer_content
                     }
                 }).done(function (res) {
                     $(".main-content").html(res);

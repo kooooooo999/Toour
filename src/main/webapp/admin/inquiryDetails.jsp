@@ -223,11 +223,6 @@
         <i class="fas fa-arrow-left"></i>
     </a>
 
-    <c:out value="${p.nowPage}"/>
-
-    <c:out value="${requestScope.page.nowPage}"/>
-
-
     <ul>
         <li><strong>번호:</strong> ${Ivo.inquiry_idx}</li>
         <li><strong>카테고리:</strong> ${Ivo.category}</li>
