@@ -63,7 +63,7 @@ public class AdminPostDAO {
     }
 
     // 게시물에서 검색결과 수를 반환
-    public static int getSearchTotalCount(String searchType,String searchValue){
+    public static int adminsearchTotalCount(String searchType,String searchValue){
         SqlSession ss = FactoryService.getFactory().openSession();
         Map<String, String> map = new HashMap<>();
         if(searchType!=null)
@@ -71,7 +71,7 @@ public class AdminPostDAO {
         if(searchValue!=null)
             map.put("searchValue", searchValue);
 
-        int cnt = ss.selectOne("adminpost.searchTotalCount",map);
+        int cnt = ss.selectOne("post.adminsearchTotalCount",map);
         ss.close();
         return cnt;
     }
