@@ -55,6 +55,11 @@
   </div>
 
   <script>
+    $(function () {
+
+
+    });
+
     // 좌표값 저장할 배열
     var points = [];
 
@@ -85,15 +90,6 @@
     }
     // 지도 범위 재설정
     map.setBounds(bounds);
-
-
-
-    <c:if test="${fn:length(requestScope.resultAr) < 1}">
-      alert("키워드를 확인해 주세요.")
-      $("#searchKeyword").val("");
-      $("#searchKeyword").focus();
-      document.location.href = "Controller?type=GoWay"
-    </c:if>
 
   </script>
 </c:if>
