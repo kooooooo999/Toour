@@ -2,10 +2,10 @@ package toour.member.action;
 
 import toour.action.Action;
 import toour.member.dao.AdminPostDAO;
+import toour.post.vo.PostVO;
 import toour.post.dao.PostDAO;
 import toour.post.dao.ReportDAO;
 import toour.post.vo.CommentVO;
-import toour.post.vo.PostVO;
 import toour.post.vo.ReportVO;
 import toour.util.Paging;
 
@@ -35,7 +35,7 @@ public class AdminCommentListAction implements Action {
             page.setNowPage(nowPage);
         }
 
-        CommentVO[] ar = AdminPostDAO.getcommentList(comment_idx,page.getBegin(),page.getEnd());
+        PostVO[] ar = AdminPostDAO.getcommentList(comment_idx,page.getBegin(),page.getEnd());
 
         request.setAttribute("page",page);
         request.setAttribute("ar",ar);

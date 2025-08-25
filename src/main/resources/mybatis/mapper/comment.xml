@@ -8,16 +8,19 @@
         where post_idx = #{post_idx}
     </select>
 
-    <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
-    <select id="list" resultMap="map1" parameterType="map">
-        select * from(
-        SELECT ROW_NUMBER() OVER(ORDER BY comment_idx DESC) AS rnum, a.*
-        from(
-        select * from comment
-        ) a
-        ) c inner join member m on c.member_idx=m.member_idx
-        where c.rnum Between #{begin} and #{end}
-        ORDER BY c.post_idx DESC
+    <select id="commentList" resultType="toour.post.vo.CommentVO" parameterType="String">
+        SELECT c.*, m.member_nickname,
+        CASE
+        WHEN r.report_status IS NULL THEN -1
+        ELSE r.report_status
+        END AS report_status
+        FROM comment c
+        INNER JOIN member m ON c.member_idx = m.member_idx
+        LEFT JOIN report r
+        ON c.comment_idx = r.comment_idx
+        AND r.target_type = 'COMMENT'
+        WHERE c.post_idx = #{post_idx}
+        ORDER BY c.comment_created_at ASC
     </select>
 
 </mapper>

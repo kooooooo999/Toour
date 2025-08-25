@@ -120,7 +120,7 @@
                 </choose>
                 and
             </if>
-             p.category_idx=1
+            p.category_idx=1
         </where>
         )a
         where a.rnum BETWEEN #{begin} AND #{end};

@@ -21,9 +21,9 @@
         select * from(
         SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
         from(
-            select * from post
-            WHERE category_idx = 2
-            ) a
+        select * from post
+        WHERE category_idx = 2
+        ) a
         ) c inner join member m on c.member_idx=m.member_idx
         where c.rnum Between #{begin} and #{end}
         ORDER BY c.post_idx DESC
@@ -147,19 +147,54 @@
     <!-- 총 게시글 수 막대그래프용 (post 테이블에서 게시글만 가져와서 최근 7일 집계) -->
     <select id="selectWeeklyPostCount" resultType="map">
         SELECT DATE(post_created_at) AS post_day,
-                COUNT(*) AS cnt
+        COUNT(*) AS cnt
         FROM post
         WHERE category_idx = 2
-            AND post_created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        AND post_created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
         GROUP BY DATE(post_created_at)
         ORDER BY post_day;
 
     </select>
 
-    <!-- 총 댓글을 반환하는 기능 -->
-    <select id="totalCount" resultType="int" parameterType="String">
-        select count(*) from comment
+    <select id="selectReportComment" resultMap="map1" parameterType="map">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY r.report_idx DESC) AS rnum,
+        r.*,
+        c.comment_content,
+        p.post_title,
+        reporter.member_nickname AS reporter_nickname,
+        reported.member_nickname AS reported_nickname
+        FROM report r
+        JOIN comment c ON r.comment_idx = c.comment_idx
+        JOIN post p ON c.post_idx = p.post_idx
+        JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        JOIN member reported ON r.reported_idx = reported.member_idx
+        WHERE r.target_type = #{target_type}
+        ) sub
+        WHERE sub.rnum BETWEEN #{begin} AND #{end]
+        ORDER BY sub.report_idx DESC;
+
     </select>
 
+    <select id="postReport" resultType="toour.post.vo.PostVO" parameterType="String">
 
+        SELECT p.*, m.member_nickname,
+        CASE
+        WHEN r.report_status IS NULL THEN -1
+        ELSE r.report_status
+        END AS report_status
+        FROM post p
+        INNER JOIN member m ON p.member_idx = m.member_idx
+        LEFT JOIN report r
+        ON p.post_idx = r.post_idx
+        AND r.target_type = 'POST'
+        WHERE c.post_idx = #{post_idx}
+        ORDER BY c.post_created_at ASC
+
+    </select>
+    <!-- 총 댓글을 반환하는 기능 -->
+    <select id="CommentTotalCount" resultType="int" parameterType="String">
+        select count(*) from comment
+    </select>
 </mapper>
