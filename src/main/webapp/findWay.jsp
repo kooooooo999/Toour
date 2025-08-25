@@ -79,17 +79,9 @@
             </div>
 
             <div id="selected_places" class="selected_places">
-                <h3 id="head">
-                    <c:if test="${param.title eq null and param.course_name eq null}"> 여기로 가야지!</c:if>
-                    <c:if test="${param.course_name ne null}"> ${param.course_name}</c:if>
-                    <c:if test="${param.title ne null}"> (${param.title})</c:if>
-                </h3>
+                <h3 id="head">여기로 가야지!</h3>
 
-                <div id="courseList">
-                    <c:if test="${param.result ne null}">
-                        ${param.result}
-                    </c:if>
-                </div>
+                <div id="courseList"></div>
             </div>
 
             <div id="buttonWrap">

@@ -95,6 +95,7 @@ public class InquiryDAO {
         Map<String, Object> map = new HashMap<>();
         map.put("inquiry_idx", inquiry_idx);
         Map<String, Object> inquiry = ss.selectOne("Inquiry.getInquiryDetail", map);
+        System.out.println("content===" + inquiry.get("answer_content"));
         ss.close();
         return inquiry;
     }
@@ -132,6 +133,9 @@ public class InquiryDAO {
 
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("Inquiry.updateInquirydata", map);
+        System.out.println("inquiry_idx=" + inquiry_idx);
+        System.out.println("status=" + status);
+        System.out.println("answer_content=" + answer_content);
         if (cnt > 0) {
             ss.commit();
         } else {
@@ -283,6 +287,18 @@ public class InquiryDAO {
         map.put("searchStatus", searchStatus);
         int ressultCount = ss.selectOne("Inquiry.totalCount", map);
         return ressultCount;
+    }
+
+    public static InquiryVO[] searchCategorydata(String searchType) {
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<InquiryVO> Ivo = ss.selectList("Inquiry.searchCategory", searchType);
+        InquiryVO[] IvoArr = new InquiryVO[Ivo.size()];
+        if (Ivo.size() > 0 && Ivo != null) {
+            Ivo.toArray(IvoArr);
+        }
+        ss.close();
+
+        return IvoArr;
     }
 
     //    문의글수 가지고 오기

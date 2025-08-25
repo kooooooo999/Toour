@@ -18,83 +18,7 @@
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/sido.css" />">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <style>
-        .slide-container {
-            width: 70%;
-            overflow: hidden; /* visible → hidden */
-            margin: 0 auto;
-            position: relative;
-        }
 
-        .slide-wrapper {
-            display: flex;
-            transition: transform 0.5s ease-in-out;
-            justify-content: center;
-            width: fit-content; /* 또는 충분히 크게 고정해도 됨 */
-        }
-
-        .slide-item {
-            width: 400px;
-            margin: 0 15px;
-            flex-shrink: 0;
-            opacity: 0.5;
-            transition: opacity 0.5s;
-            overflow: hidden; /* 둥근 모서리 유지 */
-            border-radius: 8px;
-            position: relative;
-        }
-
-        .slide-item img {
-            width: 100%;
-            height: 400px;
-            object-fit: cover;
-            border-radius: 8px; /* 이미지 자체에도 */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-            transition: transform 0.5s, opacity 0.5s;
-        }
-
-        .slide-item.active {
-            opacity: 1;
-            z-index: 2;
-        }
-
-        /* 이미지 없을 때 텍스트 스타일 */
-        .slide-item .emptyText {
-            width: 100%;
-            height: 450px;
-            background-color: #f0f0f0;
-            color: #888;
-            font-size: 24px;
-            font-weight: bold;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        /* 이전/다음 버튼 */
-        .prev-btn, .next-btn {
-            position: absolute;
-            top: 40%;
-            transform: translateY(-50%);
-            background-color: transparent; /* 배경색을 투명하게 만듭니다. */
-            color: white;
-            border: none;
-            padding: 15px;
-            cursor: pointer;
-            font-size: 20px;
-            z-index: 10;
-            border-radius: 5px;
-        }
-
-        .prev-btn {
-            left: 0;
-        }
-
-        .next-btn {
-            right: 0;
-        }
-
-    </style>
 </head>
 <body>
 
@@ -108,6 +32,8 @@
             <p class="lineDetails_3">
             <p style="font-size: 20px">조회할 지역을 선택하세요</p>
             <div class="hero-pagination">
+                <i class="fas fa-caret-left arrow"></i>
+                <i class="fas fa-caret-right arrow"></i>
             </div>
         </div>
         <div class="hero-image-right">
@@ -202,118 +128,61 @@
         </div>
     </section>
 
-    <div class="slide-container accommodation-slide-container">
-        <div class="slide-wrapper">
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="4" data-contentid="2703799">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/38/3022238_image2_1.jpg"
-                         alt="군위 삼국유사 테마파크"/>
-                    <div class="card-content">
-                        <h4>삼국유사 속 콘텐츠를 주제로 한 테마파크!</h4>
-                        <p>군위 삼국유사 테마파크</p>
-                    </div>
-                </a>
-            </div>
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="7" data-contentid="127515">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/75/2712575_image2_1.jpg"
-                         alt="대왕암공원"/>
-                    <div class="card-content">
-                        <h4>푸른바다, 우리의 꿈 대왕암!</h4>
-                        <p>대왕암공원</p>
-                    </div>
-                </a>
-            </div>
 
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="35" data-contentid="128526">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/62/2612562_image2_1.jpg"
-                         alt="경주 동궁과 월지"/>
+    <section class="healing-travel-section container section-padding">
+        <h3 class="section-title">함께 떠나는 힐링테마 여행</h3>
+        <div class="healing-carousel-wrapper">
+            <div class="healing-card-wrapper">
+                <div class="healing-card">
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=7266caa0-cb58-48a0-a04b-0dd60ee0ac1c"
+                         alt="경주 풍력발전소"/>
                     <div class="card-content">
-                        <h4>야경이 아름다운 낭만적인 신라 왕궁의 별궁 터</h4>
-                        <p>경주 동궁과 월지</p>
+                        <h4>차 향 따라 쉬어가는 여름방학 🍧</h4>
+                        <p>보성 가족여행 코스 추천</p>
                     </div>
-                </a>
-            </div>
 
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="39" data-contentid="2662743">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/48/3523648_image2_1.jpg"
-                         alt="엉덩물계곡"/>
+                </div>
+                <div class="healing-card">
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=89662693-e69e-4c7d-bd6d-b731a04df674"
+                         alt="단양 디지털 관광주민증"/>
                     <div class="card-content">
-                        <h4>계곡 사이 피어난 유채꽃의 입체적인 풍경 명소</h4>
-                        <p>엉덩물계곡</p>
+                        <h4>디지털 관광주민증으로 알뜰하게!</h4>
+                        <p>단양에서 즐기는 짜릿한 여름</p>
                     </div>
-                </a>
-            </div>
 
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="5" data-contentid="2614852">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/47/2614847_image2_1.bmp"
-                         alt="입석대 (무등산권 국가지질공원)"/>
+                </div>
+                <div class="healing-card">
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=a483fc35-1ee1-4848-acce-ab9bf19b4819"
+                         alt="서울 사진미술관"/>
                     <div class="card-content">
-                        <h4>무등산의 대표 절경</h4>
-                        <p>입석대</p>
+                        <h4>따끈한 신상 공간,</h4>
+                        <p>서울시립 사진미술관 📷</p>
                     </div>
-                </a>
-            </div>
 
-
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="34" data-contentid="125926">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/85/3506485_image2_1.jpg"
-                         alt="천안 유관순 열사 유적"/>
+                </div>
+                <div class="healing-card">
+                    <img src="https://cdn.visitkorea.or.kr/img/call?cmd=VIEW&id=f60d9fe7-8cf0-496a-be9e-9be868875f95"
+                         alt="템플스테이"/>
                     <div class="card-content">
-                        <h4>유관순 열사의 나라사랑 정신을 느낄 수 있는 곳</h4>
-                        <p>천안 유관순 열사 유적</p>
+                        <h4>템플스테이부터 천문대까지!</h4>
+                        <p>영월의 여름을 즐기는 법</p>
                     </div>
-                </a>
-            </div>
 
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="38" data-contentid="127923">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/93/3479293_image2_1.jpg"
-                         alt="화엄사"/>
-                    <div class="card-content">
-                        <h4>화엄사상 꽃피운 천년의 화엄성지</h4>
-                        <p>화엄사</p>
-                    </div>
-                </a>
+                </div>
             </div>
-
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="36" data-contentid="127778">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/96/2703896_image2_1.jpg"
-                         alt="가천 다랭이마을"/>
-                    <div class="card-content">
-                        <h4>남해 감성 여행지 다랭이 마을</h4>
-                        <p>가천 다랭이마을</p>
-                    </div>
-                </a>
+            <div class="healing-navigation">
+                <i class="fas fa-chevron-right"></i>
             </div>
-            <div class="slide-item">
-                <a href="#" class="data-trip" data-contenttypeid="12" data-areacode="38" data-contentid="2606207">
-                    <img src="http://tong.visitkorea.or.kr/cms/resource/53/2640153_image2_1.jpg"
-                         alt="목포 해상케이블카"/>
-                    <div class="card-content">
-                        <h4>계곡 사이 피어난 유채꽃의 입체적인 풍경 명소</h4>
-                        <p>목포 해상케이블카</p>
-                    </div>
-                </a>
-            </div>
-
         </div>
-        <button class="prev-btn">❮</button>
-        <button class="next-btn">❯</button>
-    </div>
+        <div class="healing-pagination-dots">
+            <span>1 / 3</span>
+        </div>
+    </section>
 
 </main>
 
 <c:import url="/common/footer.jsp"/>
-
-<script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script type="text/javascript">
+<script>
 
     $(document).ready(function () { //보안을 위해 거쳐서 이동
         $(document).on('click', '.data-trip', function (e) {
@@ -337,66 +206,6 @@
             $('body').append(form);
             form.submit();
         });
-
-        var accommodationContainer = $('.accommodation-slide-container');
-        initSlide(accommodationContainer);
-
-        function initSlide(container) {
-            var slideWrapper = container.find('.slide-wrapper');
-            var slides = slideWrapper.find('.slide-item');
-            var currentIndex = 1;
-            var slideCount = slides.length;
-            var slideWidth = slides.outerWidth(true); // ✅ 정확한 슬라이드 전체 폭 계산
-
-            // 처음 슬라이드 활성화
-            slides.removeClass('active');
-            slides.eq(currentIndex).addClass('active');
-
-            container.find('.prev-btn').click(function () {
-                if (slideCount === 0) return;
-
-                if (currentIndex === 0) {
-                    // 첫 번째 슬라이드(0)에 있을 때 이전 버튼 클릭 시
-                    currentIndex = slideCount - 1;  // 마지막 인덱스로 이동
-                } else {
-                    currentIndex = currentIndex - 1;
-                }
-                updateSlide();
-            });
-
-            container.find('.next-btn').click(function () {
-                if (slideCount === 0) return;
-
-                if (currentIndex === 0) {
-                    // 0번째 인덱스일 때 다음 클릭하면 마지막으로
-                    currentIndex = slideCount - 1;
-                } else {
-                    currentIndex = (currentIndex < slideCount - 1) ? currentIndex + 1 : 0;
-                }
-                updateSlide();
-            });
-
-            function updateSlide() {
-                // 1. 컨테이너의 중앙을 계산합니다.
-                const containerWidth = $('.slide-container').width();
-
-                // 2. 활성화된 슬라이드 아이템의 너비를 포함한 전체 너비를 계산합니다.
-                //    outerWidth(true)는 마진을 포함한 너비를 반환합니다.
-                const slideItemWidth = slides.outerWidth(true);
-
-                // 3. 슬라이더가 이동해야 할 오프셋 값을 계산합니다.
-                //    중앙 정렬을 위해 컨테이너 너비의 절반과 슬라이드 아이템 너비의 절반을 고려합니다.
-                const offset = (containerWidth / 2) - (slideItemWidth / 2) - (slideItemWidth * currentIndex);
-
-                // 4. 계산된 오프셋 값을 적용합니다.
-                slideWrapper.css('transform', 'translateX(' + offset + 'px)');
-
-                // 활성화 클래스 업데이트
-                slides.removeClass('active');
-                slides.eq(currentIndex).addClass('active');
-            }
-        }
-
     });
 
 </script>

@@ -35,14 +35,12 @@ public class myInfoAction implements Action {
         }
         if (mvo.getMember_type().equals("LOCAL")){
             if (u_pw.trim().length() < 1) {
-                // 비밀번호 변경 없음
+
             } else {
                 String salt = Salt.getSalt();
                 changePW = Hash.getHash(salt + u_pw);
                 mvo.setMember_salt(salt);
                 mvo.setMember_password(changePW);
-                // 비밀번호 변경 시 임시 비밀번호 플래그를 0으로 설정
-                mvo.setIs_temp_password("0");
             }
         MemberDAO.updateMyInfo(mvo);
         }else

@@ -70,11 +70,11 @@ public class ViewAction implements Action {
             PostDAO.post_views(post_idx);
             readList.add(post_idx);
         }
-        List<CommentVO> comment_list = PostDAO.getCommentList(post_idx);
+        CommentVO[] comment_list =PostDAO.getCommentList(post_idx);
         if (comment_list == null) {
-            comment_list = new ArrayList<>(); // null 대신 빈 ArrayList
+            comment_list = new CommentVO[0]; // null 대신 빈 배열
         }
-        request.setAttribute("comment_list", comment_list);
+        System.out.println("comment_list.length"+comment_list.length);
         // 추천 여부 확인 (로그인한 경우에만)
         boolean alreadyRecommended = false;
         if (member_info.getMember_idx() != null) {

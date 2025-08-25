@@ -5,11 +5,6 @@ body {
     color: #333;
     line-height: 1.6;
 }
-caption{
-    text-indent: -9999px;
-    margin: 0;
-    padding: 0;
-}
 
 /* 게시판 컨테이너 */
 #post {
@@ -22,8 +17,6 @@ caption{
     overflow-x: auto;
 }
 
-
-
 /* 게시글 헤더 영역 (정렬, 총 건수, 검색) */
 .post-header-container {
     display: flex;
@@ -32,13 +25,7 @@ caption{
     margin: 20px 40px;
     flex-wrap: wrap;
 }
-.inquiry-header-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin: 20px 40px;
-    flex-wrap: wrap;
-}
+
 /*.sort-count-area {
     display: flex;
     justify-content: space-between;
@@ -136,9 +123,8 @@ caption {
     text-align: left;
     font-size: 24px;
     font-weight: bold;
-    padding: 0;
+    padding: 20px 20px 10px;
     color: #495057;
-
 }
 
 /* 테이블 헤더 */
@@ -151,7 +137,6 @@ thead th {
     padding: 15px 10px;
     font-weight: bold;
     color: #495057;
-
 }
 
 /* 테이블 바디 */
@@ -203,11 +188,13 @@ td a:hover {
 .paging-area ol.paging {
     display: flex;
     list-style: none;
+    padding: 0;
     margin: 0;
 }
 
 .paging-area ol.paging li {
     margin: 0 5px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     background-color: #fff;
@@ -217,8 +204,6 @@ td a:hover {
 .paging-area ol.paging li.now {
     background-color: #1a73e8;
     color: white;
-    padding: 8px 12px;
-
     font-weight: bold;
     border-color: #1a73e8;
 }

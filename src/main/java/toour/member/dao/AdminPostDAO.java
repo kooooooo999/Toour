@@ -2,8 +2,6 @@ package toour.member.dao;
 
 import mybatis.service.FactoryService;
 import toour.member.vo.MemberVO;
-import toour.post.dao.ReportDAO;
-import toour.post.vo.CommentVO;
 import toour.post.vo.FileVO;
 import toour.post.vo.PostVO;
 import org.apache.ibatis.session.SqlSession;
@@ -266,34 +264,6 @@ public class AdminPostDAO {
         SqlSession ss = FactoryService.getFactory().openSession();
 
         List<PostVO> list = ss.selectList("adminpost.selectReportComment",map);
-        if(list.size()>0&& !list.isEmpty()) {
-            ar = new PostVO[list.size()];
-            list.toArray(ar);
-
-        }
-    }
-    //댓글 신고 수 가지고 오기
-    public static int getcommentTotalCount(){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.selectOne("post.totalCount");
-        ss.close();
-        return cnt;
-    }
-
-    // 목록 반환
-    public static PostVO[] getcommentList(String category_idx, int begin, int end){
-        PostVO[] ar = null;
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("category_idx", category_idx);
-        map.put("begin", begin);
-        map.put("end", end);
-
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<PostVO> list = ss.selectList("adminpost.list", map);
-        if(list != null && list.size()>0){
-            ar = new PostVO[list.size()];
-            list.toArray(ar); // list에 있는 모든 항목들을 배열 ar에 복사한다.
         if(list.size()>0&& !list.isEmpty()){
             ar = new PostVO[list.size()];
             list.toArray(ar);
@@ -302,21 +272,12 @@ public class AdminPostDAO {
         return ar;
     }
 
-    //댓글 가져오기
-    public static CommentVO[] getCommentList(String post_idx){
-        CommentVO[] ar = null;
-        SqlSession ss = FactoryService.getFactory().openSession();
-        List<CommentVO> list = ss.selectList("comment.commentList",post_idx);
-        if(list.size()>0&& !list.isEmpty()){
-            ar = new CommentVO[list.size()];
-            list.toArray(ar);
-        }
-        return  ar;
-    }
-
     //댓글 신고 수 가지고 오기
     public static int getcommentTotalCount(){
-        return ReportDAO.TotalCount();
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.selectOne("post.totalCount");
+        ss.close();
+        return cnt;
     }
 
     // 목록 반환
