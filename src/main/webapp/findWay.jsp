@@ -361,6 +361,30 @@
         })
     }
 
+    // 코스 아예 삭제(코스, 코스 날짜, 코스 일정)
+    function totalDeleteCourse(course_idx) {
+        console.log("deleteCourse_idx : " + course_idx)
+        $.ajax({
+            url: "Controller?type=totalCourseDelete",
+            type: "post",
+            data: { course_idx: course_idx }
+        }).done(function (res) {
+            document.location.href = "Controller?type=GoWay";
+        })
+    }
+
+    // 코스 날짜 삭제(코스 날짜, 코스 일정)
+    function deleteCourseDate(courseDate_idx) {
+        console.log("deleteCourseDate_idx : " + courseDate_idx)
+        $.ajax({
+            url: "Controller?type=totalCourseDelete",
+            type: "post",
+            data: { courseDate_idx: courseDate_idx }
+        }).done(function (res) {
+            document.location.href = "Controller?type=GoWay";
+        })
+    }
+
     // 페이지 누르면 해당 페이지로 변경되는 코드
     function paging(cPage) {
 
