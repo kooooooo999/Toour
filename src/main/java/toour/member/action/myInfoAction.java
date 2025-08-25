@@ -29,22 +29,31 @@ public class myInfoAction implements Action {
         Object obj = request.getSession().getAttribute("member");
         MemberVO mvo = null;
 
-        if (obj != null) {
+        //변경 내용을 저장한 mvo
+        MemberVO changeMvo=new MemberVO();
+
+        changeMvo.setMember_nickname(u_nickname);
+
+        if(obj!=null){
             mvo = (MemberVO) obj;
+            changeMvo.setMember_idx(mvo.getMember_idx());
             mvo.setMember_nickname(u_nickname);
         }
-        if (mvo.getMember_type().equals("LOCAL")){
-            if (u_pw.trim().length() < 1) {
 
-            } else {
-                String salt = Salt.getSalt();
-                changePW = Hash.getHash(salt + u_pw);
-                mvo.setMember_salt(salt);
-                mvo.setMember_password(changePW);
-            }
-        MemberDAO.updateMyInfo(mvo);
-        }else
-            MemberDAO.updateKakaoMyInfo(mvo);
+        if(u_pw.trim().length()<1){
+            changePW = mvo.getMember_password();
+            changeMvo.setMember_salt(mvo.getMember_salt());
+        }else{
+            String salt = Salt.getSalt();
+            changePW = Hash.getHash(salt+u_pw);
+            changeMvo.setMember_salt(salt);
+            mvo.setMember_salt(salt);
+            mvo.setMember_password(changePW);
+        }
+
+        changeMvo.setMember_password(changePW);
+
+        MemberDAO.updateMyInfo(changeMvo);
 
         return "";
     }

@@ -4,7 +4,6 @@ import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
 import toour.member.vo.CourseInVO;
 import toour.member.vo.CourseVO;
-import toour.member.vo.MemberVO;
 import toour.tripsuggestion.vo.DataVO;
 
 import java.util.HashMap;
@@ -101,57 +100,5 @@ public class AddCourseDAO {
 
         ss.close();
         return courseIn_ar;
-    }
-
-    public static int deleteCourse(String courseDate_idx) {
-        int cnt = 0;
-
-        SqlSession ss = FactoryService.getFactory().openSession();
-
-        try{
-            cnt = ss.delete("course.deleteCourse", courseDate_idx);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        if (cnt > 0) {
-            ss.commit();
-        } else {
-            ss.rollback();
-        }
-
-        ss.close();
-        return cnt;
-    }
-
-    public static int addCourseIn(String courseDate_idx, List<DataVO> list) {
-
-
-        int cnt = 0;
-        SqlSession ss = FactoryService.getFactory().openSession();
-
-        for (DataVO dvo : list) {
-            CourseInVO cvo = new CourseInVO();
-            cvo.setCourseDate_idx(courseDate_idx);
-            cvo.setContentId(dvo.getContentId());
-            cvo.setContentTypeId(dvo.getContentTypeId());
-            cvo.setTitle(dvo.getTitle());
-            cvo.setAddr1(dvo.getAddr1());
-            cvo.setMapx(dvo.getMapx());
-            cvo.setMapy(dvo.getMapy());
-            int cnt2 = ss.insert("course.courseInAdd",cvo);
-            if (cnt2 > 0) {
-                cnt++;
-            }
-        }
-
-        if (cnt == list.size()) {
-            ss.commit();
-        } else {
-            ss.rollback();
-        }
-
-        ss.close();
-        return cnt;
     }
 }

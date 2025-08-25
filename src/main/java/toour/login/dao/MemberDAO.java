@@ -57,18 +57,7 @@ public class MemberDAO {
         else
             ss.rollback();
         ss.close();
-
-    }
-
-    public static void updateKakaoMyInfo(MemberVO mvo){
-        SqlSession ss = FactoryService.getFactory().openSession();
-        int cnt = ss.update("member.changeKakaoMyInfo", mvo);
-
-        if(cnt >0)
-            ss.commit();
-        else
-            ss.rollback();
-        ss.close();
+        System.out.println("updateMyInfo_cnt:"+cnt);
     }
 
     public static void updateMemInfo(MemberVO mvo){
