@@ -1,8 +1,6 @@
 package toour.control;
 
 import toour.action.Action;
-import toour.member.action.post.AdminPostViewAction;
-import toour.member.action.post.GetCommentsByPageAction;
 import toour.member.vo.MemberVO;
 
 import javax.servlet.RequestDispatcher;
@@ -44,7 +42,6 @@ public class AdminController extends HttpServlet {
         // jsp에서는 application이라는 내장객체가 존재했지만 서블릿에서는
         // 직접 얻어내야 한다.
         ServletContext application = this.getServletContext();
-
 
         String realPath = application.getRealPath(myParam);
         //System.out.println(realPath);

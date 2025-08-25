@@ -31,13 +31,7 @@ public class tripDetailsAction implements Action {
         String homepageText = request.getParameter("homepageText");
         DataVO datavo = new DataVO(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, cPage, homepageText, homepageUrl);
 
-        Object obj1 = request.getAttribute("dataAr");
-        DataVO dataArVo = null;
-        if (obj1 != null) {
-            dataArVo = (DataVO) obj1;
-            request.setAttribute("detailsAr", dataArVo);
-        } else
-            request.setAttribute("detailsAr", datavo);
+        request.setAttribute("detailsAr", datavo);
 
         //찜 목록에 해당 관광지가 속해 있는지 확인하고 있다면 하트를 채워 놓기 위해 신호를 보내는 곳
         boolean zzim_state = false;
@@ -68,11 +62,15 @@ public class tripDetailsAction implements Action {
 
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1");
+//        sb.append(cPage);
+//        System.out.println("cPage"+cPage);
         sb.append("&numOfRows=5&_type=xml&contentTypeId=");
         sb.append(contentTypeId);
         sb.append("&contentId=");
         sb.append(contentId);
+
         try {
+            System.out.println("sb?:"+sb.toString());
             URL url = new URL(sb.toString());
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestProperty("Content-Type", "application/xml");
@@ -93,6 +91,7 @@ public class tripDetailsAction implements Action {
                 DataVO vo = new DataVO(infocenter, parking, restdate, usetime);
                 dvo[i++] = vo;
             }
+            System.out.println("dvo[0]:"+dvo[0]);
             request.setAttribute("detailsAr_2", dvo);
         } catch (Exception e) {
             e.printStackTrace();

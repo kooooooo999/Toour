@@ -10,25 +10,26 @@
     <meta charset="UTF-8">
     <title>관리자 페이지</title>
     <style>
-
         body {
-            font-family: 'Noto Sans KR', sans-serif;
-            height: 100%;
-            background-color: #f0f2f5;
-
-        }
-        html, body {
-            height: 100%;
             margin: 0;
-            padding: 0;
+            font-family: 'Noto Sans KR', sans-serif;
+            display: flex;
+            background-color: #f4f6f8;
         }
 
-        .container {
+        .sidebar {
+            width: 220px;
+            background-color: #2c3e50;
             display: flex;
-            min-height: 100vh; /* 화면 전체 높이 최소 보장 */
-            width: 100%;
-            align-items: stretch; /* 사이드바와 컨텐츠 높이를 같게 맞춤 */
+            flex-direction: column;
+            padding: 20px;
+            color: white;
+            height: 100vh;
         }
+
+
+
+
         h1.page-title {
             font-size: 32px;
             font-weight: bold;
@@ -36,11 +37,9 @@
             margin-bottom: 30px;
         }
 
-
         .main-content {
             flex: 1;
             padding: 40px;
-            background-color: #f4f6f8;
         }
 
         table {
@@ -201,8 +200,7 @@
             display: flex;
             justify-content: center;
             /*align-items: center;*/
-            min-height: 100vh;
-            min-width: 100vw;
+            height: 100vh;
             margin: 0;
             background-color: #f0f2f5;
         }
@@ -217,8 +215,6 @@
     </style>
 </head>
 <body>
-
-<div class="container">
 
 <c:import url="/common/adminSidebar.jsp"/>
 
@@ -459,8 +455,6 @@
 
     </div>
 </div>
-
-
-</div>
 </body>
+
 </html>

@@ -53,14 +53,10 @@ public class CommentAction implements Action {
 
             //파라미터 받아오기
             String comment_content = mr.getParameter("comment_content");
-            String formatted_content = comment_content.replace("\n", "<br/>");
-
-
-
             String post_idx = mr.getParameter("post_idx");
 
             //comment insert
-            PostDAO.insertComment(post_idx, member_idx, formatted_content);
+            PostDAO.insertComment(post_idx, member_idx, comment_content);
 
             viewPath="Controller?type=view&post_idx="+post_idx;
         }

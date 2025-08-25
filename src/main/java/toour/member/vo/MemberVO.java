@@ -2,15 +2,14 @@ package toour.member.vo;
 
 import toour.tripsuggestion.vo.DataVO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MemberVO {
     private  String   member_idx, member_name, member_nickname, member_password,
             member_email, member_created_at, member_updated_at,
             member_last_login_at, member_status, member_type, member_salt,
-            member_id, member_warning, login_type, is_temp_password;
-    // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt, 임시비밀번호여부
+            member_id, member_warning, login_type;
+    // 이름, 별명, 비밀번호, 이메일, 생성일, 변경일?, 마지막 로그인 날짜, 탈퇴여부, 사용자/관리자, salt
 
     private String post_idx;
 
@@ -28,7 +27,7 @@ public class MemberVO {
 
     // 내가 저장한 찜 목록저장소
 
-    private List<DataVO> courseList =new ArrayList<>();
+    private List<DataVO> courseList;
 
     public List<DataVO> getCourseList() {
         return courseList;
@@ -136,13 +135,5 @@ public class MemberVO {
 
     public void setMember_salt(String member_salt) {
         this.member_salt = member_salt;
-    }
-
-    public String getIs_temp_password() {
-        return is_temp_password;
-    }
-
-    public void setIs_temp_password(String is_temp_password) {
-        this.is_temp_password = is_temp_password;
     }
 }

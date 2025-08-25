@@ -22,10 +22,10 @@
 
         #box {
             display: grid;
-            grid-template-columns: 250px 280px;
+            grid-template-columns: 280px 280px;
             gap: 30px;
             width: 500px;
-            margin-left: 40px;
+            margin-left: 50px;
             padding-top: 25px;
             /*border: 1px solid #4a545e;
             border-collapse: collapse;*/
@@ -50,6 +50,7 @@
         }
 
         .ellip_2 {
+            margin-top: -10px;
             font-weight: bold;
             display: inline-block;
             width: 100%;
@@ -61,11 +62,6 @@
 
         #regionWrap {
             margin-top: -50px;
-        }
-        #column{
-            border: 1px solid #ccc;
-            padding: 10px;
-            border-radius: 10px;
         }
     </style>
 </head>
@@ -84,9 +80,8 @@
                 <c:if test="${fn:length(vo.firstimage) > 0}">
                     <div id="column">
                         <img id="image" src="${vo.firstimage}"
-                             onerror="this.src='images/noImage.png'" style="border: 1px solid #eee; border-radius: 5px"/>
+                             onerror="this.src='images/noImage.png'"/>
                         <p class="ellip">${vo.addr1}</p>
-                        <hr style="margin-bottom: 5px;" color="#ddd" size="0.8px" width="230px"/>
                         <a href="#" class="data-link ellip_2" data-title="${vo.title}" data-addr1="${vo.addr1}"
                            data-overview="${vo.overview}" data-firstimage="${vo.firstimage}"
                            data-mapx="${vo.mapx}" data-mapy="${vo.mapy}" data-contentid="${vo.contentId}"

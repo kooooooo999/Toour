@@ -2,9 +2,7 @@ package toour.member.action.post;
 
 import toour.action.Action;
 import toour.member.dao.AdminNoticeDAO;
-import toour.member.dao.AdminPostDAO;
 import toour.post.dao.ReportDAO;
-import toour.post.vo.CommentVO;
 import toour.post.vo.PostVO;
 import toour.post.vo.ReportVO;
 import toour.util.Paging;
@@ -33,7 +31,6 @@ public class AdminReportSearchAction implements Action{
             }
 
             ReportVO[] rvo = ReportDAO.search(searchType, page.getBegin(),page.getEnd());
-
 
             if(rvo!=null &&rvo.length>0)
                 System.out.println("검색 결과 첫 번째 항목: " + rvo[0]);

@@ -14,11 +14,9 @@ public class SearchCourseDateAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String course_idx = request.getParameter("course_idx");
-        String course_name = request.getParameter("course_name");
 
         CourseDateVO[] date_ar = CourseDateDAO.searchCourseDate(course_idx);
 
-        request.setAttribute("course_name", course_name);
         request.setAttribute("course_idx", course_idx);
         request.setAttribute("date_ar", date_ar);
 

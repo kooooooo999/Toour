@@ -236,13 +236,13 @@
       <c:if test="${not empty rvo}">
         <c:set var="p" value="${requestScope.page}"/>
         <c:forEach items="${rvo}" var="vo" varStatus="vs">
-          <tr onclick="location.href='AdminController?type=adminpostview&post_idx=${vo.post_idx}&cPage=${nowPage}&comment_idx=${vo.comment_idx}'">
+          <tr onclick="location.href='AdminController?type=${vo.target_type == 'POST' ? 'adminpostview' : 'admincommentview'}&post_idx=${vo.post_idx}&cPage=${nowPage}'">
             <td>${vo.report_idx}</td>
             <td>${vo.reporter_nickname}</td>
             <td>${vo.reported_nickname}</td>
             <td><c:if test="${vo.target_type=='POST'}">게시글</c:if>
               <c:if test="${vo.target_type=='COMMENT'}">댓글</c:if>
-            </td>
+                </td>
             <td>${vo.report_content}</td>
             <td>${vo.report_created_at.substring(0,10)}</td>
             <td>
@@ -252,6 +252,8 @@
               <c:if test="${vo.report_status == 1}">
                 <p>처리완료</p>
               </c:if>
+
+
             </td>
           </tr>
         </c:forEach>
