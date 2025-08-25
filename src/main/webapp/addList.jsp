@@ -18,20 +18,23 @@
 <input type="hidden" id="courseDate_idx" value="${requestScope.courseDate_idx}"/>
 
 <script>
-
+$(function () {
     <%-- 코스 리스트 창에 아무것도 없을 때는 코스 추가 버튼 숨기기 --%>
     <c:if test="${fn:length(sessionScope.member.courseList) > 0}">
     console.log("kiki")
-        <c:if test="${requestScope.myCourse ne 'myCourse'}">
-            $("#saveButton").show();
-        </c:if>
-        <c:if test="${requestScope.myCourse eq 'myCourse'}">
-            $("#editCourseButton").show();
-        </c:if>
+    <c:if test="${requestScope.myCourse ne 'myCourse'}">
+        $("#saveButton").show();
+    </c:if>
+    <c:if test="${requestScope.myCourse eq 'myCourse'}">
+        $("#editCourseButton").show();
+    </c:if>
     </c:if>
     <c:if test="${fn:length(sessionScope.member.courseList) == 0}">
-        $("#saveButton").hide();
+    $("#saveButton").hide();
     </c:if>
+
+})
+
 
     var coursePoints = [];
     var points = [];

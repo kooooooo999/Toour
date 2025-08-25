@@ -56,6 +56,7 @@ public class SignUpAction implements Action {
             int cnt = MemberDAO.addMem(mvo);
 
             cmd =1;
+            viewPath = "MainIndex/index.jsp";
         }
 
         if(cmd==0){

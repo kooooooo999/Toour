@@ -41,40 +41,54 @@ public class loginAction implements Action {
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
+                        if(mvo.getMember_status().equals("0")) {
+                            //회원이 활성화일 때
+                            request.getSession().setAttribute("member", mvo);
 
-                        request.getSession().setAttribute("member",mvo);
-
-                        HttpSession session = request.getSession();
-                        System.out.println(mvo.getMember_idx());
-                        session.setAttribute("member",mvo);
-                        session.setAttribute("userIdx", mvo.getMember_idx());
-                        session.setAttribute("userId", mvo.getMember_id());
-                        session.setAttribute("userNickName", mvo.getMember_nickname());
-                        System.out.println("loginAction mvo.nickname="+mvo.getMember_nickname());
-                        session.setMaxInactiveInterval(30*60);
-                        System.out.println("userNickName:"+session.getAttribute("userNickName"));
-                        try {
-                            int cnt = MemberDAO.updateLastLogin(mvo.getMember_idx());
-                            if (cnt > 0) {
-                                mvo.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                            HttpSession session = request.getSession();
+                            System.out.println(mvo.getMember_idx());
+                            session.setAttribute("member", mvo);
+                            session.setAttribute("userIdx", mvo.getMember_idx());
+                            session.setAttribute("userId", mvo.getMember_id());
+                            session.setAttribute("userNickName", mvo.getMember_nickname());
+                            System.out.println("loginAction mvo.nickname=" + mvo.getMember_nickname());
+                            session.setMaxInactiveInterval(30 * 60);
+                            System.out.println("userNickName:" + session.getAttribute("userNickName"));
+                            try {
+                                int cnt = MemberDAO.updateLastLogin(mvo.getMember_idx());
+                                if (cnt > 0) {
+                                    mvo.setMember_last_login_at(String.valueOf(new Timestamp(System.currentTimeMillis())));
+                                }
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                throw new RuntimeException(e);
                             }
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            throw new RuntimeException(e);
-                        }
-                        //cornsoup 수정
-                        if(mvo.getMember_type().equals("0")){
-                            viewPath = "AdminController?type=AdminMain";
-                        }
-                        else
-                            viewPath = "gohome";
+                            //cornsoup 수정
+                            if (mvo.getMember_type().equals("0")) {
+                                viewPath = "AdminController?type=AdminMain";
+                            } else
+                                viewPath = "gohome";
+                        }else if(mvo.getMember_status().equals("2")){
+                            //회원이 비활성화 일때
+                            request.setAttribute("alertLoginText","탈퇴한 회원정보입니다.");
+                            viewPath = "member/login.jsp";
+                        }else {
+                            //회원이 대기일 때
+                            request.setAttribute("alertLoginText","휴면 회원정보입니다.");
+                            viewPath = "member/login.jsp";
 
-                    }else
+                        }
+
+                    }else {
                         //입력한 비밀번호와 db에 저장된 비밀번호가 다를 때
-                        viewPath ="member/login.jsp";
-                }else
+                        request.setAttribute("alertLoginText","아이디 혹은 비밀번호가 맞지 않습니다.");
+                        viewPath = "member/login.jsp";
+                    }
+                }else {
                     //입력한 id가 db에 없을 때
-                    viewPath ="member/login.jsp";
+                    request.setAttribute("alertLoginText", "아이디 혹은 비밀번호가 맞지 않습니다.");
+                    viewPath = "member/login.jsp";
+                }
             }else {
                 viewPath="member/login.jsp";
             }

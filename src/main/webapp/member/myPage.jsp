@@ -818,7 +818,7 @@
             </tr>
             <tr id="revision_btn">
                 <td colspan="2">
-                    <button type="button" onclick="goChange()" class="">수정하기</button>
+                    <button type="button" onclick="goOutMember()" class="">회원 탈퇴</button><button type="button" onclick="goChange()" class="">수정하기</button>
                 </td>
             </tr>
             </tbody>
@@ -853,6 +853,7 @@
     <input type="hidden" id="title" name="title" />
     <input type="hidden" id="course_name" name="course_name" />
 </form>
+
 
 
 
@@ -1060,7 +1061,7 @@
                    $("#pw").attr("hidden",true);
                    $("#re-pw").attr("hidden",true);
                    $("#revision_btn").html(
-                       "<td colspan='2'> <button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
+                       "<td colspan='2'> <button type='button' onClick='goOutMember()' className=''>회원 탈퇴</button><button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
                    )
 
                    $("#matchPassword_dialog").dialog("close");
@@ -1157,11 +1158,11 @@
         $("#memberCourse").dialog("open");
     }
 
-    function myCourseDate(course_idx) {
+    function myCourseDate(course_idx, course_name) {
         $.ajax({
             url: "Controller?type=searchCourseDate",
             method: "post",
-            data: { course_idx: course_idx, num: 1 }
+            data: { course_idx: course_idx, num: 1 , course_name:course_name}
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
@@ -1176,7 +1177,7 @@
         $.ajax({
             url: "Controller?type=myCourseDay",
             type: "post",
-            data: { courseDate_idx: courseDate_idx }
+            data: { courseDate_idx: courseDate_idx}
         }).done(function (res) {
             console.log("res:" + res);
             $("#html-content").html(res);
@@ -1195,6 +1196,10 @@
 
         // 3. 폼을 제출합니다.
         document.result_frm.submit();
+    }
+
+    function goOutMember() {
+        document.location.href = "Controller?type=delMember";
     }
 </script>
 </body>

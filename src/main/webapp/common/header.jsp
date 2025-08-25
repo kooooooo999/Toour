@@ -38,7 +38,7 @@
                 </c:choose>
             </c:if>
 
-            <a href="Controller?type=mypage">마이 페이지</a>
+            <a href="javascript:myPageCheckLogin()">마이 페이지</a>
             <a href="Controller?type=QnA">고객센터</a>
         </div>
     </div>
@@ -144,9 +144,17 @@
             form.submit();
         </c:if>
         <c:if test="${sessionScope.member eq null}">
-            alert("로그인 해주세요.");
+            alert("나만의 코스는 로그인 후 사용할 수 있습니다.");
         </c:if>
     }
 
+    function myPageCheckLogin(){
+        <c:if test="${sessionScope.member eq null}">
+            alert("마이 페이지는 로그인 후 사용할 수 있습니다.")
+        </c:if>
+        <c:if test="${sessionScope.member ne null}">
+            document.location.href = "Controller?type=mypage";
+        </c:if>
+    }
 
 </script>
