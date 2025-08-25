@@ -186,7 +186,6 @@
         }
 
         #post th, #post td {
-            padding: 12px; /* 테이블 셀 패딩 확장 */
             border-bottom: 1px solid #f2f2f2;
         }
 
@@ -239,15 +238,14 @@
             margin: 0 6px;
         }
 
-        .paging li a, .paging li.disable {
-            display: block;
-            padding: 8px 12px; /* 페이징 버튼 패딩 확장 */
-            border: 1px solid #ccc;
-            background-color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            color: #333;
-        }
+        /*.paging li a, .paging li.disable {*/
+        /*    display: block;*/
+        /*    border: 1px solid #ccc;*/
+        /*    background-color: #fff;*/
+        /*    text-decoration: none;*/
+        /*    border-radius: 4px;*/
+        /*    color: #333;*/
+        /*}*/
 
         .paging li.now {
             background-color: #1e40af;
