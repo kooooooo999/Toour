@@ -15,8 +15,7 @@ import static toour.post.dao.ReportDAO.TotalCount;
 public class AdminReportAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-
+        String report_idx = request.getParameter("report_idx");
 
         int totalCount = ReportDAO.getReportCount();
         Paging page = new Paging(10,5);
@@ -30,8 +29,8 @@ public class AdminReportAction implements Action {
             page.setNowPage(nowPage);
         }
 
+        ReportVO[] rvo = ReportDAO.getReport(report_idx,page.getBegin(),page.getEnd());
 
-        ReportVO[] rvo = ReportDAO.getReport();
 
         request.setAttribute("totalCount", totalCount);
         request.setAttribute("rvo", rvo);

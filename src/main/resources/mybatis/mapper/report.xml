@@ -23,6 +23,7 @@
         #{reporter_idx}, #{reported_idx}, #{post_idx}, #{comment_idx},
         #{report_content}, 'COMMENT', 0, NOW() )
     </insert>
+
     <!--이건 관리자용 목록 가져오기-->
     <select id="getReportList" resultType="toour.post.vo.ReportVO" parameterType="map">
         SELECT r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
@@ -36,6 +37,7 @@
         FROM report r
         LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
         LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+        ORDER BY r.report_created_at DESC
     </select>
 
 
@@ -125,6 +127,7 @@
         m.member_nickname,
         c.*,
         MAX(CASE WHEN r.target_type = 'COMMENT' THEN r.report_status END) AS report_status,
+        MAX(CASE WHEN r.target_type = 'COMMENT' THEN r.report_idx END) AS report_idx,
         GROUP_CONCAT(
         CASE WHEN r.target_type = 'COMMENT' THEN
         CONCAT(reporter.member_nickname, ': ', r.report_content)

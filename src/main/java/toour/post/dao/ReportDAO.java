@@ -58,15 +58,21 @@ public class ReportDAO {
     }
 
     //모든 신고목록 가져오기
-    public static ReportVO[] getReport() {
-        ReportVO[] reportVO = null;
+    public static ReportVO[] getReport(String report_idx,int begin,int end) {
+        ReportVO[] ar = null;
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("begin",begin);
+        map.put("end",end);
+
         SqlSession ss = FactoryService.getFactory().openSession();
-        List<ReportVO> list = ss.selectList("report.getReportList");
-        if (list != null && list.size() > 0) {
-            reportVO = new ReportVO[list.size()];
-            list.toArray(reportVO);
+        List<ReportVO> list = ss.selectList("report.getReportList", map);
+        if(list.size()>0&& list!=null){
+            ar= new ReportVO[list.size()];
+            list.toArray(ar);
         }
-        return reportVO;
+        ss.close();
+
+        return ar;
     }
 
 
@@ -170,6 +176,20 @@ public class ReportDAO {
         List<Map<String ,Object>> list = ss.selectList("report.getCommentListWithReports",map);
         ss.close();
         return list;
+    }
+
+    // 신고 상태 바꾸기
+    public static int reportstatus(String report_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("adminpost.reportstatus", report_idx);
+        if(cnt > 0){
+            ss.commit();
+        }else{
+            ss.rollback();
+        }
+        ss.close();
+        return cnt;
+
     }
 
 

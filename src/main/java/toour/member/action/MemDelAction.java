@@ -20,7 +20,7 @@ public class MemDelAction implements Action {
        String[] memberIdxArray = request.getParameterValues("member_idx");
 
         if(memberIdxArray == null || memberIdxArray.length == 0){
-            viewPath = viewPath = "AdminController?type=adminmemlist&cPage="+cPage;
+            viewPath = "AdminController?type=adminmemlist&cPage="+cPage;
             return viewPath;
         }
 
@@ -30,6 +30,8 @@ public class MemDelAction implements Action {
 
         int cnt = AdminMemberDAO.delMem(memberIdxlist);
         viewPath = "AdminController?type=adminmemlist&cPage="+cPage;
+
+//        System.out.println("memberIdxlist:::::::::"+memberIdxlist);
 
         return viewPath;
     }

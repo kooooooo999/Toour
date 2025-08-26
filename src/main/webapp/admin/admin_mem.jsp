@@ -263,10 +263,11 @@
       <label for="searchValue"></label><input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
       <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
     </form>
-
+      <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
+  </div>
 
         <form id="delform" method="post" action="AdminController?type=adminmemdel">
-            <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
+
 
             <!-- 삭제 다이얼로그 -->
             <div id="del_dialog" title="삭제하시겠습니까?">
@@ -275,7 +276,7 @@
                     <button type="button" id="member_del_cancel">취소</button>
                 </div>
             </div>
-        </form>
+
 
 
 <%--      <%--%>
@@ -284,7 +285,7 @@
 <%--      %>--%>
 <%--      <p>searchType: <%= searchType %></p>--%>
 <%--      <p>searchValue: <%= searchValue %></p>--%>
-  </div>
+
 
   <c:set var="t" value="${requestScope.totalCount}"/>
 
@@ -388,6 +389,7 @@
                     </c:if>
                 </ol>
             </div>
+        </form>
 </div>
 </div>
 </body>
@@ -416,7 +418,11 @@
   })
 
   function goDel() {
-    document.getElementById("delform").submit();
+      if($("#table tbody input:checkbox:checked").length === 0){
+          alert('삭제할 회원을 선택해 주세요.');
+      }
+      else
+        document.getElementById("delform").submit();
   }
 
     function validateForm() {
@@ -427,6 +433,7 @@
       }
       return true;
     }
+
 
   $(function (){
   // 전체 선택, 전체 해제
@@ -447,25 +454,25 @@
     ar.prop("checked", this.checked);
   });
 
-        // 별명 창에 타이핑을 쳤을 때
-        $("#u_nickname").keyup(function (){
-            const u_nickname_t = $(this).val().trim();
-            if (u_nickname_t.length > 0) {
-                $.ajax({
-                    url: "Controller?type=chknickname",
-                    type: "post",
-                    data:{ u_nickname: u_nickname_t }
-                }).done(function (res) {
-                    updateValidationMessage("#nickname_usable", res);
-                    if(u_nickname_t == "${sessionScope.member.member_nickname}"){
-                        $("#nickname_usable").removeClass("success error");
-                        $("#nickname_usable").addClass("success").html("");
-                    }
-                });
-            } else {
-                $("#nickname_usable").html("");
-            }
-        });
+        <%--// 별명 창에 타이핑을 쳤을 때--%>
+        <%--$("#u_nickname").keyup(function (){--%>
+        <%--    const u_nickname_t = $(this).val().trim();--%>
+        <%--    if (u_nickname_t.length > 0) {--%>
+        <%--        $.ajax({--%>
+        <%--            url: "Controller?type=chknickname",--%>
+        <%--            type: "post",--%>
+        <%--            data:{ u_nickname: u_nickname_t }--%>
+        <%--        }).done(function (res) {--%>
+        <%--            updateValidationMessage("#nickname_usable", res);--%>
+        <%--            if(u_nickname_t == "${sessionScope.member.member_nickname}"){--%>
+        <%--                $("#nickname_usable").removeClass("success error");--%>
+        <%--                $("#nickname_usable").addClass("success").html("");--%>
+        <%--            }--%>
+        <%--        });--%>
+        <%--    } else {--%>
+        <%--        $("#nickname_usable").html("");--%>
+        <%--    }--%>
+        <%--});--%>
 
         //전체선택을 클릭한 뒤, tbody에 있는 클릭 한 개가 해제되면 전체선택 체크박스도 해제
         $("#table tbody input:checkbox").click(function () {

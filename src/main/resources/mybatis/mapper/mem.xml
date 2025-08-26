@@ -48,7 +48,7 @@
     <!-- 회원정보 삭제 -->
     <update id="mem_del" parameterType="list">
         UPDATE member
-        SET member_status = 1
+        SET member_status = 2
         WHERE member_idx IN
 <!--        WHERE member_idx IN (10, 20, 30)-->
         <foreach item="member_idx" collection="list" open="(" separator="," close=")">
