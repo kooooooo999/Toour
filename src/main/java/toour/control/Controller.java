@@ -100,7 +100,11 @@ public class Controller extends HttpServlet {
 
         //type이라는 파라미터 받기
         String type = request.getParameter("type");
-
+        String sort = request.getParameter("sort");
+        if (sort == null || sort.trim().isEmpty()) {
+            sort = "latest";
+        }
+        request.setAttribute("sort", sort);
         //type이 전달되지 않아 null을 가지면 index로 초기화 하자!
         if(type == null)
             type = "index";

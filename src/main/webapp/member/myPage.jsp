@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/post.css" />">
+    <link rel="stylesheet" href="<c:url value="/css/style.css" />">
+
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
     <style>
         body {
@@ -272,6 +274,100 @@
             border-radius: 4px;
             cursor: pointer;
             margin-left: 15px;
+        }
+
+        #memberCourse #addCourseTitle{
+            min-height: 400px; !important;
+        }
+
+        /* === 다이얼로그 전체 박스 === */
+        .ui-dialog[aria-describedby="memberCourse"] {
+            width: 400px !important;
+            max-width: 90% !important;
+            height: 100%;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            border: 0 !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+
+
+        /* === 헤더(타이틀바) === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-titlebar {
+            background: linear-gradient(135deg, #2575fc , #99ccff) !important;
+            color: #fff !important;
+            border: 0 !important;
+            padding: 16px 20px !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+
+        /* === 본문(컨텐츠) === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-content {
+            background: #f9fafc !important;
+            padding: 24px !important;
+            color: #111 !important;
+            font-size: 15px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* 데이터 카드 스타일 */
+        .course-info {
+            display: grid;
+            gap: 16px;
+        }
+        .course-info .info-item {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.25s ease;
+        }
+        .course-info .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .course-info .label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .course-info .value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* === 버튼 영역 === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonpane {
+            background: #f9fafc !important;
+            border-top: 1px solid #eee !important;
+            padding: 16px !important;
+            text-align: right !important;
+            border-bottom-left-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+        }
+
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonset button {
+            background: #2563eb !important;
+            border: none !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            padding: 10px 18px !important;
+            border-radius: 10px !important;
+            cursor: pointer;
+            margin-left: 8px !important;
+            transition: background 0.2s ease;
+        }
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonset button:hover {
+            background: #1e40af !important;   /* 딥 블루 */
         }
     </style>
 
@@ -683,7 +779,8 @@
             title: "개인정보",
             resizable: true,
             height:600,
-            width:830
+            width:830,
+            position: {my: "left top", at: "left top", of: ${'zzim_list'} }
         };
         let option2 = {
             modal: true,
@@ -691,7 +788,8 @@
             title: "비밀번호 확인",
             resizable: true,
             height:200,
-            width:400
+            width:400,
+            position: {my: "right top", at: "right top", of: ${'zzim_list'} }
         };
 
         let option3 = {
@@ -701,7 +799,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "left top", at: "left top: 100" }
+            position: { my: "right top: ", at: "right top", of: ${'zzim_list'}, offset: "0 100", collision: "none" }
         };
         $("#memberCourse").dialog(option3);
 

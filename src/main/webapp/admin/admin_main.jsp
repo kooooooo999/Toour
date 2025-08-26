@@ -377,8 +377,8 @@
                                     ticks: {
                                         beginAtZero: true, // 0부터 시작
                                         min: 0,            // 최소값 0
-                                        max: 50,          // 최대값 100
-                                        stepSize: 10        // 눈금 간격
+                                        max: 10,          // 최대값 100
+                                        stepSize: 1      // 눈금 간격
                                     },
                                     gridLines: { color: "rgba(0,0,0,0.05)" }
                                 }]

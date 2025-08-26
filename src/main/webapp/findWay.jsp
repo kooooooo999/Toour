@@ -51,7 +51,168 @@
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 160px; height: 25px; display: inline-block; margin-bottom: 10px; }
         .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px; }
-        #addCourseDateTitle {  }
+
+        #memberCourse #addCourseTitle{
+            min-height: 400px; !important;
+        }
+
+        /* === 다이얼로그 전체 박스 === */
+        .ui-dialog[aria-describedby="memberCourse"] {
+            width: 400px !important;
+            max-width: 90% !important;
+            height: 100%;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            border: 0 !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+
+
+        /* === 헤더(타이틀바) === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-titlebar {
+            background: linear-gradient(135deg, #2575fc , #99ccff) !important;
+            color: #fff !important;
+            border: 0 !important;
+            padding: 16px 20px !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+
+        /* === 본문(컨텐츠) === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-content {
+            background: #f9fafc !important;
+            padding: 24px !important;
+            color: #111 !important;
+            font-size: 15px !important;
+            line-height: 1.6 !important;
+        }
+
+        /* 데이터 카드 스타일 */
+        .course-info {
+            display: grid;
+            gap: 16px;
+        }
+        .course-info .info-item {
+            background: #fff;
+            padding: 16px 20px;
+            border-radius: 14px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.25s ease;
+        }
+        .course-info .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+        .course-info .label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2563eb;
+        }
+        .course-info .value {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        /* === 버튼 영역 === */
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonpane {
+            background: #f9fafc !important;
+            border-top: 1px solid #eee !important;
+            padding: 16px !important;
+            text-align: right !important;
+            border-bottom-left-radius: 20px !important;
+            border-bottom-right-radius: 20px !important;
+        }
+
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonset button {
+            background: #2563eb !important;
+            border: none !important;
+            color: #fff !important;
+            font-weight: 600 !important;
+            padding: 10px 18px !important;
+            border-radius: 10px !important;
+            cursor: pointer;
+            margin-left: 8px !important;
+            transition: background 0.2s ease;
+        }
+        .ui-dialog[aria-describedby="memberCourse"] .ui-dialog-buttonset button:hover {
+            background: #1e40af !important;   /* 딥 블루 */
+        }
+
+        /* === 다이얼로그 전체 박스 === */
+        .ui-dialog[aria-describedby="addCourseTitle"]{
+            width: 400px !important;
+            max-width: 90% !important;
+            height: 100%;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            border: 0 !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* === 헤더(타이틀바) === */
+        .ui-dialog[aria-describedby="addCourseTitle"] .ui-dialog-titlebar {
+            background: linear-gradient(135deg, #2575fc , #99ccff) !important;
+            color: #fff !important;
+            border: 0 !important;
+            padding: 16px 20px !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+
+        /* === 본문(컨텐츠) === */
+        .ui-dialog[aria-describedby="addCourseTitle"] .ui-dialog-content {
+            background: #f9fafc !important;
+            padding: 24px !important;
+            color: #111 !important;
+            font-size: 15px !important;
+            line-height: 1.6 !important;
+        }
+        /* === 다이얼로그 전체 박스 === */
+        .ui-dialog[aria-describedby="addCourseDateTitle"]{
+            width: 400px !important;
+            max-width: 90% !important;
+            height: 100%;
+            border-radius: 20px !important;
+            overflow: hidden !important;
+            border: 0 !important;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.25) !important;
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        /* === 헤더(타이틀바) === */
+        .ui-dialog[aria-describedby="addCourseDateTitle"] .ui-dialog-titlebar {
+            background: linear-gradient(135deg, #2575fc , #99ccff) !important;
+            color: #fff !important;
+            border: 0 !important;
+            padding: 16px 20px !important;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+            border-top-left-radius: 20px !important;
+            border-top-right-radius: 20px !important;
+        }
+
+        /* === 본문(컨텐츠) === */
+        .ui-dialog[aria-describedby="addCourseDateTitle"] .ui-dialog-content {
+            background: #f9fafc !important;
+            padding: 24px !important;
+            color: #111 !important;
+            font-size: 15px !important;
+            line-height: 1.6 !important;
+        }
+
+
+
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -106,7 +267,7 @@
         <div id="memberCourse" class="hide" style="position: relative;">
             <div id="addCourseTitle" class="hide">
                 <p>여행 제목 : <input type="text" style="width: 100px; height: 30px;" id="courseTitle"/></p>
-                <p>여행 설명 : <input type="text" style="width: 150px; height: 150px;" id="courseSummary"/></p>
+                <p>여행 설명 : <input type="text" style="width: 90%; height: 70%;" id="courseSummary"/></p>
                 <button type="button" id="cancelCourseList"  style="font-size: 12px; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse(2)">취소</button>
                 <button type="button" id="addCourseList"  style="font-size: 12px;" class="buttonRight detail_btn" onclick="addCourseList()">추가</button>
             </div>
@@ -176,9 +337,9 @@
             autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
             title: "나의 코스",
             resizable: true,
-            height:300,
+            height:400,
             width:300,
-            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
+            position: { my: "right bottom", at: "center", of: ${'map_container'} }
         };
         $("#memberCourse").dialog(option);
 
@@ -187,9 +348,9 @@
             autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
             title: "여행 추가",
             resizable: true,
-            height:340,
-            width:200,
-            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
+            height:400,
+            width:300,
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
         };
         $("#addCourseTitle").dialog(option2);
 
@@ -198,9 +359,9 @@
             autoOpen: false, /*호출되는 즉시 대화상자 표시(기본값: true)*/
             title: "여행 추가",
             resizable: true,
-            height:200,
-            width:278,
-            position: { my: "left top", at: "left top", of: ${'map_container'} }
+            height:400,
+            width:300,
+            position: { my: "right bottom", at: "center", of: ${'map_container'} }
         };
         $("#addCourseDateTitle").dialog(option3);
     })
@@ -300,7 +461,7 @@
         $.ajax({
             url: "Controller?type=addCourseList",
             method: "post",
-            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary }
+            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary, number: '2' }
         }).done(function (res) {
             $("#memberCourse").html(res);
         })
@@ -405,6 +566,7 @@
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
     function paging(cPage) {
+        removeMarker();
 
         let keyword = $("#searchKeyword").val().trim();
 

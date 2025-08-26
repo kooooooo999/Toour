@@ -109,8 +109,8 @@
         FROM post p
         INNER JOIN member m ON p.member_idx = m.member_idx
         WHERE p.post_status = 0
-        AND p.category_idx = #{category_idx}
-        ORDER BY p.post_idx DESC
+        AND p.category_idx = 2
+        ORDER BY p.post_created_at DESC
         LIMIT #{offset}, #{pageSize}
     </select>
 

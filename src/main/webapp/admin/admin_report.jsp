@@ -219,8 +219,8 @@
      <div class="search-area">
        <form method="post" action="AdminController?type=adminreportsearch" onsubmit="return validateForm()">
          <select id="searchType" name="searchType">
-           <option value="COMMENT">댓글</option>
-           <option value="POST">게시글</option>
+           <option value="COMMENT" <c:if test="${requestScope.searchType eq 'COMMENT'}">selected</c:if>  >댓글</option>
+           <option value="POST" <c:if test="${requestScope.searchType eq 'POST'}">selected</c:if> >게시글</option>
          </select>
          <i class="search"><button type="submit" class="search">검색</button></i>
        </form>
@@ -244,7 +244,7 @@
         <th>피신고인</th>
         <th>게시글/댓글</th>
         <th>신고내용</th>
-        <th>작성일</th>
+        <th>신고작성일</th>
         <th>상태</th>
       </tr>
       </thead>
@@ -276,6 +276,7 @@
     </table>
   </div>
 
+  <c:if test="${requestScope.searchType eq null}">
   <div class="paging-area">
     <ol class="paging">
       <c:set var="p" value="${requestScope.page}" />
@@ -283,25 +284,53 @@
         <li class="disable">&lt;</li>
       </c:if>
       <c:if test="${p.startPage >= p.pagePerBlock}">
-        <li><a href="AdminController?type=adminreportsearch&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
+        <li><a href="AdminController?type=adminReport&cPage=${p.startPage-p.pagePerBlock}">&lt;</a></li>
       </c:if>
       <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
         <c:if test="${p.nowPage == vs.index}">
           <li class="now">${vs.index}</li>
         </c:if>
         <c:if test="${p.nowPage != vs.index}">
-          <li><a href="AdminController?type=adminreportsearch&cPage=${vs.index}">${vs.index}</a></li>
+          <li><a href="AdminController?type=adminReport&cPage=${vs.index}">${vs.index}</a></li>
         </c:if>
       </c:forEach>
       <c:if test="${p.endPage < p.totalPage}">
-        <li><a href="AdminController?type=adminreportsearch&cPage=${p.endPage+1}">&gt;</a></li>
+        <li><a href="AdminController?type=adminReport&cPage=${p.endPage+1}">&gt;</a></li>
       </c:if>
       <c:if test="${p.endPage >= p.totalPage}">
         <li class="disable">&gt;</li>
       </c:if>
     </ol>
   </div>
+  </c:if>
 
+  <c:if test="${requestScope.searchType ne null}">
+    <div class="paging-area">
+      <ol class="paging">
+        <c:set var="p" value="${requestScope.page}" />
+        <c:if test="${p.startPage < p.pagePerBlock}">
+          <li class="disable">&lt;</li>
+        </c:if>
+        <c:if test="${p.startPage >= p.pagePerBlock}">
+          <li><a href="AdminController?type=adminreportsearch&cPage=${p.startPage-p.pagePerBlock}&searchType=${requestScope.searchType}">&lt;</a></li>
+        </c:if>
+        <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
+          <c:if test="${p.nowPage == vs.index}">
+            <li class="now">${vs.index}</li>
+          </c:if>
+          <c:if test="${p.nowPage != vs.index}">
+            <li><a href="AdminController?type=adminreportsearch&cPage=${vs.index}&searchType=${requestScope.searchType}">${vs.index}</a></li>
+          </c:if>
+        </c:forEach>
+        <c:if test="${p.endPage < p.totalPage}">
+          <li><a href="AdminController?type=adminreportsearch&cPage=${p.endPage+1}&searchType=${requestScope.searchType}">&gt;</a></li>
+        </c:if>
+        <c:if test="${p.endPage >= p.totalPage}">
+          <li class="disable">&gt;</li>
+        </c:if>
+      </ol>
+    </div>
+  </c:if>
 
   <script>
     <%--

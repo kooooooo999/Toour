@@ -25,8 +25,11 @@
     </insert>
 
     <!--이건 관리자용 목록 가져오기-->
-    <select id="getReportList" resultType="toour.post.vo.ReportVO" parameterType="map">
-        SELECT r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+    <select id="getReportList" resultType="toour.post.vo.ReportVO">
+        SELECT *
+        from (
+        select ROW_NUMBER() over(order by r.report_status asc, r.report_created_at) AS rnum,
+        r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
 
         reporter.member_idx AS reporter_idx,
         reporter.member_nickname AS reporter_nickname,
@@ -37,7 +40,9 @@
         FROM report r
         LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
         LEFT JOIN member reported ON r.reported_idx = reported.member_idx
-        ORDER BY r.report_created_at DESC
+        ) a
+        where a.rnum BETWEEN #{begin} AND #{end}
+
     </select>
 
 
@@ -142,7 +147,23 @@
         GROUP BY c.comment_idx
         ORDER BY c.comment_updated_at DESC
     </select>
-
+    <select id="getpostWithReports" parameterType="String" resultType="toour.post.vo.PostVO">
+        SELECT
+        m.member_nickname,
+        p.*,
+        MAX(CASE WHEN r.target_type = 'POST' THEN r.report_status END) AS report_status,
+        MAX(CASE WHEN r.target_type = 'POST' THEN r.report_idx END) AS report_idx,
+        GROUP_CONCAT(
+        CONCAT(reporter.member_nickname, ': ', r.report_content)
+        SEPARATOR '&#x000A;'
+        ) AS all_report_contents
+        FROM post p
+        LEFT JOIN report r ON p.post_idx = r.post_idx AND r.target_type = 'POST'
+        LEFT JOIN member m ON p.member_idx = m.member_idx
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        WHERE p.post_idx = #{post_idx}
+        GROUP BY p.post_idx;
+    </select>
     <select id="countAllComments" resultType="int">
         SELECT COUNT(*) FROM comment
     </select>
