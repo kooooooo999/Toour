@@ -8,6 +8,7 @@ import mybatis.service.FactoryService;
 import org.apache.ibatis.session.SqlSession;
 import toour.member.vo.MemberVO;
 import toour.post.vo.CommentVO;
+import toour.post.vo.PostVO;
 import toour.post.vo.ReportVO;
 
 public class ReportDAO {
@@ -189,6 +190,14 @@ public class ReportDAO {
         ss.close();
         return cnt;
 
+    }
+
+    public static PostVO getpostWithReports(String post_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        PostVO post = ss.selectOne("report.getpostWithReports", post_idx);
+
+        ss.close();
+        return post;
     }
 
 

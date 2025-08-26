@@ -20,7 +20,7 @@ public class AdminPostViewAction implements Action {
 
         // 1. 게시글 정보와 작성자 닉네임 가져오기
         MemberVO vo = AdminPostDAO.getPostMemberIdx(post_idx);
-        PostVO pvo = AdminPostDAO.getPost(post_idx);
+        PostVO pvo = ReportDAO.getpostWithReports(post_idx);
 //        System.out.println("report_idx:::::::::::"+report_idx);
 
 

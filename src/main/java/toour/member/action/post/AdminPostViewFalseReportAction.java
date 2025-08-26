@@ -1,4 +1,4 @@
-package toour.member.action;
+package toour.member.action.post;
 
 import toour.action.Action;
 import toour.member.dao.AdminPostDAO;
@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
-public class AdminpostViewPlusWarningAction implements Action {
+public class AdminPostViewFalseReportAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String report_idx = request.getParameter("report_idx");
@@ -25,19 +25,11 @@ public class AdminpostViewPlusWarningAction implements Action {
         int reportstatus = ReportDAO.reportstatus(report_idx);
         ReportVO rvo = AdminPostDAO.getreportidx(report_idx);
 
-        int pluswarning = AdminPostDAO.pluswarning(report_idx);
         List<Map<String, Object>> commentListWithReports = ReportDAO.getCommentListWithReports(post_idx);
 
-        int cnt = AdminPostDAO.delnotice(post_idx);
-
-
-        System.out.println("report_idx:::::::::::"+report_idx);
-
-        request.setAttribute("pluswarning",pluswarning);
         request.setAttribute("commentList", commentListWithReports);
         request.setAttribute("rvo",rvo);
         request.setAttribute("reportstatus",reportstatus);
-
 
         return "admin/adminpostviewwarningresult.jsp";
     }

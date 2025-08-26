@@ -12,6 +12,32 @@ public class PostVO {
     //인기순 정렬용
     private String popularity;
 
+    private String report_idx, report_status, all_report_contents;
+
+    public String getReport_idx() {
+        return report_idx;
+    }
+
+    public void setReport_idx(String report_idx) {
+        this.report_idx = report_idx;
+    }
+
+    public String getReport_status() {
+        return report_status;
+    }
+
+    public void setReport_status(String report_status) {
+        this.report_status = report_status;
+    }
+
+    public String getAll_report_contents() {
+        return all_report_contents;
+    }
+
+    public void setAll_report_contents(String all_report_contents) {
+        this.all_report_contents = all_report_contents;
+    }
+
     public String getPopularity() {return popularity;}
 
     public void setPopularity(String popularity) {this.popularity = popularity;}
