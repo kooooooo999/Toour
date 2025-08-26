@@ -119,6 +119,7 @@ public class AdminPostDAO {
     public static int delnotice(String post_idx){
         SqlSession ss = FactoryService.getFactory().openSession();
         int cnt = ss.update("adminpost.del", post_idx);
+        System.out.println("delnoticecnt:"+cnt);
         if(cnt > 0){
             ss.commit();
         }else{
