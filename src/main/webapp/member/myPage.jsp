@@ -16,16 +16,16 @@
             background-color: #f8f9fa; /* 배경색 추가 */
         }
         /*문의사항 컨테이너*/
-        #inquiry-container{
-            max-width: 1400px !important;
-            margin: 0 auto;
-            background-color: #fff;
-            border: 1px solid #dee2e6;
-            border-radius: 8px !important;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-            overflow-x: auto;
-            padding: 0 !important;
-        }
+        /*#inquiry-container{*/
+        /*    max-width: 1400px !important;*/
+        /*    margin: 0 auto;*/
+        /*    background-color: #fff;*/
+        /*    border: 1px solid #dee2e6;*/
+        /*    border-radius: 8px !important;*/
+        /*    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);*/
+        /*    overflow-x: auto;*/
+        /*    padding: 0 !important;*/
+        /*}*/
 
 
         .main-container {
@@ -186,7 +186,6 @@
         }
 
         #post th, #post td {
-            padding: 12px; /* 테이블 셀 패딩 확장 */
             border-bottom: 1px solid #f2f2f2;
         }
 
@@ -194,9 +193,9 @@
             background-color: #f8f9fa;
             font-weight: bold;
         }
-        #inquiry-container th{
-            background-color: #f8f9fa;
-            font-weight: bold;}
+        /*#inquiry-container th{*/
+        /*    background-color: #f8f9fa;*/
+        /*    font-weight: bold;}*/
 
         .search-area {
             padding: 15px;
@@ -239,15 +238,14 @@
             margin: 0 6px;
         }
 
-        .paging li a, .paging li.disable {
-            display: block;
-            padding: 8px 12px; /* 페이징 버튼 패딩 확장 */
-            border: 1px solid #ccc;
-            background-color: #fff;
-            text-decoration: none;
-            border-radius: 4px;
-            color: #333;
-        }
+        /*.paging li a, .paging li.disable {*/
+        /*    display: block;*/
+        /*    border: 1px solid #ccc;*/
+        /*    background-color: #fff;*/
+        /*    text-decoration: none;*/
+        /*    border-radius: 4px;*/
+        /*    color: #333;*/
+        /*}*/
 
         .paging li.now {
             background-color: #1e40af;
@@ -330,7 +328,7 @@
             </div>
 
             <div id="course_list" class="listArea">
-                <a href="javascript:addCourse()">내 코스 목록</a>
+                <a href="javascript:addCourse()">내 코스 목록 ${fn:length(requestScope.cvo_list)}</a>
                 <div class="item-grid">
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
@@ -349,7 +347,7 @@
             </div>
 
             <div id="post_list" class="listArea">
-                <a href="Controller">내 게시글</a>
+                <a href="">내 게시글</a>
                 <div id="mypost">
                     <div id="post">
                         <div id="search-area">
@@ -431,14 +429,14 @@
             <div id="suggest_list" class="listArea"><c:set var="t" value="${requestScope.QnAtotalCount}"/>
 
                 <a href="Controller?type=QnA">문의사항</a>
-                <div id="inquiry-container" style="padding: 20px; text-align: center;">
-                    <div class="inquiry_container" >
+                <div id="inquiry-container">
+                    <div <%--class="inquiry_container"--%> id="post">
                         <div class="post-header-container">
 
                         </div>
 
                         <!-- 문의 목록 테이블 -->
-                        <table class="inquiry-table">
+                        <table <%--class="inquiry-table"--%>>
                             <caption>문의 목록 테이블</caption>
 
                             <thead>
@@ -497,44 +495,44 @@
                         </table>
                     </div>
 
+
+                    <div class="paging-area">
+                        <ol class="paging">
+                            <!-- 이전 블록 이동 불가 -->
+                            <c:if test="${p2.startPage < p2.pagePerBlock}">
+                                <li class="disable">&lt;</li>
+                            </c:if>
+
+                            <!-- 이전 블록 이동 -->
+                            <c:if test="${p2.startPage >= p2.pagePerBlock}">
+                                <li><a href="javascript:moveInquiryPage(${p2.startPage - p2.pagePerBlock})">&lt;</a></li>
+                            </c:if>
+
+                            <!-- 페이지 번호 -->
+                            <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
+                                <c:if test="${p2.nowPage eq i}">
+                                    <li class="now">${i}</li>
+                                </c:if>
+                                <c:if test="${p2.nowPage ne i}">
+                                    <li><a href="javascript:moveInquiryPage(${i})">${i}</a></li>
+                                </c:if>
+                            </c:forEach>
+
+                            <!-- 다음 블록 이동 -->
+                            <c:if test="${p2.endPage < p2.totalPage}">
+                                <li><a href="javascript:moveInquiryPage(${p2.endPage + 1})">&gt;</a></li>
+                            </c:if>
+
+                            <!-- 다음 블록 이동 불가 -->
+                            <c:if test="${p2.endPage >= p2.totalPage}">
+                                <li class="disable">&gt;</li>
+                            </c:if>
+
+                        </ol>
+                    </div>
                 </div>
                         <!-- 페이징 -->
-
-
-                            <div class="paging-area">
-                                <ol class="paging">
-                                    <!-- 이전 블록 이동 불가 -->
-                                    <c:if test="${p2.startPage < p2.pagePerBlock}">
-                                        <li class="disable">&lt;</li>
-                                    </c:if>
-
-                                    <!-- 이전 블록 이동 -->
-                                    <c:if test="${p2.startPage >= p2.pagePerBlock}">
-                                        <li><a href="javascript:moveInquiryPage(${p2.startPage - p2.pagePerBlock})">&lt;</a></li>
-                                    </c:if>
-
-                                    <!-- 페이지 번호 -->
-                                    <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
-                                        <c:if test="${p2.nowPage == i}">
-                                            <li class="now">${i}</li>
-                                        </c:if>
-                                        <c:if test="${p2.nowPage != i}">
-                                            <li><a href="javascript:moveInquiryPage(${i})">${i}</a></li>
-                                        </c:if>
-                                    </c:forEach>
-
-                                    <!-- 다음 블록 이동 -->
-                                    <c:if test="${p2.endPage < p2.totalPage}">
-                                        <li><a href="javascript:moveInquiryPage(${p2.endPage + 1})">&gt;</a></li>
-                                    </c:if>
-
-                                    <!-- 다음 블록 이동 불가 -->
-                                    <c:if test="${p2.endPage >= p2.totalPage}">
-                                        <li class="disable">&gt;</li>
-                                    </c:if>
-
-                                </ol>
-                            </div>
+            </div>
 
 
 
@@ -542,7 +540,9 @@
 
 
 
-                </div>
+
+
+
             </div>
         </div>
     </div>
@@ -684,7 +684,8 @@
             title: "개인정보",
             resizable: true,
             height:600,
-            width:830
+            width:830,
+            position: {my: "left top", at: "left top", of: ${'zzim_list'} }
         };
         let option2 = {
             modal: true,
@@ -692,7 +693,8 @@
             title: "비밀번호 확인",
             resizable: true,
             height:200,
-            width:400
+            width:400,
+            position: {my: "right top", at: "right top", of: ${'zzim_list'} }
         };
 
         let option3 = {
@@ -702,7 +704,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "left top", at: "left top: 100" }
+            position: { my: "right top: ", at: "right top", of: ${'zzim_list'}, offset: "0 100", collision: "none" }
         };
         $("#memberCourse").dialog(option3);
 

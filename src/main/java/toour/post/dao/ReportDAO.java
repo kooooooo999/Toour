@@ -76,6 +76,7 @@ public class ReportDAO {
         return ar;
     }
 
+
     //신고정보 검색
     public static ReportVO[] search(String searchType, int begin, int end){
         ReportVO[] ar = null;
@@ -199,6 +200,8 @@ public class ReportDAO {
         ss.close();
         return post;
     }
+
+
 
 
 }

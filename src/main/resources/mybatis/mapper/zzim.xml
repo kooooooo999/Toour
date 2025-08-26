@@ -8,13 +8,12 @@
         WHERE member_idx = #{member_idx}
     </select>
     <insert id="add" parameterType="Map">
-        INSERT zzim (member_idx, zzim_type, zzim_content_id)
-        VALUES (#{member_idx}, #{zzim_type}, #{zzim_content_id})
+        INSERT zzim (member_idx, zzim_content_id)
+        VALUES (#{member_idx}, #{zzim_content_id})
     </insert>
     <delete id="del" parameterType="Map">
         DELETE From zzim
         WHERE member_idx = #{member_idx}
-        AND zzim_type = #{zzim_type}
         AND zzim_content_id = #{zzim_content_id}
     </delete>
 </mapper>

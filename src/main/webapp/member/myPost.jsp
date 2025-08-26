@@ -90,7 +90,7 @@
 
   <div id="post">
     <div id="search-area">
-      <form method="post" action="Controller?type=postSearch">
+
         <input type="hidden" name="searchTypeHidden" value="${requestScope.searchType}">
         <input type="hidden" name="searchValueHidden" value="${requestScope.searchValue}">
 
@@ -100,7 +100,6 @@
         </select>
         <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" value="${requestScope.searchValue}"/>
         <button type="button" class="search-btn" id="search-btn" onclick="mysearch()">검색</button>
-      </form>
     </div>
     <table summary="검색결과 목록">
       <caption>검색결과 목록</caption>
