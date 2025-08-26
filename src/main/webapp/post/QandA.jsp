@@ -6,12 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.*" %>
 <html>
 <head>
     <title>1:1 문의하기</title>
-    <link rel="stylesheet" href="<c:url value="/css/header.css" />">
-    <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
     <style>
 
         body {
@@ -116,11 +117,38 @@
             color: #666;
             margin-top: 5px;
         }
+        /* 뒤로가기 버튼 스타일 */
+        .back-button {
+            position: fixed; /* 👈 스크롤에 상관없이 화면에 고정 */
+            bottom: 20px;    /* 👈 화면 아래쪽에서 20px 떨어진 위치 */
+            left: 20px;      /* 👈 화면 왼쪽에서 20px 떨어진 위치 */
+            z-index: 1000;   /* 다른 요소보다 위에 표시 */
+
+            /* 버튼 디자인 */
+            background-color: #337ab7;
+            color: white;
+            border-radius: 50%; /* 원형 모양 */
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background-color 0.3s;
+            text-decoration: none; /* 밑줄 제거 */
+        }
+
+        .back-button:hover {
+            background-color: #286090;
+        }
     </style>
 </head>
-<c:import url="/common/header.jsp"/>
 
 <body>
+<a href="javascript:history.back()" class="back-button">
+    <i class="fas fa-arrow-left"></i>
+</a>
 <div class="container">
     <h2>1:1 문의하기</h2>
 
@@ -174,7 +202,6 @@
         </div>
     </form>
 </div>
-<c:import url="/common/footer.jsp"/>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.18/summernote-lite.min.css" rel="stylesheet">
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
