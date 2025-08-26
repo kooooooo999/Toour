@@ -328,7 +328,7 @@
             </div>
 
             <div id="course_list" class="listArea">
-                <a href="javascript:addCourse()">내 코스 목록</a>
+                <a href="javascript:addCourse()">내 코스 목록 ${fn:length(requestScope.cvo_list)}</a>
                 <div class="item-grid">
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">

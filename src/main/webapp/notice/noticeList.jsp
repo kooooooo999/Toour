@@ -250,7 +250,7 @@
                 <option value="post_title" <c:if test="${requestScope.searchType eq 'post_title'}">selected</c:if> >제목</option>
                 <option value="post_content" <c:if test="${requestScope.searchType eq 'post_content'}">selected</c:if>>내용</option>
             </select>
-            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+            <input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" value="${requestScope.searchValue}"/>
             <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
         </form>
     </div>
@@ -311,7 +311,7 @@
                 <li class="now">${vs.index}</li>
             </c:if>
             <c:if test="${p.nowPage != vs.index}">
-                <li><a href="Controller?type=notice&cPage=${vs.index}">${vs.index}</a></li>
+                <li><a href="Controller?type=notice&cPage=${vs.index}&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}">${vs.index}</a></li>
             </c:if>
         </c:forEach>
         <c:if test="${p.endPage < p.totalPage}">

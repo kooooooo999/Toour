@@ -300,7 +300,7 @@
                 <li class="disable">&lt;</li>
             </c:when>
             <c:otherwise>
-                <li><a href="Controller?${baseParams}&cPage=${p.startPage - p.pagePerBlock}">&lt;</a></li>
+                <li><a href="Controller?${baseParams}&cPage=${p.startPage - p.pagePerBlock}&searchType=${requestScope.searchType}&searchValue=${requestScope.searchValue}">&lt;</a></li>
             </c:otherwise>
         </c:choose>
 
@@ -312,7 +312,7 @@
                     <li class="now">${pageIndex}</li>
                 </c:when>
                 <c:otherwise>
-                    <li><a href="Controller?${baseParams}&cPage=${pageIndex}">${pageIndex}</a></li>
+                    <li><a href="Controller?${baseParams}&cPage=${pageIndex}&searchType=${requestScope.searchType}&searchValue=${requestScope.searchValue}">${pageIndex}</a></li>
                 </c:otherwise>
             </c:choose>
         </c:forEach>
@@ -324,7 +324,7 @@
                 <li class="disable">&gt;</li>
             </c:when>
             <c:otherwise>
-                <li><a href="Controller?${baseParams}&cPage=${p.endPage + 1}">&gt;</a></li>
+                <li><a href="Controller?${baseParams}&cPage=${p.endPage + 1}&searchType=${requestScope.searchType}&searchValue=${requestScope.searchValue}">&gt;</a></li>
             </c:otherwise>
         </c:choose>
     </ol>

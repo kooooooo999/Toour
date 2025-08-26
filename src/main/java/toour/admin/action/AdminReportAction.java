@@ -16,7 +16,7 @@ public class AdminReportAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        ReportVO[] rvo = ReportDAO.getReport();
+
 
         int totalCount = ReportDAO.getReportCount();
         Paging page = new Paging(10,5);
@@ -30,6 +30,8 @@ public class AdminReportAction implements Action {
             page.setNowPage(nowPage);
         }
 
+
+        ReportVO[] rvo = ReportDAO.getReport();
 
         request.setAttribute("totalCount", totalCount);
         request.setAttribute("rvo", rvo);

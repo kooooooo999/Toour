@@ -99,6 +99,7 @@ public class myPageAction implements Action {
             request.setAttribute("zzim_ar",zzim_ar);
             request.setAttribute("tour_ar", tour_ar);
             request.setAttribute("course_ar", course_ar);
+            request.setAttribute("cvo_list", cvo_list);
 
         }
         return "member/myPage.jsp";
