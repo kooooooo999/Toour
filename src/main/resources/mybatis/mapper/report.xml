@@ -25,7 +25,7 @@
     </insert>
 
     <!--이건 관리자용 목록 가져오기-->
-    <select id="getReportList" resultType="toour.post.vo.ReportVO">
+    <select id="getReportList" resultType="toour.post.vo.ReportVO" parameterType="map">
         SELECT r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
 
         reporter.member_idx AS reporter_idx,

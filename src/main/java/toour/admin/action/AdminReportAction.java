@@ -31,7 +31,6 @@ public class AdminReportAction implements Action {
 
         ReportVO[] rvo = ReportDAO.getReport(report_idx,page.getBegin(),page.getEnd());
 
-
         request.setAttribute("totalCount", totalCount);
         request.setAttribute("rvo", rvo);
         request.setAttribute("page",page);

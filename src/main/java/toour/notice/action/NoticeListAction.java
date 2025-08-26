@@ -34,6 +34,8 @@ public class NoticeListAction implements Action {
         PostVO[] ar = PostDAO.getList(category_idx,page.getBegin(),page.getEnd());
 
         request.setAttribute("page",page);
+        request.setAttribute("searchType",searchType);
+        request.setAttribute("searchValue",searchValue);
         request.setAttribute("noticeAr",ar);
         request.setAttribute("totalCount",totalCount);
         request.setAttribute("cPage",cPage);

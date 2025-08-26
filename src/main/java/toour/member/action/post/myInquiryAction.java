@@ -55,10 +55,7 @@ public class myInquiryAction implements Action{
         InquiryVO[] myInquiry = InquiryDAO.getMyInquiryList(mvo.getMember_idx(), currentPage, numPerPage);
 
 
-
-
-
-
+        System.out.println("myInquiryAction nPage:"+nPage);
         request.setAttribute("myInquiry_ar", myInquiry);
 
         return "member/myInquiry.jsp";
