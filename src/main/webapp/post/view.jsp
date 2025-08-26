@@ -402,7 +402,6 @@
                 <c:if test="${not empty sessionScope.member}">
                     <textarea id="comment_content" name="comment_content" placeholder="여행의 즐거움이 담긴 후기를 남겨주세요." rows="4" cols="55"></textarea><br/>
                     <input id="comment_btn" type="submit" value="댓글작성" class="btn-register"/>
-                    <hr class="comment-line"/>
                 </c:if>
             </div>
 

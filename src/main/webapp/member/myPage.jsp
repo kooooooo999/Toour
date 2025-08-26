@@ -684,7 +684,8 @@
             title: "개인정보",
             resizable: true,
             height:600,
-            width:830
+            width:830,
+            position: {my: "left top", at: "left top", of: ${'zzim_list'} }
         };
         let option2 = {
             modal: true,
@@ -692,7 +693,8 @@
             title: "비밀번호 확인",
             resizable: true,
             height:200,
-            width:400
+            width:400,
+            position: {my: "right top", at: "right top", of: ${'zzim_list'} }
         };
 
         let option3 = {
@@ -702,7 +704,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "left top", at: "left top: 100" }
+            position: { my: "right top: ", at: "right top", of: ${'zzim_list'}, offset: "0 100", collision: "none" }
         };
         $("#memberCourse").dialog(option3);
 
