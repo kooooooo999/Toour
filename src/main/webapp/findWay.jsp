@@ -51,7 +51,7 @@
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 160px; height: 25px; display: inline-block; margin-bottom: 10px; }
         .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px; }
-        #addCourseDateTitle {  }
+        #memberCourse { position: relative; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -178,7 +178,7 @@
             resizable: true,
             height:300,
             width:300,
-            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
+            position: { my: "right bottom", at: "center", of: ${'map_container'} }
         };
         $("#memberCourse").dialog(option);
 
@@ -189,7 +189,7 @@
             resizable: true,
             height:340,
             width:200,
-            position: { my: "left top", at: "left top: 100", of: ${'map_container'} }
+            position: { my: "left top", at: "left top", of: ${'map_container'} }
         };
         $("#addCourseTitle").dialog(option2);
 
@@ -200,7 +200,7 @@
             resizable: true,
             height:200,
             width:278,
-            position: { my: "left top", at: "left top", of: ${'map_container'} }
+            position: { my: "right bottom", at: "center", of: ${'map_container'} }
         };
         $("#addCourseDateTitle").dialog(option3);
     })
@@ -300,7 +300,7 @@
         $.ajax({
             url: "Controller?type=addCourseList",
             method: "post",
-            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary }
+            data: { member_idx: member_idx, course_name: course_name, course_summary: course_summary, number: '2' }
         }).done(function (res) {
             $("#memberCourse").html(res);
         })
@@ -405,6 +405,7 @@
 
     // 페이지 누르면 해당 페이지로 변경되는 코드
     function paging(cPage) {
+        removeMarker();
 
         let keyword = $("#searchKeyword").val().trim();
 
