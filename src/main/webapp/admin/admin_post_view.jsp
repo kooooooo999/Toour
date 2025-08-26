@@ -164,17 +164,24 @@
       box-shadow: 0 0 5px 2px yellow;
     }
     .badge {
-      font-size: 12px;
-      padding: 2px 5px;
-      border-radius: 3px;
+      font-size: 13px;
+      padding: 6px 12px;
+      border-radius: 4px;
       margin-left: 10px;
+      font-weight: 600;
+      display: inline-block;
+      min-width: 70px;
+      text-align: center;
+      vertical-align: middle;
     }
+
     .badge.unprocessed {
-      background: red;
+      background-color: #e74c3c;
       color: white;
     }
+
     .badge.processed {
-      background: green;
+      background-color: #2ecc71;
       color: white;
     }
     /* 뒤로가기 버튼 스타일 */
@@ -202,6 +209,52 @@
     .back-button:hover {
       background-color: #286090;
     }
+
+    .comment_nickname button {
+      padding: 6px 12px;
+      margin-right: 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+
+      outline: none;        /* ✅ 포커스시 테두리 제거 */
+      box-shadow: none;     /* ✅ 그림자 제거 */
+    }
+
+    /* 억지신고 버튼 (회색) */
+    .comment_nickname button[id^="falsereport_btn"] {
+      background-color: #7f8c8d;
+      color: white;
+    }
+
+    .comment_nickname button[id^="falsereport_btn"]:hover {
+      background-color: #616a6b;
+      transform: translateY(-1px);
+    }
+
+    /* 삭제+경고 버튼 (빨간색) */
+    .comment_nickname button[id^="adminpostviewpluswarning_btn"] {
+      background-color: #e74c3c;
+      color: white;
+    }
+
+    .comment_nickname button[id^="adminpostviewpluswarning_btn"]:hover {
+      background-color: #c0392b;
+      transform: translateY(-1px);
+    }
+
+    /* 비활성화된 버튼 */
+    .comment_nickname button:disabled {
+      background-color: #ccc;
+      color: #666;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+
   </style>
 </head>
 <body>
