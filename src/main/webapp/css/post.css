@@ -212,13 +212,12 @@ td a:hover {
     border-radius: 4px;
     background-color: #fff;
     cursor: pointer;
+    padding: 8px 12px;
 }
 
 .paging-area ol.paging li.now {
     background-color: #1a73e8;
     color: white;
-    padding: 8px 12px;
-
     font-weight: bold;
     border-color: #1a73e8;
 }
