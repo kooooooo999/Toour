@@ -2,6 +2,7 @@ package toour.member.action;
 
 import toour.action.Action;
 import toour.member.dao.AdminPostDAO;
+import toour.notice.dao.PostDAO;
 import toour.post.dao.ReportDAO;
 import toour.post.vo.ReportVO;
 
@@ -17,6 +18,8 @@ public class AdminpostViewPlusWarningAction implements Action {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String report_idx = request.getParameter("report_idx");
         String post_idx = request.getParameter("post_idx");
+        String comment_idx = request.getParameter("comment_idx");
+
 
         if (report_idx == null || report_idx.trim().isEmpty()) {
             return "error.jsp";
@@ -28,7 +31,14 @@ public class AdminpostViewPlusWarningAction implements Action {
         int pluswarning = AdminPostDAO.pluswarning(report_idx);
         List<Map<String, Object>> commentListWithReports = ReportDAO.getCommentListWithReports(post_idx);
 
-        int cnt = AdminPostDAO.delnotice(post_idx);
+        if(post_idx != null) {
+            int cnt = AdminPostDAO.delnotice(post_idx);
+        }
+        if(comment_idx != null){
+            int cnt = PostDAO.commentdel(comment_idx);
+        }
+
+
 
 
         System.out.println("report_idx:::::::::::"+report_idx);

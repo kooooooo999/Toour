@@ -286,5 +286,21 @@ public class PostDAO {
         return comment;
     }
 
+    public static int commentdel(String comment_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("comment.commentdel", comment_idx);
+
+        if(cnt > 0){
+            ss.commit();
+        }
+        else {
+            ss.rollback();
+        }
+
+        ss.close();
+        return cnt;
+
+    }
+
 }
 

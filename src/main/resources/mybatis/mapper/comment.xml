@@ -23,4 +23,10 @@
         ORDER BY c.comment_created_at ASC
     </select>
 
+    <update id="commentdel" parameterType="String">
+        UPDATE comment
+        SET comment_status = 1
+        WHERE comment_idx = #{comment_idx}
+    </update>
+
 </mapper>

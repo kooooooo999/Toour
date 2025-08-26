@@ -188,7 +188,6 @@
 <%--    <c:set var="cvo" value="${requestScope.commentList}"/>--%>
 
 
-
     <div id="post">
       <form method="post">
         <table>
@@ -227,16 +226,18 @@
       <div class="report-section">
         <h2>게시글 신고 내역</h2>
         <div class="report-list">
-          <div id="postdiv" class="report-item
-               <c:if test="${pvo.report_status == 0}">reported</c:if>
-               <c:if test="${pvo.report_status == 1}">resolved</c:if>">
-          <strong>신고 사유-</strong> ${pvo.all_report_contents}
-          <span id = "postbadge" class="badge ${pvo.report_status eq 0 ? 'unprocessed' : 'processed'}">
-              ${pvo.report_status eq 0 ? '대기' : '처리완료'}
-          </span>
+            <div id="postdiv" class="report-item
+                 <c:if test="${pvo.report_status == 0}">reported</c:if>
+                 <c:if test="${pvo.report_status == 1}">resolved</c:if>">
+              <c:if test="${pvo.report_idx ne null}">
+              <strong>신고 사유-</strong> ${pvo.all_report_contents}
+              <span id = "postbadge" class="badge ${pvo.report_status eq 0 ? 'unprocessed' : 'processed'}">
+                  ${pvo.report_status eq 0 ? '대기' : '처리완료'}
+              </span>
+              </c:if>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
     </c:if>
 
 
@@ -265,11 +266,11 @@
           <div class="comment_nickname">
               ${cvo.member_nickname} | ${cvo.comment_updated_at}
             <c:if test="${cvo.report_status != null}">
-              <button type="button" id="falsereport_btn${cvo.report_idx}" onclick="falsereport(${cvo.report_idx})" <c:if test="${cvo.report_status eq 1}">disabled</c:if>  >억지신고</button>
+              <button type="button" id="falsereport_btn${cvo.report_idx}" onclick="falsereport('${cvo.report_idx}','${cvo.comment_idx}')" <c:if test="${cvo.report_status eq 1}">disabled</c:if>  >억지신고</button>
 
 
 
-              <button type="button" id="adminpostviewpluswarning_btn${cvo.report_idx}" onclick="adminpostviewpluswarning('${cvo.report_idx}')" <c:if test="${cvo.report_status eq 1}">disabled</c:if>   >삭제,신고+1</button>
+              <button type="button" id="adminpostviewpluswarning_btn${cvo.report_idx}" onclick="adminpostviewpluswarning('${cvo.report_idx}','${cvo.comment_idx}')" <c:if test="${cvo.report_status eq 1}">disabled</c:if>   >삭제,신고+1</button>
                                 <span id="commentbadge${cvo.report_idx}" class="badge ${cvo.report_status eq 0 ? 'unprocessed' : 'processed'}">
                                     ${cvo.report_status eq 0 ? '대기' : '처리완료'}
                                 </span>
@@ -330,7 +331,7 @@
     $.ajax({
       url:"AdminController?type=adminpostviewfalsereport",
       type:"post",
-      data:{report_idx:report_idx, post_idx: ${pvo.post_idx}}
+      data:{report_idx:report_idx, post_idx: ${requestScope.pvo.post_idx}}
     }).done(function (res) {
       if(res.trim()=='처리성공'){
         $("#postdiv").removeClass("report-item reported");
@@ -366,11 +367,11 @@
 
 
 
-  function falsereport(report_idx) {
+  function falsereport(report_idx,comment_idx) {
     $.ajax({
       url:"AdminController?type=adminpostviewfalsereport",
       type:"post",
-      data:{report_idx:report_idx}
+      data:{report_idx:report_idx ,comment_idx:comment_idx}
     }).done(function (res) {
       if(res.trim()=='처리성공'){
         $("#commentdiv" + report_idx).removeClass("comment reported");
@@ -385,11 +386,11 @@
     });
   }
 
-  function adminpostviewpluswarning(report_idx) {
+  function adminpostviewpluswarning(report_idx,comment_idx) {
     $.ajax({
       url:"AdminController?type=adminpostviewpluswarning",
       type:"post",
-      data:{report_idx:report_idx}
+      data:{report_idx:report_idx,comment_idx:comment_idx}
     }).done(function (res) {
       if(res.trim()=='처리성공'){
         $("#commentdiv" + report_idx).removeClass("comment reported");

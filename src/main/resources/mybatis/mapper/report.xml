@@ -158,12 +158,11 @@
         SEPARATOR '&#x000A;'
         ) AS all_report_contents
         FROM post p
-        INNER JOIN report r ON p.post_idx = r.post_idx AND r.target_type = 'POST'
+        LEFT JOIN report r ON p.post_idx = r.post_idx AND r.target_type = 'POST'
         LEFT JOIN member m ON p.member_idx = m.member_idx
         LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
         WHERE p.post_idx = #{post_idx}
         GROUP BY p.post_idx;
-
     </select>
     <select id="countAllComments" resultType="int">
         SELECT COUNT(*) FROM comment
