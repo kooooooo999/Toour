@@ -51,7 +51,6 @@
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 160px; height: 25px; display: inline-block; margin-bottom: 10px; }
         .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px; }
-        #memberCourse { position: relative; }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
