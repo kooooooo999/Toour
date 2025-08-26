@@ -22,7 +22,18 @@
     </div>
     <hr/>
   </c:forEach>
-  <button type="button" id="backCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 15px;" class="buttonRight detail_btn" onclick="addCourse(1)">뒤로</button>
+  <button type="button" id="backCourseDate" style="font-size: 11px; display: inline-block; position: absolute; right: 23.5px;
+ background: #007bff !important;
+            border: none !important;
+            color: #fff !important;
+            padding: 3px 10px !important;
+            border-radius: 5px !important;
+            cursor: pointer;
+            margin-left: 8px !important;
+            transition: background 0.2s ease;
+            margin-top: 5px;
+
+" class="buttonRight detail_btn" onclick="addCourse(1)">뒤로</button>
   <c:set var="course_idx" value="${requestScope.course_idx}"/>
   <input type="hidden" id="courseidxinput" value="${course_idx}">
 </c:if>
