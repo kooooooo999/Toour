@@ -128,15 +128,7 @@
             font-size: 14px;
         }
 
-        .paging li a, .paging li.now {
-            display: block;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background-color 0.2s ease, color 0.2s ease;
-            text-decoration: none;
-            color: #495057;
-            border: 1px solid #dee2e6;
-        }
+
 
         .paging li a:hover {
             background-color: #e9ecef;
@@ -156,7 +148,6 @@
             opacity: 0.5; /* 흐리게 처리 */
             color: #6c757d;
             border: 1px solid #dee2e6;
-            padding: 8px 12px;
             border-radius: 4px;
         }
 

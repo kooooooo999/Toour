@@ -4,9 +4,10 @@
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 
-    <div class="container" id="inquiry-container">
+    <div <%--class="container" id="inquiry-container"--%> id="post">
 
-        <div id="inquiry-header-container">
+        <div class="post-header-container">
+
         </div>
         <!-- 문의 목록 테이블 -->
         <table class="inquiry-table">
@@ -67,9 +68,43 @@
             </tbody>
         </table>
 
-        <!-- 페이징 -->
-    </div>
 
+    </div>
+<!-- 페이징 -->
+<div class="paging-area">
+    <ol class="paging">
+        <!-- 이전 블록 이동 불가 -->
+        <c:if test="${p2.startPage < p2.pagePerBlock}">
+            <li class="disable">&lt;</li>
+        </c:if>
+
+        <!-- 이전 블록 이동 -->
+        <c:if test="${p2.startPage >= p2.pagePerBlock}">
+            <li><a href="javascript:moveInquiryPage(${p2.startPage - p2.pagePerBlock})">&lt;</a></li>
+        </c:if>
+
+        <!-- 페이지 번호 -->
+        <c:forEach begin="${p2.startPage}" end="${p2.endPage}" var="i">
+            <c:if test="${p2.nowPage eq i}">
+                <li class="now">${i}</li>
+            </c:if>
+            <c:if test="${p2.nowPage ne i}">
+                <li><a href="javascript:moveInquiryPage(${i})">${i}</a></li>
+            </c:if>
+        </c:forEach>
+
+        <!-- 다음 블록 이동 -->
+        <c:if test="${p2.endPage < p2.totalPage}">
+            <li><a href="javascript:moveInquiryPage(${p2.endPage + 1})">&gt;</a></li>
+        </c:if>
+
+        <!-- 다음 블록 이동 불가 -->
+        <c:if test="${p2.endPage >= p2.totalPage}">
+            <li class="disable">&gt;</li>
+        </c:if>
+
+    </ol>
+</div>
 
 
 
