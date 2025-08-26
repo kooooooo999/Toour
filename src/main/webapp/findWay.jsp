@@ -223,10 +223,20 @@
             method: "POST",
             data: {keyword: keyword, courseDate_idx: courseDate_idx }
         }).done(function (res){
+
+            if (res.trim().length < 1) {
+                alert("키워드를 확인해 주세요");
+                $("#searchKeyword").val("");
+                $("#searchKeyword").focus();
+                return;
+            }
+            console.log(res);
             $("#search_results").html(res);
+
+            $("#searchBox2").show();
         });
 
-        $("#searchBox2").show();
+
     }
 
     // 코스 DB에서 불러오기
@@ -458,6 +468,7 @@
         }
         markers = [];
     }
+
     // 달력 창 열기
 
    /* var appendText = $("#datepicker").datepicker( "option", "appendText" );

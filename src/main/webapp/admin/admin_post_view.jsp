@@ -270,6 +270,15 @@
           <div class="comment_nickname">
               ${cvo.member_nickname} | ${cvo.comment_updated_at}
             <c:if test="${cvo.report_status != null}">
+              <button type="button" onclick="falsereport(${cvo.report_idx})">억지신고</button>
+
+                <form action="AdminController" method="post">
+                  <input type="hidden" name="type" value="adminpostviewpluswarning"/>
+                  <input type="hidden" name="report_idx" value="${cvo.report_idx}"/>
+                <button type="submit">경고횟수추가</button>
+
+
+
                                 <span class="badge ${cvo.report_status eq 0 ? 'unprocessed' : 'processed'}">
                                     ${cvo.report_status eq 0 ? '대기' : '처리완료'}
                                 </span>
@@ -324,6 +333,12 @@
     document.ff.type.value = "adminpostedit";
     document.ff.submit();
   }
+
+  function falsereport() {
+
+  }
+
+
 </script>
 </body>
 </html>

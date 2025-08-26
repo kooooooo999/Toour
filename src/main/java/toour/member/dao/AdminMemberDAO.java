@@ -127,6 +127,7 @@ public class AdminMemberDAO {
         else {
             ss.rollback();
         }
+//        System.out.println("cnt::::::::::::::::::"+cnt);
         ss.close();
         return cnt;
     }

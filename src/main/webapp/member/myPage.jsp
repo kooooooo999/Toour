@@ -301,21 +301,23 @@
                     <c:forEach var="dataVO" items="${requestScope.tour_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
-                                <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
-                                <p class="overflowHidden">${dataVO.addr1}</p>
-                                <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
-                                    <input type="hidden" name="title" value="${dataVO.title}"/>
-                                    <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
-                                    <input type="hidden" name="overview" value="${dataVO.overview}"/>
-                                    <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
-                                    <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
-                                    <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
-                                    <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
-                                    <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
-                                    <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
-                                    <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
-                                </form>
+                                <c:if test="${dataVO ne null}">
+                                    <a href="javascript:goDetail(${vs.index})">${dataVO.title}</a>
+                                    <a href="javascript:goDetail(${vs.index})"><img src="${dataVO.firstimage}" class="imgSize" alt="${dataVO.title}"></a>
+                                    <p class="overflowHidden">${dataVO.addr1}</p>
+                                    <form id="zzim_info${vs.index}" name="zzim_info${vs.index}" action="Controller?type=tripDetails" method="post">
+                                        <input type="hidden" name="title" value="${dataVO.title}"/>
+                                        <input type="hidden" name="addr1" value="${dataVO.addr1}"/>
+                                        <input type="hidden" name="overview" value="${dataVO.overview}"/>
+                                        <input type="hidden" name="firstimage" value="${dataVO.firstimage}"/>
+                                        <input type="hidden" name="mapx" value="${dataVO.mapx}"/>
+                                        <input type="hidden" name="mapy" value="${dataVO.mapy}"/>
+                                        <input type="hidden" name="contentTypeId" value="${dataVO.contentTypeId}"/>
+                                        <input type="hidden" name="contentId" value="${dataVO.contentId}"/>
+                                        <input type="hidden" name="homepageUrl" value="${dataVO.homepageUrl}"/>
+                                        <input type="hidden" name="homepageText" value="${dataVO.homepageText}"/>
+                                    </form>
+                                </c:if>
                             </div>
                         </c:if>
                     </c:forEach>
@@ -333,7 +335,7 @@
                     <c:forEach var="courseVO" items="${requestScope.course_ar}" varStatus="vs">
                         <c:if test="${vs.index < 4}">
                             <div class="oneDiv">
-                                <a href="#">${courseVO.course_name}</a>
+                                <a href="javascript:myCourseDate('${courseVO.course_idx}','${courseVO.course_name}')">${courseVO.course_name}</a>
                                 <p class="overflowHidden2">${courseVO.course_summary}</p>
                             </div>
                         </c:if>
@@ -631,7 +633,7 @@
             </tr>
             <tr id="revision_btn">
                 <td colspan="2">
-                    <button type="button" onclick="goChange()" class="">수정하기</button>
+                    <button type="button" onclick="goOutMember()" class="">회원 탈퇴</button><button type="button" onclick="goChange()" class="">수정하기</button>
                 </td>
             </tr>
             </tbody>
@@ -666,6 +668,7 @@
     <input type="hidden" id="title" name="title" />
     <input type="hidden" id="course_name" name="course_name" />
 </form>
+
 
 
 
@@ -873,7 +876,7 @@
                    $("#pw").attr("hidden",true);
                    $("#re-pw").attr("hidden",true);
                    $("#revision_btn").html(
-                       "<td colspan='2'> <button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
+                       "<td colspan='2'> <button type='button' onClick='goOutMember()' className=''>회원 탈퇴</button><button type='button' onclick='goChange()' class=''>수정하기</button> </td>"
                    )
 
                    $("#matchPassword_dialog").dialog("close");
@@ -970,16 +973,19 @@
         $("#memberCourse").dialog("open");
     }
 
-    function myCourseDate(course_idx) {
+    function myCourseDate(course_idx, course_name) {
         $.ajax({
             url: "Controller?type=searchCourseDate",
             method: "post",
-            data: { course_idx: course_idx, num: 1 }
+            data: { course_idx: course_idx, num: 1 , course_name:course_name}
         }).done(function (res) {
             console.log(res);
             $("#memberCourse").html(res);
+            $("#memberCourse").dialog("open");
         })
     }
+
+
 
     // 내 코스 지도 코스 리스트에 띄우기
     function showCourseList(courseDate_idx, title, course_name) {
@@ -989,7 +995,7 @@
         $.ajax({
             url: "Controller?type=myCourseDay",
             type: "post",
-            data: { courseDate_idx: courseDate_idx }
+            data: { courseDate_idx: courseDate_idx}
         }).done(function (res) {
             console.log("res:" + res);
             $("#html-content").html(res);
@@ -1008,6 +1014,10 @@
 
         // 3. 폼을 제출합니다.
         document.result_frm.submit();
+    }
+
+    function goOutMember() {
+        document.location.href = "Controller?type=delMember";
     }
 </script>
 </body>
