@@ -99,7 +99,6 @@
     <select id="searchTotalCount" resultType="int" parameterType="String">
         select count(*) from member
         <where>
-            <if test="searchValue != null and searchValue != ''">
                 <choose>
                     <when test="searchType != null and searchType == 'member_id'">
                         member_id LIKE CONCAT ('%', #{searchValue}, '%')
@@ -115,6 +114,8 @@
                     </when>
                 </choose>
                 AND member_type = 1
+            <if test="memStateSelect != null and memStateSelect != ''">
+                AND member_status = ${memStateSelect}
             </if>
         </where>
     </select>
@@ -126,7 +127,7 @@
     <select id="mem_search" parameterType="map" resultType="toour.member.vo.MemberVO">
         SELECT *
         FROM (
-        SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum, member_idx, member_id, member_name, member_nickname, member_warning, member_type
+        SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum,member_status,member_idx, member_id, member_name, member_nickname, member_warning, member_type
         FROM member
         <where>
 <!--            <if test="searchValue != null and searchValue != ''">-->
@@ -145,7 +146,9 @@
                     </when>
                 </choose>
 <!--            </if>-->
-            AND member_status = 0
+            <if test="memStateSelect != null and memStateSelect != ''">
+                AND member_status = ${memStateSelect}
+            </if>
             AND member_type = 1
         </where>
         )a
