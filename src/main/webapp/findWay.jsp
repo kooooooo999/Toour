@@ -51,6 +51,20 @@
         #chooseDate { position: absolute; right: 20px; }
         #date { width: 160px; height: 25px; display: inline-block; margin-bottom: 10px; }
         .buttonBottom { position: absolute; bottom: 10px; right: 0; width: 150px; }
+
+        /* 튜토리얼 모달 관련 스타일 */
+        #tutorialModal {
+            display: flex;
+            position: fixed; top:0; left:0;
+            width:100%; height:100%;
+            background: rgba(0,0,0,0.5);
+            justify-content: center; align-items: center;
+            z-index: 9999;
+        }
+        .hidden { display: none !important; }
+        .modal-content {
+            background: white; padding: 20px; border-radius: 10px;
+        }
     </style>
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
@@ -63,6 +77,29 @@
     <link rel="stylesheet" href="<c:url value="/css/footer.css" />">
     <link rel="stylesheet" href="<c:url value="/css/header.css" />">
 <body>
+
+<!--  튜토리얼 모달 삽입 -->
+<div id="tutorialModal" class="<c:if test='${!showTutorial}'>hidden</c:if>">
+    <div class="modal-content">
+        <h2>튜토리얼 안내</h2>
+        <p>첫 방문 시 보여주는 튜토리얼입니다.</p>
+
+        <form method="post" action="${pageContext.request.contextPath}/tutorial.do">
+            <button type="button" onclick="document.getElementById('tutorialModal').classList.add('hidden')">
+                닫기
+            </button>
+            <button type="submit" name="action" value="skipToday">
+                오늘은 다시 보지 않기
+            </button>
+        </form>
+    </div>
+</div>
+
+<!--  튜토리얼 다시 보기 버튼 삽입 -->
+<form method="post" action="${pageContext.request.contextPath}/tutorial.do" style="position: fixed; bottom: 10px; right: 10px; z-index: 9999;">
+    <button type="submit" name="action" value="reset">튜토리얼 다시 보기</button>
+</form>
+
 <c:import url="/common/header.jsp" />
 <div style="width: 100%;">
     <div id="findWayBox" class="marginAuto container mapContainer">
