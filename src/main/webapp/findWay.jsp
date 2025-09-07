@@ -130,6 +130,7 @@
 
             <div id="buttonWrap">
                 <div  id="findButton" class="search_container">
+                    <button type="button" class="detail_btn" onclick="reset()">초기화</button>
                     <button type="button" class="detail_btn" onclick="addCourse(1)">내 코스</button>
                     <button type="button" class="detail_btn" onclick="findWay()">길찾기</button>
                     <button type="button" id="editCourseButton" class="detail_btn hide" onclick="editCourse()">코스 수정</button>
@@ -504,6 +505,20 @@
             markers[i].setMap(null);
         }
         markers = [];
+    }
+    <!--초기화 버튼-->
+    function reset() {
+        $.ajax({
+            url: "Controller?type=searchResult&actionType=reset",
+            type: "post"
+        }).done(function () {
+            $("#searchKeyword").val("");
+            $("#search_results").html("");
+            $("#courseList").html("");
+            $("#head").html("여기로 가야지!");
+            removeMarker();
+            $("#searchBox2").hide();
+        });
     }
 
     // 달력 창 열기
