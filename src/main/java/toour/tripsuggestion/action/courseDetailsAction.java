@@ -127,22 +127,16 @@ public class courseDetailsAction implements Action {
                     String homepageUrl2 = null;
                     String homepageText2 = null;
                     homepage2 = item2.getChildText("homepage");
-                    if (homepage2 != null && homepage2.contains("<a href")) {
+                    if (homepage2 != null && homepage2.contains("<a")) {
                         // URL 추출
-                        Pattern urlPattern = Pattern.compile("href=['\"]([^'\"]+)['\"]");
-                        Matcher urlMatcher = urlPattern.matcher(homepage2);
-                        if (urlMatcher.find()) {
-                            homepageUrl2 = urlMatcher.group(1);
-                        }
+                        Matcher urlMatcher = Pattern.compile("href=[\"']([^\"']+)[\"']").matcher(homepage2);
+                        if (urlMatcher.find()) homepageUrl2 = urlMatcher.group(1);
 
                         // 텍스트 추출
-                        Pattern textPattern = Pattern.compile(">(.+?)</a>");
-                        Matcher textMatcher = textPattern.matcher(homepage2);
-                        if (textMatcher.find()) {
-                            homepageText2 = textMatcher.group(1);
-                        }
+                        Matcher textMatcher = Pattern.compile(">([^<]+)</a>").matcher(homepage2);
+                        if (textMatcher.find()) homepageText2 = textMatcher.group(1);
+
                     } else {
-                        // HTML 태그가 없는 경우 그대로 사용
                         homepageUrl2 = homepage2;
                         homepageText2 = homepage2;
                     }

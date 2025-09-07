@@ -1,8 +1,15 @@
 package toour.tripsuggestion.vo;
 
 public class DataVO {
-    private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel, eventstartdate, eventenddate,
-            cat1, cat2, cat3, contentTypeId, contentId, overview, infocenter, parking, restdate, usetime, cPage, homepageUrl, homepageText, subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount, distance, schedule, theme, sidoname;
+    private String title, mapx, mapy, addr1, addr2, firstimage, firstimage2, tel,
+            cat1, cat2, cat3, contentTypeId, contentId, overview, infocenter, parking, restdate, usetime, cPage, homepageUrl, homepageText, subcontentid, subdetailalt, subdetailimg, subdetailoverview, subname, totalCount, distance, schedule, theme, sidoname,
+            accomcount, chkbabycarriage, chkpet, expagerange, expguide, opendate,
+            chkpetculture, parkingfee, scale, usetimeculture,
+            spendtime, agelimit, bookingplace, eventenddate, eventhomepage, eventplace, eventstartdate, playtime, program, sponsor1, sponsor1tel, usetimefestival,
+            openperiod, parkingfeeleports, parkingleports, reservation, usefeeleports,
+            checkintime, checkouttime, chkcooking, roomcount, subfacility,
+            opendateshopping, opentime, saleitem, roomtype,
+            firstmenu, opentimefood, packing, seat;
 
     public DataVO(String distance, String schedule, String theme) {
         this.distance = distance;
@@ -86,6 +93,311 @@ public class DataVO {
         this.overview = overview;
         this.homepageText = homepageText;
         this.homepageUrl = homepageUrl;
+    }
+
+    public String getFirstmenu() {
+        return firstmenu;
+    }
+
+    public void setFirstmenu(String firstmenu) {
+        this.firstmenu = firstmenu;
+    }
+
+    public String getOpentimefood() {
+        return opentimefood;
+    }
+
+    public void setOpentimefood(String opentimefood) {
+        this.opentimefood = opentimefood;
+    }
+
+    public String getPacking() {
+        return packing;
+    }
+
+    public void setPacking(String packing) {
+        this.packing = packing;
+    }
+
+    public String getSeat() {
+        return seat;
+    }
+
+    public void setSeat(String seat) {
+        this.seat = seat;
+    }
+
+    public String getRoomtype() {
+        return roomtype;
+    }
+
+    public void setRoomtype(String roomtype) {
+        this.roomtype = roomtype;
+    }
+
+    public String getOpendateshopping() {
+        return opendateshopping;
+    }
+
+    public void setOpendateshopping(String opendateshopping) {
+        this.opendateshopping = opendateshopping;
+    }
+
+    public String getOpentime() {
+        return opentime;
+    }
+
+    public void setOpentime(String opentime) {
+        this.opentime = opentime;
+    }
+
+    public String getSaleitem() {
+        return saleitem;
+    }
+
+    public void setSaleitem(String saleitem) {
+        this.saleitem = saleitem;
+    }
+
+    public String getCheckintime() {
+        return checkintime;
+    }
+
+    public void setCheckintime(String checkintime) {
+        this.checkintime = checkintime;
+    }
+
+    public String getCheckouttime() {
+        return checkouttime;
+    }
+
+    public void setCheckouttime(String checkouttime) {
+        this.checkouttime = checkouttime;
+    }
+
+    public String getChkcooking() {
+        return chkcooking;
+    }
+
+    public void setChkcooking(String chkcooking) {
+        this.chkcooking = chkcooking;
+    }
+
+    public String getRoomcount() {
+        return roomcount;
+    }
+
+    public void setRoomcount(String roomcount) {
+        this.roomcount = roomcount;
+    }
+
+    public String getSubfacility() {
+        return subfacility;
+    }
+
+    public void setSubfacility(String subfacility) {
+        this.subfacility = subfacility;
+    }
+
+    public String getUsefeeleports() {
+        return usefeeleports;
+    }
+
+    public void setUsefeeleports(String usefeeleports) {
+        this.usefeeleports = usefeeleports;
+    }
+
+    public String getOpenperiod() {
+        return openperiod;
+    }
+
+    public void setOpenperiod(String openperiod) {
+        this.openperiod = openperiod;
+    }
+
+    public String getParkingfeeleports() {
+        return parkingfeeleports;
+    }
+
+    public void setParkingfeeleports(String parkingfeeleports) {
+        this.parkingfeeleports = parkingfeeleports;
+    }
+
+    public String getParkingleports() {
+        return parkingleports;
+    }
+
+    public void setParkingleports(String parkingleports) {
+        this.parkingleports = parkingleports;
+    }
+
+    public String getReservation() {
+        return reservation;
+    }
+
+    public void setReservation(String reservation) {
+        this.reservation = reservation;
+    }
+
+
+    public String getSpendtime() {
+        return spendtime;
+    }
+
+    public void setSpendtime(String spendtime) {
+        this.spendtime = spendtime;
+    }
+
+    public String getAgelimit() {
+        return agelimit;
+    }
+
+    public void setAgelimit(String agelimit) {
+        this.agelimit = agelimit;
+    }
+
+    public String getBookingplace() {
+        return bookingplace;
+    }
+
+    public void setBookingplace(String bookingplace) {
+        this.bookingplace = bookingplace;
+    }
+
+    public String getEventhomepage() {
+        return eventhomepage;
+    }
+
+    public void setEventhomepage(String eventhomepage) {
+        this.eventhomepage = eventhomepage;
+    }
+
+    public String getEventplace() {
+        return eventplace;
+    }
+
+    public void setEventplace(String eventplace) {
+        this.eventplace = eventplace;
+    }
+
+    public String getPlaytime() {
+        return playtime;
+    }
+
+    public void setPlaytime(String playtime) {
+        this.playtime = playtime;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+
+    public String getSponsor1() {
+        return sponsor1;
+    }
+
+    public void setSponsor1(String sponsor1) {
+        this.sponsor1 = sponsor1;
+    }
+
+    public String getSponsor1tel() {
+        return sponsor1tel;
+    }
+
+    public void setSponsor1tel(String sponsor1tel) {
+        this.sponsor1tel = sponsor1tel;
+    }
+
+    public String getUsetimefestival() {
+        return usetimefestival;
+    }
+
+    public void setUsetimefestival(String usetimefestival) {
+        this.usetimefestival = usetimefestival;
+    }
+
+    public String getChkpetculture() {
+        return chkpetculture;
+    }
+
+    public void setChkpetculture(String chkpetculture) {
+        this.chkpetculture = chkpetculture;
+    }
+
+    public String getParkingfee() {
+        return parkingfee;
+    }
+
+    public void setParkingfee(String parkingfee) {
+        this.parkingfee = parkingfee;
+    }
+
+    public String getScale() {
+        return scale;
+    }
+
+    public void setScale(String scale) {
+        this.scale = scale;
+    }
+
+    public String getUsetimeculture() {
+        return usetimeculture;
+    }
+
+    public void setUsetimeculture(String usetimeculture) {
+        this.usetimeculture = usetimeculture;
+    }
+
+    public String getAccomcount() {
+        return accomcount;
+    }
+
+    public void setAccomcount(String accomcount) {
+        this.accomcount = accomcount;
+    }
+
+    public String getChkbabycarriage() {
+        return chkbabycarriage;
+    }
+
+    public void setChkbabycarriage(String chkbabycarriage) {
+        this.chkbabycarriage = chkbabycarriage;
+    }
+
+    public String getChkpet() {
+        return chkpet;
+    }
+
+    public void setChkpet(String chkpet) {
+        this.chkpet = chkpet;
+    }
+
+    public String getExpagerange() {
+        return expagerange;
+    }
+
+    public void setExpagerange(String expagerange) {
+        this.expagerange = expagerange;
+    }
+
+    public String getExpguide() {
+        return expguide;
+    }
+
+    public void setExpguide(String expguide) {
+        this.expguide = expguide;
+    }
+
+    public String getOpendate() {
+        return opendate;
+    }
+
+    public void setOpendate(String opendate) {
+        this.opendate = opendate;
     }
 
     public String getSidoname() {
