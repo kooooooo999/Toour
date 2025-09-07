@@ -123,7 +123,16 @@ public class SearchResultAction implements Action{
 
             System.out.println("here4");
             viewPath = "addList.jsp";
-        } else {
+        } else if ("reset".equals(request.getParameter("actionType"))) {
+           //초기화 버튼 눌렀을때 여기로 가야지 안에 있던 리스트 초기화하는 곳
+                if (mvo != null) {
+                    mvo.getCourseList().clear();
+                    srlist.clear();
+                }
+                request.setAttribute("resultAr", null);
+                request.setAttribute("mapPage", null);
+                return "addList.jsp";
+            } else {
             // 검색창에 검색했을 때 수행
             System.out.println("here?");
             System.out.println(keyword);
