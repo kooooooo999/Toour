@@ -30,7 +30,6 @@ public class tripSuggestionAction extends LoCatVO implements Action {
         Paging page = new Paging(5, 5);
         String contentTypeid = request.getParameter("contentTypeId");
         String areaCode = request.getParameter("areaCode");
-        System.out.println(areaCode);
         String sigunguCode = request.getParameter("sigunguCode");
         String cat1 = request.getParameter("cat1");
         String cat2 = request.getParameter("cat2");
@@ -220,7 +219,6 @@ public class tripSuggestionAction extends LoCatVO implements Action {
         sb.append(cPage);
         try {
             URL url1 = new URL(sb.toString());
-            System.out.println("tripSuggestionAction sb:" + sb.toString());
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();
@@ -262,7 +260,6 @@ public class tripSuggestionAction extends LoCatVO implements Action {
                 sb2.append(voContentid);
 
                 URL url2 = new URL(sb2.toString());
-                System.out.println("tripSuggestionAction sb2:" + sb2.toString());
                 HttpURLConnection conn2 = (HttpURLConnection) url2.openConnection();
                 conn2.setRequestProperty("Content-Type", "application/xml");
                 conn2.connect();
