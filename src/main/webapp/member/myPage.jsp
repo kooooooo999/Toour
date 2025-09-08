@@ -738,10 +738,9 @@
 </div>
 
 <div id="matchPassword_dialog">
-    <table>
+    <table style="min-width: 350px">
         <tr>
-            <td>비밀번호 확인:</td>
-            <td>
+            <td colspan="2">
                 <div class="input-group">
                     <div class="input-with-message">
                         <input type="password" id="match_pw" name="match_pw" class="input-field input-field-full" placeholder="비밀번호" />

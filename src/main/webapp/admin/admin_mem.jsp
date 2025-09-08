@@ -254,13 +254,20 @@
 
   <div class="search-area">
     <form method="post" action="AdminController?type=adminmemsearch" onsubmit="return validateForm()">
-      <select id="searchType" name="searchType">
-        <option value="member_name">이름</option>
-        <option value="member_id">아이디</option>
-        <option value="member_nickname">별명</option>
-        <option value="member_warning">경고횟수</option>
+        <select id="memStateSelect" name="memStateSelect">
+            <option value="" <c:if test="${requestScope.memStateSelect eq null}">selected</c:if> >::회원 상태::</option>
+            <option value="0" <c:if test="${requestScope.memStateSelect eq 0}">selected</c:if> >회원</option>
+            <option value="1" <c:if test="${requestScope.memStateSelect eq 1}">selected</c:if> >정지</option>
+            <option value="2" <c:if test="${requestScope.memStateSelect eq 2}">selected</c:if> >탈퇴</option>
+        </select>
+
+        <select id="searchType" name="searchType">
+        <option value="member_name" <c:if test="${requestScope.searchType eq 'member_name'}">selected</c:if> >이름</option>
+        <option value="member_id" <c:if test="${requestScope.searchType eq 'member_id'}">selected</c:if> >아이디</option>
+        <option value="member_nickname" <c:if test="${requestScope.searchType eq 'member_nickname'}">selected</c:if> >별명</option>
+        <option value="member_warning" <c:if test="${requestScope.searchType eq 'member_warning'}">selected</c:if> >경고횟수</option>
       </select>
-      <label for="searchValue"></label><input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue"/>
+      <label for="searchValue"></label><input type="text" id="searchValue" placeholder="검색내용을 입력해주세요" name="searchValue" <c:if test="${requestScope.searchValue ne null}">value="${requestScope.searchValue}" </c:if>/>
       <i class="fas fa-search"><button type="submit" class="fas">검색</button></i>
     </form>
       <input id="delbutton" type="button" value="삭제" onclick="openDel()"/>
@@ -346,13 +353,13 @@
         </td>
           <td>
             <a href="AdminController?type=adminmemview&member_idx=${vo.member_idx}&cPage=${p.nowPage}">
-                <c:if test="${vo.member_status == 0 }">
+                <c:if test="${vo.member_status eq 0 }">
                   <p style="color: #1a73e8">회원</p>
                 </c:if>
-                <c:if test="${vo.member_status == 1 }">
-                  <p style="color: #e0d000">휴면</p>
+                <c:if test="${vo.member_status eq 1 }">
+                  <p style="color: #e0d000">정지</p>
                 </c:if>
-                <c:if test="${vo.member_status == 2 }">
+                <c:if test="${vo.member_status eq 2 }">
                   <p style="color: red">탈퇴</p>
                 </c:if>
             </a>
@@ -378,7 +385,7 @@
                             <li class="now">${vs.index}</li>
                         </c:if>
                         <c:if test="${p.nowPage != vs.index}">
-                            <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${vs.index}<c:if test="${requestScope.searchValue ne null}">&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}</c:if> ">${vs.index}</a></li>
+                            <li><a href="AdminController?type=<c:if test="${requestScope.searchValue ne null}">adminmemsearch</c:if><c:if test="${requestScope.searchValue eq null}">adminmemlist</c:if>&cPage=${vs.index}&searchValue=${requestScope.searchValue}&searchType=${requestScope.searchType}&memStateSelect=${requestScope.memStateSelect} ">${vs.index}</a></li>
                         </c:if>
                     </c:forEach>
                     <c:if test="${p.endPage < p.totalPage}">
@@ -427,10 +434,7 @@
 
     function validateForm() {
       let searchValue = document.getElementById('searchValue').value;
-      if (searchValue.trim() === '') {
-        alert('검색내용을 입력하세요.');
-        return false;
-      }
+
       return true;
     }
 
@@ -483,6 +487,8 @@
 
 
         });
+
+
     });
 
 </script>

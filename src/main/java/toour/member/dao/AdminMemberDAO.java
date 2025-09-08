@@ -133,9 +133,11 @@ public class AdminMemberDAO {
     }
 
     // 게시물에서 검색결과 수를 반환
-    public static int getSearchTotalCount(String searchType,String searchValue){
+    public static int getSearchTotalCount(String memStateSelect,String searchType,String searchValue){
         SqlSession ss = FactoryService.getFactory().openSession();
         Map<String, String> map = new HashMap<>();
+        if(memStateSelect!=null)
+            map.put("memStateSelect", memStateSelect);
         if(searchType!=null)
             map.put("searchType", searchType);
         if(searchValue!=null)
@@ -147,9 +149,11 @@ public class AdminMemberDAO {
     }
 
     //회원정보 검색
-    public static MemberVO[] search(String searchType, String searchValue, int begin, int end){
+    public static MemberVO[] search(String memStateSelect,String searchType, String searchValue, int begin, int end){
         MemberVO[] ar = null;
         Map<String,Object> map = new HashMap<String,Object>();
+        if(memStateSelect!=null)
+            map.put("memStateSelect", memStateSelect);
         if(searchType!=null)
             map.put("searchType", searchType);
         if(searchValue!=null)

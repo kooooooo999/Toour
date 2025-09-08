@@ -8,10 +8,8 @@
   </c:forEach>
   <c:set var="course_idx" value="${requestScope.course_idx}"/>
   <input type="hidden" id="courseidxinput" value="${course_idx}">
-  <div style="display: flex;" class="buttonBottom">
-    <button type="button" id="backCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 65px;" class="buttonRight detail_btn" onclick="addCourse(2)">뒤로</button>
-    <button type="button" id="addCourseDate" style="font-size: 12px; display: inline-block;" class="buttonRight detail_btn" onclick="openDateTitle()">추가</button>
-  </div>
+    <button type="button" id="backCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 80px; bottom: 10px;" class="buttonRight detail_btn" onclick="addCourse(2)">뒤로</button>
+    <button type="button" id="addCourseDate" style="font-size: 12px; display: inline-block; position: absolute; right: 15px; bottom: 10px;" class="buttonRight detail_btn" onclick="openDateTitle()">추가</button>
 </c:if>
 
 <c:if test="${param.num eq 1}">
