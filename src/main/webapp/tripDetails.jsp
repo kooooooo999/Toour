@@ -15,55 +15,52 @@
         padding-bottom: 40px; /* 아래 여백 */
     }
 
+    /* 상세 정보 전체 영역 */
     #detailsInfo {
-        max-width: 800px;
+        max-width: 850px;
         margin: 0 auto;
-        transform: translateX(20px);
-        padding-bottom: 15px;
+        padding-bottom: 20px;
     }
 
+    /* ul: 그리드로 정렬 */
     #detailsInfo ul {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        list-style-type: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* 반응형 */
+        gap: 16px;
+        margin: 0 auto;
         padding: 0;
+        list-style: none;
     }
 
+    /* 각각의 정보 카드 li */
     #detailsInfo li {
-        flex: 1 1 30%;
-        box-sizing: border-box;
-        padding: 15px 20px 20px;
-        line-height: 1.6;
+        background-color: #ffffff;
+        padding: 12px 16px;
+        border-radius: 8px;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+        font-size: 14px;
+        line-height: 1.5;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
     }
 
-    /*!* 상세 정보를 감싸는 부모 컨테이너에 적용 *!*/
-    /*#detailsInfo {*/
-    /*    display: flex;*/
-    /*    justify-content: center; !* ul을 가로 중앙으로 정렬 *!*/
-    /*    width: 100%;*/
-    /*    padding-bottom: 50px;*/
-    /*}*/
+    /* 제목 (strong 또는 첫 번째 p) */
+    #detailsInfo li strong,
+    #detailsInfo li p:first-child {
+        font-size: 15px;
+        font-weight: 600;
+        color: #222;
+        margin-bottom: 4px;
+    }
 
-    /*!* 상세 정보 목록 ul에 적용 *!*/
-    /*#detailsInfo ul {*/
-    /*    width: 850px; !* 지도와 동일한 너비로 설정하여 정렬 맞추기 *!*/
-    /*    display: flex;*/
-    /*    flex-wrap: wrap;*/
-    /*    gap: 20px;*/
-    /*    padding: 0;*/
-    /*    list-style-type: none;*/
-    /*    justify-content: center;*/
-    /*}*/
-
-    /*!* 상세 정보 목록 li에 적용 *!*/
-    /*#detailsInfo li {*/
-    /*    width: calc(100% / 3 - 20px * 2 / 3);*/
-    /*    box-sizing: border-box;*/
-    /*    display: flex;*/
-    /*    flex-direction: column;*/
-    /*    align-items: flex-start;*/
-    /*}*/
+    /* 내용 */
+    #detailsInfo li p {
+        margin: 0;
+        font-size: 14px;
+        color: #555;
+    }
 
     /* 뒤로가기 버튼 스타일 */
     .back-button {
@@ -128,6 +125,10 @@
         display: flex; /* Flexbox를 사용하여 내부 요소를 정렬 */
         justify-content: center; /* 가로 중앙 정렬 */
         align-items: center; /* 세로 중앙 정렬 */
+    }
+
+    .empty-state {
+        color: #adb5bd;
     }
 
 </style>
@@ -196,31 +197,32 @@
 </div>
 <%--주차 가능여부 등 API 새로 가져오기--%>
 <div id="detailsInfo">
-    <c:choose>
-        <c:when test="${Dvo.contentTypeId == '12' or Dvo.contentTypeId eq null}">
-            <jsp:include page="Details/Details12.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '14'}">
-            <jsp:include page="Details/Details14.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '15'}">
-            <jsp:include page="Details/Details15.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '28'}">
-            <jsp:include page="Details/Details28.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '32'}">
-            <jsp:include page="Details/Details32.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '38'}">
-            <jsp:include page="Details/Details38.jsp"/>
-        </c:when>
-        <c:when test="${Dvo.contentTypeId == '39'}">
-            <jsp:include page="Details/Details39.jsp"/>
-        </c:when>
-    </c:choose>
+    <ul id="detailsList">
+        <c:choose>
+            <c:when test="${Dvo.contentTypeId == '12' or Dvo.contentTypeId eq null}">
+                <jsp:include page="Details/Details12.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '14'}">
+                <jsp:include page="Details/Details14.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '15'}">
+                <jsp:include page="Details/Details15.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '28'}">
+                <jsp:include page="Details/Details28.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '32'}">
+                <jsp:include page="Details/Details32.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '38'}">
+                <jsp:include page="Details/Details38.jsp"/>
+            </c:when>
+            <c:when test="${Dvo.contentTypeId == '39'}">
+                <jsp:include page="Details/Details39.jsp"/>
+            </c:when>
+        </c:choose>
+    </ul>
 </div>
-
 <c:import url="/common/footer.jsp"/>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
@@ -273,8 +275,20 @@
         alert("찜 기능은 로그인 후 사용할 수 있습니다.")
         </c:if>
     })
+    document.addEventListener('DOMContentLoaded', function () {
+        const ul = document.getElementById('detailsList');
+        const items = ul.querySelectorAll('li');
+        const count = items.length;
 
+        let columns;
+        if (count === 1) columns = 1;
+        else if (count === 2) columns = 2;
+        else if (count === 3) columns = 3;
+        else if (count === 4) columns = 2;
+        else columns = 3; // 5개 이상은 3열
 
+        ul.style.gridTemplateColumns = 'repeat(' + columns + ', 1fr)';
+    });
 </script>
 
 </body>
