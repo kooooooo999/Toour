@@ -30,7 +30,6 @@ public class tripDetailsAction implements Action {
         String homepageUrl = request.getParameter("homepageUrl");
         String homepageText = request.getParameter("homepageText");
         DataVO datavo = new DataVO(title, addr1, overview, firstimage, mapx, mapy, contentTypeId, contentId, cPage, homepageText, homepageUrl);
-
         Object obj1 = request.getAttribute("dataAr");
         DataVO dataArVo = null;
         if (obj1 != null) {
