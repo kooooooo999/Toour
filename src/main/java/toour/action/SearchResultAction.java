@@ -79,7 +79,7 @@ public class SearchResultAction implements Action{
         }
         Object obj1 =request.getAttribute("F5");
         String f5 = null;
-        if(obj1!=null){
+        if(obj1 != null){
             f5 = String.valueOf(obj1);
         }
 
@@ -100,8 +100,14 @@ public class SearchResultAction implements Action{
                 // + 버튼 눌렀을 때 수행
 
                 System.out.println("myCourse x");
-                mvo.getCourseList().add(srlist.get(index1));
+                if (obj == null) {
+                    courseList.add(srlist.get(index1));
+                }
+                if (obj != null){
+                    mvo.getCourseList().add(srlist.get(index1));
+                }
 
+                request.setAttribute("courseList", courseList);
                 request.setAttribute("addTitle", addTitle);
 
                 viewPath = "addList.jsp";

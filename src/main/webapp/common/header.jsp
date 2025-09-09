@@ -136,16 +136,12 @@
 
     function goWay() {
 
-        <c:if test="${sessionScope.member ne null}">
             let form = document.createElement('form');
             form.method = 'POST';
             form.action = 'Controller?type=GoWay';
             document.body.appendChild(form);
             form.submit();
-        </c:if>
-        <c:if test="${sessionScope.member eq null}">
-            alert("나만의 코스는 로그인 후 사용할 수 있습니다.");
-        </c:if>
+
     }
 
     function myPageCheckLogin(){

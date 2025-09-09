@@ -10,9 +10,9 @@ public class FindWayGoAction implements Action{
         //viewpath로 바꿔서
         //get이면 searchResultAction
         //post면 이대로
-        request.setAttribute("F5",0);
-        String viewPath = "Controller?type=searchResult";
-        System.out.println("viewPath:"+viewPath);
-        return viewPath;
+        //request.setAttribute("F5",0);
+        //String viewPath = "Controller?type=searchResult";
+       // System.out.println("viewPath:"+viewPath);
+        return "findWay.jsp";
     }
 }
