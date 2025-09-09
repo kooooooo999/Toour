@@ -170,8 +170,9 @@
               첨부파일 없음
             </c:if>
             <c:if test="${not empty pvo.file_name_original}">
-            ${pvo.file_name_original}
-            </c:if>
+              <a href="AdminController?type=adminfiledownload&f_name=${vo.file_name_stored}">
+                  ${vo.file_name_original}
+              </a>            </c:if>
           </a></td>
         </tr>
 

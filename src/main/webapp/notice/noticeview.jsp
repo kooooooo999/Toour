@@ -180,7 +180,7 @@
             <h3 class="h3">공지</h3>
             <h1 class="h1">${vo.post_title}</h1>
             <div class = "info">
-                ${member_info.member_nickname} | ${vo.post_updated_at}
+                관리자 | ${vo.post_updated_at.substring(0,10)}
             </div>
 
             <hr class="line">
@@ -199,7 +199,7 @@
                 <img src="https://cdn-icons-png.flaticon.com/512/724/724933.png" width="20" height="20" alt="첨부파일">
                 <c:forEach var="file" items="${requestScope.fileList}">
                     <div>
-                        <a href="<c:url value="/bbs_upload/${file.file_name_stored}"/>">${file.file_name_original}</a>
+                        <a href="AdminController?type=adminfiledownload&f_name=${file.file_name_stored}">${file.file_name_original}</a>
                     </div>
                 </c:forEach>
             </c:if>
