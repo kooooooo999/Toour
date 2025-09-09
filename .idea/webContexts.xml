@@ -15,6 +15,7 @@
         <entry key="file://$PROJECT_DIR$/src/main/webapp/notice/noticeList.jsp" value="file://$PROJECT_DIR$/src/main/webapp/notice" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/post/view.jsp" value="file://$PROJECT_DIR$/src/main/webapp/post" />
         <entry key="file://$PROJECT_DIR$/src/main/webapp/post/write.jsp" value="file://$PROJECT_DIR$/src/main/webapp/post" />
+        <entry key="file://$PROJECT_DIR$/src/main/webapp/searchReturn.jsp" value="file://$PROJECT_DIR$/src/main/webapp" />
       </map>
     </option>
   </component>

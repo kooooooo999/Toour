@@ -38,7 +38,7 @@
         .detail_btn { background-color: #007bff; border: 0px; color: white; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         .closeopen_btn { background-color: #eee; border: 0px; color: #555; padding: 3px 10px; border-radius: 5px; font-size: 13px; margin-top: 5px; }
         #places_list { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
-        #course { display: block; width: 260px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; }
+        #course { display: block; width: 260px; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 15px; position: relative; cursor: pointer; }
         #courseList { width: 277.5px; height: 420px; overflow-y: auto; margin-top: 10px; }
         #page { margin: auto; margin-top: 23px; }
         .ellip{ font-weight: bold; display: inline-block; width: 215px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -217,6 +217,7 @@
     <script type="text/javascript"
             src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=LIBRARY"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.14.0/Sortable.min.js" integrity="sha512-zYXldzJsDrNKV+odAwFYiDXV2Cy37cwizT+NkuiPGsa9X1dOz04eHvUWVuxaJ299GvcJT31ug2zO4itXBjFx4w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -304,6 +305,12 @@
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script type="text/javascript">
+
+    new Sortable(courseList, {
+        swap: true,
+        animation: 150,
+    });
+
     /*지도 표시 부분*/
     var mapContainer = document.getElementById('map');
     var mapOption = {
@@ -405,6 +412,19 @@
 
         <%-- 1일 때는 '내코스', 2일 때는 '코스 추가' 눌렀을 때 --%>
         let number = num;
+
+        if (number == 2) {
+            <c:if test="${sessionScope.member eq null}">
+            alert("코스 저장은 로그인 후 사용할 수 있습니다.");
+            return;
+            </c:if>
+        }
+        if (number == 1) {
+            <c:if test="${sessionScope.member eq null}">
+            alert("내 코스 목록 보기는 로그인 후 사용할 수 있습니다.");
+            return;
+            </c:if>
+        }
 
         $.ajax({
             url: "Controller?type=searchCourse",
@@ -581,6 +601,13 @@
 
     // 검색 결과 창에서 + 버튼 누르면 코스 칸으로 넘어가는 함수
     function addList(title, i, myCourse) {
+
+
+        console.log("kiki2")
+
+        $("#saveButton").show();
+
+
 
         let courseDate_idx = $("#courseDate_idx").val();
         let keyword = $("#searchKeyword").val().trim();
