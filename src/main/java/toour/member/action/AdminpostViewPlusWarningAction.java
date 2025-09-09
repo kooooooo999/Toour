@@ -1,7 +1,9 @@
 package toour.member.action;
 
 import toour.action.Action;
+import toour.member.dao.AdminMemberDAO;
 import toour.member.dao.AdminPostDAO;
+import toour.member.vo.MemberVO;
 import toour.notice.dao.PostDAO;
 import toour.post.dao.ReportDAO;
 import toour.post.vo.ReportVO;
@@ -19,6 +21,7 @@ public class AdminpostViewPlusWarningAction implements Action {
         String report_idx = request.getParameter("report_idx");
         String post_idx = request.getParameter("post_idx");
         String comment_idx = request.getParameter("comment_idx");
+        String member_idx = request.getParameter("member_idx");
 
 
         if (report_idx == null || report_idx.trim().isEmpty()) {
@@ -28,9 +31,29 @@ public class AdminpostViewPlusWarningAction implements Action {
         int reportstatus = ReportDAO.reportstatus(report_idx);
         ReportVO rvo = AdminPostDAO.getreportidx(report_idx);
 
-        int pluswarning = AdminPostDAO.pluswarning(report_idx);
-        List<Map<String, Object>> commentListWithReports = ReportDAO.getCommentListWithReports(post_idx);
 
+
+        MemberVO member = AdminMemberDAO.view(rvo.getReported_idx());
+        System.out.println("member:::::::"+member);
+        System.out.println("member:::::::"+member.getMember_nickname());
+
+
+
+
+        if(member != null && Integer.parseInt(member.getMember_warning()) >= 2) {
+            int reportmemstatuschange = ReportDAO.reportmemstatuschange(member.getMember_idx());
+//            System.out.println(member.getMember_idx());
+            int pluswarning = AdminPostDAO.pluswarning(report_idx);
+
+        }
+        else {
+            int pluswarning = AdminPostDAO.pluswarning(report_idx);
+            List<Map<String, Object>> commentListWithReports = ReportDAO.getCommentListWithReports(post_idx);
+            request.setAttribute("pluswarning",pluswarning);
+            request.setAttribute("commentList", commentListWithReports);
+
+
+        }
         if(post_idx != null) {
             int cnt = AdminPostDAO.delnotice(post_idx);
         }
@@ -43,8 +66,7 @@ public class AdminpostViewPlusWarningAction implements Action {
 
         System.out.println("report_idx:::::::::::"+report_idx);
 
-        request.setAttribute("pluswarning",pluswarning);
-        request.setAttribute("commentList", commentListWithReports);
+
         request.setAttribute("rvo",rvo);
         request.setAttribute("reportstatus",reportstatus);
 

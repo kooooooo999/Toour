@@ -201,6 +201,22 @@ public class ReportDAO {
         return post;
     }
 
+    // 신고 횟수 3회시 상태 바꾸기
+    public static int reportmemstatuschange(String member_idx){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.update("report.reportmemstatuschange", member_idx);
+        if(cnt > 0){
+            ss.commit();
+        }else{
+            ss.rollback();
+        }
+
+        System.out.println("cnt:::::::::::"+cnt);
+        ss.close();
+        return cnt;
+
+    }
+
 
 
 

@@ -168,6 +168,12 @@
         SELECT COUNT(*) FROM comment
     </select>
 
+    <update id="reportmemstatuschange" parameterType="String">
+        UPDATE member
+        SET member_status = 1
+        WHERE member_idx = #{member_idx}
+    </update>
+
 
 
 
