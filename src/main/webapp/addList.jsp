@@ -70,7 +70,7 @@
     var coursePoints = [];
     var points = [];
 
-    <c:if test="${requestScope.courseList eq null}">
+
     <c:forEach var="vo" items="${sessionScope.member.courseList}">
     var point = {
         mapx: "${vo.mapx}",
@@ -82,7 +82,7 @@
     <c:forEach var="list" items="${sessionScope.member.courseList}">
         points.push(new kakao.maps.LatLng(${list.mapy}, ${list.mapx}));
     </c:forEach>
-    </c:if>
+
 
     <c:if test="${requestScope.courseList ne null}">
     <c:forEach var="vo" items="${requestScope.courseList}">
