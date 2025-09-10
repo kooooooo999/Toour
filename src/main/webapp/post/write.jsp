@@ -144,6 +144,15 @@
       margin-top: 0 !important;
     }
 
+    .star-rating .star {
+      font-size: 22px;
+      cursor: pointer;
+      color: lightgray;
+    }
+    .star-rating .star.selected {
+      color: gold;
+    }
+
   </style>
   <script type="text/javascript">
 
@@ -180,6 +189,19 @@
         <tr>
           <th>이름:</th>
           <td>${sessionScope.member.member_nickname}</td>
+        </tr>
+        <tr>
+          <th>별점:</th>
+          <td>
+            <div class="star-rating">
+              <span class="star" data-value="1">★</span>
+              <span class="star" data-value="2">★</span>
+              <span class="star" data-value="3">★</span>
+              <span class="star" data-value="4">★</span>
+              <span class="star" data-value="5">★</span>
+            </div>
+            <input type="hidden" name="post_rating" id="post_rating" value="0"/>
+          </td>
         </tr>
         <tr>
           <th>내용:</th>
@@ -329,6 +351,24 @@
     //유효성 검사 통과시 폼제출!
     return true;
   }
+
+  // 별점 클릭 이벤트
+  document.querySelectorAll(".star-rating .star").forEach(star => {
+    star.addEventListener("click", function() {
+      let value = this.getAttribute("data-value");
+      document.getElementById("post_rating").value = value; // hidden에 저장
+
+      // 선택한 별까지 색칠
+      this.parentNode.querySelectorAll(".star").forEach(s => {
+        if (s.getAttribute("data-value") <= value) {
+          s.classList.add("selected");
+        } else {
+          s.classList.remove("selected");
+        }
+      });
+    });
+  });
+
 </script>
 <c:import url="/common/footer.jsp" />
 

@@ -312,7 +312,9 @@
                 <td>${vo.post_updated_at}</td>
                 <th>조회수</th>
                 <td>${vo.post_views}</td>
+
             </tr>
+
 
             <tr class="post-content">
                 <th colspan="6" rowspan="6">${vo.post_content}</th>

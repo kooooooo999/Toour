@@ -190,6 +190,16 @@
 
         }
 
+        /* 별점 스타일 */
+        .star {
+            font-size: 18px;
+            cursor: pointer;
+            color: lightgray;
+        }
+        .star.selected {
+            color: gold;
+        }
+
     </style>
 </head>
 <body>
@@ -237,6 +247,7 @@
                 <th>작성자</th>
                 <th>추천수</th>
                 <th>조회수</th>
+                <th>별점</th>
                 <th>작성일</th>
             </thead>
             <tbody>
@@ -260,6 +271,15 @@
                                 <td>${vo.member_nickname}</td>
                                 <td>${vo.post_likes}</td>
                                 <td>${vo.post_views}</td>
+                                <td>
+                                    <div class="star-rating" data-bbsid="${vo.post_idx}">
+                                        <span class="star" data-value="1">★</span>
+                                        <span class="star" data-value="2">★</span>
+                                        <span class="star" data-value="3">★</span>
+                                        <span class="star" data-value="4">★</span>
+                                        <span class="star" data-value="5">★</span>
+                                    </div>
+                                </td>
                                 <td>${vo.post_created_at.substring(0,10)}</td>
                             </tr>
                             </c:if>
@@ -346,6 +366,36 @@
         }
         return true;
     }
+
+    // 별점 클릭 이벤트
+    document.querySelectorAll(".star-rating .star").forEach(star => {
+        star.addEventListener("click", function() {
+            let value = this.getAttribute("data-value");
+            let parent = this.parentNode;
+            let bbsId = parent.getAttribute("data-bbsid");
+
+            // 선택한 별까지 색칠
+            parent.querySelectorAll(".star").forEach(s => {
+                if (s.getAttribute("data-value") <= value) {
+                    s.classList.add("selected");
+                } else {
+                    s.classList.remove("selected");
+                }
+            });
+
+            // 지금은 DB 연결 전 → 콘솔에 출력만
+            console.log("게시글 번호:", bbsId, "별점:", value);
+
+            // 나중에 DB랑 연결할 때
+            /*
+            fetch("Controller?type=rating", {
+              method: "POST",
+              headers: {"Content-Type": "application/json"},
+              body: JSON.stringify({post_idx: bbsId, rating: value})
+            }).then(res => res.text()).then(msg => alert(msg));
+            */
+        });
+    });
 </script>
 
 </html>
