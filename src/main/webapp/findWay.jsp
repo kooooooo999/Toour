@@ -8,7 +8,7 @@
         /*body { font-family: sans-serif; margin: 0; padding: 20px; display: flex; justify-content: center; background-color: #f0f2f5; }*/
         .mapContainer { display: flex; gap: 20px; }
         .left_panel { width: 30%; min-width: 300px; background: #fff; padding: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; }
-        .map_container { flex-grow: 1; width: 500px; height: 80vh; min-height: 500px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
+        .map_container { flex-grow: 1; width:100%; height: 80vh; min-height: 500px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-radius: 8px; overflow: hidden; }
         #map { width: 100%; height: 100%; }
         .search_container { margin-bottom: 40px; position: relative;}
         .searchKeyword { display: block; width: calc(100%); padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 16px; margin-top: 10px; }
@@ -399,9 +399,10 @@
                 return;
             }
             console.log(res);
-            $("#search_results").html(res);
 
             $("#searchBox2").show();
+            $("#search_results").html(res);
+
         });
 
 
