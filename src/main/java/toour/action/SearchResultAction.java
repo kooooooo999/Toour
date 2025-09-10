@@ -118,10 +118,15 @@ public class SearchResultAction implements Action{
             System.out.println(removeTitle);
 
 //          courseList.remove(index1);
-            mvo.getCourseList().remove(index1);
+            if (obj == null) {
+                courseList.remove(index1);
+            }
+            if (obj != null) {
+                    mvo.getCourseList().remove(index1);
+            }
 
 
-//          request.setAttribute("courseList", courseList);
+            request.setAttribute("courseList", courseList);
 
             viewPath = "addList.jsp";
         } else if (myCourse!=null&&myCourse.equals("myCourse")) {
