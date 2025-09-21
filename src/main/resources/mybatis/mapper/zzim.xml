@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="zzim">
+    <select id="get" parameterType="String" resultType="toour.member.vo.ZzimVO">
+        SELECT * FROM zzim
+        WHERE member_idx = #{member_idx}
+    </select>
+    <insert id="add" parameterType="Map">
+        INSERT zzim (member_idx, zzim_content_id)
+        VALUES (#{member_idx}, #{zzim_content_id})
+    </insert>
+    <delete id="del" parameterType="Map">
+        DELETE From zzim
+        WHERE member_idx = #{member_idx}
+        AND zzim_content_id = #{zzim_content_id}
+    </delete>
+</mapper>

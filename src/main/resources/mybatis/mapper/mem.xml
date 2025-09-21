@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mem">
+
+<!--    <resultMap id="searchmem" type="toour.member.vo.MemberVO">-->
+<!--        <id property="member_idx" column="member_idx"/>-->
+<!--        <result property="member_id" column="member_id"/>-->
+<!--        <result property="member_name" column="member_name"/>-->
+<!--        <result property="member_nickname" column="member_nickname"/>-->
+<!--        <result property="member_id" column="member_id"/>-->
+<!--        <result property="member_warning" column="member_warning"/>-->
+<!--    </resultMap>-->
+
+    <!--총 사용자 수를 반환하는 기능 -->
+    <select id="totalMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1
+    </select>
+
+    <select id="MemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 0
+    </select>
+
+    <select id="DormantMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 1
+    </select>
+
+    <select id="DeactivatedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_status = 2
+    </select>
+
+    <select id="BannedMemCount" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_warning = 3
+    </select>
+
+    <select id="RecentVisitMem" resultType="int">
+        SELECT COUNT(*) FROM member
+        WHERE member_type = 1 and member_last_login_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)
+    </select>
+
+
+    <!-- 회원정보 삭제 -->
+    <update id="mem_del" parameterType="list">
+        UPDATE member
+        SET member_status = 2
+        WHERE member_idx IN
+<!--        WHERE member_idx IN (10, 20, 30)-->
+        <foreach item="member_idx" collection="list" open="(" separator="," close=")">
+            #{member_idx}
+        </foreach>
+    </update>
+
+
+    <update id="mem_delone" parameterType="String">
+        UPDATE member
+        SET member_status = 2
+        WHERE member_idx =#{member_idx}
+    </update>
+
+    <!-- 여러 회원정보글 목록: 인자 3개(bname, begin, end)-->
+    <select id="mem_list" parameterType="Map" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM(
+        SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum, a.*
+        FROM(
+        SELECT * FROM member
+        WHERE member_type = 1
+        ORDER BY member_idx DESC
+        ) a
+        ) c WHERE c.rnum BETWEEN #{begin} AND #{end}
+    </select>
+
+    <!-- 한 명의 회원정보 가지고 오기 -->
+    <select id="mem_view" parameterType="String" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_idx = #{member_idx}
+    </select>
+
+
+    <!-- 회원정보 수정 -->
+    <update id="mem_edit" parameterType="toour.member.vo.MemberVO">
+        UPDATE member
+        <trim prefix="SET" suffixOverrides=",">
+            member_name = #{member_name},
+            member_nickname = #{member_nickname},
+            member_password = #{member_password},
+            member_email = #{member_email},
+            member_id = #{member_id}
+        </trim>
+        WHERE member_idx = #{member_idx}
+    </update>
+
+    <!-- 검색 멤버 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from member
+        <where>
+                <choose>
+                    <when test="searchType != null and searchType == 'member_id'">
+                        member_id LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_name'">
+                        member_name LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_warning'">
+                        member_warning = #{searchValue}
+                    </when>
+                </choose>
+                AND member_type = 1
+            <if test="memStateSelect != null and memStateSelect != ''">
+                AND member_status = ${memStateSelect}
+            </if>
+        </where>
+    </select>
+
+
+
+
+    <!-- 회원정보 검색 -->
+    <select id="mem_search" parameterType="map" resultType="toour.member.vo.MemberVO">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY member_idx DESC) AS rnum,member_status,member_idx, member_id, member_name, member_nickname, member_warning, member_type
+        FROM member
+        <where>
+<!--            <if test="searchValue != null and searchValue != ''">-->
+                <choose>
+                    <when test="searchType != null and searchType == 'member_id'">
+                        member_id LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_name'">
+                        member_name LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_warning'">
+                        member_warning = #{searchValue}
+                    </when>
+                </choose>
+<!--            </if>-->
+            <if test="memStateSelect != null and memStateSelect != ''">
+                AND member_status = ${memStateSelect}
+            </if>
+            AND member_type = 1
+        </where>
+        )a
+        where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+    <!--신고 횟수 증가-->
+    <update id="warning" parameterType="String">
+        UPDATE member m
+        INNER JOIN comment c ON m.member_idx = c.member_idx
+        SET member_warning = member_warning + 1
+        WHERE comment_idx = #{comment_idx}
+    </update>
+</mapper>

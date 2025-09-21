@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="report">
+    <!--게시글 신고 등록-->
+    <insert id="insertWriteReport" parameterType="map">
+        INSERT INTO report (
+        reporter_idx, reported_idx, post_idx,
+        report_content, target_type, report_status, report_created_at )
+        VALUES (
+        #{reporter_idx}, #{reported_idx}, #{post_idx},
+        #{report_content}, 'POST', 0, NOW() )
+    </insert>
+
+    <!--댓글 신고 등록-->
+    <insert id="insertCommentReport" parameterType="map">
+        INSERT INTO report (
+        reporter_idx, reported_idx, post_idx, comment_idx,
+        report_content, target_type, report_status, report_created_at )
+        VALUES (
+        #{reporter_idx}, #{reported_idx}, #{post_idx}, #{comment_idx},
+        #{report_content}, 'COMMENT', 0, NOW() )
+    </insert>
+
+    <!--이건 관리자용 목록 가져오기-->
+    <select id="getReportList" resultType="toour.post.vo.ReportVO">
+        SELECT *
+        from (
+        select ROW_NUMBER() over(order by r.report_status asc, r.report_created_at) AS rnum,
+        r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+
+        reporter.member_idx AS reporter_idx,
+        reporter.member_nickname AS reporter_nickname,
+
+        reported.member_idx AS reported_idx,
+        reported.member_nickname AS reported_nickname
+
+        FROM report r
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+        ) a
+        where a.rnum BETWEEN #{begin} AND #{end}
+
+    </select>
+
+
+    <!--신고글 수 전체-->
+    <select id="ReportCountAll" resultType="int">
+        select count(*) from report
+    </select>
+
+
+    <!-- 신고수 가지고 오기 -->
+    <select id="reportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 미처리된 신고수 가지고 오기 -->
+    <select id="UnprocessedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 0
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 처리된 신고수 가지고 오기 -->
+    <select id="processedreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE report_status = 1
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 게시물신고수 가지고 오기 -->
+    <select id="PostreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'POST'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 댓글 신고수 가지고 오기 -->
+    <select id="CommentreportCount" resultType="int">
+        SELECT COUNT(*) FROM report
+        WHERE target_type = 'COMMENT'
+        AND report_created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 총 신고수 가지고 오기 -->
+    <select id="TotalCount" resultType="int">
+        SELECT COUNT(*) FROM report
+    </select>
+
+    <!-- 검색 신고 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from report
+        <where>
+            <if test="searchType != null">
+                target_type = #{searchType}
+            </if>
+        </where>
+    </select>
+
+    <!-- 신고 검색 -->
+    <select id="report_search" parameterType="map" resultType="toour.post.vo.ReportVO">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY r.report_idx DESC) AS rnum,
+        r.report_idx, r.post_idx, r.report_content, r.report_created_at, r.target_type, r.report_status,
+
+        reporter.member_idx AS reporter_idx,
+        reporter.member_nickname AS reporter_nickname,
+
+        reported.member_idx AS reported_idx,
+        reported.member_nickname AS reported_nickname
+
+        FROM report r
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        LEFT JOIN member reported ON r.reported_idx = reported.member_idx
+        <where>
+            <!--            <if test="searchValue != null and searchValue != ''">-->
+            <if test="searchType != null">
+                r.target_type = #{searchType}
+            </if>
+        </where>
+        )a
+        where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+    <select id="getCommentListWithReports" parameterType="map" resultType="map">
+        SELECT
+        m.member_nickname,
+        c.*,
+        MAX(CASE WHEN r.target_type = 'COMMENT' THEN r.report_status END) AS report_status,
+        MAX(CASE WHEN r.target_type = 'COMMENT' THEN r.report_idx END) AS report_idx,
+        GROUP_CONCAT(
+        CASE WHEN r.target_type = 'COMMENT' THEN
+        CONCAT(reporter.member_nickname, ': ', r.report_content)
+        ELSE NULL END
+        SEPARATOR '&#x000A;'
+        ) AS all_report_contents
+        FROM comment c
+        LEFT JOIN report r ON c.comment_idx = r.comment_idx AND r.target_type = 'COMMENT'
+        LEFT JOIN member m ON c.member_idx = m.member_idx
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        WHERE c.post_idx = #{post_idx}
+        GROUP BY c.comment_idx
+        ORDER BY c.comment_updated_at DESC
+    </select>
+    <select id="getpostWithReports" parameterType="String" resultType="toour.post.vo.PostVO">
+        SELECT
+        m.member_nickname,
+        p.*,
+        MAX(CASE WHEN r.target_type = 'POST' THEN r.report_status END) AS report_status,
+        MAX(CASE WHEN r.target_type = 'POST' THEN r.report_idx END) AS report_idx,
+        GROUP_CONCAT(
+        CONCAT(reporter.member_nickname, ': ', r.report_content)
+        SEPARATOR '&#x000A;'
+        ) AS all_report_contents
+        FROM post p
+        LEFT JOIN report r ON p.post_idx = r.post_idx AND r.target_type = 'POST'
+        LEFT JOIN member m ON p.member_idx = m.member_idx
+        LEFT JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        WHERE p.post_idx = #{post_idx}
+        GROUP BY p.post_idx;
+    </select>
+    <select id="countAllComments" resultType="int">
+        SELECT COUNT(*) FROM comment
+    </select>
+
+    <update id="reportmemstatuschange" parameterType="String">
+        UPDATE member
+        SET member_status = 1
+        WHERE member_idx = #{member_idx}
+    </update>
+
+
+
+
+
+</mapper>

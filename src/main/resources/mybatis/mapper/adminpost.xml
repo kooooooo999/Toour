@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminpost">
+
+    <resultMap id="map1" type="toour.post.vo.PostVO">
+        <id property="post_idx" column="post_idx"/>
+        <id property="report_idx" column="report_idx"/>
+        <collection property="c_list" ofType="toour.post.vo.CommentVO" select="comment.list" column="post_idx"/>
+    </resultMap>
+
+    <!-- 총 게시물 수를 반환하는 기능 -->
+    <select id="totalCount" resultType="int" parameterType="String">
+        select count(*) from post
+        where category_idx = #{category_idx}
+    </select>
+
+    <!-- 원글 목록 : 인자 3개(category_idx, begin, end) -->
+    <select id="list" resultMap="map1" parameterType="map">
+        select * from(
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, a.*
+        from(
+            select * from post
+            WHERE category_idx = 2
+            ) a
+        ) c inner join member m on c.member_idx=m.member_idx
+        where c.rnum Between #{begin} and #{end}
+        ORDER BY c.post_idx DESC
+    </select>
+
+    <!--게시글 작성 -->
+    <insert id="add" parameterType="Map" useGeneratedKeys="true" keyProperty="post_idx">
+        insert into post( member_idx, category_idx, post_title, post_content, post_created_at, post_updated_at)
+        values (  #{member_idx}, #{category_idx}, #{post_title}, #{post_content}, now(), now())
+    </insert>
+
+    <!-- 게시글 보기 -->
+    <select id="getPost" parameterType="String" resultMap="map1">
+        SELECT  * FROM post p
+        left join file f ON p.post_idx = f.post_idx
+        WHERE p.post_idx = #{post_idx}
+    </select>
+
+    <!-- 게시글 보기 -->
+    <select id="getreportidx" parameterType="String" resultType="toour.post.vo.ReportVO">
+        SELECT * FROM report r
+        JOIN post p ON r.post_idx = p.post_idx
+        JOIN member m ON p.member_idx = m.member_idx
+        WHERE r.report_idx = #{report_idx}
+    </select>
+
+    <!--게시글 보기(회원정보 불러오기)-->
+    <select id="getPostMember" parameterType="String" resultType="toour.member.vo.MemberVO">
+        select *
+        from post p inner join member m
+        where p.member_idx=m.member_idx and p.post_idx = #{post_idx}
+    </select>
+
+    <!-- 게시글 삭제 -->
+    <update id="del" parameterType="String">
+        UPDATE post
+        SET post_status = 1
+        WHERE post_idx = #{post_idx}
+    </update>
+    <!--게시판 검색기능-->
+
+    <!--조회수 증가-->
+    <update id="post_views" parameterType="String">
+        UPDATE post
+        SET post_views = post_views + 1
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 게시글 수정 -->
+    <update id="edit" parameterType="Map">
+        UPDATE post
+        <trim prefix="SET" suffixOverrides=",">
+            post_title = #{post_title},
+            post_content = #{post_content},
+        </trim>
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->
+    <select id="file_num" resultType="int">
+        select count(*) from file
+        where post_idx = #{post_idx}
+    </select>
+
+    <!-- 파일 수정 -->
+    <update id="edit_file" parameterType="Map">
+        UPDATE file
+        SET file_name_original = #{file_name_original},
+        file_name_stored = #{file_name_stored},
+        file_size = #{file_size},
+        file_type = #{file_type},
+        uploaded_at = NOW()
+
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 파일 추가 -->
+    <insert id="add_file" parameterType="Map">
+        INSERT INTO file(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
+        VALUES ( #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type}, NOW() )
+    </insert>
+
+    <select id="search" parameterType="map" resultMap="map1">
+        SELECT a.*
+        FROM (
+        SELECT ROW_NUMBER() OVER(ORDER BY post_idx DESC) AS rnum, p.*, m.member_nickname
+        FROM post p LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+            </if>
+        </where>
+        )a
+        where a.rnum BETWEEN #{begin} AND #{end};
+    </select>
+
+    <!-- 검색 post 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="map">
+        select count(*) from post p
+        LEFT JOIN member m ON p.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType != null and searchType == 'post_title'">
+                        p.post_title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'post_content'">
+                        p.post_content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'member_nickname'">
+                        m.member_nickname LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                </choose>
+                AND p.category_idx = 2
+            </if>
+        </where>
+    </select>
+
+    <!-- 총 게시글 수 막대그래프용 (post 테이블에서 게시글만 가져와서 최근 7일 집계) -->
+    <select id="selectWeeklyPostCount" resultType="map">
+        SELECT DATE(post_created_at) AS post_day,
+                COUNT(*) AS cnt
+        FROM post
+        WHERE category_idx = 2
+            AND post_created_at >= DATE_SUB(CURDATE(), INTERVAL 6 DAY)
+        GROUP BY DATE(post_created_at)
+        ORDER BY post_day;
+
+    </select>
+
+    <select id="selectReportComment" resultMap="map1" parameterType="map">
+        SELECT *
+        FROM (
+        SELECT ROW_NUMBER() OVER (ORDER BY r.report_idx DESC) AS rnum,
+        r.*,
+        c.comment_content,
+        p.post_title,
+        reporter.member_nickname AS reporter_nickname,
+        reported.member_nickname AS reported_nickname
+        FROM report r
+        JOIN comment c ON r.comment_idx = c.comment_idx
+        JOIN post p ON c.post_idx = p.post_idx
+        JOIN member reporter ON r.reporter_idx = reporter.member_idx
+        JOIN member reported ON r.reported_idx = reported.member_idx
+        WHERE r.target_type = #{target_type}
+        ) sub
+        WHERE sub.rnum BETWEEN #{begin} AND #{end]
+        ORDER BY sub.report_idx DESC;
+
+    </select>
+
+    <select id="postReport" resultType="toour.post.vo.PostVO" parameterType="String">
+
+            SELECT p.*, m.member_nickname,
+            CASE
+            WHEN r.report_status IS NULL THEN -1
+            ELSE r.report_status
+            END AS report_status
+            FROM post p
+            INNER JOIN member m ON p.member_idx = m.member_idx
+            LEFT JOIN report r
+            ON p.post_idx = r.post_idx
+            AND r.target_type = 'POST'
+            WHERE c.post_idx = #{post_idx}
+            ORDER BY c.post_created_at ASC
+
+    </select>
+    <!-- 총 댓글을 반환하는 기능 -->
+    <select id="CommentTotalCount" resultType="int" parameterType="String">
+        select count(*) from comment
+    </select>
+
+
+    <update id="pluswarning" parameterType="String">
+        UPDATE member m
+        JOIN report r ON r.report_idx = #{report_idx}
+        LEFT JOIN post p ON r.target_type = 'post' AND r.post_idx = p.post_idx
+        LEFT JOIN comment c ON r.target_type = 'comment' AND r.comment_idx = c.comment_idx
+        SET m.member_warning = m.member_warning + 1
+        WHERE m.member_idx = COALESCE(p.member_idx, c.member_idx)
+    </update>
+
+
+    <update id="reportstatus" parameterType="String">
+        UPDATE report
+        SET report_status = 1
+        WHERE report_idx = #{report_idx}
+    </update>
+
+</mapper>

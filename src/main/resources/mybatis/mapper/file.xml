@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="file">
+
+
+    <!-- 파일의 수 , 파일이 있는지 없는지 검사 -->
+    <select id="file_num" resultType="int">
+        select count(*) from file
+        where post_idx = #{post_idx}
+    </select>
+    <!--파일 목록 가져오기 -->
+    <select id="selectByPost" parameterType="String" resultType="toour.post.vo.FileVO">
+        SELECT * FROM file
+        WHERE post_idx = #{post_idx}
+    </select>
+    <!-- 파일 수정 -->
+    <update id="edit_file" parameterType="Map">
+        UPDATE file
+        SET file_name_original = #{file_name_original},
+        file_name_stored = #{file_name_stored},
+        file_size = #{file_size},
+        file_type = #{file_type},
+        uploaded_at = NOW()
+
+        WHERE post_idx = #{post_idx}
+    </update>
+
+    <!-- 파일 추가 -->
+    <insert id="add_file" parameterType="Map">
+        INSERT INTO file(post_idx, file_name_original, file_name_stored, file_s3_url, file_size, file_type, uploaded_at)
+        VALUES ( #{post_idx}, #{file_name_original}, #{file_name_stored}, #{file_s3_url}, #{file_size}, #{file_type}, NOW() )
+    </insert>
+
+    <insert id="addFile" parameterType="toour.post.vo.FileVO">
+        INSERT INTO file (post_idx, file_name, file_path)
+        VALUES (#{post_idx}, #{file_name}, #{file_path})
+    </insert>
+
+    <delete id="deleteFile" parameterType="String">
+        DELETE FROM file WHERE post_idx = #{post_idx}
+    </delete>
+
+    <select id="getFile" resultType="toour.post.vo.FileVO">
+        SELECT * FROM file WHERE post_idx = #{post_idx}
+    </select>
+
+    <select id="getFileList" resultType="toour.post.vo.FileVO">
+        SELECT * FROM file WHERE post_idx = #{post_idx}
+    </select>
+</mapper>

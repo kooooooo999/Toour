@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comment">
+    <select id="list" resultType="toour.post.vo.CommentVO" parameterType="String">
+        select * from comment
+        where post_idx = #{post_idx}
+    </select>
+
+    <select id="commentList" resultType="toour.post.vo.CommentVO" parameterType="String">
+        SELECT c.*, m.member_nickname,
+        CASE
+        WHEN r.report_status IS NULL THEN -1
+        ELSE r.report_status
+        END AS report_status
+        FROM comment c
+        INNER JOIN member m ON c.member_idx = m.member_idx
+        LEFT JOIN report r
+        ON c.comment_idx = r.comment_idx
+        AND r.target_type = 'COMMENT'
+        WHERE c.post_idx = #{post_idx}
+        ORDER BY c.comment_created_at ASC
+    </select>
+
+    <update id="commentdel" parameterType="String">
+        UPDATE comment
+        SET comment_status = 1
+        WHERE comment_idx = #{comment_idx}
+    </update>
+
+</mapper>

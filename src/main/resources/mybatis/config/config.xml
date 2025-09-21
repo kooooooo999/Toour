@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <environments default="">
+        <environment id="">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql://43.203.39.167:3306/toour_db?useUnicode=true&amp;characterEncoding=UTF-8"/>
+                <property name="username" value="admin123"/>
+                <property name="password" value="SIST2025"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="mybatis/mapper/post.xml"/>
+        <mapper resource="mybatis/mapper/notice.xml"/>
+        <mapper resource="mybatis/mapper/adminpost.xml"/>
+        <mapper resource="mybatis/mapper/adminnotice.xml"/>
+        <mapper resource="mybatis/mapper/comment.xml"/>
+        <mapper resource="mybatis/mapper/file.xml"/>
+        <mapper resource="mybatis/mapper/mem.xml"/>
+        <mapper resource="mybatis/mapper/member.xml"/>
+        <mapper resource="mybatis/mapper/zzim.xml"/>
+        <mapper resource="mybatis/mapper/course.xml"/>
+        <mapper resource="mybatis/mapper/inquiry.xml"/>
+        <mapper resource="mybatis/mapper/report.xml"/>
+        <mapper resource="mybatis/mapper/recommend.xml"/>
+    </mappers>
+</configuration>

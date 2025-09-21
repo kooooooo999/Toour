@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+    <!--<resultMap id="map1" type="toour.member.vo.MemberVO">
+        <id property="member_idx" column="member_idx"/>
+        <collection property="zzimlist" ofType="toour.member.vo.ZzimVO" select="zzim.get" column="member_idx"/>
+    </resultMap>-->
+
+    <!--아이디로 회원 정보 받기-->
+    <select id="get" parameterType="String" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_id = #{member_id}
+    </select>
+
+    <!-- 닉네임으로 회원 정보 받기 -->
+    <select id="getN" parameterType="String" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_nickname = #{nickname}
+    </select>
+
+    <!-- 이메일로 회원 정보 받기 -->
+    <select id="getE" parameterType="String" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_email = #{member_email} and login_type= #{login_type}
+    </select>
+
+    <!--회원가입-->
+    <insert id="add" parameterType="toour.member.vo.MemberVO">
+        INSERT INTO member ( member_name, member_nickname, member_password, member_email, member_created_at, member_updated_at, member_salt, member_id, login_type, is_temp_password)
+        VALUES (#{member_name}, #{member_nickname}, #{member_password}, #{member_email}, NOW(), NOW(), #{member_salt}, #{member_id}, #{login_type}, 0)
+    </insert>
+
+    <update id="changeMyInfo" parameterType="toour.member.vo.MemberVO">
+        UPDATE member
+        SET member_nickname = #{member_nickname},
+        <if test="member_password != null and member_password != ''">
+            member_password = #{member_password},
+            member_salt = #{member_salt},
+            is_temp_password = 0,
+        </if>
+        member_updated_at = #{member_updated_at}
+        WHERE
+            member_idx = #{member_idx}
+    </update>
+    <update id="changeKakaoMyInfo" parameterType="toour.member.vo.MemberVO">
+        UPDATE member
+        SET member_nickname = #{member_nickname},
+        member_updated_at = #{member_updated_at}
+        WHERE
+        member_type = #{member_type} and member_email=#{member_email}
+    </update>
+
+
+    <update id="updateMemInfo" parameterType="toour.member.vo.MemberVO">
+        UPDATE member
+        SET member_nickname = #{member_nickname},
+        member_email = #{member_email},
+        member_name = #{member_name},
+        member_warning = #{member_warning}
+        WHERE
+        member_idx = #{member_idx}
+    </update>
+
+
+        <!--카카오 회원가입-->
+    <insert id="insertMember" parameterType="toour.member.vo.MemberVO" useGeneratedKeys="true" keyProperty="member_idx">
+        INSERT INTO member (
+        login_type, member_nickname, member_email,
+        member_created_at, member_updated_at, member_last_login_at, member_status, member_type, member_warning, )
+        VALUES (
+        #{login_type}, #{member_nickname}, #{member_email},
+        now(), now(), now(), 0, 1, 0 )
+    </insert>
+
+    <!-- 마지막 로그인 시간 업데이트 -->
+    <update id="updateLastLogin" parameterType="String">
+        UPDATE member SET member_last_login_at = NOW() WHERE member_idx = #{member_idx}
+    </update>
+
+    <!-- 이름과 이메일로 회원 정보 조회 (아이디 찾기용) -->
+    <select id="findByNameAndEmail" parameterType="Map" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_name = #{member_name} AND member_email = #{member_email} AND login_type = 'LOCAL'
+    </select>
+
+    <!-- 아이디, 이름, 이메일로 회원 정보 조회 (비밀번호 찾기용) -->
+    <select id="findByIdNameAndEmail" parameterType="Map" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE member_id = #{member_id} AND member_name = #{member_name} AND member_email = #{member_email} AND login_type = 'LOCAL'
+    </select>
+
+    <!-- 임시 비밀번호 업데이트 -->
+    <update id="updateTempPassword" parameterType="Map">
+        UPDATE member 
+        SET member_password = #{hashedPassword},
+            member_salt = #{newSalt},
+            is_temp_password = 1,
+            member_updated_at = NOW()
+        WHERE member_idx = #{member_idx}
+    </update>
+
+    <!--이게 필요한지는 모르겠음 일단 만들어둠-->
+    <select id="getKakaoLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE login_type = #{login_type} AND member_email = #{member_email}
+    </select>
+
+    <select id="getNaverLogin" parameterType="toour.member.vo.MemberVO" resultType="toour.member.vo.MemberVO">
+        SELECT * FROM member
+        WHERE login_type = 'NAVER' AND member_email = #{member_email}
+    </select>
+
+</mapper>

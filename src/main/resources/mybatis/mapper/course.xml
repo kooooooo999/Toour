@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="course">
+
+    <resultMap id="Map2" type="toour.member.vo.CourseDateVO">
+        <id property="courseDate_idx" column="courseDate_idx"/>
+        <collection property="courseIn_list" ofType="toour.member.vo.CourseInVO" select="course.getCourseIn" column="courseDate_idx"/>
+    </resultMap>
+
+    <resultMap id="Map1" type="toour.member.vo.CourseVO">
+        <id property="course_idx" column="course_idx"/>
+        <collection property="courseDate_list" ofType="toour.member.vo.CourseDateVO" select="course.getCourseDate" column="course_idx"/>
+    </resultMap>
+
+    <select id="get" parameterType="String" resultMap="Map1">
+        SELECT * FROM course
+        WHERE member_idx = #{member_idx}
+    </select>
+
+    <select id="getCourseDate" parameterType="String" resultMap="Map2">
+        SELECT * FROM courseDate
+        WHERE course_idx = #{course_idx}
+    </select>
+
+    <select id="getCourseIn" parameterType="String" resultType="toour.member.vo.CourseInVO">
+        SELECT * FROM courseIn
+        WHERE courseDate_idx = #{courseDate_idx}
+    </select>
+
+    <insert id="addCourse" parameterType="Map">
+        insert into course ( member_idx, course_name, created_at, course_summary )
+        values ( #{member_idx}, #{course_name}, now(), #{course_summary} )
+    </insert>
+
+    <insert id="courseDateAdd" parameterType="Map" useGeneratedKeys="true" keyProperty="courseDate_idx">
+        insert into courseDate ( date, course_idx, date_title )
+        values ( #{date}, #{course_idx}, #{date_title} )
+    </insert>
+
+    <insert id="courseInAdd" parameterType="toour.member.vo.CourseInVO">
+        insert into courseIn ( courseDate_idx, contentId, contentTypeId, title, addr1, mapx, mapy )
+        values ( #{courseDate_idx}, #{contentId}, #{contentTypeId}, #{title}, #{addr1}, #{mapx}, #{mapy} )
+    </insert>
+
+    <!-- 코스수정 했을때 DB에서 일단 해당 idx에 포함된 코스 지우기 -->
+    <delete id="deleteCourse" parameterType="String">
+        DELETE
+        FROM courseIn
+        WHERE courseDate_idx = #{courseDate_idx}
+    </delete>
+
+    <!-- 큰 코스 삭제하면 코스, 코스 날짜, 코스 일정 한번에 삭제 -->
+    <delete id="totalDeleteCourse" parameterType="String">
+        DELETE
+        FROM course
+        WHERE course_idx = #{course_idx}
+    </delete>
+
+    <!-- 코스 날짜 시 코스 일정 같이 삭제 -->
+    <delete id="deleteCourseDate" parameterType="String">
+        DELETE
+        FROM courseDate
+        WHERE courseDate_idx = #{courseDate_idx}
+    </delete>
+
+</mapper>

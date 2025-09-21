@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="recommend">
+
+    <!--추천하기(recommend)-->
+    <insert id="recommendInsert" parameterType="map">
+        insert into recommend (member_idx,post_idx,recommend_date)
+        values (#{member_idx},#{post_idx},now());
+    </insert>
+    <!--추천하기(post)-->
+    <update id="postLikesUpdate" parameterType="String">
+        update post
+        set post_likes = post_likes +1
+        where post_idx=#{post_idx}
+    </update>
+
+    <!--단순 추천수 정렬-->
+    <select id="getPostsByLikes" parameterType="map" resultType="toour.post.vo.PostVO">
+        select p.*, m.member_nickname
+        from post p inner join member m ON p.member_idx = m.member_idx
+        where category_idx=#{category_idx}
+        order by p.post_likes desc, p.post_created_at DESC
+        LIMIT #{offset}, #{pageSize}
+
+    </select>
+    <!--인기순 정렬 추천수에 가중치 3 조회수에 1 하루 지나면 -2점-->
+    <select id="getPostsByPopularity" parameterType="map" resultType="toour.post.vo.PostVO">
+        SELECT p.*,m.member_nickname, m.member_idx,
+        (p.post_likes * 3 + p.post_views * 1 - TIMESTAMPDIFF(DAY, p.post_created_at, NOW()) * 2
+        ) AS popularity
+        FROM post p inner join member m ON p.member_idx = m.member_idx
+        where category_idx=#{category_idx}
+        ORDER BY popularity DESC
+        LIMIT #{offset}, #{pageSize} ;
+    </select>
+
+    <select id="hasUserRecommended" resultType="int" parameterType="map">
+        SELECT COUNT(*) FROM recommend
+        WHERE member_idx = #{member_idx} AND post_idx = #{post_idx}
+    </select>
+
+    <insert id="insertRecommend" parameterType="map">
+        INSERT INTO recommend ( member_idx, post_idx, recommend_date)
+        VALUES ( #{member_idx}, #{post_idx}, now())
+    </insert>
+
+
+
+</mapper>

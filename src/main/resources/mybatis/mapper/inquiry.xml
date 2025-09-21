@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Inquiry">
+
+    <!-- 문의 등록 -->
+    <insert id="insertInquiry" parameterType="map" useGeneratedKeys="true" keyProperty="inquiry_idx">
+        INSERT INTO inquiry (member_idx, category, title, content, file_path, status, created_at, updated_at)
+        VALUES (#{member_idx}, #{category}, #{title}, #{content}, #{file_path}, #{status}, NOW(), NOW())
+    </insert>
+    <!--문의목록 (마이페이지용)-->
+
+    <select id="getMyInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
+        SELECT
+        i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
+        FROM inquiry i
+        LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.member_idx = #{member_idx}
+        ORDER BY i.inquiry_idx DESC
+        LIMIT #{numPerPage} OFFSET #{offset}
+    </select>
+
+    <!--문의목록 수(마이페이지용)-->
+    <select id="getMyInquiryListCount" parameterType="String" resultType="int">
+        SELECT COUNT(*)
+        FROM inquiry
+        WHERE status != '삭제' and member_idx = #{member_idx}
+    </select>
+
+    <!-- 문의 목록 조회 (페이징) -->
+    <select id="getInquiryList" parameterType="map" resultType="toour.post.vo.InquiryVO">
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
+        FROM inquiry i
+        LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.status != '삭제'
+        <if test="member_idx != null and member_idx != ''">
+            AND i.member_idx = #{member_idx}
+        </if>
+        <if test="category != null and category != ''">
+            AND i.category = #{category}
+        </if>
+        <if test="searchType != null and searchValue != null">
+            <choose>
+                <when test="searchType == 'title'">
+                    AND i.title LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'content'">
+                    AND i.content LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'category'">
+                    AND i.category LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+            </choose>
+        </if>
+        ORDER BY i.created_at DESC
+        LIMIT #{begin}, #{end}
+    </select>
+
+    <!-- 문의 상세 조회 (본인 확인 포함) -->
+    <select id="getInquiryDetailByMember" parameterType="map" resultType="map">
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.answer_content, i.status, i.created_at, i.updated_at,
+        m.member_nickname, m.member_email
+        FROM inquiry i
+        LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.inquiry_idx = #{inquiry_idx} AND i.member_idx = #{member_idx}
+    </select>
+
+    <!-- 문의 상세 조회 (관리자용) -->
+    <select id="getInquiryDetail" parameterType="string" resultType="map">
+        SELECT i.inquiry_idx, i.member_idx, i.category, i.title, i.content,
+        i.file_path, i.status, i.created_at, i.updated_at, i.answer_content,
+        m.member_nickname, m.member_email
+        FROM inquiry i LEFT JOIN member m ON i.member_idx = m.member_idx
+        WHERE i.inquiry_idx = #{inquiry_idx}
+    </select>
+
+    <!-- 문의 수정 -->
+    <update id="updateInquiry" parameterType="map">
+        UPDATE inquiry
+        SET category = #{category},
+        title = #{title},
+        content = #{content},
+        file_path = #{file_path},
+        updated_at = NOW()
+        WHERE inquiry_idx = #{inquiry_idx} AND member_idx = #{member_idx}
+    </update>
+
+    <!-- 문의 상태 변경 (관리자용) -->
+    <update id="updateInquirydata" parameterType="map">
+        UPDATE inquiry
+        SET status = #{status},
+        updated_at = NOW(),
+        answer_content = #{answer_content}
+        WHERE inquiry_idx = #{inquiry_idx}
+    </update>
+
+    <!-- 문의 삭제 (논리적 삭제) -->
+    <update id="deleteInquiry" parameterType="map">
+        UPDATE inquiry
+        SET status = '삭제',
+        updated_at = NOW()
+        WHERE inquiry_idx = #{inquiry_idx} AND member_idx = #{member_idx}
+    </update>
+
+    <!-- 전체 문의 수 조회 -->
+    <select id="getTotalCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM inquiry i
+        WHERE i.status != '삭제'
+        <if test="member_idx != null and member_idx != ''">
+            AND i.member_idx = #{member_idx}
+        </if>
+        <if test="category != null and category != ''">
+            AND i.category = #{category}
+        </if>
+        <if test="searchType != null and searchValue != null">
+            <choose>
+                <when test="searchType == 'title'">
+                    AND i.title LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'content'">
+                    AND i.content LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+                <when test="searchType == 'category'">
+                    AND i.category LIKE CONCAT('%', #{searchValue}, '%')
+                </when>
+            </choose>
+        </if>
+    </select>
+
+    <!-- 문의 유형별 통계 -->
+    <select id="getInquiryStats" resultType="map">
+        SELECT category, COUNT(*) as count
+        FROM inquiry
+        WHERE status != '삭제'
+        GROUP BY category
+        ORDER BY count DESC
+    </select>
+
+    <!-- 상태별 문의 수 -->
+    <select id="getStatusCount" resultType="map">
+        SELECT status, COUNT(*) as count
+        FROM inquiry
+        WHERE status != '삭제'
+        GROUP BY status
+    </select>
+
+
+    <!-- 총 게시물 수를 반환하는 기능 -->
+    <select id="totalCount" parameterType="Map" resultType="int">
+        select count(*) from inquiry
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="allSearchtype" resultType="toour.post.vo.InquiryVO" parameterType="Map">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at,
+        i.updated_at, i.is_read, i.answer_content, m.member_nickname
+        from inquiry i inner join member m
+        on i.member_idx = m.member_idx
+        <where>
+            <if test="searchType != null and searchType != ''">
+                AND category = #{searchType}
+            </if>
+            <if test="searchStatus != null and searchStatus != ''">
+                AND status = #{searchStatus}
+            </if>
+        </where>
+        order by i.inquiry_idx desc
+        LIMIT #{begin}, #{numPerPage}
+        <!-- 페이징을 위한 LIMIT -->
+    </select>
+
+    <!--한달 내의 신고들 보기-->
+    <select id="oneMonthInquiry">
+        SELECT *
+        FROM inquiry
+        WHERE created_at BETWEEN '#{begin_date}' AND '#{end_date}';
+    </select>
+
+
+    <!-- 검색 게시물 수를 반환하는 기능 -->
+    <select id="searchTotalCount" resultType="int" parameterType="String">
+        select count(*) from inquiry i
+        LEFT JOIN member m ON i.member_idx = m.member_idx
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+
+                    <when test="category != null and category == '계정관리'">
+                        i.category = #{category} and
+                    </when>
+                    <when test="category != null and category == '서비스이용'">
+                        i.category = #{category} and
+                    </when>
+                    <when test="category != null and category == '기술지원'">
+                        i.category = #{category} and
+                    </when>
+                    <when test="category != null and category == '버그신고'">
+                        i.category = #{category} and
+                    </when>
+                    <when test="category != null and category == '기타'">
+                        i.category = #{category} and
+                    </when>
+                    <when test="category == null or category == ''">
+
+                    </when>
+                </choose>
+                <choose>
+                    <when test="searchType != null and searchType == 'title'">
+                        i.title LIKE CONCAT ('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 'content'">
+                        i.content LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+
+                </choose>
+
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByMember" parameterType="String" resultType="toour.post.vo.InquiryVO">
+        SELECT inquiry_idx, member_idx, category, title, content, file_path, status, created_at, updated_at
+        FROM inquiry
+        WHERE member_idx = #{member_idx}
+        ORDER BY created_at DESC
+    </select>
+    <select id="searchCategory" resultType="toour.post.vo.InquiryVO" parameterType="String">
+        select i.inquiry_idx, i.member_idx, i.category, i.title, i.content, i.file_path, i.status, i.created_at,
+        i.updated_at, i.is_read, i.answer_content, m.member_nickname
+        from inquiry i inner join member m
+        on i.member_idx = m.member_idx
+        where category = #{category}
+        order by i.inquiry_idx desc
+    </select>
+    <select id="searchContent" resultType="String" parameterType="String">
+        select answer_content from inquiry where inquiry_idx = #{inquiry_idx}
+    </select>
+
+    <!--문의글 수 전체-->
+    <select id="ReportCountAll" resultType="int">
+        select count(*) from report
+    </select>
+
+
+    <!-- 문의글수 가지고 오기 -->
+    <select id="inquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 미처리된 문의글수 가지고 오기 -->
+    <select id="UnprocessedinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '대기'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 처리된 문의글수 가지고 오기 -->
+    <select id="processedinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '답변완료'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+    <!-- 삭제된 문의글수 가지고 오기 -->
+    <select id="delinquiryCount" resultType="int">
+        SELECT COUNT(*) FROM inquiry
+        WHERE status = '삭제'
+        AND created_at >= DATE_SUB(CURDATE(), INTERVAL 29 DAY)
+    </select>
+
+
+</mapper>
