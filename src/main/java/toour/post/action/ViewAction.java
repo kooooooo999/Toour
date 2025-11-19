@@ -20,9 +20,13 @@ import java.util.Map;
 public class ViewAction implements Action {
     public boolean checkPost(List<PostVO> list, PostVO vo){
         boolean value = true;
+        if(vo == null || list == null) {
+            return value;
+        }
         // list에 vo가 있는지 판단하는 반복문
         for (PostVO pvo:list){
-            if(pvo.getPost_idx().equals(vo.getPost_idx())){
+            if(pvo != null && pvo.getPost_idx() != null && vo.getPost_idx() != null 
+                    && pvo.getPost_idx().equals(vo.getPost_idx())){
                 value = false;
                 break;
             }
@@ -51,12 +55,12 @@ public class ViewAction implements Action {
 
         //DB에서 게시물 정보를 한번만 조회한다
         PostVO vo = PostDAO.getPost(post_idx);
-        System.out.println(vo.getPost_idx());
         MemberVO member_info = PostDAO.getPostMemberIdx(post_idx);
         request.setAttribute("member_info",member_info);
 
 //        System.out.println("member_info.nickname:"+member_info.getMember_nickname());
         if (vo != null) {
+            System.out.println(vo.getPost_idx());
             // 1. post_idx와 연관된 파일 가져오기
             List<FileVO> fileList = FileDAO.getFilesByPost(post_idx);
 
@@ -79,7 +83,7 @@ public class ViewAction implements Action {
         System.out.println("comment_list.length"+comment_list.length);
         // 추천 여부 확인 (로그인한 경우에만)
         boolean alreadyRecommended = false;
-        if (member_info.getMember_idx() != null) {
+        if (member_info != null && member_info.getMember_idx() != null) {
             Map<String, String> map = new HashMap<>();
             map.put("member_idx", member_info.getMember_idx());
             map.put("post_idx", post_idx);

@@ -6,12 +6,13 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="toour.util.ApiKeyUtil" %>
 <html>
 <head>
     <title>Title</title>
 </head>
 <body>
-<a href="http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest"></a>
+<a href="http://apis.data.go.kr/B551011/KorService2/categoryCode2?<%= ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getBoKey()) %>&numOfRows=10&pageNo=1&MobileOS=ETC&MobileApp=AppTest"></a>
 
 </body>
 </html>

@@ -46,6 +46,7 @@ tmp/
 *.env.local
 config.local.json
 credentials.json
+api.properties
 
 # 압축 파일 무시 (선택적)
 *.zip
@@ -93,4 +94,20 @@ build/
 
 ### Mac OS ###
 .DS_Store
->>>>>>> d9e9208 (list test)
+
+### API Keys (민감 정보) ###
+api.properties
+**/api.properties
+
+### Database Credentials (민감 정보) ###
+db.properties
+**/db.properties
+
+### AWS Credentials (민감 정보) ###
+.aws/
+**/.aws/
+*.pem
+*.key
+aws-credentials.json
+.aws/credentials
+.aws/config

@@ -46,12 +46,15 @@ public class loginAction implements Action {
                     String hash_pw = Hash.getHash(salt + u_pw);
                     System.out.println("새로 생성된 해시: " + hash_pw);
                     System.out.println("DB 저장된 해시: " + mvo.getMember_password());
-                    System.out.println("해시 일치 여부: " + mvo.getMember_password().equals(hash_pw));
+                    String dbPassword = mvo.getMember_password();
+                    boolean passwordMatch = dbPassword != null && dbPassword.equals(hash_pw);
+                    System.out.println("해시 일치 여부: " + passwordMatch);
                     System.out.println("===============================");
-                    if(mvo.getMember_password().equals(hash_pw)){
+                    if(passwordMatch){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
-                        if(mvo.getMember_status().equals("0")) {
+                        String memberStatus = mvo.getMember_status();
+                        if(memberStatus != null && memberStatus.equals("0")) {
                             //회원이 활성화일 때
                             request.getSession().setAttribute("member", mvo);
 
@@ -82,7 +85,8 @@ public class loginAction implements Action {
                                 throw new RuntimeException(e);
                             }
                             //cornsoup 수정
-                            if(mvo.getMember_type().equals("0")){
+                            String memberType = mvo.getMember_type();
+                            if(memberType != null && memberType.equals("0")){
                                 viewPath = "AdminController?type=AdminMainGo";
                             }
                             else {
@@ -102,7 +106,7 @@ public class loginAction implements Action {
                                     viewPath = "gohome";
                                 }
                             }
-                        }else if(mvo.getMember_status().equals("2")){
+                        }else if(memberStatus != null && memberStatus.equals("2")){
                             //회원이 비활성화 일때
                             request.setAttribute("alertLoginText","탈퇴한 회원정보입니다.");
                             viewPath = "member/login.jsp";

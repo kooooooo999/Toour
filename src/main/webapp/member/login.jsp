@@ -1,6 +1,7 @@
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.security.SecureRandom" %>
-<%@ page import="java.math.BigInteger" %><%--
+<%@ page import="java.math.BigInteger" %>
+<%@ page import="toour.util.ApiKeyUtil" %><%--
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
@@ -214,7 +215,6 @@
     </a>
   </div>
   <!-- 네이버 로그인 버튼 -->
-  <%@ page import="toour.util.ApiKeyUtil" %>
   <%
     String clientId = ApiKeyUtil.getNaverClientId();
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");

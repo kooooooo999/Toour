@@ -1,0 +1,29 @@
+# 공공데이터 포털 서비스 인증키
+# URL 인코딩된 형태로 저장
+# 이 파일을 api.properties로 복사한 후 실제 키 값을 입력하세요.
+
+# Se 서비스키
+api.service.key.se=YOUR_SE_SERVICE_KEY_HERE
+
+# Bo 서비스키
+api.service.key.bo=YOUR_BO_SERVICE_KEY_HERE
+
+# Wa 서비스키
+api.service.key.wa=YOUR_WA_SERVICE_KEY_HERE
+
+# Ju 서비스키
+api.service.key.ju=YOUR_JU_SERVICE_KEY_HERE
+
+# 기본 서비스키 (GetAPIData.java에서 사용)
+api.service.key.default=YOUR_DEFAULT_SERVICE_KEY_HERE
+
+# 카카오 API 키
+api.kakao.map.appkey=YOUR_KAKAO_MAP_APPKEY_HERE
+api.kakao.js.key=YOUR_KAKAO_JS_KEY_HERE
+api.kakao.rest.key=YOUR_KAKAO_REST_KEY_HERE
+api.kakao.mobile.key=YOUR_KAKAO_MOBILE_KEY_HERE
+
+# 네이버 API 키
+api.naver.client.id=YOUR_NAVER_CLIENT_ID_HERE
+api.naver.client.secret=YOUR_NAVER_CLIENT_SECRET_HERE
+
