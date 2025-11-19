@@ -3,6 +3,7 @@ package toour.login.action;
 import toour.action.Action;
 import toour.member.vo.MemberVO;
 import toour.login.dao.MemberDAO;
+import toour.util.ApiKeyUtil;
 import org.json.JSONObject;
 
 import javax.servlet.http.*;
@@ -101,7 +102,7 @@ public class KakaoLoginAction implements Action {
     private String getAccessToken(String code) throws IOException {
         String tokenUrl = "https://kauth.kakao.com/oauth/token";
         String redirectUri = "http://localhost:8080/Controller?type=kakaoLogin";
-        String clientId = "f08deb4abc2cec584eecade447daf3bf"; // 실제 REST API 키 입력 필요
+        String clientId = ApiKeyUtil.getKakaoRestKey();
 
         System.out.println("=== 토큰 요청 시작 ===");
         System.out.println("code: " + code);

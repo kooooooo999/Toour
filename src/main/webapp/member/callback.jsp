@@ -6,6 +6,7 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="toour.login.dao.MemberDAO" %>
 <%@ page import="toour.member.vo.MemberVO" %>
+<%@ page import="toour.util.ApiKeyUtil" %>
 <%@ page import="java.sql.Timestamp" %><%--
   Created by IntelliJ IDEA.
   User: 쌍용교육센터
@@ -19,8 +20,8 @@
 <body>
 <%
     int a=0;
-    String clientId = "02aFSrv2E53MWqQAERSx";//애플리케이션 클라이언트 아이디값";
-    String clientSecret = "48ZDNX7Aeo";//애플리케이션 클라이언트 시크릿값";
+    String clientId = ApiKeyUtil.getNaverClientId();
+    String clientSecret = ApiKeyUtil.getNaverClientSecret();
     //인증코드
     String code = request.getParameter("code");
     String state = (String) request.getSession().getAttribute("state");

@@ -6,6 +6,7 @@ import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
 import toour.tripsuggestion.vo.DataVO;
 import toour.tripsuggestion.vo.LoCatVO;
+import toour.util.ApiKeyUtil;
 import toour.util.GetAPIData;
 import toour.util.Paging;
 
@@ -78,7 +79,7 @@ public class tripSuggestionAction implements Action {
         //준형님 서비스키
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
-        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getWaKey());
 
 //        String startDate = request.getParameter("startDate");
 //        if (startDate == null) {
@@ -168,7 +169,7 @@ public class tripSuggestionAction implements Action {
                 String voCat3 = item.getChildText("cat3");
                 String voContentTypeid = item.getChildText("contenttypeid");
                 String voContentid = item.getChildText("contentid");
-                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getWaKey()) + "&MobileApp=AppTest&MobileOS=ETC");
                 sb2.append("&_type=xml&contentId=");
                 sb2.append(voContentid);
                 URL url2 = new URL(sb2.toString());

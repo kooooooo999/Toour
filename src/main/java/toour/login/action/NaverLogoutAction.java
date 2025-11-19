@@ -1,6 +1,7 @@
 package toour.login.action;
 
 import toour.action.Action;
+import toour.util.ApiKeyUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +25,8 @@ public class NaverLogoutAction implements Action {
 
             // 3. accessToken이 존재하면 네이버 로그아웃 API 호출
             if(accessToken != null) {
-                String clientId = "02aFSrv2E53MWqQAERSx";          // 네이버 애플리케이션 Client ID
-                String clientSecret = "48ZDNX7Aeo";  // 네이버 애플리케이션 Client Secret
+                String clientId = ApiKeyUtil.getNaverClientId();
+                String clientSecret = ApiKeyUtil.getNaverClientSecret();
 
                 // 네이버 로그아웃(토큰 삭제) URL
                 String apiURL = "https://nid.naver.com/oauth2.0/token?grant_type=delete"

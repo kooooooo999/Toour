@@ -4,6 +4,7 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.tripsuggestion.vo.DataVO;
+import toour.util.ApiKeyUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +20,7 @@ public class sidoAction implements Action {
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/areaBasedList2?");
-        String key = "serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey());
         String sidoName = request.getParameter("sidoName");
         DataVO dataVO = new DataVO();
         dataVO.setSidoname(sidoName);

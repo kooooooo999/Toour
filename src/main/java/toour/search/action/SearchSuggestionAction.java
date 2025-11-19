@@ -7,6 +7,7 @@ import toour.action.Action;
 import toour.search.util.GetAPISearchData;
 import toour.search.vo.SearchDataVO;
 import toour.search.vo.SearchResponseVO;
+import toour.util.ApiKeyUtil;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -62,7 +63,7 @@ public class SearchSuggestionAction implements Action {
         //공공데이터 openAPI 호출하는 경로
         //http://apis.data.go.kr/B551011/KorService2/areaBasedList2?serviceKey=서비스인증키
 
-        String key = "serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getJuKey());
 
 
         String code = request.getParameter("areaCode");
@@ -149,7 +150,7 @@ public class SearchSuggestionAction implements Action {
 
 //https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=인증키
 // &MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&contentId=126128&_type=json
-                    StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10");
+                    StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getSeKey()) + "&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10");
                     sb2.append("&_type=xml&contentId=");
                     sb2.append(contentid);
                     System.out.println("sb2:" + sb2);

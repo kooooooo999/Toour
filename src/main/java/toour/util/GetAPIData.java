@@ -20,7 +20,7 @@ public class GetAPIData {
         // 전달 받은 LoCatVO안에 Areacode가 있다면
         if (areaCode != null && areaCode.length() > 0) {
             //주소 만들기
-            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/areaCode2?serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/areaCode2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getJuKey()) + "&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("areaCode=");
@@ -60,7 +60,7 @@ public class GetAPIData {
     public static LoCatVO[] getCat1(HttpServletRequest request, String contentTypeId) {
         LoCatVO[] ar = null;
         //주소 만들기
-        StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+        StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey()) + "&MobileApp=AppTest&MobileOS=ETC");
         sb.append("&numOfRows=1000");
         sb.append("&contentTypeId=");
         sb.append(contentTypeId);
@@ -100,7 +100,7 @@ public class GetAPIData {
         LoCatVO[] ar = null;
         if (cat1 != null && cat1.length() > 0) {
             //주소 만들기
-            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey()) + "&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("cat1=");
@@ -143,7 +143,7 @@ public class GetAPIData {
         LoCatVO[] ar = null;
         if (cat1 != null && cat1.length() > 0 && cat2 != null && cat2.length() > 0) {
             //주소 만들기
-            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+            StringBuffer sb = new StringBuffer("http://apis.data.go.kr/B551011/KorService2/categoryCode2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey()) + "&MobileApp=AppTest&MobileOS=ETC");
             sb.append("&numOfRows=1000");
             sb.append("&");
             sb.append("cat1=");
@@ -187,7 +187,7 @@ public class GetAPIData {
     public static DataVO getDataVO(String contentId) {
         DataVO dvo = null;
         try {
-            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId=" + contentId);
+            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey()) + "&MobileApp=AppTest&MobileOS=ETC&contentId=" + contentId);
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();
@@ -230,7 +230,7 @@ public class GetAPIData {
     public static DataVO getDataVO_detail(String contentId) {
         DataVO dvo = null;
         try {
-            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=gxF3vfrb%2FWP6p4M7q4vJqTpmSyZQogbuDVs4U98InkzW4uD7lV0STqbC5BDflGo4im41%2FXxSd97oH1jEUkORUw%3D%3D&MobileApp=AppTest&MobileOS=ETC&contentId=" + contentId);
+            URL url1 = new URL("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getDefaultKey()) + "&MobileApp=AppTest&MobileOS=ETC&contentId=" + contentId);
             HttpURLConnection conn1 = (HttpURLConnection) url1.openConnection();
             conn1.setRequestProperty("Content-Type", "application/xml");
             conn1.connect();
@@ -254,7 +254,7 @@ public class GetAPIData {
                 String voCat3 = item.getChildText("cat3");
                 String voContentTypeid = item.getChildText("contenttypeid");
                 String voContentid = item.getChildText("contentid");
-                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D&MobileApp=AppTest&MobileOS=ETC");
+                StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getWaKey()) + "&MobileApp=AppTest&MobileOS=ETC");
                 sb2.append("&_type=xml&contentId=");
                 sb2.append(voContentid);
                 System.out.println("sb2: " + sb2.toString());

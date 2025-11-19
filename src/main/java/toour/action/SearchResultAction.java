@@ -7,6 +7,7 @@ import toour.member.vo.MemberVO;
 import toour.search.util.GetAPISearchData;
 import toour.search.vo.SearchDataVO;
 import toour.tripsuggestion.vo.DataVO;
+import toour.util.ApiKeyUtil;
 import toour.util.Paging;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class SearchResultAction implements Action{
         String cat2 = request.getParameter("cat2"); //중분류
         String cat3 = request.getParameter("cat3"); //소분류
         String cPage = request.getParameter("cPage"); //지금페이지
-        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getSeKey());
 
         Paging page = new Paging(7, 3);
 

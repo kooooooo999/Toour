@@ -5,6 +5,7 @@ import org.jdom2.Element;
 import org.jdom2.input.SAXBuilder;
 import toour.action.Action;
 import toour.tripsuggestion.vo.DataVO;
+import toour.util.ApiKeyUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class courseDetailsAction implements Action {
         request.setAttribute("getAr", dvo);
 //      추천코스정보
         StringBuilder sb1 = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailInfo2?");
-        String key = "serviceKey=hPrdpbOAuU8ouxUCNFQ%2B3GhU1eshPcqvNhYV2QamRDzm3Vg32RGIpuEj5jaAGt8AQxVjdhdN5vgymQb6fh6y1w%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getSeKey());
         sb1.append(key);
         sb1.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=");
         sb1.append(totalCount);
@@ -105,7 +106,7 @@ public class courseDetailsAction implements Action {
                 String subdetailoverview = item1.getChildText("subdetailoverview");
                 String subname = item1.getChildText("subname");
                 //좌표 얻기
-                StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
+                StringBuilder sb2 = new StringBuilder("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getBoKey()) + "&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
                 sb2.append(subcontentid);
                 System.out.println("sb2: " + sb2.toString());
                 URL url2 = new URL(sb2.toString());

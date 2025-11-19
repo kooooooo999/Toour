@@ -214,8 +214,9 @@
     </a>
   </div>
   <!-- 네이버 로그인 버튼 -->
+  <%@ page import="toour.util.ApiKeyUtil" %>
   <%
-    String clientId = "02aFSrv2E53MWqQAERSx";//애플리케이션 클라이언트 아이디값";
+    String clientId = ApiKeyUtil.getNaverClientId();
     String redirectURI = URLEncoder.encode("http://localhost:8080/member/callback.jsp", "UTF-8");
     SecureRandom random = new SecureRandom();
     String state = new BigInteger(130, random).toString();
@@ -243,7 +244,7 @@
 
 <!-- 네이버 로그인 초기화 Script -->
 <script type="text/javascript"><!--naver_id_login : client-id-->
-  var naver_id_login = new naver_id_login("02aFSrv2E53MWqQAERSx", "http://localhost:8080/member/callback.jsp");
+  var naver_id_login = new naver_id_login("<%= ApiKeyUtil.getNaverClientId() %>", "http://localhost:8080/member/callback.jsp");
   var state = naver_id_login.getUniqState(); // 토큰 담을곳
   naver_id_login.setState(state);
   naver_id_login.setPopup(); // 팝업창
@@ -304,7 +305,7 @@
 
 <!--카카오 로그인 관련-->
 <script>
-  Kakao.init('e8b842dc97356296e338660ae4063b8a'); //발급받은 키 중 javascript키를 사용해준다.
+  Kakao.init('<%= ApiKeyUtil.getKakaoJsKey() %>'); //발급받은 키 중 javascript키를 사용해준다.
 
   console.log(Kakao.isInitialized()); // sdk초기화여부판단
 

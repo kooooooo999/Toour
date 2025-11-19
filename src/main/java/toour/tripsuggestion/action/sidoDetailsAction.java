@@ -8,6 +8,7 @@ import toour.member.dao.ZzimDAO;
 import toour.member.vo.MemberVO;
 import toour.member.vo.ZzimVO;
 import toour.tripsuggestion.vo.DataVO;
+import toour.util.ApiKeyUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,7 +38,7 @@ public class sidoDetailsAction implements Action {
         dataVO.setContentId(contentId);
         dataVO.setContentTypeId(contentTypeId);
         try {
-            StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?serviceKey=UW9L4iVc%2FhRefJdmBeANqq0YpvU1yhx3LHbUSNmSHeZznF70k04tfNjZbpFnasBOtEr1hGTHpkqS9i8zEYUUsQ%3D%3D&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
+            StringBuffer sb2 = new StringBuffer("https://apis.data.go.kr/B551011/KorService2/detailCommon2?" + ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getBoKey()) + "&MobileApp=AppTest&MobileOS=ETC&_type=xml&contentId=");
             sb2.append(contentId);
             URL url2 = new URL(sb2.toString());
             System.out.println("sidoDetailsAction_sb2:" + sb2.toString());
@@ -89,7 +90,7 @@ public class sidoDetailsAction implements Action {
         }
 
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailIntro2?");
-        String key = "serviceKey=%2FBstLSrHchiOl50E4qyAJirb9PM6IhUV1UmaAlefvEfRvM4YLQplX1A0UGtet0vi44M21gibI4l3ldPUz9lQMA%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getJuKey());
 
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1");

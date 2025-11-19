@@ -88,7 +88,7 @@
     // Kakao SDK 안전 초기화 (중복/순서 문제 방지)
     (function ensureKakaoInit() {
         if (window.Kakao && !Kakao.isInitialized()) {
-            Kakao.init('e8b842dc97356296e338660ae4063b8a'); // JS 키
+            Kakao.init('<%= toour.util.ApiKeyUtil.getKakaoJsKey() %>'); // JS 키
             // console.log('Kakao initialized:', Kakao.isInitialized());
         }
     })();

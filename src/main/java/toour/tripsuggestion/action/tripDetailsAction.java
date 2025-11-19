@@ -8,6 +8,7 @@ import toour.member.dao.ZzimDAO;
 import toour.member.vo.MemberVO;
 import toour.member.vo.ZzimVO;
 import toour.tripsuggestion.vo.DataVO;
+import toour.util.ApiKeyUtil;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -58,7 +59,7 @@ public class tripDetailsAction implements Action {
         //&MobileApp=AppTest&MobileOS=ETC&pageNo=1&numOfRows=10&_type=json&contentTypeId=12&contentId=
         //126128
         StringBuilder sb = new StringBuilder("http://apis.data.go.kr/B551011/KorService2/detailIntro2?");
-        String key = "serviceKey=QZqnwRRbk91dk1rSfVmLByXYHxG5LXUX03kbhu31XCqODQh1%2BJAgNigVraqO%2F1sEZtE3mOCC6FV4JZjPXy73xw%3D%3D";
+        String key = ApiKeyUtil.getServiceKeyParam(ApiKeyUtil.getWaKey());
 
         sb.append(key);
         sb.append("&MobileApp=AppTest&MobileOS=ETC&pageNo=1");

@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="toour.util.ApiKeyUtil" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
@@ -112,7 +113,7 @@
 <head>
 
     <script type="text/javascript"
-            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=10cb881534fe9be97e2db4854bde4bf1&libraries=services"></script>
+            src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=<%= ApiKeyUtil.getKakaoMapAppkey() %>&libraries=services"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>👋🏻toour</title>
