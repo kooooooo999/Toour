@@ -32,7 +32,7 @@ public class Controller extends HttpServlet {
     public void init() throws ServletException {
         // 생성자 다음으로 딱! 한번 수행하는 함수
         // 첫 요청자에 의해 단 한번만 수행하는 곳이다.
-
+        
         // 현재 서블릿이 생성될 때 멤버변수인 myParam값이 존재한다.
         // 그 myParam이 가지고 있는 값을 절대경로 만들어야 한다.
         // jsp에서는 application이라는 내장객체가 존재했지만 서블릿에서는
@@ -40,7 +40,6 @@ public class Controller extends HttpServlet {
         ServletContext application = this.getServletContext();
 
         String realPath = application.getRealPath(myParam);
-        //System.out.println(realPath);
 
         //절대경로화 시킨 이유는
         // 해당 파일의 내용(클래스 경로)을 스트림을 이용하여
@@ -62,6 +61,7 @@ public class Controller extends HttpServlet {
             // 저장한다.  예)  "index" ---> "emp.action.IndexAction"
         } catch (Exception e) {
             e.printStackTrace();
+            throw new ServletException("action.properties 파일을 로드할 수 없습니다.", e);
         }
         // 생성할 객체들의 경로가 모두 Properties객체로 저장된 상태다.
         // 하지만 현재 컨트롤러 입장에서는 생성할 객체가 몇개이며,

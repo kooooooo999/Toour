@@ -20,11 +20,7 @@ public class matchPasswordAction implements Action {
             if(obj!=null){
                 mvo =(MemberVO) obj;
                 String salt = mvo.getMember_salt();
-                System.out.println("salt:"+salt);
                 String hash_pw = Hash.getHash(salt+u_pw);
-                System.out.println("PW:"+u_pw);
-                System.out.println("hash_pw:"+hash_pw);
-                System.out.println("mvo.getMember_password():"+mvo.getMember_password());
                 if(mvo.getMember_password().equals(hash_pw)) {
                     //비밀번호가 맞았을 때
                     t = true;

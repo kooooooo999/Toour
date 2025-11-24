@@ -34,7 +34,13 @@ public class AdminPostDAO {
     public static List<Map<String, Object>> getWeeklyPostCount() {
         SqlSession ss = FactoryService.getFactory().openSession();
         List<Map<String,Object>> list = ss.selectList("adminpost.selectWeeklyPostCount");
-        System.out.println("list.get(0).get(\"post_day\")"+list.get(0).get("post_day"));
+        
+        // 리스트가 비어있지 않을 때만 출력 (안전한 처리)
+        if(list != null && !list.isEmpty()) {
+            System.out.println("list.get(0).get(\"post_day\")"+list.get(0).get("post_day"));
+        } else {
+            System.out.println("주간 게시글 데이터가 없습니다.");
+        }
 
         ss.close();
         return list;

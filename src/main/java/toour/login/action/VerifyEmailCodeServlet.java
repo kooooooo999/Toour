@@ -23,9 +23,6 @@ public class VerifyEmailCodeServlet extends HttpServlet {
             String savedCode = (String) session.getAttribute("emailAuthCode");
             Long savedTime = (Long) session.getAttribute("emailAuthCodeTime");
             
-            System.out.println("verifyEmailCode - inputCode:" + inputCode);
-            System.out.println("verifyEmailCode - savedCode:" + savedCode);
-            
             boolean isMatch = false;
             String message = "";
 

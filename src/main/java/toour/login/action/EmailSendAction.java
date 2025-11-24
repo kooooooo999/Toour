@@ -25,8 +25,6 @@ public class EmailSendAction extends HttpServlet {
                 email = email.trim().replaceAll("\\s", "");
             }
             
-            System.out.println("EmailSendAction email:" + email);
-            
             // 이메일 유효성 검사
             if (email == null || email.isEmpty()) {
                 response.getWriter().write("{\"success\": false, \"message\": \"이메일을 입력해주세요.\"}");

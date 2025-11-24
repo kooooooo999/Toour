@@ -27,27 +27,13 @@ public class loginAction implements Action {
             if(u_id!=null){
                 //로그인 성공
                 //요청으로부터 id를 잘받아옴
-                System.out.println("u_id:"+u_id);
                 MemberVO mvo = MemberDAO.getMem(u_id);
                 if(mvo!=null){
                     //입력한 id가 db에 있을때
                     String u_pw = request.getParameter("u_pw");
                     String salt = mvo.getMember_salt();
 
-                    // 디버깅: 해시 과정 상세 로깅
-                    System.out.println("=== 로그인 해시 디버깅 ===");
-                    System.out.println("입력 비밀번호: " + u_pw);
-                    System.out.println("DB 저장된 salt: " + salt);
-                    System.out.println("salt 길이: " + (salt != null ? salt.length() : "null"));
-
-                    System.out.println("salt + 비밀번호: " + salt + u_pw);
-                    System.out.println("salt + 비밀번호 길이: " + (salt + u_pw).length());
-
                     String hash_pw = Hash.getHash(salt + u_pw);
-                    System.out.println("새로 생성된 해시: " + hash_pw);
-                    System.out.println("DB 저장된 해시: " + mvo.getMember_password());
-                    System.out.println("해시 일치 여부: " + mvo.getMember_password().equals(hash_pw));
-                    System.out.println("===============================");
                     if(mvo.getMember_password().equals(hash_pw)){
                         //입력한 비밀번호와 db에 저장된 비밀번호가 같을 때
 //                        viewPath = "MainIndex/index.jsp"; -- cornsoup 수정
@@ -56,21 +42,11 @@ public class loginAction implements Action {
                             request.getSession().setAttribute("member", mvo);
 
                             HttpSession session = request.getSession();
-                            System.out.println(mvo.getMember_idx());
                             session.setAttribute("member",mvo);
                             session.setAttribute("userIdx", mvo.getMember_idx());
                             session.setAttribute("userId", mvo.getMember_id());
                             session.setAttribute("userNickName", mvo.getMember_nickname());
-                            System.out.println("loginAction mvo.nickname="+mvo.getMember_nickname());
                             session.setMaxInactiveInterval(30*60);
-                            System.out.println("userNickName:"+session.getAttribute("userNickName"));
-
-                            // 디버깅: 임시 비밀번호 상태 확인
-                            System.out.println("=== 로그인 디버깅 정보 ===");
-                            System.out.println("member_id: " + mvo.getMember_id());
-                            System.out.println("is_temp_password: " + mvo.getIs_temp_password());
-                            System.out.println("member_type: " + mvo.getMember_type());
-                            System.out.println("==========================");
 
                             try {
                                 int cnt = MemberDAO.updateLastLogin(mvo.getMember_idx());
@@ -95,10 +71,8 @@ public class loginAction implements Action {
                                 }
 
                                 if ("1".equals(isTempPassword)) {
-                                    System.out.println("임시 비밀번호 사용자 - 비밀번호 변경 페이지로 이동");
                                     viewPath = "member/changePassword.jsp";
                                 } else {
-                                    System.out.println("일반 사용자 - 메인 페이지로 이동");
                                     viewPath = "gohome";
                                 }
                             }
@@ -128,7 +102,6 @@ public class loginAction implements Action {
             }
         }else {
             //로그아웃 눌렀을 때
-            System.out.println("logout");
             request.getSession().removeAttribute("member");
             request.getSession().invalidate();
             viewPath="MainIndex/index.jsp";

@@ -91,12 +91,6 @@ public class AdminMemberDAO {
     public static int Re(String member_idx, String member_name, String member_nickname, String member_password, String member_email, String member_id){
         int cnt = 0;
         Map<String, String> map = new HashMap<>();
-        System.out.println(member_idx);
-        System.out.println(member_name);
-        System.out.println(member_nickname);
-        System.out.println(member_password);
-        System.out.println(member_email);
-        System.out.println(member_id);
 
         map.put("member_idx", member_idx);
         map.put("member_name", member_name);

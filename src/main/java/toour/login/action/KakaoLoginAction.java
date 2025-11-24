@@ -20,7 +20,6 @@ public class KakaoLoginAction implements Action {
             String code = request.getParameter("code");
             if (code == null || code.isEmpty()) {
                 request.setAttribute("msg", "카카오 인증 코드가 없습니다.");
-                System.out.println("code is null");
                 return "member/login.jsp";
             }
 
@@ -29,7 +28,6 @@ public class KakaoLoginAction implements Action {
 
             if (token == null) {
                 request.setAttribute("msg", "카카오 토큰 발급 실패");
-                System.out.println("token is null");
                 return "member/login.jsp";
             }
 
@@ -39,7 +37,6 @@ public class KakaoLoginAction implements Action {
             String profile_nickname = userInfo.optString("nickname", null);
 
             if (account_email == null) {
-                System.out.println("account_email is null");
                 request.setAttribute("msg", "카카오 로그인에 실패했습니다. 이메일 정보를 확인하세요.");
                 return "member/login.jsp";
             }
@@ -50,7 +47,6 @@ public class KakaoLoginAction implements Action {
             MemberVO member = MemberDAO.getKakaoMember("KAKAO", account_email);
 
             if (member == null) {
-                System.out.println("member is null");
                 //정보가 없으니까 회원가입
                 MemberVO newMember = new MemberVO();
                 newMember.setMember_id(null);
@@ -65,7 +61,6 @@ public class KakaoLoginAction implements Action {
                 MemberDAO.addMem(newMember);
                 member = newMember;
             } else {
-                System.out.println("kakao member already exist");
                 //기존회원으로 마지막 로그인 날짜만 업데이트
                 try {
                     int cnt = MemberDAO.updateLastLogin(member.getMember_idx());
@@ -86,8 +81,6 @@ public class KakaoLoginAction implements Action {
             session.setAttribute("userEmail", member.getMember_email());
             session.setAttribute("userNickName", member.getMember_nickname());
             session.setMaxInactiveInterval(30*60);// 세션 30분 유지
-            //이게 뭐지?
-            System.out.println("KaKaoMember_nickname is:"+member.getMember_nickname());
             return "gohome";
 
         } catch (Exception e) {
@@ -102,11 +95,6 @@ public class KakaoLoginAction implements Action {
         String tokenUrl = "https://kauth.kakao.com/oauth/token";
         String redirectUri = "http://localhost:8080/Controller?type=kakaoLogin";
         String clientId = "f08deb4abc2cec584eecade447daf3bf"; // 실제 REST API 키 입력 필요
-
-        System.out.println("=== 토큰 요청 시작 ===");
-        System.out.println("code: " + code);
-        System.out.println("clientId: " + clientId);
-        System.out.println("redirectUri: " + redirectUri);
 
         URL url = new URL(tokenUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -125,15 +113,12 @@ public class KakaoLoginAction implements Action {
         }
 
         int responseCode = conn.getResponseCode();
-        System.out.println("토큰 요청 응답 코드: " + responseCode);
 
         if (responseCode == 200) {
             String result = readResponse(conn.getInputStream());
-            System.out.println("토큰 응답: " + result);
 
             JSONObject json = new JSONObject(result);
             String accessToken = json.getString("access_token");
-            System.out.println("발급된 액세스 토큰: " + accessToken);
             return accessToken;
         } else {
             // 에러 응답도 읽어보기
@@ -143,18 +128,13 @@ public class KakaoLoginAction implements Action {
             } catch (Exception e) {
                 errorResult = "에러 스트림을 읽을 수 없음";
             }
-            System.out.println("토큰 요청 실패 - 응답 코드: " + responseCode);
-            System.out.println("에러 응답: " + errorResult);
             return null;//오류페이지******************************************
         }
     }
 
-    // 사용자 정보 요청 (디버깅 버전)
+    // 사용자 정보 요청
     private JSONObject getUserInfo(String accessToken) throws IOException {
         String reqUrl = "https://kapi.kakao.com/v2/user/me";
-
-        System.out.println("=== 사용자 정보 요청 시작 ===");
-        System.out.println("사용할 액세스 토큰: " + accessToken);
 
         URL url = new URL(reqUrl);
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -162,7 +142,6 @@ public class KakaoLoginAction implements Action {
         conn.setRequestProperty("Authorization", "Bearer " + accessToken);
 
         int responseCode = conn.getResponseCode();
-        System.out.println("responseCode: " + responseCode);
 
         if (responseCode != 200) {
             String errorResult = "";
@@ -171,12 +150,10 @@ public class KakaoLoginAction implements Action {
             } catch (Exception e) {
                 errorResult = "error stream can't be read";
             }
-            System.out.println("request failed error result: " + errorResult);
             throw new IOException("request failed, response code is " + responseCode);
         }
 
         String result = readResponse(conn.getInputStream());
-        System.out.println("userInfo response: " + result);
 
         JSONObject json = new JSONObject(result);
         JSONObject kakaoAccount = json.getJSONObject("kakao_account");
@@ -186,7 +163,6 @@ public class KakaoLoginAction implements Action {
         userInfo.put("email", kakaoAccount.optString("email", null));
         userInfo.put("nickname", profile.optString("nickname", null));
 
-        System.out.println("userInfo: " + userInfo.toString());
         return userInfo;
     }
 
